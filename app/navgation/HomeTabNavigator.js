@@ -7,6 +7,8 @@ import CreatePost from "../components/CreatePost";
 import Comments from "../components/Comments";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
+import HomeIcon from "../components/icons/HomeIcon";
+import PlusIcon from "../components/icons/PlusIcon";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -14,24 +16,11 @@ const Tab = createBottomTabNavigator();
 const HomeNavigator = ({ navigation }) => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        // tabBarIcon: ({ focused, color, size }) => {
-        //   let iconName;
-        //   console.log(focused);
-        //   if (route.name === "Home") {
-        //     iconName = focused
-        //       ? "ios-information-circle"
-        //       : "ios-information-circle-outline";
-        //   } else if (route.name === "Settings") {
-        //     iconName = focused ? "ios-list-outline" : "ios-list";
-        //   }
-
-        //   // You can return any component that you like here!
-        //   return <Text>icon</Text>;
-        // },
+      screenOptions={({}) => ({
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "gray",
         tabBarShowLabel: false,
+        headerShadowVisible: false,
       })}
     >
       <Tab.Screen
@@ -39,22 +28,57 @@ const HomeNavigator = ({ navigation }) => {
         component={Home}
         options={{
           title: "Feed",
-          tabBarShowLabel: false,
           tabBarIcon: ({ size, focused, color }) => {
             {
               return (
-                <DiscoverIcon
-                  color={focused ? "red" : "blue"}
+                <HomeIcon
+                  color={focused ? "black" : "none"}
                   isSelected={focused}
-                  size={size}
-                  strokeColor={focused ? "red" : "blue"}
+                  size={20}
+                  strokeColor={focused ? "black" : "#999999"}
                 />
               );
             }
           },
         }}
       />
-      <Tab.Screen name="Notifications" component={Home} />
+      <Tab.Screen
+        name="Discover"
+        component={Home}
+        options={{
+          tabBarIcon: ({ size, focused, color }) => {
+            {
+              return (
+                <DiscoverIcon
+                  color={focused ? "black" : "none"}
+                  isSelected={focused}
+                  size={20}
+                  strokeColor={focused ? "black" : "#999999"}
+                />
+              );
+            }
+          },
+        }}
+      />
+      <Tab.Screen
+        name="CreatePost"
+        component={Home}
+        options={{
+          title: "Create Post",
+          // tabBarStyle: { display: "none" },
+          tabBarIcon: ({ size, focused, color }) => {
+            {
+              return (
+                <PlusIcon
+                  color={focused ? "black" : "none"}
+                  size={20}
+                  strokeColor={focused ? "black" : "#999999"}
+                />
+              );
+            }
+          },
+        }}
+      />
     </Tab.Navigator>
 
     // <Stack.Navigator

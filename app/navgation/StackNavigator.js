@@ -1,10 +1,6 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TabBar from "../components/TabBar";
 import Home from "../components/Home";
-import { BlurView } from "expo-blur";
 import HomeTabNavigator from "./HomeTabNavigator";
-import { Text } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Comments from "../components/Comments";
 
