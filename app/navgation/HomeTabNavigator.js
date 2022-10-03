@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import Home from "../components/Home";
 import Hidden from "../components/Hidden";
@@ -9,11 +9,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
 import HomeIcon from "../components/icons/HomeIcon";
 import PlusIcon from "../components/icons/PlusIcon";
+import MessagesIcon from "../components/icons/MessagesIcon";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeNavigator = ({ navigation }) => {
+  const IconSize = 21;
   return (
     <Tab.Navigator
       screenOptions={({}) => ({
@@ -21,6 +23,7 @@ const HomeNavigator = ({ navigation }) => {
         tabBarInactiveTintColor: "gray",
         tabBarShowLabel: false,
         headerShadowVisible: false,
+        tabBarStyle: { backgroundColor: "#F9F9F9", paddingBottom: 20 },
       })}
     >
       <Tab.Screen
@@ -34,7 +37,7 @@ const HomeNavigator = ({ navigation }) => {
                 <HomeIcon
                   color={focused ? "black" : "none"}
                   isSelected={focused}
-                  size={20}
+                  size={IconSize}
                   strokeColor={focused ? "black" : "#999999"}
                 />
               );
@@ -52,7 +55,7 @@ const HomeNavigator = ({ navigation }) => {
                 <DiscoverIcon
                   color={focused ? "black" : "none"}
                   isSelected={focused}
-                  size={20}
+                  size={IconSize}
                   strokeColor={focused ? "black" : "#999999"}
                 />
               );
@@ -71,8 +74,53 @@ const HomeNavigator = ({ navigation }) => {
               return (
                 <PlusIcon
                   color={focused ? "black" : "none"}
-                  size={20}
+                  size={IconSize}
                   strokeColor={focused ? "black" : "#999999"}
+                />
+              );
+            }
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Messages"
+        component={Home}
+        options={{
+          title: "Messages",
+          // tabBarStyle: { display: "none" },
+          tabBarIcon: ({ size, focused, color }) => {
+            {
+              return (
+                <MessagesIcon
+                  color={focused ? "black" : "none"}
+                  size={IconSize}
+                  strokeColor={focused ? "black" : "#999999"}
+                />
+              );
+            }
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Home}
+        options={{
+          title: "Profile",
+          // tabBarStyle: { display: "none" },
+          tabBarIcon: ({ size, focused, color }) => {
+            {
+              return (
+                <Image
+                  style={{
+                    height: 22,
+                    width: 22,
+                    borderRadius: 50,
+                    borderWidth: focused ? 3 : 0,
+                    borderColor: "black",
+                  }}
+                  source={{
+                    uri: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                  }}
                 />
               );
             }
