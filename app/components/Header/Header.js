@@ -14,7 +14,7 @@ const Header = (props) => {
           //   { borderWidth: 2, backgroundColor: "red", height: 99 },
         ]}
       >
-        <Logo size={35} />
+        <Logo size={31} />
       </View>
       <View
         style={[
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 18,
-    height: 112,
+    height: 101,
     paddingBottom: 2,
     backgroundColor: "white",
   },

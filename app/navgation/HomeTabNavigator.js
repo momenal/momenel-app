@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import Home from "../components/Home";
-import Hidden from "../components/Hidden";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreatePost from "../components/CreatePost";
 import Comments from "../components/Comments";
@@ -11,10 +11,7 @@ import HomeIcon from "../components/icons/HomeIcon";
 import PlusIcon from "../components/icons/PlusIcon";
 import MessagesIcon from "../components/icons/MessagesIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import Header from "../components/Header/Header";
-import Logo from "../components/Header/Logo";
-import BalanceTab from "../components/Header/BalanceTab";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

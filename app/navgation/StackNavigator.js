@@ -16,7 +16,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Profile" component={Home} />
+      <Stack.Screen name="Cars" component={Home} />
       <Stack.Screen
         name="Comments"
         component={Comments}

@@ -13,7 +13,7 @@ const Home = ({ navigation }) => {
     >
       <Button title="post" onPress={() => navigation.navigate("Post")} />
       <Button title="d2" onPress={() => navigation.navigate("Discover2")} />
-      <Button title="hidden" onPress={() => navigation.navigate("Hidden")} />
+      <Button title="cars" onPress={() => navigation.navigate("Cars")} />
       <Button title="Profile" onPress={() => navigation.navigate("Profile")} />
       <Button
         title="comments"
