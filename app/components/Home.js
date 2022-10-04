@@ -1,10 +1,16 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const Home = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ backgroundColor: "white", height: "100%" }}>
+    <View
+      style={{
+        backgroundColor: "white",
+        height: "100%",
+        backgroundColor: "red",
+      }}
+    >
       <Button title="post" onPress={() => navigation.navigate("Post")} />
       <Button title="d2" onPress={() => navigation.navigate("Discover2")} />
       <Button title="hidden" onPress={() => navigation.navigate("Hidden")} />
@@ -16,7 +22,7 @@ const Home = ({ navigation }) => {
       <Text>Home</Text>
       <Text>Home</Text>
       <Text>Home</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -12,7 +12,9 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Home"
         component={HomeTabNavigator}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen name="Profile" component={Home} />
       <Stack.Screen

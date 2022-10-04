@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import Home from "../components/Home";
 import Hidden from "../components/Hidden";
@@ -11,6 +11,10 @@ import HomeIcon from "../components/icons/HomeIcon";
 import PlusIcon from "../components/icons/PlusIcon";
 import MessagesIcon from "../components/icons/MessagesIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Header from "../components/Header/Header";
+import Logo from "../components/Header/Logo";
+import BalanceTab from "../components/Header/BalanceTab";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -20,8 +24,6 @@ const HomeNavigator = ({ navigation }) => {
   return (
     <Tab.Navigator
       screenOptions={({}) => ({
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
         tabBarShowLabel: false,
         headerShadowVisible: false,
         tabBarStyle: { backgroundColor: "#F9F9F9", paddingBottom: 20 },
@@ -31,7 +33,36 @@ const HomeNavigator = ({ navigation }) => {
         name="Feed"
         component={Home}
         options={{
-          title: "Feed",
+          // title: "",
+          // headerStyle: { backgroundColor: "red", height: 115 },
+          // headerLeft: () => {
+          //   return (
+          //     <View style={{ paddingLeft: 20 }}>
+          //       <Logo size={35} />
+          //     </View>
+          //   );
+          // },
+          // headerRight: () => {
+          //   return (
+          //     <View style={[styles.views, { paddingRight: 20 }]}>
+          //       <Text style={{ marginRight: 10 }}>Noti</Text>
+          //       <BalanceTab />
+          //     </View>
+          //   );
+          // },
+          // headerTitleAlign: "left",
+          header: ({ navigation, route, options, back }) => {
+            // const title = getHeaderTitle(options, route.name);
+
+            return (
+              <Header
+              // title={title}
+              // leftButton={
+              //   back ? <MyBackButton onPress={navigation.goBack} /> : undefined
+              // }
+              />
+            );
+          },
           tabBarIcon: ({ size, focused, color }) => {
             {
               return (
@@ -110,21 +141,7 @@ const HomeNavigator = ({ navigation }) => {
           // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused, color }) => {
             {
-              return (
-                <TabBarProfileIcon size={22} focused={focused} />
-                // <Image
-                //   style={{
-                //     height: 22,
-                //     width: 22,
-                //     borderRadius: 50,
-                //     borderWidth: focused ? 3 : 0,
-                //     borderColor: "black",
-                //   }}
-                //   source={{
-                //     uri: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-                //   }}
-                // />
-              );
+              return <TabBarProfileIcon size={22} focused={focused} />;
             }
           },
         }}
@@ -159,3 +176,44 @@ const HomeNavigator = ({ navigation }) => {
 };
 
 export default HomeNavigator;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "pink",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    height: 99,
+    // borderWidth: 2,
+    backgroundColor: "#E5E5E5",
+  },
+  views: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+});
+
+// options={{
+//   title: "Feed",
+//   // headerStyle: {
+//   //   backgroundColor: "#f4511e",
+//   // },
+//   headerTitleStyle: { fontFamily: "Nunito_700Bold", color: "#999999" },
+//   tabBarIcon: ({ size, focused, color }) => {
+//     {
+//       return (
+//         <HomeIcon
+//           color={focused ? "black" : "none"}
+//           isSelected={focused}
+//           size={IconSize}
+//           strokeColor={focused ? "black" : "#999999"}
+//         />
+//       );
+//     }
+//   },
+// }}
