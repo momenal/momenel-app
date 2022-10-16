@@ -8,13 +8,10 @@ const Home = ({ navigation }) => {
       style={{
         backgroundColor: "white",
         height: "100%",
-        backgroundColor: "red",
+        backgroundColor: "pink",
       }}
     >
-      <Button title="post" onPress={() => navigation.navigate("Post")} />
-      <Button title="d2" onPress={() => navigation.navigate("Discover2")} />
-      <Button title="cars" onPress={() => navigation.navigate("Cars")} />
-      <Button title="Profile" onPress={() => navigation.navigate("Profile")} />
+      <Button title="story" onPress={() => navigation.navigate("Stories")} />
       <Button
         title="comments"
         onPress={() => navigation.navigate("Comments")}
