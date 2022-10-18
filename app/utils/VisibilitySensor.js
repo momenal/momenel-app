@@ -47,7 +47,6 @@ const VisibilitySensor = (props) => {
     const window = Dimensions.get("window");
     const window50 = window.width * 0.5; // 50% of window
     const window90 = window.width * 0.9; // 50% of window
-    // console.log(dimensions.rectWidth);
 
     const isVisible =
       dimensions.rectBottom != 0 &&

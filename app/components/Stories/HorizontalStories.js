@@ -1,16 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Dimensions,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import React, { useRef, useState } from "react";
+import { Button, Dimensions, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
 import ProgressBar from "./ProgressBar";
 import Story from "./Story";
@@ -24,18 +14,18 @@ const HorizontalStories = ({
   data,
   username,
   scrollToIndexVertical,
+  index,
+  scrollToNext,
 }) => {
   const insets = useSafeAreaInsets();
   const ref = useRef(null);
   const [currentPosition, setcurrentPosition] = useState(0); // current position
-  const [currentDuration, setcurrentDuration] = useState(0); // total duration of video
   const [isPaused, setIsPaused] = useState(false); // is image or video long pressed
   const [activeIndex, setActiveIndex] = useState(0);
   const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
 
   const changeCurrentIndex = (index) => {
     setActiveIndex(index);
-    console.log("active: ", index, index === activeIndex);
   };
 
   const changeIsPaused = (isPaused) => {
@@ -43,16 +33,16 @@ const HorizontalStories = ({
   };
 
   const storyComplete = () => {
-    console.log(ref.current.getCurrentIndex(), " ", data.length);
-    //todo: if ref.current.getCurrentIndex() ===  data.length -1 then verticle
-    ref.current.next();
+    if (ref.current.getCurrentIndex() === data.length - 1) {
+      scrollToNext(index + 1);
+    } else {
+      ref.current.next();
+    }
   };
 
-  // const eventhandler = () => {};
   const getVideoPosition = (data) => {
     let perc = (data.position / data.duration) * 100;
     setcurrentPosition(perc);
-    setcurrentDuration(data.duration);
   };
 
   const renderItem = ({ index }) => {
@@ -73,7 +63,6 @@ const HorizontalStories = ({
     <View
       style={{
         width: PAGE_WIDTH,
-        // height: "100%",
         height: containerHeight,
         backgroundColor: "black",
       }}
@@ -134,17 +123,8 @@ const HorizontalStories = ({
                 trackColor={index < activeIndex ? "white" : "#c9c9c9"}
                 isActive={index === activeIndex ? true : false}
                 isPause={isPaused}
-                // onCompletion={() => console.log("complete")}
                 onCompletion={() => ref.current.next()}
               />
-              // <ProgressBar
-              //   key={index}
-              //   type="image"
-              //   indeterminateDuration={1000}
-              //   height={4}
-              //   indeterminate={index === activeIndex ? true : false}
-              //   backgroundColor="red"
-              // />
             );
           } else {
             return (
@@ -173,14 +153,11 @@ const HorizontalStories = ({
         width={PAGE_WIDTH}
         windowSize={PAGE_WIDTH}
         height={PAGE_WIDTH * (16 / 9)}
-        // onSnapToItem={(index) => console.log("snapped: ", index)}
         panGestureHandlerProps={{
           activeOffsetX: [-10, 10],
         }}
-        scrollAnimationDuration={500}
-        loop={false}
         ref={ref}
-        on
+        loop={false}
         style={{
           maxHeight: PAGE_HEIGHT,
           borderRadius: 10,
@@ -188,7 +165,11 @@ const HorizontalStories = ({
         data={data}
         pagingEnabled={true}
         renderItem={({ index }) => renderItem((index = { index }))}
-        // onScrollBegin={() => setcurrentPosition(0)}
+        onScrollEnd={(index) =>
+          index === data.length - 1 && index === activeIndex
+            ? storyComplete()
+            : null
+        }
       />
       <Text
         style={{

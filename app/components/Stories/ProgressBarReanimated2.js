@@ -24,17 +24,10 @@ const ProgressBarReanimated2 = ({
 
   useEffect(() => {
     if (isActive && isPause === false) {
-      // console.log("here 1: ", isActive, isPause);
       startAnimation();
     } else if (isActive && isPause) {
-      // console.log("here 2: ", isActive, isPause);
       animation.stop();
-    }
-    // else if (isActive === false && progress === 100) {
-    //   startAnimation();
-    // }
-    else {
-      // console.log("here: ", isActive, isPause);
+    } else {
       stopAnimation();
     }
   }, [progress, startAnimation, stopAnimation, isActive, isPause, animated]);
@@ -67,7 +60,6 @@ const ProgressBarReanimated2 = ({
 
   const styles = StyleSheet.create({
     container: {
-      //   flex: 1,
       width: "100%",
       height,
       overflow: "hidden",

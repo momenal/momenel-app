@@ -387,18 +387,23 @@ const Stories = ({ navigation }) => {
     storyFlatlistRef.current.scrollToIndex({ animated: true, index: index });
   };
 
+  const scrollToNext = (index) => {
+    if (index !== data.length) {
+      storyFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+    } else {
+      storyFlatlistRef.current.scrollToEnd();
+    }
+  };
+
   const renderItem = ({ index }) => {
-    // console.log(data[index].stories[index]);
-    // const s = data[index].stories[0];
     const s = data[index];
-    // console.log(s.stories);
-    // console.log(s.username);
-    // return <Story url={s.url} type={s.type} />;
     return (
       <HorizontalStories
+        index={index}
         navigation={navigation}
         data={s.stories}
         username={s.username}
+        scrollToNext={scrollToNext}
         scrollToIndex={scrollToIndexVertical}
       />
     );
@@ -418,11 +423,6 @@ const Stories = ({ navigation }) => {
       <FlatList
         data={data}
         ref={storyFlatlistRef}
-        style={
-          {
-            //   backgroundColor: "red",
-          }
-        }
         renderItem={({ index }) => renderItem((index = { index }))}
         keyExtractor={(item) => item.username}
         snapToAlignment="start"
@@ -432,23 +432,22 @@ const Stories = ({ navigation }) => {
         initialNumToRender={1}
         // -10 equals height of item seperator
         snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 10)}
-        // ListFooterComponent={() => {
-        //   return (
-        //     <Text
-        //       style={{
-        //         color: "white",
-        //       }}
-        //     >
-        //       lOADING MORE
-        //     </Text>
-        //   );
-        // }}
+        ListFooterComponent={() => {
+          return (
+            <Text
+              style={{
+                color: "white",
+              }}
+            >
+              lOADING MORE
+            </Text>
+          );
+        }}
         ItemSeparatorComponent={() => {
           return (
             <View
               style={{
                 height: 10,
-                // width: 10,
               }}
             />
           );
