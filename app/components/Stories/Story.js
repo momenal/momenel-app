@@ -16,13 +16,21 @@ const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
 // onChange passes isPause state from child to parent(Svertical)
-const Story = ({ url, type, onChange, onPostionChange, index }) => {
+const Story = ({
+  url,
+  type,
+  onChange,
+  onPostionChange,
+  index,
+  changeIsPaused,
+  storyComplete,
+}) => {
   const [isPause, setisPause] = useState(false);
   const [time, setTime] = useState(0);
 
   const handleImageVisibility = (visible) => {
     if (visible === true) {
-      console.log("index image: ", index);
+      // console.log("index image: ", index);
       setTime(0);
       setisPause(false);
       // onChange(isPause);
@@ -36,7 +44,7 @@ const Story = ({ url, type, onChange, onPostionChange, index }) => {
     // console.log("index: ", index);
     // handle visibility change
     if (visible === true) {
-      console.log("index: ", index);
+      // console.log("index: ", index);
       setTime(0);
       setisPause(false);
       onChange(index);
@@ -47,10 +55,12 @@ const Story = ({ url, type, onChange, onPostionChange, index }) => {
   };
   const handlePressIn = () => {
     setisPause(true);
+    changeIsPaused(true);
     // onChange(isPause);
   };
   const handlePressOut = () => {
     setisPause(false);
+    changeIsPaused(false);
     // onChange(isPause);
   };
   const [isLoading, setIsLoading] = useState(true);
@@ -68,6 +78,10 @@ const Story = ({ url, type, onChange, onPostionChange, index }) => {
     //   duration: playbackStatus.durationMillis / 1000,
     // });
     //! console.log(index);
+    if (playbackStatus.positionMillis === playbackStatus.durationMillis) {
+      console.log("video complete");
+      storyComplete();
+    }
     onPostionChange({
       index: index,
       position: playbackStatus.positionMillis / 1000,

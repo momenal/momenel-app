@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
+import { log } from "react-native-reanimated";
 
 const ProgressBar = ({
   height,
@@ -40,8 +41,10 @@ const ProgressBar = ({
         toValue: progress,
         useNativeDriver: false,
         easing: Easing.linear,
-      }).start(() => {
-        onCompletion();
+      }).start(({ finished }) => {
+        // if (finished) {
+        //   onCompletion();
+        // }
       });
     }
   }, [
