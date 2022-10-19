@@ -4,6 +4,7 @@ import {
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { Video } from "expo-av";
@@ -22,6 +23,8 @@ const Story = ({
   storyComplete,
 }) => {
   const [isPause, setisPause] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const videoRef = useRef();
 
   const handleVisibility = (visible) => {
     // handle visibility change
@@ -40,9 +43,6 @@ const Story = ({
     setisPause(false);
     changeIsPaused(false);
   };
-  const [isLoading, setIsLoading] = useState(true);
-
-  const videoRef = useRef();
 
   let onPlaybackStatusUpdate = async (playbackStatus) => {
     if (playbackStatus.didJustFinish) {
@@ -77,15 +77,17 @@ const Story = ({
             ref={videoRef}
             onPlaybackStatusUpdate={onPlaybackStatusUpdate}
             style={{
+              display: "flex",
               width: ScreenWidth,
               height: "100%",
               backgroundColor: "#303030",
+              justifyContent: "center",
+              alignItems: "center",
             }}
             source={{
               uri: url,
             }}
             useNativeControls={false}
-            // positionMillis={time}
             shouldPlay={!isPause}
             resizeMode="contain"
             isLooping
@@ -94,7 +96,17 @@ const Story = ({
               "https://images.unsplash.com/photo-1665249932112-d6271dd71a97?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             }
           >
-            {isLoading && <ActivityIndicator />}
+            {isLoading && (
+              <View
+                style={{
+                  alignSelf: "center",
+                  position: "absolute",
+                  top: "50%",
+                }}
+              >
+                <ActivityIndicator color="white" size="large" />
+              </View>
+            )}
           </Video>
         )}
       </VisibilitySensor>

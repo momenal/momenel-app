@@ -5,6 +5,8 @@ import Carousel from "react-native-reanimated-carousel";
 import ProgressBar from "./ProgressBar";
 import Story from "./Story";
 import ProgressBarReanimated2 from "./ProgressBarReanimated2";
+import { Ionicons } from "@expo/vector-icons";
+import Footer from "./Footer";
 
 const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
@@ -13,9 +15,9 @@ const HorizontalStories = ({
   navigation,
   data,
   username,
-  scrollToIndexVertical,
   index,
   scrollToNext,
+  profile_url,
 }) => {
   const insets = useSafeAreaInsets();
   const ref = useRef(null);
@@ -71,83 +73,85 @@ const HorizontalStories = ({
         style={{
           position: "absolute",
           zIndex: 1,
-          top: 50,
-          left: 0,
-        }}
-      >
-        <Button title="close" onPress={() => navigation.navigate("Home")} />
-      </View>
-
-      <Text
-        style={{
-          position: "absolute",
-          zIndex: 1,
-          color: "white",
-          top: 30,
-          left: 0,
-        }}
-      >
-        User: {username}
-      </Text>
-      <View
-        style={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "row",
-          zIndex: 1,
           width: "100%",
-          top: 10,
-          left: 0,
+          top: 15,
           paddingHorizontal: 10,
         }}
       >
-        {[...Array(data.length)].map((val, index) => {
-          if (data[index].type === "image") {
-            return (
-              <ProgressBarReanimated2
-                key={index}
-                height={4}
-                progressDuration={5000}
-                //! imp
-                progress={
-                  index === activeIndex
-                    ? 100
-                    : index < activeIndex
-                    ? 100
-                    : index > activeIndex
-                    ? 0
-                    : 0
-                }
-                backgroundColor="red"
-                animated={true}
-                trackColor={index < activeIndex ? "white" : "#c9c9c9"}
-                isActive={index === activeIndex ? true : false}
-                isPause={isPaused}
-                onCompletion={() => ref.current.next()}
-              />
-            );
-          } else {
-            return (
-              <ProgressBar
-                key={index}
-                progress={
-                  index === activeIndex
-                    ? currentPosition
-                    : index < activeIndex
-                    ? 100
-                    : index > activeIndex
-                    ? 0
-                    : 0
-                }
-                height={4}
-                animated={index === activeIndex}
-                backgroundColor="white"
-                onCompletion={() => ref.current.next()}
-              />
-            );
-          }
-        })}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+
+            width: "100%",
+          }}
+        >
+          {[...Array(data.length)].map((val, index) => {
+            if (data[index].type === "image") {
+              return (
+                <ProgressBarReanimated2
+                  key={index}
+                  height={4}
+                  progressDuration={5000}
+                  //! imp
+                  progress={
+                    index === activeIndex
+                      ? 100
+                      : index < activeIndex
+                      ? 100
+                      : index > activeIndex
+                      ? 0
+                      : 0
+                  }
+                  backgroundColor="white"
+                  animated={true}
+                  trackColor={index < activeIndex ? "white" : "#c9c9c9"}
+                  isActive={index === activeIndex ? true : false}
+                  isPause={isPaused}
+                  onCompletion={() => ref.current.next()}
+                />
+              );
+            } else {
+              return (
+                <ProgressBar
+                  key={index}
+                  progress={
+                    index === activeIndex
+                      ? currentPosition
+                      : index < activeIndex
+                      ? 100
+                      : index > activeIndex
+                      ? 0
+                      : 0
+                  }
+                  height={4}
+                  animated={index === activeIndex}
+                  backgroundColor="white"
+                  onCompletion={() => ref.current.next()}
+                />
+              );
+            }
+          })}
+        </View>
+        <View
+          style={{
+            marginTop: 10,
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 5,
+          }}
+        >
+          <Ionicons
+            name="ios-close"
+            size={30}
+            color="white"
+            onPress={() => navigation.navigate("Home")}
+          />
+        </View>
       </View>
+
       <Carousel
         vertical={false}
         width={PAGE_WIDTH}
@@ -171,14 +175,11 @@ const HorizontalStories = ({
             : null
         }
       />
-      <Text
-        style={{
-          color: "white",
-        }}
-      >
-        Footer
-      </Text>
-      <Button title="next" onPress={scrollToIndexVertical} />
+      <Footer
+        username={username}
+        time={data[activeIndex].date}
+        profileUrl={profile_url}
+      />
     </View>
   );
 };

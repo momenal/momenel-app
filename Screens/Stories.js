@@ -7,14 +7,13 @@ import {
 } from "react-native-safe-area-context";
 import HorizontalStories from "../app/components/Stories/HorizontalStories";
 
-const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
 
 const data = [
   {
     username: "farhan",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/500/500",
     stories: [
       {
         id: 179,
@@ -22,6 +21,7 @@ const data = [
         type: "image",
         duration: 2,
         isReadMore: true,
+        date: "2022-09-19T14:06:19+00:00",
       },
       {
         id: 1,
@@ -29,6 +29,7 @@ const data = [
         type: "video",
         duration: 2,
         isReadMore: true,
+        date: "2022-10-19T14:27:00+00:00",
       },
       {
         id: 2,
@@ -36,13 +37,14 @@ const data = [
         type: "video",
         duration: 2,
         isReadMore: true,
+        date: "2022-10-19T14:14:19+00:00",
       },
     ],
   },
   {
     username: "alex123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -76,7 +78,7 @@ const data = [
   },
   {
     username: "betzi",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1234,
@@ -104,7 +106,7 @@ const data = [
   {
     username: "alejjassx123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -125,7 +127,7 @@ const data = [
   {
     username: "ale221jjsx123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -146,7 +148,7 @@ const data = [
   {
     username: "alejj7272sx123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -167,7 +169,7 @@ const data = [
   {
     username: "alejj93939sx123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -188,175 +190,7 @@ const data = [
   {
     username: "aladsf21ejjsx123",
     title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "al00002ejjsx123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alej21983jsakjdjsx123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alejjsqwe1x123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alejjsjdsaj11x123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alejjsx213saad123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alej123usahdjsx123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alejj123sdsx123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
-    stories: [
-      {
-        id: 1,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-      {
-        id: 2,
-        url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-        type: "video",
-        duration: 2,
-        isReadMore: true,
-      },
-    ],
-  },
-  {
-    username: "alejjSADKQWEsx123",
-    title: "Pune Dairies",
-    profile: "https://picsum.photos/200/300",
+    profile_url: "https://picsum.photos/200/300",
     stories: [
       {
         id: 1,
@@ -381,12 +215,6 @@ const Stories = ({ navigation }) => {
 
   const insets = useSafeAreaInsets();
 
-  const scrollToIndexVertical = () => {
-    console.log("scroll to index called !");
-    let index = 2;
-    storyFlatlistRef.current.scrollToIndex({ animated: true, index: index });
-  };
-
   const scrollToNext = (index) => {
     if (index !== data.length) {
       storyFlatlistRef.current.scrollToIndex({ animated: true, index: index });
@@ -403,8 +231,8 @@ const Stories = ({ navigation }) => {
         navigation={navigation}
         data={s.stories}
         username={s.username}
+        profile_url={s.profile_url}
         scrollToNext={scrollToNext}
-        scrollToIndex={scrollToIndexVertical}
       />
     );
   };
@@ -414,9 +242,6 @@ const Stories = ({ navigation }) => {
       style={{
         flex: 1,
         backgroundColor: "black",
-        // alignItems: "center",
-        // borderRadius: 10,
-        // justifyContent: "center",
       }}
     >
       <StatusBar style="light" />
@@ -430,7 +255,7 @@ const Stories = ({ navigation }) => {
         onEndReachedThreshold={2}
         decelerationRate={"fast"}
         initialNumToRender={1}
-        // -10 equals height of item seperator
+        //! -10 equals height of item seperator
         snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 10)}
         ListFooterComponent={() => {
           return (
