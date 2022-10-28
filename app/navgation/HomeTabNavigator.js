@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
-import Home from "../components/Home";
+import Home from "../../Screens/Home";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreatePost from "../components/CreatePost";

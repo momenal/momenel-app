@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
+import CustomText from "../customText/CustomText";
 
-const Footer = ({ profileUrl, username, time }) => {
+const Footer = ({ profileUrl, username, time, StoryId, navigation }) => {
   const [Height, setHeight] = useState(0);
 
   return (
@@ -19,13 +20,36 @@ const Footer = ({ profileUrl, username, time }) => {
           }}
         />
         <View style={{ justifyContent: "center" }}>
-          <Text style={[styles.text, { marginBottom: 4 }]}>{username}</Text>
-          <Text style={{ color: "#FFFFFF", opacity: 0.8, fontSize: 13 }}>
+          <CustomText style={{ marginBottom: 2, color: "white" }}>
+            {username}
+          </CustomText>
+          <CustomText
+            style={{
+              color: "#FFFFFF",
+              opacity: 0.7,
+              fontSize: 12,
+              marginTop: -2,
+            }}
+          >
             {RelativeTime(time)}
-          </Text>
+          </CustomText>
         </View>
       </View>
-      <Ionicons name="ios-ellipsis-vertical" size={22} color="white" />
+      <TouchableOpacity
+        style={{
+          width: "10%",
+
+          alignItems: "center",
+        }}
+        onPress={() =>
+          navigation.replace("Report", {
+            itemId: StoryId,
+            otherParam: "anything you want here",
+          })
+        }
+      >
+        <Ionicons name="ios-ellipsis-vertical" size={22} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -46,9 +70,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     height: "100%",
+
+    alignItems: "center",
   },
   profile: {
-    height: "100%",
+    height: "85%",
     resizeMode: "cover",
     borderRadius: 500,
     marginRight: 10,

@@ -1,9 +1,11 @@
 export const createStoriesSlice = (set) => ({
   stories: [
     {
-      username: "farhan",
-      title: "Pune Dairies",
-      profile_url: "https://picsum.photos/500/500",
+      username: "farhanverse",
+      hasSeen: false,
+      profile_url:
+        "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
           id: 179,
@@ -33,11 +35,12 @@ export const createStoriesSlice = (set) => ({
     },
     {
       username: "betzi12",
-      title: "Pune Dairies",
+      hasSeen: true,
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 182823,
           url: "https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-girl-in-red-dress-through-the-branches-18246-large.mp4",
           type: "video",
           duration: 2,
@@ -51,14 +54,14 @@ export const createStoriesSlice = (set) => ({
           isReadMore: true,
         },
         {
-          id: 1,
+          id: 1123,
           url: "https://images.unsplash.com/photo-1665395508167-e8cd5df6a546?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
           type: "image",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 2415,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -67,18 +70,19 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "88929",
+      username: "88929lkdajsfkjdsajklk",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1234,
+          id: 1254634,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-photograph-of-a-man-in-motion-32715-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 223434,
+          id: 22783434,
           url: "https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-urban-dancer-in-smoke-33898-large.mp4",
           type: "video",
           duration: 2,
@@ -94,19 +98,20 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "alejjassx123",
+      username: "same",
       title: "Pune Dairies",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 1652568956,
           url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 2431111068,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -115,19 +120,20 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "ale221jjsx123",
+      username: "ale22gdh1jjsx123",
       title: "Pune Dairies",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 1468667643666,
           url: "https://assets.mixkit.co/videos/preview/mixkit-family-walking-together-in-nature-39767-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 224787535457428,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -136,19 +142,20 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "alejj7272sx123",
+      username: "kkkal",
       title: "Pune Dairies",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 12647687563,
           url: "https://assets.mixkit.co/videos/preview/mixkit-conceptual-image-of-a-man-with-glasses-and-hair-with-32646-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 2754724267,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -157,19 +164,20 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "alejj93939sx123",
+      username: "makeer",
       title: "Pune Dairies",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 1226523,
           url: "https://assets.mixkit.co/videos/preview/mixkit-urban-men-making-shapes-with-their-hands-while-dancing-3629-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 223463426536,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -178,19 +186,20 @@ export const createStoriesSlice = (set) => ({
       ],
     },
     {
-      username: "aladsf21ejjsx123",
+      username: "flkg",
       title: "Pune Dairies",
       profile_url: "https://picsum.photos/200/300",
+      preview_url: "https://picsum.photos/96/135",
       stories: [
         {
-          id: 1,
+          id: 12343532523532,
           url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
         },
         {
-          id: 2,
+          id: 432542364362,
           url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
           type: "video",
           duration: 2,
@@ -201,7 +210,6 @@ export const createStoriesSlice = (set) => ({
   ],
   loading: false,
   hasErrors: false,
-  // fetchStories: async () => set((state) => ({ fishes: state.fishes + 1 })),
   fetchStories: async () => {
     set(() => ({ loading: true }));
     try {
@@ -210,7 +218,8 @@ export const createStoriesSlice = (set) => ({
         {
           username: "newguyinthehouse",
           title: "Pune Dairies",
-          profile_url: "https://picsum.photos/500/500",
+          profile_url:
+            "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
           stories: [
             {
               id: 179121,

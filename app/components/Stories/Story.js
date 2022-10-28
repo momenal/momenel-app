@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
 
@@ -21,6 +21,7 @@ const Story = ({
   index,
   changeIsPaused,
   storyComplete,
+  showSheet,
 }) => {
   const [isPause, setisPause] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -114,7 +115,8 @@ const Story = ({
   );
 };
 
-export default Story;
+// export default Story;
+export default memo(Story);
 
 const styles = StyleSheet.create({
   container: {

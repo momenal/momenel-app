@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Dimensions, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
@@ -7,6 +7,7 @@ import Story from "./Story";
 import ProgressBarReanimated2 from "./ProgressBarReanimated2";
 import { Ionicons } from "@expo/vector-icons";
 import Footer from "./Footer";
+import { useFocusEffect } from "@react-navigation/native";
 
 const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
@@ -18,12 +19,15 @@ const HorizontalStories = ({
   index,
   scrollToNext,
   profile_url,
+  openSheet,
+  showSheet,
 }) => {
   const insets = useSafeAreaInsets();
   const ref = useRef(null);
   const [currentPosition, setcurrentPosition] = useState(0); // current position
   const [isPaused, setIsPaused] = useState(false); // is image or video long pressed
   const [activeIndex, setActiveIndex] = useState(0);
+
   const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
 
   const changeCurrentIndex = (index) => {
@@ -42,10 +46,10 @@ const HorizontalStories = ({
     }
   };
 
-  const getVideoPosition = (data) => {
+  const getVideoPosition = useCallback((data) => {
     let perc = (data.position / data.duration) * 100;
     setcurrentPosition(perc);
-  };
+  });
 
   const renderItem = ({ index }) => {
     const s = data[index];
@@ -58,6 +62,7 @@ const HorizontalStories = ({
         onPostionChange={getVideoPosition}
         changeIsPaused={changeIsPaused}
         storyComplete={storyComplete}
+        showSheet={showSheet}
       />
     );
   };
@@ -177,8 +182,11 @@ const HorizontalStories = ({
       />
       <Footer
         username={username}
+        openSheet={openSheet}
         time={data[activeIndex].date}
+        StoryId={data[activeIndex].id}
         profileUrl={profile_url}
+        navigation={navigation}
       />
     </View>
   );

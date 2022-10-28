@@ -1,21 +1,21 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import CoinIcon from "../icons/CoinIcon";
+import CustomText from "../customText/CustomText";
 
 const BalanceTab = () => {
   return (
     <View style={styles.container}>
       <CoinIcon size={25} />
-      <Text
+      <CustomText
         style={{
           color: "white",
-          fontFamily: "Nunito_600SemiBold",
           fontSize: 17,
           marginHorizontal: 5,
         }}
       >
         5,975
-      </Text>
+      </CustomText>
     </View>
   );
 };

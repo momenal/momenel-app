@@ -1,9 +1,10 @@
 import React from "react";
-import Home from "../components/Home";
+import Home from "../../Screens/Home";
 import HomeTabNavigator from "./HomeTabNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Comments from "../components/Comments";
 import Stories from "../../Screens/Stories";
+import Report from "../../Screens/Report";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,11 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Comments"
         component={Comments}
+        options={{ gestureDirection: "vertical", headerShown: false }}
+      />
+      <Stack.Screen
+        name="Report"
+        component={Report}
         options={{ gestureDirection: "vertical", headerShown: false }}
       />
     </Stack.Navigator>
