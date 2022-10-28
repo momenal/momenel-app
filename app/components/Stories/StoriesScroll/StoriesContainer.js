@@ -21,7 +21,7 @@ const StoriesContainer = ({ navigation }) => {
     );
   };
   return (
-    <View style={{ marginVertical: 15 }}>
+    <View style={{ marginTop: 6, marginBottom: 22.81 }}>
       <FlatList
         data={data}
         renderItem={({ index }) => renderItem((index = { index }))}
@@ -29,6 +29,10 @@ const StoriesContainer = ({ navigation }) => {
         horizontal={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          marginHorizontal: 10,
+          paddingRight: 10,
+        }}
       />
     </View>
   );

@@ -5,14 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const TabBarProfileIcon = ({ size, focused }) => {
   return (
     <LinearGradient
-      colors={[
-        "#FF4082",
-        "#B01CEC",
-        // "#329BFF",
-        // "#4C64FF",
-        // "#6536FF",
-        // "#8000FF",
-      ]}
+      colors={["#FF4082", "#B01CEC"]}
       start={{ x: 0.0, y: 1.0 }}
       end={{ x: 1.0, y: 1.0 }}
       style={{

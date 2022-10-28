@@ -1,12 +1,10 @@
-import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import BottomFlatSheet from "../app/components/BottomFlatSheet/BottomSheet";
 import HorizontalStories from "../app/components/Stories/HorizontalStories";
 import { useBoundStore } from "../app/Store/useBoundStore";
 
@@ -18,7 +16,6 @@ const Stories = ({ navigation, route }) => {
   const fetchStories = useBoundStore((state) => state.fetchStories);
 
   const storyFlatlistRef = useRef();
-  const [showSheet, setShowSheet] = useState(false);
 
   const insets = useSafeAreaInsets();
 
@@ -28,17 +25,6 @@ const Stories = ({ navigation, route }) => {
     } else {
       storyFlatlistRef.current.scrollToEnd();
     }
-  };
-
-  const openSheet = (id) => {
-    console.log("clicked");
-    // console.log("modal", id);
-    setShowSheet(!showSheet);
-  };
-
-  const onSheetClose = (id) => {
-    console.log("closed");
-    setShowSheet(false);
   };
 
   const renderItem = ({ index }) => {
@@ -51,8 +37,6 @@ const Stories = ({ navigation, route }) => {
         username={s.username}
         profile_url={s.profile_url}
         scrollToNext={scrollToNext}
-        openSheet={openSheet}
-        showSheet={showSheet}
       />
     );
   };
@@ -97,7 +81,7 @@ const Stories = ({ navigation, route }) => {
                 color: "white",
               }}
             >
-              lOADING MORE
+              lOADING MORE...
             </Text>
           );
         }}

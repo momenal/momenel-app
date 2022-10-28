@@ -24,9 +24,8 @@ const StoryCircle = ({
     >
       <View
         style={{
-          marginHorizontal: 10,
-          //   backgroundColor: "red",
           alignItems: "center",
+          marginRight: 14,
         }}
       >
         <ImageBackground
@@ -43,8 +42,9 @@ const StoryCircle = ({
         >
           <LinearGradient
             colors={!hasSeen ? ["#F62E8E", "#AC1AF0"] : ["#A0A0A0", "#FFFFFF"]}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
+            locations={[0, 1]}
+            start={{ x: 0.0, y: 0.0 }}
+            end={{ x: 0.5, y: 0.0 }}
             style={{
               width: 40,
               height: 40,
@@ -71,28 +71,12 @@ const StoryCircle = ({
             />
           </LinearGradient>
         </ImageBackground>
-        {/* <View style={styles.ImageContainer}>
-          <Image
-            //   onLayout={(event) => {
-            //     setHeight(event.nativeEvent.layout.height);
-            //   }}
-            style={[styles.preview]}
-            source={{
-              uri: preview_url,
-            }}
-          />
-          <Image
-            style={[{ width: 40, height: 40, borderRadius: 100 }]}
-            source={{
-              uri: profile_url,
-            }}
-          />
-        </View> */}
         <CustomText
           style={{
             fontSize: 12,
             maxWidth: 75,
             fontFamily: "Nunito_600SemiBold",
+            marginTop: 4,
           }}
           numberOfLines={1}
         >

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Dimensions, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
 import ProgressBar from "./ProgressBar";
@@ -7,7 +7,6 @@ import Story from "./Story";
 import ProgressBarReanimated2 from "./ProgressBarReanimated2";
 import { Ionicons } from "@expo/vector-icons";
 import Footer from "./Footer";
-import { useFocusEffect } from "@react-navigation/native";
 
 const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
@@ -19,7 +18,6 @@ const HorizontalStories = ({
   index,
   scrollToNext,
   profile_url,
-  openSheet,
   showSheet,
 }) => {
   const insets = useSafeAreaInsets();
@@ -182,7 +180,6 @@ const HorizontalStories = ({
       />
       <Footer
         username={username}
-        openSheet={openSheet}
         time={data[activeIndex].date}
         StoryId={data[activeIndex].id}
         profileUrl={profile_url}
