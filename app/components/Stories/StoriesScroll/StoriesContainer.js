@@ -1,10 +1,18 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React from "react";
 import { useBoundStore } from "../../../Store/useBoundStore";
 import StoryCircle from "./StoryCircle";
+import StoryUploaderCircle from "./YourStory/StoryUploaderCircle";
 
 const StoriesContainer = ({ navigation }) => {
   const data = useBoundStore((state) => state.stories);
+  const fetchStories = useBoundStore((state) => state.fetchStories);
 
   const renderItem = ({ index }) => {
     const s = data[index];
@@ -26,12 +34,34 @@ const StoriesContainer = ({ navigation }) => {
         data={data}
         renderItem={({ index }) => renderItem((index = { index }))}
         keyExtractor={(item) => item.username}
+        onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
+        // onEndReached={() =>  fetchStories()}
         horizontal={true}
+        initialNumToRender={6}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           marginHorizontal: 10,
           paddingRight: 10,
+        }}
+        //todo: add story uploader
+        ListHeaderComponent={() => {
+          return <StoryUploaderCircle navigation={navigation} />;
+        }}
+        ListFooterComponent={() => {
+          return (
+            <View
+              style={{
+                height: 135,
+                marginRight: 10,
+                // width: 96,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ActivityIndicator />
+            </View>
+          );
         }}
       />
     </View>

@@ -1,11 +1,42 @@
 export const createStoriesSlice = (set) => ({
+  userStories: [
+    {
+      id: 174313249,
+      url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+      type: "image",
+      duration: 2,
+      isReadMore: true,
+      date: "2022-09-19T14:06:19+00:00",
+    },
+    {
+      id: 2213443,
+      url: "https://assets.mixkit.co/videos/preview/mixkit-dynamic-animation-of-the-head-of-a-screaming-man-32645-large.mp4",
+      type: "video",
+      duration: 2,
+      isReadMore: true,
+      date: "2022-10-19T14:14:19+00:00",
+    },
+  ],
   stories: [
     {
       username: "farhanverse",
       hasSeen: false,
       profile_url:
         "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-      preview_url: "https://picsum.photos/96/135",
+      preview_url:
+        "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+      own_preview_url:
+        "https://images.unsplash.com/photo-1463438690606-f6778b8c1d10?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+      ownStories: [
+        {
+          id: 173249,
+          url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+          type: "image",
+          duration: 2,
+          isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
+        },
+      ],
       stories: [
         {
           id: 179,
@@ -37,7 +68,8 @@ export const createStoriesSlice = (set) => ({
       username: "betzi12",
       hasSeen: true,
       profile_url: "https://picsum.photos/200/300",
-      preview_url: "https://picsum.photos/96/135",
+      preview_url:
+        "https://images.unsplash.com/photo-1666970427106-e1f500280529?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       stories: [
         {
           id: 182823,
@@ -216,13 +248,14 @@ export const createStoriesSlice = (set) => ({
       console.log("called again");
       const newst = [
         {
-          username: "newguyinthehouse",
+          username: Math.random(36).toString(),
+          hasSeen: false,
+          profile_url: "https://picsum.photos/300/300",
+          preview_url: "https://picsum.photos/96/135",
           title: "Pune Dairies",
-          profile_url:
-            "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
           stories: [
             {
-              id: 179121,
+              id: Math.random(),
               url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
               type: "image",
               duration: 2,
@@ -232,39 +265,22 @@ export const createStoriesSlice = (set) => ({
           ],
         },
         {
-          username: "jasdj",
-          profile_url: "https://picsum.photos/500/500",
+          username: Math.random(36).toString(),
+          hasSeen: false,
+          profile_url: "https://picsum.photos/300/300",
+          preview_url: "https://picsum.photos/96/135",
+          title: "Pune Dairies",
           stories: [
             {
-              id: 222279121,
-              url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-              type: "image",
+              id: 1,
+              url: "https://assets.mixkit.co/videos/preview/mixkit-man-under-multicolored-lights-1237-large.mp4",
+              type: "video",
               duration: 2,
               isReadMore: true,
-              date: "2022-09-19T14:06:19+00:00",
+              date: "2022-10-19T14:27:00+00:00",
             },
-          ],
-        },
-        {
-          username: "98213na",
-          profile_url: "https://picsum.photos/500/500",
-          stories: [
             {
-              id: 2920121,
-              url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-              type: "image",
-              duration: 2,
-              isReadMore: true,
-              date: "2022-09-19T14:06:19+00:00",
-            },
-          ],
-        },
-        {
-          username: "ksajdkj",
-          profile_url: "https://picsum.photos/500/500",
-          stories: [
-            {
-              id: 2920121,
+              id: Math.random(),
               url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
               type: "image",
               duration: 2,

@@ -41,10 +41,12 @@ const StoryCircle = ({
           }}
         >
           <LinearGradient
-            colors={!hasSeen ? ["#F62E8E", "#AC1AF0"] : ["#A0A0A0", "#FFFFFF"]}
-            locations={[0, 1]}
-            start={{ x: 0.0, y: 0.0 }}
-            end={{ x: 0.5, y: 0.0 }}
+            colors={!hasSeen ? ["#F62E8E", "#AC1AF0"] : ["#A0A0A0", "#F0F0F0"]}
+            start={[0, 0]}
+            end={[1.1, 0]}
+            // locations={[0, 1]}
+            // start={{ x: 0.0, y: 0.0 }}
+            // end={{ x: 0.5, y: 0.5 }}
             style={{
               width: 40,
               height: 40,
@@ -52,7 +54,7 @@ const StoryCircle = ({
               padding: 23, // This should be the border width you want to have
               overflow: "hidden",
               borderRadius: 100,
-              marginBottom: 5,
+              marginBottom: 8,
               alignItems: "center",
               justifyContent: "center",
             }}

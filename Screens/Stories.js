@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useRef, useState } from "react";
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -18,6 +25,7 @@ const Stories = ({ navigation, route }) => {
   const storyFlatlistRef = useRef();
 
   const insets = useSafeAreaInsets();
+  const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
 
   const scrollToNext = (index) => {
     if (index !== data.length) {
@@ -68,7 +76,8 @@ const Stories = ({ navigation, route }) => {
         renderItem={({ index }) => renderItem((index = { index }))}
         keyExtractor={(item) => item.username}
         snapToAlignment="start"
-        onEndReached={() => fetchStories()}
+        onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
+        // onEndReached={() => fetchStories()}
         onEndReachedThreshold={2}
         decelerationRate={"fast"}
         initialNumToRender={10}
@@ -76,13 +85,25 @@ const Stories = ({ navigation, route }) => {
         snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 10)}
         ListFooterComponent={() => {
           return (
-            <Text
+            // <Text
+            //   style={{
+            //     color: "white",
+            //   }}
+            // >
+            //   lOADING MORE...
+            // </Text>
+            <View
               style={{
-                color: "white",
+                width: Dimensions.get("window").width,
+                height: containerHeight,
+                marginRight: 10,
+                // width: 96,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              lOADING MORE...
-            </Text>
+              <ActivityIndicator color={"white"} />
+            </View>
           );
         }}
         ItemSeparatorComponent={() => {
