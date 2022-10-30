@@ -64,6 +64,7 @@ const HorizontalStories = ({
       />
     );
   };
+
   return (
     <View
       style={{
@@ -156,6 +157,8 @@ const HorizontalStories = ({
       </View>
 
       <Carousel
+        ref={ref}
+        data={data}
         vertical={false}
         width={PAGE_WIDTH}
         windowSize={PAGE_WIDTH}
@@ -163,13 +166,11 @@ const HorizontalStories = ({
         panGestureHandlerProps={{
           activeOffsetX: [-10, 10],
         }}
-        ref={ref}
         loop={false}
         style={{
           maxHeight: PAGE_HEIGHT,
           borderRadius: 10,
         }}
-        data={data}
         pagingEnabled={true}
         renderItem={({ index }) => renderItem((index = { index }))}
         onScrollEnd={(index) =>

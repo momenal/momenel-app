@@ -11,7 +11,7 @@ const Home = ({ navigation }) => {
     fetch("https://random-data-api.com/api/v2/users")
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.uid);
+        // console.log(json.uid);
         let username = "farhanverse";
         let fname = "farhan";
         let profile_url =

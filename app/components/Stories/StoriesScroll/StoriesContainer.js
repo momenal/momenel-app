@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { useBoundStore } from "../../../Store/useBoundStore";
 import StoryCircle from "./StoryCircle";
 import StoryUploaderCircle from "./YourStory/StoryUploaderCircle";
@@ -13,6 +13,13 @@ import StoryUploaderCircle from "./YourStory/StoryUploaderCircle";
 const StoriesContainer = ({ navigation }) => {
   const data = useBoundStore((state) => state.stories);
   const fetchStories = useBoundStore((state) => state.fetchStories);
+
+  // const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
+  //   console.log("Visible items are", viewableItems);
+  //   console.log("Changed in this iteration", changed);
+  // }, []);
+
+  // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
 
   const renderItem = ({ index }) => {
     const s = data[index];
@@ -32,6 +39,11 @@ const StoriesContainer = ({ navigation }) => {
     <View style={{ marginTop: 6, marginBottom: 22.81 }}>
       <FlatList
         data={data}
+        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        // viewabilityConfig={{
+        //   waitForInteraction: false,
+        //   viewAreaCoveragePercentThreshold: 95,
+        // }}
         renderItem={({ index }) => renderItem((index = { index }))}
         keyExtractor={(item) => item.username}
         onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay

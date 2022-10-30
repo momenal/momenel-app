@@ -21,10 +21,9 @@ const Story = ({
   index,
   changeIsPaused,
   storyComplete,
-  showSheet,
 }) => {
   const [isPause, setisPause] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
   const videoRef = useRef();
 
   const handleVisibility = (visible) => {
@@ -62,6 +61,7 @@ const Story = ({
       onPressOut={handlePressOut}
     >
       <VisibilitySensor onChange={handleVisibility}>
+        {/* <View> */}
         {type === "image" ? (
           <Image
             source={{ uri: url }}
@@ -71,7 +71,7 @@ const Story = ({
               backgroundColor: "#fa8246",
             }}
             resizeMode="contain"
-            onLoadEnd={() => setIsLoading(false)}
+            // onLoadEnd={() => setIsLoading(false)}
           />
         ) : (
           <Video
@@ -92,24 +92,13 @@ const Story = ({
             shouldPlay={!isPause}
             resizeMode="contain"
             isLooping
-            onLoad={() => setIsLoading(false)}
+            // onLoad={() => setIsLoading(false)}
             posterSource={
               "https://images.unsplash.com/photo-1665249932112-d6271dd71a97?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             }
-          >
-            {isLoading && (
-              <View
-                style={{
-                  alignSelf: "center",
-                  position: "absolute",
-                  top: "50%",
-                }}
-              >
-                <ActivityIndicator color="white" size="large" />
-              </View>
-            )}
-          </Video>
+          />
         )}
+        {/* </View> */}
       </VisibilitySensor>
     </TouchableWithoutFeedback>
   );
