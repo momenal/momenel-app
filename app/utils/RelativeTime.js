@@ -9,15 +9,15 @@ export const RelativeTime = (time) => {
   dayjs.updateLocale("en", {
     relativeTime: {
       s: "Right now",
-      m: "a minute ago",
-      mm: "%d minutes ago",
-      h: "an hour",
+      m: "1 mins",
+      mm: "%d mins",
+      h: "1 hour",
       hh: "%d hours",
-      d: "a day",
+      d: "1 day",
       dd: "%d days",
-      M: "a month",
+      M: "1 month",
       MM: "%d months",
-      y: "a year",
+      y: "1 year",
       yy: "%d years",
     },
   });

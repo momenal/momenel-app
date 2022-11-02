@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import {
   useFonts,
   Nunito_400Regular,
+  Nunito_500Medium,
   Nunito_600SemiBold,
   Nunito_700Bold,
   Nunito_800ExtraBold,
@@ -19,6 +20,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
+    Nunito_500Medium,
     Nunito_600SemiBold,
     Nunito_700Bold,
     Nunito_800ExtraBold,

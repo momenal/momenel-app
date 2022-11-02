@@ -4,9 +4,12 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
+import Post from "../app/components/Posts/Post";
 
 const Home = ({ navigation }) => {
   const SetUserData = useBoundStore((state) => state.SetUserData);
+  const postsData = useBoundStore((state) => state.posts);
+
   useEffect(() => {
     fetch("https://random-data-api.com/api/v2/users")
       .then((response) => response.json())
@@ -35,14 +38,10 @@ const Home = ({ navigation }) => {
       }}
     >
       <StoriesContainer navigation={navigation} />
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
+      {postsData.map((post) => (
+        <Post key={post.userId} data={post} />
+      ))}
+
       <Button title="story" onPress={() => navigation.navigate("Stories")} />
       <Button
         title="comments"

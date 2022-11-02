@@ -36,7 +36,7 @@ const StoriesContainer = ({ navigation }) => {
     );
   };
   return (
-    <View style={{ marginTop: 6, marginBottom: 22.81 }}>
+    <View style={{ marginTop: 6, marginBottom: 10 }}>
       <FlatList
         data={data}
         // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}

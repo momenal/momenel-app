@@ -1,23 +1,8 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from "react-native-reanimated";
 import Svg, { Path } from "react-native-svg";
 
 const Notifications = ({ size }) => {
-  const opacity = useSharedValue(0);
-  // Set the opacity value to animate between 0 and 1
-  opacity.value = withRepeat(
-    withTiming(1, { duration: 400, easing: Easing.ease }),
-    -1,
-    true
-  );
-  const style = useAnimatedStyle(() => ({ opacity: opacity.value }), []);
   return (
     <Svg width={size} height={size} fill="none" viewBox="0 0 20 21">
       <Path
