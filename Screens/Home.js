@@ -1,14 +1,22 @@
-import { Button, StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
+import BottomSheet from "../app/components/BottomFlatSheet/BottomSheet";
 
 const Home = ({ navigation }) => {
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const postsData = useBoundStore((state) => state.posts);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [bottomSheetPostIndex, setbottomSheetPostIndex] = useState(0);
+
+  const setShowBottomSheetFunc = (index) => {
+    setbottomSheetPostIndex(index);
+    setShowBottomSheet(!showBottomSheet);
+  };
 
   useEffect(() => {
     fetch("https://random-data-api.com/api/v2/users")
@@ -29,27 +37,73 @@ const Home = ({ navigation }) => {
       });
   }, []);
 
+  // const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
+  //   console.log(viewableItems);
+  // }, []);
+
+  // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
+
+  const renderItem = ({ item, index }) => (
+    <Post
+      key={item.userId}
+      data={item}
+      index={index}
+      setShowBottomSheetFunc={setShowBottomSheetFunc}
+    />
+  );
+
   return (
     <View
       style={{
         backgroundColor: "white",
         height: "100%",
+        marginBottom: 800,
         // backgroundColor: "pink",
       }}
     >
-      <StoriesContainer navigation={navigation} />
-      {postsData.map((post) => (
-        <Post key={post.userId} data={post} />
-      ))}
+      <FlatList
+        data={postsData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.userId}
+        ListHeaderComponent={() => <StoriesContainer navigation={navigation} />}
+        showsVerticalScrollIndicator={false}
+        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        // viewabilityConfig={{
+        //   waitForInteraction: false,
+        //   viewAreaCoveragePercentThreshold: 95,
+        // }}
+        ItemSeparatorComponent={() => {
+          return (
+            <View
+              style={{
+                height: 11,
+              }}
+            />
+          );
+        }}
+      />
 
-      <Button title="story" onPress={() => navigation.navigate("Stories")} />
+      {/* <Button title="story" onPress={() => navigation.navigate("Stories")} />
       <Button
         title="comments"
         onPress={() => navigation.navigate("Comments")}
       />
       <Text>Home</Text>
-      <Text>Home</Text>
-      <CustomText style={{ color: "white" }}>Home</CustomText>
+      <Text>Home3</Text>
+      <CustomText style={{ color: "red" }}>Homee!!!!!</CustomText> */}
+      <BottomSheet
+        show={showBottomSheet}
+        onSheetClose={() => setShowBottomSheet(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+          }}
+        >
+          <Text>{postsData[bottomSheetPostIndex].userName}</Text>
+        </View>
+      </BottomSheet>
     </View>
   );
 };

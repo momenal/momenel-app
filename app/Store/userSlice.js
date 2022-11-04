@@ -7,8 +7,6 @@ export const createUserSlice = (set) => ({
   SetUserData: async (username, profile_url, preview_url) => {
     set(() => ({ loading: true }));
     try {
-      //   console.log(username, profile_url, preview_url);
-
       set(() => ({
         username: username,
         profile_url: profile_url,

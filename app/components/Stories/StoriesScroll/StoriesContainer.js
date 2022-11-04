@@ -15,8 +15,7 @@ const StoriesContainer = ({ navigation }) => {
   const fetchStories = useBoundStore((state) => state.fetchStories);
 
   // const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-  //   console.log("Visible items are", viewableItems);
-  //   console.log("Changed in this iteration", changed);
+
   // }, []);
 
   // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);

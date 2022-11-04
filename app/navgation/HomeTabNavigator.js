@@ -30,7 +30,6 @@ const HomeNavigator = ({ navigation }) => {
         name="Feed"
         component={Home}
         options={{
-          // title: "",
           // headerStyle: { backgroundColor: "red", height: 115 },
           // headerLeft: () => {
           //   return (

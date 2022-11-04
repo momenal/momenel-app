@@ -18,7 +18,6 @@ import { useBoundStore } from "../app/Store/useBoundStore";
 const PAGE_HEIGHT = Dimensions.get("window").height;
 
 const Stories = ({ navigation, route }) => {
-  // console.log(route.params.snapToIndex);
   const data = useBoundStore((state) => state.stories);
   const fetchStories = useBoundStore((state) => state.fetchStories);
 
