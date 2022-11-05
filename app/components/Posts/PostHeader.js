@@ -38,7 +38,7 @@ const PostHeader = ({
         alignItems: "center",
         // paddingHorizontal: 18,
         paddingHorizontal: ScreenWidth * 0.04,
-        paddingBottom: 11.4,
+        paddingBottom: 11,
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -108,7 +108,7 @@ export default PostHeader;
 
 const styles = StyleSheet.create({
   textMedium: {
-    fontFamily: "Nunito_500Medium",
+    // fontFamily: "Nunito_500Medium",
     color: "#999999",
     fontSize: 13,
     marginRight: 4,

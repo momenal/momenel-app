@@ -11,7 +11,9 @@ import PostHeader from "./PostHeader";
 import PostsMedia from "./PostsMediaMultiple";
 import PostMediaOne from "./PostMediaOne";
 import PaginationDot from "./PaginationDot";
+import StructuredText from "./StructuredText";
 
+const ScreenWidth = Dimensions.get("window").width;
 const Post = ({ data, setShowBottomSheetFunc, index }) => {
   const [maxHeight, setmaxHeight] = useState(0);
   // for pagination dots
@@ -29,13 +31,18 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
       />
     );
   };
+  const mentionHashtagClick = (text) => {
+    console.log(text);
+  };
+
   return (
     <View
       style={{
         backgroundColor: "#FFFFFF",
+        // backgroundColor: "pink",
         width: "100%",
         // paddingHorizontal: 18,
-        paddingVertical: 10,
+        marginVertical: 11,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -74,14 +81,33 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
       <View
         style={{
           flexDirection: "row",
-          // backgroundColor: "pink",
           width: "100%",
           justifyContent: "center",
+          paddingBottom: 11,
         }}
       >
         {data.posts.length > 1 && (
           <PaginationDot data={data.posts} scrollX={scrollX} />
         )}
+      </View>
+      {/* caption */}
+      <View
+        style={{
+          borderRadius: 3,
+          paddingHorizontal: ScreenWidth * 0.06,
+          width: ScreenWidth,
+          paddingBottom: 16,
+        }}
+      >
+        <StructuredText
+          mentionHashtagPress={mentionHashtagClick}
+          mentionHashtagColor={"#8759F2"}
+          numberOfLines={4}
+          // ellipsizeMode={"trail"}
+          style={{ color: "#535353", fontSize: 17 }}
+        >
+          {data.caption}
+        </StructuredText>
       </View>
     </View>
   );

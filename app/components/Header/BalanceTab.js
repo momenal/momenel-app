@@ -10,8 +10,9 @@ const BalanceTab = () => {
       <CustomText
         style={{
           color: "white",
-          fontSize: 17,
-          marginHorizontal: 5,
+          fontSize: 16,
+          marginHorizontal: 3,
+          fontFamily: "Nunito_600SemiBold",
         }}
       >
         5,975

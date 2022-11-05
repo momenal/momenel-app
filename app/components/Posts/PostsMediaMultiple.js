@@ -10,7 +10,7 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   let { url } = data;
   const video = useRef(null);
   const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
-  const [height, setHeight] = useState(20);
+  const [height, setHeight] = useState(0);
   const [play, setPlay] = useState(false);
 
   useEffect(() => {
@@ -26,10 +26,11 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
           setMaxHeightFunc(newHeight);
         }
       });
-    } else {
-      setHeight(0);
     }
-  }, []);
+    // else {
+    //   // setHeight(0);
+    // }
+  }, [height]);
 
   const handleVisibility = (visible) => {
     // handle visibility change
