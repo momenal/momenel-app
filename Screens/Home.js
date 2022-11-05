@@ -64,7 +64,7 @@ const Home = ({ navigation }) => {
       <FlatList
         data={postsData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.userId}
+        keyExtractor={(item) => item.postId}
         ListHeaderComponent={() => <StoriesContainer navigation={navigation} />}
         showsVerticalScrollIndicator={false}
         // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
           return (
             <View
               style={{
-                height: 11,
+                height: 0,
               }}
             />
           );

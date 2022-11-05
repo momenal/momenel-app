@@ -1,7 +1,14 @@
 export const createPostsSlice = (set) => ({
   posts: [
     {
-      userId: "qw09weq",
+      postId: "qw09weq",
+      repostedByUser: true, //is reposted by the user themselves?
+      likedByUser: true,
+      repost: {
+        isRepost: true,
+        repostedBy: "Betzi",
+        repostedAt: "2022-11-04T13:54:55+00:00",
+      },
       userName: "another123llt45",
       name: "kal jack",
       profile_url:
@@ -15,19 +22,20 @@ export const createPostsSlice = (set) => ({
       ],
       caption:
         "No #matter #love where you are in the world, we are all in this together. Let's change this world by being the change. #privacy @elon",
-      hashtags: ["freedom"],
-      mentions: ["farhan"],
       createdAt: "2022-11-04T13:54:55+00:00",
       likes: 300,
       comments: 12,
-      reposts: 5,
       lastEdit: null,
       isSaved: true,
+      reposts: 5,
     },
     {
-      userId: "qwsad09weq",
+      postId: "qwsad09weq",
       userName: "youknowwho",
       // name: "kal jack",
+      repost: {
+        isRepost: false,
+      },
       profile_url:
         "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
@@ -44,8 +52,6 @@ export const createPostsSlice = (set) => ({
       ],
       caption:
         "No #matter #love where you are in the world, we are all in this together. Let's change this world by being the change. #privacy @elon",
-      hashtags: ["freedom"],
-      mentions: ["farhan"],
       createdAt: "2022-11-04T13:54:55+00:00",
       likes: 300,
       comments: 12,
@@ -55,9 +61,12 @@ export const createPostsSlice = (set) => ({
     },
 
     {
-      userId: "31234jjak",
+      postId: "31234jjak",
       userName: "farhanverse",
       name: "Farhan Haider",
+      repost: {
+        isRepost: false,
+      },
       profile_url:
         "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
@@ -73,8 +82,6 @@ export const createPostsSlice = (set) => ({
         // },
       ],
       caption: "hi there @farhan #freedom",
-      hashtags: ["freedom"],
-      mentions: ["farhan"],
       createdAt: "2022-11-04T13:54:55+00:00",
       likes: 300,
       comments: 12,
@@ -83,9 +90,12 @@ export const createPostsSlice = (set) => ({
       isSaved: true,
     },
     {
-      userId: "djlkdsajf",
+      postId: "djlkdsajf",
       userName: "betzyy199",
       name: "Betzabeth",
+      repost: {
+        isRepost: false,
+      },
       profile_url:
         "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
@@ -111,8 +121,11 @@ export const createPostsSlice = (set) => ({
       isSaved: false,
     },
     {
-      userId: "asd2211",
+      postId: "asd2211",
       userName: "doriasd",
+      repost: {
+        isRepost: false,
+      },
       name: "fake pro",
       profile_url:
         "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -129,8 +142,6 @@ export const createPostsSlice = (set) => ({
         },
       ],
       caption: "hi there @farhan #freedom",
-      hashtags: ["freedom"],
-      mentions: ["farhan"],
       createdAt: "2022-11-02T14:48:51+00:00",
       likes: 300,
       comments: 12,
