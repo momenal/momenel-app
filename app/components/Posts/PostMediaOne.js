@@ -48,6 +48,7 @@ const PostMediaOne = ({ data, length }) => {
         borderRadius: 3,
         paddingHorizontal: ScreenWidth * 0.05, //! using 0.05 because we want 0.04% originally and then add 0.1 of image width to it
         width: ScreenWidth,
+        paddingBottom: 11.4,
       }}
     >
       {data.type === "photo" ? (

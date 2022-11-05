@@ -1,15 +1,21 @@
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import React, { useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostsMedia from "./PostsMediaMultiple";
 import PostMediaOne from "./PostMediaOne";
+import PaginationDot from "./PaginationDot";
 
-const ScreenWidth = Dimensions.get("window").width;
 const Post = ({ data, setShowBottomSheetFunc, index }) => {
-  // const renderItem = ({ item, index }) => (
-  //   <PostsMedia data={item} length={data.posts.length} />
-  // );
   const [maxHeight, setmaxHeight] = useState(0);
+  // for pagination dots
+  const scrollX = useRef(new Animated.Value(0)).current;
   const setMaxHeightFunc = (h) => {
     setmaxHeight(h);
   };
@@ -54,11 +60,29 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
           snapToAlignment="end"
           decelerationRate={"fast"}
           snapToInterval={Dimensions.get("window").width}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            }
+          )}
         />
       ) : (
         <PostMediaOne data={data.posts[0]} />
       )}
-      {data.posts.length > 1 && data.posts.map((d) => <Text>tabs</Text>)}
+      {/* pagination dots */}
+      <View
+        style={{
+          flexDirection: "row",
+          // backgroundColor: "pink",
+          width: "100%",
+          justifyContent: "center",
+        }}
+      >
+        {data.posts.length > 1 && (
+          <PaginationDot data={data.posts} scrollX={scrollX} />
+        )}
+      </View>
     </View>
   );
 };
