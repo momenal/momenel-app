@@ -59,7 +59,6 @@ const PostMediaOne = ({ data, length }) => {
             height: height,
             borderRadius: 3,
           }}
-          // resizeMode={"contain"}
         />
       ) : (
         <VisibilitySensor onChange={handleVisibility}>
@@ -76,13 +75,11 @@ const PostMediaOne = ({ data, length }) => {
             onReadyForDisplay={(response) => {
               const { width, height } = response.naturalSize;
               const heightScaled = height * (Iwidth / width);
-              console.log(heightScaled);
               if (heightScaled > ScreenHeight * 0.7) {
                 setHeight(ScreenHeight * 0.7);
               } else {
                 setHeight(heightScaled);
               }
-              // setHeight(heightScaled);
             }}
             // onPlaybackStatusUpdate={status => setStatus(() => status)}
           />

@@ -1,4 +1,4 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
@@ -11,7 +11,7 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   const video = useRef(null);
   // const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;
-  const [height, setHeight] = useState(0);
+  // const [height, setHeight] = useState(0);
   const [play, setPlay] = useState(false);
 
   useEffect(() => {
@@ -20,19 +20,19 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
         let newHeight = height * (Iwidth / width);
 
         if (newHeight > ScreenHeight * 0.7) {
-          setHeight(ScreenHeight * 0.7);
+          // setHeight(ScreenHeight * 0.7);
           setMaxHeightFunc(ScreenHeight * 0.7);
         } else {
-          setHeight(newHeight);
+          // setHeight(newHeight);
           setMaxHeightFunc(newHeight);
         }
       });
     } else if (index === 0 && data.type === "video") {
-      setMaxHeightFunc(300);
+      setMaxHeightFunc(400);
     } else {
-      setHeight(maxHeight);
+      // setHeight(maxHeight);
     }
-  }, [height]);
+  }, []);
 
   const handleVisibility = (visible) => {
     // handle visibility change
@@ -50,7 +50,6 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   return (
     <View
       style={{
-        borderRadius: 3,
         paddingHorizontal: ScreenWidth * 0.05, //! using 0.05 because we want 0.04% originally and then add 0.1 of image width to it
         width: ScreenWidth,
         paddingBottom: 11.4,
@@ -59,43 +58,50 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
       {data.type === "photo" ? (
         <Image
           source={{ uri: url }}
-          style={{
-            width: Iwidth,
-            height: height || maxHeight,
-            borderRadius: 3,
-          }}
+          style={[
+            { width: Iwidth, height: maxHeight, overflow: "hidden" },
+            index === 0 ? styles.firstRd : {},
+          ]}
           resizeMode={"contain"}
         />
       ) : (
         <VisibilitySensor onChange={handleVisibility}>
           <Video
             ref={video}
+            usePoster
+            // style={[
+            //   {
+            //     width: Iwidth,
+            //     height: height,
+            //     // borderRadius: 3,
+            //     backgroundColor: "white",
+            //   },
+            //   height <= 300 ? { height: 300 } : { height: height },
+            // ]}
+            onReadyForDisplay={(response) => {
+              if (index === 0) {
+                const { width, height } = response.naturalSize;
+                const heightScaled = height * (Iwidth / width);
+                if (heightScaled > ScreenHeight * 0.7) {
+                  setMaxHeightFunc(ScreenHeight * 0.7);
+                } else {
+                  setMaxHeightFunc(heightScaled);
+                }
+              }
+            }}
             style={{
               width: Iwidth,
-              height: height || maxHeight,
+              height: maxHeight,
               borderRadius: 3,
-              backgroundColor: "pink",
+              backgroundColor: "white",
             }}
+            resizeMode="contain"
             source={{
               uri: url,
             }}
             useNativeControls
-            // resizeMode="cover"
-            resizeMode="contain"
             isLooping
             shouldPlay={play}
-            // onReadyForDisplay={(response) => {
-            //   const { width, height } = response.naturalSize;
-            //   const heightScaled = height * (Iwidth / width);
-            //   console.log(heightScaled);
-            //   if (heightScaled > ScreenHeight * 0.7) {
-            //     setHeight(ScreenHeight * 0.7);
-            //     setMaxHeightFunc(ScreenHeight * 0.7);
-            //   } else {
-            //     setHeight(heightScaled);
-            //     setMaxHeightFunc(heightScaled);
-            //   }
-            // }}
           />
         </VisibilitySensor>
       )}
@@ -105,4 +111,4 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
 
 export default PostsMediaMultiple;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({ firstRd: { borderRadius: 3 } });

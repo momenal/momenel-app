@@ -29,9 +29,6 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [maxHeight, setmaxHeight] = useState(0);
-  const animation = useRef(null);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isFirst, setIsFirst] = useState(true);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
