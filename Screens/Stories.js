@@ -24,6 +24,8 @@ const Stories = ({ navigation, route }) => {
   const storyFlatlistRef = useRef();
 
   const insets = useSafeAreaInsets();
+
+  // const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
   const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
 
   const scrollToNext = (index) => {
@@ -79,22 +81,16 @@ const Stories = ({ navigation, route }) => {
         // onEndReached={() => fetchStories()}
         onEndReachedThreshold={2}
         decelerationRate={"fast"}
-        initialNumToRender={10}
+        initialNumToRender={5}
         //! -10 equals height of item seperator
-        snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 10)}
+        // snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 20)}
+        snapToInterval={PAGE_HEIGHT}
         ListFooterComponent={() => {
           return (
-            // <Text
-            //   style={{
-            //     color: "white",
-            //   }}
-            // >
-            //   lOADING MORE...
-            // </Text>
             <View
               style={{
                 width: Dimensions.get("window").width,
-                height: containerHeight,
+                // height: containerHeight,
                 marginRight: 10,
                 // width: 96,
                 alignItems: "center",
@@ -108,9 +104,11 @@ const Stories = ({ navigation, route }) => {
         ItemSeparatorComponent={() => {
           return (
             <View
-              style={{
-                height: 10,
-              }}
+              style={
+                {
+                  // height: 20,
+                }
+              }
             />
           );
         }}

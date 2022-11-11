@@ -245,7 +245,7 @@ export const createStoriesSlice = (set) => ({
   fetchStories: async () => {
     set(() => ({ loading: true }));
     try {
-      console.log("called again");
+      console.log("called stories");
       const newst = [
         {
           username: Math.random(36).toString(),

@@ -9,7 +9,8 @@ const ScreenHeight = Dimensions.get("window").height;
 const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   let { url } = data;
   const video = useRef(null);
-  const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
+  // const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
+  const Iwidth = ScreenWidth - ScreenWidth * 0.1;
   const [height, setHeight] = useState(0);
   const [play, setPlay] = useState(false);
 
@@ -26,10 +27,11 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
           setMaxHeightFunc(newHeight);
         }
       });
+    } else if (index === 0 && data.type === "video") {
+      setMaxHeightFunc(300);
+    } else {
+      setHeight(maxHeight);
     }
-    // else {
-    //   // setHeight(0);
-    // }
   }, [height]);
 
   const handleVisibility = (visible) => {
@@ -68,26 +70,32 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
         <VisibilitySensor onChange={handleVisibility}>
           <Video
             ref={video}
-            style={{ width: Iwidth, height: height, borderRadius: 3 }}
+            style={{
+              width: Iwidth,
+              height: height || maxHeight,
+              borderRadius: 3,
+              backgroundColor: "pink",
+            }}
             source={{
               uri: url,
             }}
             useNativeControls
-            resizeMode="cover"
+            // resizeMode="cover"
+            resizeMode="contain"
             isLooping
             shouldPlay={play}
-            onReadyForDisplay={(response) => {
-              const { width, height } = response.naturalSize;
-              const heightScaled = height * (Iwidth / width);
-              console.log(heightScaled);
-              if (heightScaled > ScreenHeight * 0.7) {
-                setHeight(ScreenHeight * 0.7);
-                setMaxHeightFunc(ScreenHeight * 0.7);
-              } else {
-                setHeight(heightScaled);
-                setMaxHeightFunc(heightScaled);
-              }
-            }}
+            // onReadyForDisplay={(response) => {
+            //   const { width, height } = response.naturalSize;
+            //   const heightScaled = height * (Iwidth / width);
+            //   console.log(heightScaled);
+            //   if (heightScaled > ScreenHeight * 0.7) {
+            //     setHeight(ScreenHeight * 0.7);
+            //     setMaxHeightFunc(ScreenHeight * 0.7);
+            //   } else {
+            //     setHeight(heightScaled);
+            //     setMaxHeightFunc(heightScaled);
+            //   }
+            // }}
           />
         </VisibilitySensor>
       )}

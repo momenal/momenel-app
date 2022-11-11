@@ -1,6 +1,9 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
 import ProgressBar from "./ProgressBar";
 import Story from "./Story";
@@ -26,7 +29,8 @@ const HorizontalStories = ({
   const [isPaused, setIsPaused] = useState(false); // is image or video long pressed
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
+  // const containerHeight = PAGE_HEIGHT - (insets.bottom + insets.top);
+  const containerHeight = PAGE_HEIGHT;
 
   const changeCurrentIndex = (index) => {
     setActiveIndex(index);
@@ -70,9 +74,12 @@ const HorizontalStories = ({
       style={{
         width: PAGE_WIDTH,
         height: containerHeight,
+        // height: "100%",
         backgroundColor: "black",
+        // backgroundColor: "yellow",
       }}
     >
+      {/* header */}
       <View
         style={{
           position: "absolute",
@@ -86,7 +93,6 @@ const HorizontalStories = ({
           style={{
             display: "flex",
             flexDirection: "row",
-
             width: "100%",
           }}
         >
@@ -163,6 +169,7 @@ const HorizontalStories = ({
         width={PAGE_WIDTH}
         windowSize={PAGE_WIDTH}
         height={PAGE_WIDTH * (16 / 9)}
+        // height={(PAGE_WIDTH - 40) * (16 / 9)}
         panGestureHandlerProps={{
           activeOffsetX: [-10, 10],
         }}
@@ -170,6 +177,7 @@ const HorizontalStories = ({
         style={{
           maxHeight: PAGE_HEIGHT,
           borderRadius: 10,
+          // marginTop: 20,
         }}
         pagingEnabled={true}
         renderItem={({ index }) => renderItem((index = { index }))}

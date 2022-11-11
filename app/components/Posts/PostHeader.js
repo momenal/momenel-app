@@ -90,9 +90,9 @@ const PostHeader = ({
           alignItems: "center",
         }}
       >
-        <TouchableOpacity onPress={() => SavePost(index)}>
+        {/* <TouchableOpacity onPress={() => SavePost(index)}>
           <BookmarkIcon size={23} filled={isSaved} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{ marginLeft: 6 }}
           onPress={() => setShowBottomSheetFunc(index)}

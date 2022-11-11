@@ -1,4 +1,11 @@
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
@@ -9,6 +16,7 @@ import BottomSheet from "../app/components/BottomFlatSheet/BottomSheet";
 
 const Home = ({ navigation }) => {
   const SetUserData = useBoundStore((state) => state.SetUserData);
+  const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [bottomSheetPostIndex, setbottomSheetPostIndex] = useState(0);
@@ -43,14 +51,24 @@ const Home = ({ navigation }) => {
 
   // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
 
-  const renderItem = ({ item, index }) => (
-    <Post
-      key={item.userId}
-      data={item}
-      index={index}
-      setShowBottomSheetFunc={setShowBottomSheetFunc}
-    />
-  );
+  const renderItem = ({ item, index }) => {
+    return (
+      <Post
+        // key={item.postId}
+        data={item}
+        index={index}
+        setShowBottomSheetFunc={setShowBottomSheetFunc}
+      />
+    );
+  };
+  // const renderItem = ({ item, index }) => (
+  //   <Post
+  //     // key={item.postId}
+  //     data={item}
+  //     index={index}
+  //     setShowBottomSheetFunc={setShowBottomSheetFunc}
+  //   />
+  // );
 
   return (
     <View
@@ -67,6 +85,9 @@ const Home = ({ navigation }) => {
         keyExtractor={(item) => item.postId}
         ListHeaderComponent={() => <StoriesContainer navigation={navigation} />}
         showsVerticalScrollIndicator={false}
+        onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
+        onEndReachedThreshold={2}
+        initialNumToRender={5}
         // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         // viewabilityConfig={{
         //   waitForInteraction: false,
@@ -79,6 +100,19 @@ const Home = ({ navigation }) => {
                 height: 0,
               }}
             />
+          );
+        }}
+        ListFooterComponent={() => {
+          return (
+            <View
+              style={{
+                height: 60,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ActivityIndicator />
+            </View>
           );
         }}
       />

@@ -3,9 +3,11 @@ import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
 import CustomText from "../customText/CustomText";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Footer = ({ profileUrl, username, time, StoryId, navigation }) => {
   const [Height, setHeight] = useState(0);
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.container}>
@@ -58,19 +60,22 @@ export default Footer;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    // flex: 2,
+    // position: "absolute",
+    // bottom: 0,
+    // backgroundColor: "pink",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     overflow: "hidden",
-    marginVertical: 15,
+    // marginVertical: 15,
+    marginTop: 6,
     paddingHorizontal: 10,
   },
   profileContainer: {
     flexDirection: "row",
     flex: 1,
     height: "100%",
-
     alignItems: "center",
   },
   profile: {
