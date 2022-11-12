@@ -1,18 +1,35 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { runOnJS } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
-const PostMediaOne = ({ data, length }) => {
+const PostMediaOne = ({ data, doubleTap }) => {
   let { url } = data;
   const video = useRef(null);
 
   const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
   const [height, setHeight] = useState(500);
   const [play, setPlay] = useState(false);
+  const [isMuted, setisMuted] = useState(false);
+
+  const tap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => {
+      runOnJS(doubleTap)();
+    });
 
   useEffect(() => {
     if (data.type === "photo") {
@@ -31,14 +48,19 @@ const PostMediaOne = ({ data, length }) => {
   const handleVisibility = (visible) => {
     // handle visibility change
     if (visible === true) {
-      // console.log("visible");
       setPlay(true);
-      // setisPause(false);
-      // onChange(index);
     } else if (visible === false) {
-      // setisPause(true);
-      // console.log("not visible");
       setPlay(false);
+    }
+  };
+
+  const HandleMute = () => {
+    if (isMuted) {
+      video.current.setIsMutedAsync(false);
+      setisMuted(false);
+    } else {
+      video.current.setIsMutedAsync(true);
+      setisMuted(true);
     }
   };
 
@@ -52,37 +74,62 @@ const PostMediaOne = ({ data, length }) => {
       }}
     >
       {data.type === "photo" ? (
-        <Image
-          source={{ uri: url }}
-          style={{
-            width: Iwidth,
-            height: height,
-            borderRadius: 3,
-          }}
-        />
+        <GestureDetector gesture={tap}>
+          <Image
+            source={{ uri: url }}
+            style={{
+              width: Iwidth,
+              height: height,
+              borderRadius: 3,
+            }}
+          />
+        </GestureDetector>
       ) : (
         <VisibilitySensor onChange={handleVisibility}>
-          <Video
-            ref={video}
-            style={{ width: Iwidth, height: height, borderRadius: 3 }}
-            source={{
-              uri: url,
-            }}
-            useNativeControls
-            resizeMode="cover"
-            isLooping
-            shouldPlay={play}
-            onReadyForDisplay={(response) => {
-              const { width, height } = response.naturalSize;
-              const heightScaled = height * (Iwidth / width);
-              if (heightScaled > ScreenHeight * 0.7) {
-                setHeight(ScreenHeight * 0.7);
-              } else {
-                setHeight(heightScaled);
-              }
-            }}
-            // onPlaybackStatusUpdate={status => setStatus(() => status)}
-          />
+          <Pressable
+            onLongPress={() => video.current.pauseAsync()}
+            onPressOut={() => video.current.playAsync()}
+            onPress={() => HandleMute()}
+          >
+            <GestureDetector gesture={tap}>
+              <Video
+                ref={video}
+                style={{ width: Iwidth, height: height, borderRadius: 3 }}
+                source={{
+                  uri: url,
+                }}
+                positionMillis={0}
+                useNativeControls={false}
+                resizeMode="cover"
+                isLooping
+                shouldPlay={play}
+                onReadyForDisplay={(response) => {
+                  const { width, height } = response.naturalSize;
+                  const heightScaled = height * (Iwidth / width);
+                  if (heightScaled > ScreenHeight * 0.5) {
+                    setHeight(ScreenHeight * 0.5);
+                  } else {
+                    setHeight(heightScaled);
+                  }
+                }}
+              />
+            </GestureDetector>
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 5,
+                left: 0,
+                right: 10,
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+              }}
+            >
+              {isMuted && (
+                <Ionicons name="md-volume-mute" size={27} color="white" />
+              )}
+            </View>
+          </Pressable>
         </VisibilitySensor>
       )}
     </View>

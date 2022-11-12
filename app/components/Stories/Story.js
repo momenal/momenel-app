@@ -23,7 +23,6 @@ const Story = ({
   storyComplete,
 }) => {
   const [isPause, setisPause] = useState(false);
-
   const videoRef = useRef();
 
   const handleVisibility = (visible) => {
@@ -36,10 +35,22 @@ const Story = ({
     }
   };
   const handlePressIn = () => {
-    setisPause(true);
+    // setisPause(true);
+    videoRef?.current.pauseAsync();
     changeIsPaused(true);
   };
   const handlePressOut = () => {
+    // setisPause(false);
+    videoRef?.current.playAsync();
+    changeIsPaused(false);
+  };
+
+  const handlePressInImg = () => {
+    setisPause(true);
+    changeIsPaused(true);
+  };
+
+  const handlePressOutImg = () => {
     setisPause(false);
     changeIsPaused(false);
   };
@@ -56,13 +67,16 @@ const Story = ({
     });
   };
   return (
-    <TouchableWithoutFeedback
-      onLongPress={handlePressIn}
-      onPressOut={handlePressOut}
-    >
-      <VisibilitySensor onChange={handleVisibility}>
-        {/* <View> */}
-        {type === "image" ? (
+    // <TouchableWithoutFeedback
+    //   onLongPress={handlePressIn}
+    //   onPressOut={handlePressOut}
+    // >
+    <VisibilitySensor onChange={handleVisibility}>
+      {type === "image" ? (
+        <TouchableWithoutFeedback
+          onLongPress={handlePressInImg}
+          onPressOut={handlePressOutImg}
+        >
           <Image
             source={{ uri: url }}
             style={{
@@ -71,12 +85,17 @@ const Story = ({
               backgroundColor: "#fa8246",
             }}
             resizeMode="contain"
-            // onLoadEnd={() => setIsLoading(false)}
           />
-        ) : (
+        </TouchableWithoutFeedback>
+      ) : (
+        <TouchableWithoutFeedback
+          onLongPress={handlePressIn}
+          onPressOut={handlePressOut}
+        >
           <Video
             ref={videoRef}
             onPlaybackStatusUpdate={onPlaybackStatusUpdate}
+            positionMillis={0}
             style={{
               display: "flex",
               width: ScreenWidth,
@@ -97,10 +116,10 @@ const Story = ({
               "https://images.unsplash.com/photo-1665249932112-d6271dd71a97?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             }
           />
-        )}
-        {/* </View> */}
-      </VisibilitySensor>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      )}
+    </VisibilitySensor>
+    // </TouchableWithoutFeedback>
   );
 };
 

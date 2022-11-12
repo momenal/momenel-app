@@ -10,14 +10,17 @@ import {
   Nunito_900Black,
 } from "@expo-google-fonts/nunito";
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StackNavigator from "./app/navgation/StackNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-const Tab = createBottomTabNavigator();
+import { Audio } from "expo-av";
+import { useEffect } from "react";
 
 export default function App() {
+  useEffect(() => {
+    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+  }, []);
+
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_500Medium,

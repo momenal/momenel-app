@@ -1,6 +1,47 @@
 export const createPostsSlice = (set) => ({
   posts: [
     {
+      postId: "asd2324211112311",
+      userName: "iaadlls",
+      repost: {
+        isRepost: false,
+      },
+      name: "farhan haider",
+      profile_url:
+        "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        {
+          id: "81cvx27893",
+          type: "video",
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275037/test/pexels-cottonbro-cg-8382843_jerwhe.mp4",
+        },
+        {
+          id: "812712381293",
+          type: "video",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+        },
+        {
+          id: "post1435qwe2348",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1667922096074-d4299278f37a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80",
+        },
+        {
+          id: "post1qwe122320048",
+          type: "photo",
+          url: "https://images.pexels.com/photos/7582107/pexels-photo-7582107.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        },
+      ],
+      caption: "",
+      createdAt: "2022-11-02T14:48:51+00:00",
+      likes: 999941,
+      comments: 10100,
+      reposts: 0,
+      repostedByUser: false,
+      lastEdit: null,
+      isSaved: false,
+      isLiked: true,
+    },
+    {
       postId: "qws123ad09weq",
       userName: "youknowwho",
       // name: "kal jack",
@@ -96,47 +137,7 @@ export const createPostsSlice = (set) => ({
       isSaved: false,
       isLiked: true,
     },
-    {
-      postId: "asd2324211112311",
-      userName: "iaadlls",
-      repost: {
-        isRepost: false,
-      },
-      name: "farhan haider",
-      profile_url:
-        "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      posts: [
-        {
-          id: "81cvx27893",
-          type: "video",
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275037/test/pexels-cottonbro-cg-8382843_jerwhe.mp4",
-        },
-        {
-          id: "812712381293",
-          type: "video",
-          url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
-        },
-        {
-          id: "post1435qwe2348",
-          type: "photo",
-          url: "https://images.unsplash.com/photo-1667922096074-d4299278f37a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80",
-        },
-        {
-          id: "post1qwe122320048",
-          type: "photo",
-          url: "https://images.pexels.com/photos/7582107/pexels-photo-7582107.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        },
-      ],
-      caption: "",
-      createdAt: "2022-11-02T14:48:51+00:00",
-      likes: 999941,
-      comments: 10100,
-      reposts: 0,
-      repostedByUser: false,
-      lastEdit: null,
-      isSaved: false,
-      isLiked: true,
-    },
+
     {
       postId: "asd2211112311",
       userName: "ialls",

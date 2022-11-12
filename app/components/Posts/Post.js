@@ -22,6 +22,7 @@ import Repost from "../icons/Repost";
 import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
 import { useBoundStore } from "../../Store/useBoundStore";
+import Heart from "../icons/Heart";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -46,6 +47,10 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
     }
   };
 
+  const doubleTap = () => {
+    handleLikeFunc();
+  };
+
   const renderItem = ({ item, index }) => {
     return (
       <PostsMedia
@@ -53,6 +58,7 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
         maxHeight={maxHeight}
         index={index}
         setMaxHeightFunc={setMaxHeightFunc}
+        doubleTap={doubleTap}
       />
     );
   };
@@ -143,7 +149,7 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
           )}
         />
       ) : (
-        <PostMediaOne data={data.posts[0]} />
+        <PostMediaOne data={data.posts[0]} doubleTap={doubleTap} />
       )}
       {/* pagination dots */}
       <View
@@ -192,7 +198,10 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
           height: 30,
         }}
       >
-        <TouchableOpacity onPress={() => handleLikeFunc()}>
+        <View>
+          <Heart isLiked={data.isLiked} index={index} />
+        </View>
+        {/* <TouchableOpacity onPress={() => handleLikeFunc()}>
           <View
             style={{
               width: 35,
@@ -203,33 +212,15 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
             {data.isLiked ? (
               <Ionicons name="md-heart-sharp" size={27} color="#FF6060" />
             ) : (
-              <Ionicons name="md-heart-outline" size={27} color="#999999" />
+              <Ionicons
+                name="md-heart-outline"
+                size={27}
+                color="#999999"
+                style={{ borderRadius: 100 }}
+              />
             )}
           </View>
-        </TouchableOpacity>
-        {/* <TouchableWithoutFeedback onPress={() => handleLikeFunc()}>
-          <View
-            style={{
-              width: 30,
-              // backgroundColor: "red",
-              alignItems: "center",
-            }}
-          >
-            {data.isLiked ? (
-              <Ionicons name="md-heart-sharp" size={27} color="#FF6060" />
-            ) : (
-              <Ionicons name="md-heart-outline" size={27} color="#999999" />
-            )}
-            <LottieView
-              ref={animation}
-              autoPlay
-              style={{ height: 55 }}
-              source={require("../icons/heart2.json")}
-              loop={false}
-            /> 
-          </View>
-        </TouchableWithoutFeedback> 
-        */}
+        </TouchableOpacity> */}
         <TouchableOpacity>
           <CommentsIcon size={21} />
         </TouchableOpacity>

@@ -1,21 +1,38 @@
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Video, Audio } from "expo-av";
+import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { runOnJS } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
-const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
+const PostsMediaMultiple = ({
+  data,
+  maxHeight,
+  index,
+  setMaxHeightFunc,
+  doubleTap,
+}) => {
   let { url } = data;
   const video = useRef(null);
   // const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;
   // const [height, setHeight] = useState(0);
   const [play, setPlay] = useState(false);
+  const [isMuted, setisMuted] = useState(false);
 
   useEffect(() => {
-    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+    // Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
     if (index === 0 && data.type === "photo") {
       Image.getSize(url, (width, height) => {
         let newHeight = height * (Iwidth / width);
@@ -38,13 +55,29 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   const handleVisibility = (visible) => {
     // handle visibility change
     if (visible === true) {
+      // video.playFromPositionAsync(0);
       setPlay(true);
       // setisPause(false);
       // onChange(index);
     } else if (visible === false) {
       // setisPause(true);
-
       setPlay(false);
+    }
+  };
+
+  const tap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => {
+      runOnJS(doubleTap)();
+    });
+
+  const HandleMute = () => {
+    if (isMuted) {
+      video.current.setIsMutedAsync(false);
+      setisMuted(false);
+    } else {
+      video.current.setIsMutedAsync(true);
+      setisMuted(true);
     }
   };
 
@@ -57,46 +90,71 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
       }}
     >
       {data.type === "photo" ? (
-        <Image
-          source={{ uri: url }}
-          style={[
-            { width: Iwidth, height: maxHeight, overflow: "hidden" },
-            index === 0 ? styles.firstRd : {},
-          ]}
-          resizeMode={"contain"}
-        />
+        <GestureDetector gesture={tap}>
+          <Image
+            source={{ uri: url }}
+            style={[
+              { width: Iwidth, height: maxHeight, overflow: "hidden" },
+              index === 0 ? styles.firstRd : {},
+            ]}
+            resizeMode={"contain"}
+          />
+        </GestureDetector>
       ) : (
         <VisibilitySensor onChange={handleVisibility}>
-          <Video
-            ref={video}
-            source={{
-              uri: url,
-            }}
-            usePoster
-            onReadyForDisplay={(response) => {
-              if (index === 0) {
-                const { width, height } = response.naturalSize;
-                const heightScaled = height * (Iwidth / width);
-                if (heightScaled > ScreenHeight * 0.6) {
-                  setMaxHeightFunc(ScreenHeight * 0.6);
-                } else {
-                  setMaxHeightFunc(heightScaled);
-                }
-              }
-            }}
-            style={{
-              width: Iwidth,
-              height: maxHeight,
-              borderRadius: 3,
-              backgroundColor: "white",
-            }}
-            resizeMode="contain"
-            // resizeMode="cover"
-            useNativeControls
-            isLooping
-            shouldPlay={play}
-            sile
-          />
+          <Pressable
+            onLongPress={() => video.current.pauseAsync()}
+            onPressOut={() => video.current.playAsync()}
+            // onPress={() => setisMuted(!isMuted)}
+            onPress={() => HandleMute()}
+          >
+            <GestureDetector gesture={tap}>
+              <Video
+                ref={video}
+                source={{
+                  uri: url,
+                }}
+                shouldPlay={play}
+                positionMillis={0}
+                usePoster
+                onReadyForDisplay={(response) => {
+                  if (index === 0) {
+                    const { width, height } = response.naturalSize;
+                    const heightScaled = height * (Iwidth / width);
+                    if (heightScaled > ScreenHeight * 0.5) {
+                      setMaxHeightFunc(ScreenHeight * 0.5);
+                    } else {
+                      setMaxHeightFunc(heightScaled);
+                    }
+                  }
+                }}
+                style={{
+                  width: Iwidth,
+                  height: maxHeight,
+                  borderRadius: 3,
+                  backgroundColor: "white",
+                }}
+                resizeMode="contain"
+                useNativeControls={false}
+                isLooping
+              />
+            </GestureDetector>
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 5,
+                left: 0,
+                right: 10,
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+              }}
+            >
+              {isMuted && (
+                <Ionicons name="md-volume-mute" size={27} color="white" />
+              )}
+            </View>
+          </Pressable>
         </VisibilitySensor>
       )}
     </View>
