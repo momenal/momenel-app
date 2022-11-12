@@ -37,25 +37,6 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
     setmaxHeight(h);
   };
 
-  // useEffect(() => {
-  //   console.log("effect");
-  //   if (isFirst) {
-  //     if (data.isLiked) {
-  //       animation.current?.play(114, 114);
-  //     } else {
-  //       animation.current?.play(6, 6);
-  //     }
-  //     setIsFirst(false);
-  //   } else if (data.isLiked) {
-  //     animation.current?.play(6, 110);
-  //     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  //     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  //   } else {
-  //     animation.current?.play(24, 6);
-  //     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  //   }
-  // }, [data.isLiked]);
-
   const handleLikeFunc = () => {
     handleLike(index);
     if (data.isLiked === true) {
@@ -118,7 +99,8 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
         >
           <Repost
             size={23}
-            color={data.repostedByUser ? "#8456E9" : "#999999"}
+            color={"#8456E9"}
+            // color={data.repostedByUser ? "#8456E9" : "#999999"}
           />
           <CustomText
             style={{

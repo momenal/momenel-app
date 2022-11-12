@@ -27,16 +27,6 @@ export const createStoriesSlice = (set) => ({
         "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       own_preview_url:
         "https://images.unsplash.com/photo-1463438690606-f6778b8c1d10?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      ownStories: [
-        {
-          id: 173249,
-          url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-          type: "image",
-          duration: 2,
-          isReadMore: true,
-          date: "2022-09-19T14:06:19+00:00",
-        },
-      ],
       stories: [
         {
           id: 179,
@@ -45,6 +35,22 @@ export const createStoriesSlice = (set) => ({
           duration: 2,
           isReadMore: true,
           date: "2022-09-19T14:06:19+00:00",
+        },
+        {
+          id: 10091,
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668277265/test/v10044g50000c45repbc77u86h15j6c0_lmzu4r.mov",
+          type: "video",
+          duration: 2,
+          isReadMore: true,
+          date: "2022-10-19T14:27:00+00:00",
+        },
+        {
+          id: 10123091,
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275841/test/v0f044gc0000cc9hr83c77u5gu1gdnpg_oujd1y.mov",
+          type: "video",
+          duration: 2,
+          isReadMore: true,
+          date: "2022-10-19T14:27:00+00:00",
         },
         {
           id: 1,

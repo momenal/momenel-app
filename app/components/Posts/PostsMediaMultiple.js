@@ -1,6 +1,6 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Video } from "expo-av";
+import { Video, Audio } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -15,6 +15,7 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
   const [play, setPlay] = useState(false);
 
   useEffect(() => {
+    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
     if (index === 0 && data.type === "photo") {
       Image.getSize(url, (width, height) => {
         let newHeight = height * (Iwidth / width);
@@ -68,22 +69,16 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
         <VisibilitySensor onChange={handleVisibility}>
           <Video
             ref={video}
+            source={{
+              uri: url,
+            }}
             usePoster
-            // style={[
-            //   {
-            //     width: Iwidth,
-            //     height: height,
-            //     // borderRadius: 3,
-            //     backgroundColor: "white",
-            //   },
-            //   height <= 300 ? { height: 300 } : { height: height },
-            // ]}
             onReadyForDisplay={(response) => {
               if (index === 0) {
                 const { width, height } = response.naturalSize;
                 const heightScaled = height * (Iwidth / width);
-                if (heightScaled > ScreenHeight * 0.7) {
-                  setMaxHeightFunc(ScreenHeight * 0.7);
+                if (heightScaled > ScreenHeight * 0.6) {
+                  setMaxHeightFunc(ScreenHeight * 0.6);
                 } else {
                   setMaxHeightFunc(heightScaled);
                 }
@@ -96,12 +91,11 @@ const PostsMediaMultiple = ({ data, maxHeight, index, setMaxHeightFunc }) => {
               backgroundColor: "white",
             }}
             resizeMode="contain"
-            source={{
-              uri: url,
-            }}
+            // resizeMode="cover"
             useNativeControls
             isLooping
             shouldPlay={play}
+            sile
           />
         </VisibilitySensor>
       )}

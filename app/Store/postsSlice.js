@@ -32,6 +32,112 @@ export const createPostsSlice = (set) => ({
       isSaved: true,
     },
     {
+      postId: "001823",
+      userName: "funnyvids",
+      repost: {
+        isRepost: true,
+        repostedBy: "farhanverse",
+        repostedAt: "2022-11-04T13:54:55+00:00",
+      },
+      name: "funny vids (parody)",
+      profile_url:
+        "https://images.pexels.com/photos/160472/doll-boy-cheeky-toys-160472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        {
+          id: "81cvx27893",
+          type: "video",
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668277265/test/v10044g50000c45repbc77u86h15j6c0_lmzu4r.mov",
+        },
+      ],
+      caption:
+        "We always knew she will be a good talked lol. \n #funny #babies #babyfever",
+      createdAt: "2022-11-02T14:48:51+00:00",
+      likes: 999941,
+      comments: 10100,
+      reposts: 0,
+      repostedByUser: false,
+      lastEdit: null,
+      isSaved: false,
+      isLiked: true,
+    },
+    {
+      postId: "7713ars",
+      userName: "arshadofficial",
+      repost: {
+        isRepost: false,
+      },
+      name: "Arshad",
+      profile_url:
+        "https://images.unsplash.com/photo-1604732387551-69ac9cce4e59?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1541&q=80",
+      posts: [
+        {
+          id: "81cvx27893",
+          type: "video",
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275841/test/v0f044gc0000cc9hr83c77u5gu1gdnpg_oujd1y.mov",
+        },
+        {
+          id: "post1435qwe2348",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1667922096074-d4299278f37a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80",
+        },
+        {
+          id: "post1qwe122320048",
+          type: "photo",
+          url: "https://images.pexels.com/photos/7582107/pexels-photo-7582107.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        },
+      ],
+      caption: "",
+      createdAt: "2022-11-02T14:48:51+00:00",
+      likes: 999941,
+      comments: 10100,
+      reposts: 0,
+      repostedByUser: false,
+      lastEdit: null,
+      isSaved: false,
+      isLiked: true,
+    },
+    {
+      postId: "asd2324211112311",
+      userName: "iaadlls",
+      repost: {
+        isRepost: false,
+      },
+      name: "farhan haider",
+      profile_url:
+        "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        {
+          id: "81cvx27893",
+          type: "video",
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275037/test/pexels-cottonbro-cg-8382843_jerwhe.mp4",
+        },
+        {
+          id: "812712381293",
+          type: "video",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+        },
+        {
+          id: "post1435qwe2348",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1667922096074-d4299278f37a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80",
+        },
+        {
+          id: "post1qwe122320048",
+          type: "photo",
+          url: "https://images.pexels.com/photos/7582107/pexels-photo-7582107.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        },
+      ],
+      caption: "",
+      createdAt: "2022-11-02T14:48:51+00:00",
+      likes: 999941,
+      comments: 10100,
+      reposts: 0,
+      repostedByUser: false,
+      lastEdit: null,
+      isSaved: false,
+      isLiked: true,
+    },
+    {
       postId: "asd2211112311",
       userName: "ialls",
       repost: {
@@ -49,7 +155,7 @@ export const createPostsSlice = (set) => ({
         {
           id: "812781293",
           type: "video",
-          url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275080/test/mixkit-man-from-behind-playing-online-on-a-pc-43533_kc4x15.mp4",
         },
         {
           id: "post1qwe2348",
