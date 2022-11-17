@@ -13,12 +13,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./app/navgation/StackNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Audio } from "expo-av";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { useEffect } from "react";
 
 export default function App() {
   useEffect(() => {
-    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+    Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      shouldDuckAndroid: true,
+      staysActiveInBackground: false,
+    });
   }, []);
 
   let [fontsLoaded] = useFonts({
