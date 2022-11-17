@@ -15,6 +15,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { useEffect } from "react";
+import { PortalProvider } from "@gorhom/portal";
 
 export default function App() {
   useEffect(() => {
@@ -43,10 +44,12 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <StackNavigator />
-          <StatusBar style="dark" animated={true} />
-        </NavigationContainer>
+        <PortalProvider>
+          <NavigationContainer>
+            <StackNavigator />
+            <StatusBar style="dark" animated={true} />
+          </NavigationContainer>
+        </PortalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

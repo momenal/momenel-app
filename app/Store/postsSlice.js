@@ -1,6 +1,37 @@
 export const createPostsSlice = (set) => ({
   posts: [
     {
+      postId: "qws123ad09weq",
+      userName: "youknowwho",
+      // name: "kal jack",
+      repostedByUser: false,
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        {
+          id: "poasdstwqe123",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1635336969198-ec9553adc0e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+        },
+        {
+          id: "poasdst123",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
+        },
+      ],
+      caption: "",
+      createdAt: "2022-11-04T13:54:55+00:00",
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isSaved: true,
+    },
+    {
       postId: "asd2324211112311",
       userName: "iaadlls",
       repost: {
@@ -40,37 +71,6 @@ export const createPostsSlice = (set) => ({
       lastEdit: null,
       isSaved: false,
       isLiked: true,
-    },
-    {
-      postId: "qws123ad09weq",
-      userName: "youknowwho",
-      // name: "kal jack",
-      repostedByUser: false,
-      repost: {
-        isRepost: false,
-      },
-      profile_url:
-        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      posts: [
-        {
-          id: "poasdstwqe123",
-          type: "photo",
-          url: "https://images.unsplash.com/photo-1635336969198-ec9553adc0e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
-        },
-        {
-          id: "poasdst123",
-          type: "photo",
-          url: "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-        },
-      ],
-      caption: "",
-      createdAt: "2022-11-04T13:54:55+00:00",
-      likes: 300,
-      comments: 12,
-      reposts: 5,
-      lastEdit: null,
-      isLiked: false,
-      isSaved: true,
     },
     {
       postId: "001823",

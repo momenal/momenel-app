@@ -61,14 +61,6 @@ const Home = ({ navigation }) => {
       />
     );
   };
-  // const renderItem = ({ item, index }) => (
-  //   <Post
-  //     // key={item.postId}
-  //     data={item}
-  //     index={index}
-  //     setShowBottomSheetFunc={setShowBottomSheetFunc}
-  //   />
-  // );
 
   return (
     <View
@@ -117,14 +109,6 @@ const Home = ({ navigation }) => {
         }}
       />
 
-      {/* <Button title="story" onPress={() => navigation.navigate("Stories")} />
-      <Button
-        title="comments"
-        onPress={() => navigation.navigate("Comments")}
-      />
-      <Text>Home</Text>
-      <Text>Home3</Text>
-      <CustomText style={{ color: "red" }}>Homee!!!!!</CustomText> */}
       <BottomSheet
         show={showBottomSheet}
         onSheetClose={() => setShowBottomSheet(false)}

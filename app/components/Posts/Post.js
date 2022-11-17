@@ -9,14 +9,12 @@ import {
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostsMedia from "./PostsMediaMultiple";
 import PostMediaOne from "./PostMediaOne";
 import PaginationDot from "./PaginationDot";
 import StructuredText from "./StructuredText";
-import LottieView from "lottie-react-native";
-import { Ionicons } from "@expo/vector-icons";
 import CommentsIcon from "../icons/CommentsIcon";
 import Repost from "../icons/Repost";
 import TipIcon from "../icons/TipIcon";
@@ -201,26 +199,7 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
         <View>
           <Heart isLiked={data.isLiked} index={index} />
         </View>
-        {/* <TouchableOpacity onPress={() => handleLikeFunc()}>
-          <View
-            style={{
-              width: 35,
-              // backgroundColor: "red",
-              alignItems: "center",
-            }}
-          >
-            {data.isLiked ? (
-              <Ionicons name="md-heart-sharp" size={27} color="#FF6060" />
-            ) : (
-              <Ionicons
-                name="md-heart-outline"
-                size={27}
-                color="#999999"
-                style={{ borderRadius: 100 }}
-              />
-            )}
-          </View>
-        </TouchableOpacity> */}
+
         <TouchableOpacity>
           <CommentsIcon size={21} />
         </TouchableOpacity>
@@ -242,12 +221,6 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
           />
         </TouchableOpacity>
 
-        {/* <Ionicons
-          name="paper-plane-outline"
-          size={25}
-          color="#999999"
-          style={{ transform: [{ rotate: "45deg" }] }}
-        /> */}
         <TipIcon size={25} />
       </View>
       <View

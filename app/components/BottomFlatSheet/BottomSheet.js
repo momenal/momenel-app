@@ -1,7 +1,11 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+} from "@gorhom/bottom-sheet";
 import CustomText from "../customText/CustomText";
+import { Portal, PortalHost } from "@gorhom/portal";
 
 const BottomFlatSheet = (props) => {
   let { show, onSheetClose } = props;
@@ -10,9 +14,9 @@ const BottomFlatSheet = (props) => {
 
   useEffect(() => {
     if (show === true) {
-      bottomSheetRef.current.expand();
+      bottomSheetRef?.current?.expand();
     } else {
-      bottomSheetRef.current.close();
+      bottomSheetRef?.current?.close();
     }
   }, [show]);
 
@@ -41,17 +45,21 @@ const BottomFlatSheet = (props) => {
     []
   );
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={-1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose={true}
-      backdropComponent={renderBackdrop}
-      footerComponent={() => <CustomText>Foot</CustomText>}
-    >
-      {props.children}
-    </BottomSheet>
+    <>
+      <Portal>
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={-1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          enablePanDownToClose={true}
+          backdropComponent={renderBackdrop}
+          footerComponent={() => <CustomText>Foot</CustomText>}
+        >
+          {props.children}
+        </BottomSheet>
+      </Portal>
+    </>
   );
 };
 
