@@ -12,19 +12,11 @@ import CustomText from "../app/components/customText/CustomText";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
-import BottomSheet from "../app/components/BottomFlatSheet/BottomSheet";
 
 const Home = ({ navigation }) => {
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [bottomSheetPostIndex, setbottomSheetPostIndex] = useState(0);
-
-  const setShowBottomSheetFunc = (index) => {
-    setbottomSheetPostIndex(index);
-    setShowBottomSheet(!showBottomSheet);
-  };
 
   useEffect(() => {
     fetch("https://random-data-api.com/api/v2/users")
@@ -57,7 +49,6 @@ const Home = ({ navigation }) => {
         // key={item.postId}
         data={item}
         index={index}
-        setShowBottomSheetFunc={setShowBottomSheetFunc}
       />
     );
   };
@@ -108,20 +99,6 @@ const Home = ({ navigation }) => {
           );
         }}
       />
-
-      <BottomSheet
-        show={showBottomSheet}
-        onSheetClose={() => setShowBottomSheet(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-          }}
-        >
-          <Text>{postsData[bottomSheetPostIndex].userName}</Text>
-        </View>
-      </BottomSheet>
     </View>
   );
 };

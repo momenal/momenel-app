@@ -347,6 +347,7 @@ export const createPostsSlice = (set) => ({
   },
   SavePost: async (index) => {
     try {
+      console.log("slice: save post");
       //todo send req to save post
       set((state) => {
         const newPosts = [...state.posts];

@@ -24,7 +24,7 @@ import Heart from "../icons/Heart";
 
 const ScreenWidth = Dimensions.get("window").width;
 
-const Post = ({ data, setShowBottomSheetFunc, index }) => {
+const Post = ({ data, index }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [maxHeight, setmaxHeight] = useState(0);
@@ -125,7 +125,6 @@ const Post = ({ data, setShowBottomSheetFunc, index }) => {
         name={data.name}
         createdAt={data.createdAt}
         isSaved={data.isSaved}
-        setShowBottomSheetFunc={setShowBottomSheetFunc}
         index={index}
       />
       {/* media */}

@@ -2,10 +2,12 @@ import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetModal,
+  BottomSheetFooter,
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
 import CustomText from "../customText/CustomText";
-import { Portal, PortalHost } from "@gorhom/portal";
+import { Portal } from "@gorhom/portal";
 
 const BottomFlatSheet = (props) => {
   let { show, onSheetClose } = props;
@@ -20,8 +22,16 @@ const BottomFlatSheet = (props) => {
     }
   }, [show]);
 
-  // variables
-  const snapPoints = useMemo(() => ["70%", "70%"], []);
+  const initialSnapPoints = useMemo(
+    () => ["CONTENT_HEIGHT"],
+    ["CONTENT_HEIGHT"]
+  );
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   // callbacks
   const handleSheetChanges = useCallback((index) => {
@@ -44,19 +54,37 @@ const BottomFlatSheet = (props) => {
     ),
     []
   );
+
+  const renderFooter = useCallback(
+    (props) => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={{}}>
+          <CustomText>Foot</CustomText>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
   return (
     <>
       <Portal>
         <BottomSheet
           ref={bottomSheetRef}
           index={-1}
-          snapPoints={snapPoints}
+          snapPoints={animatedSnapPoints}
+          handleHeight={animatedHandleHeight}
+          contentHeight={animatedContentHeight}
           onChange={handleSheetChanges}
           enablePanDownToClose={true}
+          // enableOverDrag={false}
           backdropComponent={renderBackdrop}
-          footerComponent={() => <CustomText>Foot</CustomText>}
+          // footerComponent={renderFooter}
+          // detached={true}
+          // bottomInset={46}
         >
-          {props.children}
+          <BottomSheetView onLayout={handleContentLayout}>
+            {props.children}
+          </BottomSheetView>
         </BottomSheet>
       </Portal>
     </>

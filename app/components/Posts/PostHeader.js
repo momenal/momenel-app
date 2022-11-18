@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
-import BookmarkIcon from "../icons/BookmarkIcon";
 import Ellipsis from "../icons/Ellipsis";
 import { useBoundStore } from "../../Store/useBoundStore";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -23,10 +24,24 @@ const PostHeader = ({
   name,
   createdAt,
   isSaved,
-  setShowBottomSheetFunc,
   index,
 }) => {
   const SavePost = useBoundStore((state) => state.SavePost);
+  const postsData = useBoundStore((state) => state.posts);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showBottomReportSheet, setShowBottomReportSheet] = useState(false);
+  const insets = useSafeAreaInsets();
+
+  const onSavePress = () => {
+    SavePost(index);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  };
+
+  const onReportPress = () => {
+    console.log("rep");
+    setShowBottomSheet(false);
+    setShowBottomReportSheet(true);
+  };
 
   return (
     <View
@@ -90,16 +105,97 @@ const PostHeader = ({
           alignItems: "center",
         }}
       >
-        {/* <TouchableOpacity onPress={() => SavePost(index)}>
-          <BookmarkIcon size={23} filled={isSaved} />
-        </TouchableOpacity> */}
         <TouchableOpacity
           style={{ marginLeft: 6 }}
-          onPress={() => setShowBottomSheetFunc(index)}
+          onPress={() => setShowBottomSheet(true)}
         >
           <Ellipsis size={21} />
         </TouchableOpacity>
       </View>
+      <BottomSheet
+        show={showBottomSheet}
+        onSheetClose={() => setShowBottomSheet(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            paddingTop: 10,
+            paddingBottom: insets.bottom,
+            paddingHorizontal: 20,
+            // backgroundColor: "pink",
+          }}
+        >
+          {/* <Text>{postsData[index].userName}</Text> */}
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              backgroundColor: "#EAEAEA",
+              paddingVertical: 15,
+              paddingHorizontal: 18,
+              marginBottom: 15,
+              borderRadius: 12,
+            }}
+            onPress={() => onSavePress()}
+          >
+            <Ionicons name="md-bookmark" size={20} color="black" />
+            <CustomText
+              style={{
+                // fontFamily: "Nunito_400Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}
+            >
+              Save
+            </CustomText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              backgroundColor: "#EAEAEA",
+              paddingVertical: 15,
+              paddingHorizontal: 18,
+              // marginBottom: 10,
+              borderRadius: 12,
+            }}
+            onPress={() => onReportPress()}
+          >
+            <Ionicons name="ios-flag" size={20} color="red" />
+            <CustomText
+              style={{
+                // fontFamily: "Nunito_600SemiBold",
+                fontSize: 16,
+                marginLeft: 10,
+                color: "red",
+              }}
+            >
+              Report
+            </CustomText>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
+      <BottomSheet
+        show={showBottomReportSheet}
+        onSheetClose={() => setShowBottomReportSheet(false)}
+      >
+        <View
+          style={{
+            paddingTop: 10,
+            paddingBottom: insets.bottom,
+            paddingHorizontal: 20,
+          }}
+        >
+          <CustomText
+            style={{ fontFamily: "Nunito_800ExtraBold", fontSize: 20 }}
+          >
+            Report @{postsData[index].userName}'s post
+          </CustomText>
+        </View>
+      </BottomSheet>
     </View>
   );
 };
