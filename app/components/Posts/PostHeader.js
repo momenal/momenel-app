@@ -15,6 +15,7 @@ import { useBoundStore } from "../../Store/useBoundStore";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
+import BottomReportSheet from "../BottomFlatSheet/reportSheet/BottomReportSheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -35,6 +36,7 @@ const PostHeader = ({
   const onSavePress = () => {
     SavePost(index);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setShowBottomSheet(false);
   };
 
   const onReportPress = () => {
@@ -178,24 +180,12 @@ const PostHeader = ({
           </TouchableOpacity>
         </View>
       </BottomSheet>
-      <BottomSheet
+      <BottomReportSheet
         show={showBottomReportSheet}
+        setShow={setShowBottomReportSheet}
         onSheetClose={() => setShowBottomReportSheet(false)}
-      >
-        <View
-          style={{
-            paddingTop: 10,
-            paddingBottom: insets.bottom,
-            paddingHorizontal: 20,
-          }}
-        >
-          <CustomText
-            style={{ fontFamily: "Nunito_800ExtraBold", fontSize: 20 }}
-          >
-            Report @{postsData[index].userName}'s post
-          </CustomText>
-        </View>
-      </BottomSheet>
+        username={postsData[index].userName}
+      />
     </View>
   );
 };
