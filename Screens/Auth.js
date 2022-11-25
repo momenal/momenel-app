@@ -10,17 +10,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import CustomText from "../customText/CustomText";
-import { supabase } from "../../lib/supabase";
+import CustomText from "../app/components/customText/CustomText";
+import { supabase } from "../app/lib/supabase";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import LinearGradientButton from "../Buttons/LinearGradientButton";
+import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import * as WebBrowser from "expo-web-browser";
-import Post from "../Posts/Post";
-import PostHeader from "../Posts/PostHeader";
-import StructuredText from "../Posts/StructuredText";
-import PaginationDot from "../Posts/PaginationDot";
-import DetachedBottomSheet from "../BottomFlatSheet/DetachedBottomSheet";
-import SignIn from "./SignIn";
+import PostHeader from "../app/components/Posts/PostHeader";
+import StructuredText from "../app/components/Posts/StructuredText";
+import PaginationDot from "../app/components/Posts/PaginationDot";
+import DetachedBottomSheet from "../app/components/BottomFlatSheet/DetachedBottomSheet";
+import SignIn from "../app/components/auth/SignIn";
+import CreateAccount from "../app/components/auth/CreateAccount";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
@@ -58,6 +58,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSigninBottomSheet, setShowSigninBottomSheet] = useState(false);
+  const [showSignupBottomSheet, setShowSignupBottomSheet] = useState(false);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -87,6 +88,12 @@ const Auth = () => {
 
   const _handlePressButtonAsync = async (url) => {
     await WebBrowser.openBrowserAsync(url);
+  };
+  const hideBottomSignup = () => {
+    setShowSignupBottomSheet(false);
+  };
+  const hideBottomSignin = () => {
+    setShowSigninBottomSheet(false);
   };
 
   const renderItem = ({ item, index }) => {
@@ -212,7 +219,7 @@ const Auth = () => {
         </View>
         {/* bottom */}
         <View style={{ paddingHorizontal: "7%" }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowSignupBottomSheet(true)}>
             <LinearGradientButton style={{ width: "100%", borderRadius: 16 }}>
               <CustomText
                 style={{
@@ -329,8 +336,15 @@ const Auth = () => {
       <DetachedBottomSheet
         show={showSigninBottomSheet}
         onSheetClose={() => setShowSigninBottomSheet(false)}
+        hideBottomSignup={hideBottomSignin}
       >
         <SignIn />
+      </DetachedBottomSheet>
+      <DetachedBottomSheet
+        show={showSignupBottomSheet}
+        onSheetClose={() => setShowSignupBottomSheet(false)}
+      >
+        <CreateAccount hideBottomSignup={hideBottomSignup} />
       </DetachedBottomSheet>
     </View>
   );

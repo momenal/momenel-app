@@ -18,7 +18,7 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { useEffect, useState } from "react";
 import { PortalProvider } from "@gorhom/portal";
 import { supabase } from "./app/lib/supabase";
-import Auth from "./app/components/auth/Auth";
+import Auth from "./Screens/Auth";
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -31,7 +31,9 @@ export default function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+  }, []);
 
+  useEffect(() => {
     Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       interruptionModeIOS: InterruptionModeIOS.DoNotMix,
@@ -54,28 +56,39 @@ export default function App() {
     return null;
   }
 
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
+  {
+    return session && session.user ? (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <PortalProvider>
+            <NavigationContainer>
+              <StackNavigator />
+            </NavigationContainer>
+          </PortalProvider>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    ) : (
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <PortalProvider>
-          <NavigationContainer>
-            {session && session.user ? (
-              <>
-                <StackNavigator />
-              </>
-            ) : (
-              <>
-                <Auth />
-                {/* <StackNavigator /> */}
-              </>
-            )}
-            {/* <StackNavigator /> */}
-            <StatusBar style="dark" animated={true} />
-          </NavigationContainer>
+          <SafeAreaProvider>
+            <Auth />
+          </SafeAreaProvider>
         </PortalProvider>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
-  );
+      </GestureHandlerRootView>
+    );
+  }
+  {
+    /* {session && session.user ? <StackNavigator /> : <Auth />} */
+  }
+  {
+    /* <StackNavigator /> */
+  }
+  <StatusBar style="dark" animated={true} />;
+  //       </NavigationContainer>
+  //     </PortalProvider>
+  //   </SafeAreaProvider>
+  // </GestureHandlerRootView>
+  // );
 }
 
 const styles = StyleSheet.create({
