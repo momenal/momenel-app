@@ -1,16 +1,24 @@
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Dimensions,
+  Keyboard,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetFooter,
   BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
-import CustomText from "../customText/CustomText";
 import { Portal } from "@gorhom/portal";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const BottomFlatSheet = (props) => {
+const DetachedBottomSheet = (props) => {
   let { show, onSheetClose } = props;
+  const insets = useSafeAreaInsets();
   // ref
   const bottomSheetRef = useRef(null);
 
@@ -18,14 +26,16 @@ const BottomFlatSheet = (props) => {
     if (show === true) {
       bottomSheetRef?.current?.expand();
     } else {
+      Keyboard.dismiss();
       bottomSheetRef?.current?.close();
     }
   }, [show]);
 
-  const initialSnapPoints = useMemo(
-    () => ["CONTENT_HEIGHT"],
-    ["CONTENT_HEIGHT"]
-  );
+  // const initialSnapPoints = useMemo(
+  //   () => ["CONTENT_HEIGHT"],
+  //   ["CONTENT_HEIGHT"]
+  // );
+  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
   const {
     animatedHandleHeight,
     animatedSnapPoints,
@@ -54,17 +64,6 @@ const BottomFlatSheet = (props) => {
     ),
     []
   );
-
-  const renderFooter = useCallback(
-    (props) => (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={{}}>
-          <CustomText>Foot</CustomText>
-        </View>
-      </BottomSheetFooter>
-    ),
-    []
-  );
   return (
     <>
       <Portal>
@@ -76,10 +75,11 @@ const BottomFlatSheet = (props) => {
           contentHeight={animatedContentHeight}
           onChange={handleSheetChanges}
           enablePanDownToClose={true}
-          // enableOverDrag={false}
           backdropComponent={renderBackdrop}
-          // footerComponent={renderFooter}
-          // bottomInset={46}
+          bottomInset={insets.bottom + 10}
+          detached={true}
+          style={styles.container}
+          keyboardBlurBehavior="restore"
         >
           <BottomSheetView onLayout={handleContentLayout}>
             {props.children}
@@ -90,16 +90,10 @@ const BottomFlatSheet = (props) => {
   );
 };
 
-export default BottomFlatSheet;
+export default DetachedBottomSheet;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "grey",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
+    marginHorizontal: "5%",
   },
 });

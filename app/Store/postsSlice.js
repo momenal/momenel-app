@@ -22,7 +22,7 @@ export const createPostsSlice = (set) => ({
           url: "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
         },
       ],
-      caption: "",
+      caption: "No more data collection",
       createdAt: "2022-11-04T13:54:55+00:00",
       likes: 300,
       comments: 12,

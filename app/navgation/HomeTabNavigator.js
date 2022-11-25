@@ -12,6 +12,7 @@ import PlusIcon from "../components/icons/PlusIcon";
 import MessagesIcon from "../components/icons/MessagesIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
+import FakeLogout from "../components/FakeLogout";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -131,7 +132,7 @@ const HomeNavigator = ({ navigation }) => {
       />
       <Tab.Screen
         name="Profile"
-        component={Home}
+        component={FakeLogout}
         options={{
           title: "Profile",
           // tabBarStyle: { display: "none" },
