@@ -63,6 +63,7 @@ export default function App() {
           <PortalProvider>
             <NavigationContainer>
               <StackNavigator />
+              <StatusBar style="dark" animated={true} />
             </NavigationContainer>
           </PortalProvider>
         </SafeAreaProvider>
@@ -72,6 +73,7 @@ export default function App() {
         <PortalProvider>
           <SafeAreaProvider>
             <Auth />
+            <StatusBar style="dark" animated={true} hidden />
           </SafeAreaProvider>
         </PortalProvider>
       </GestureHandlerRootView>
@@ -83,7 +85,6 @@ export default function App() {
   {
     /* <StackNavigator /> */
   }
-  <StatusBar style="dark" animated={true} />;
   //       </NavigationContainer>
   //     </PortalProvider>
   //   </SafeAreaProvider>

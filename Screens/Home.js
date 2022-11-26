@@ -14,6 +14,7 @@ import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 
 const Home = ({ navigation }) => {
+  const [isloading, setIsloading] = useState(true);
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);

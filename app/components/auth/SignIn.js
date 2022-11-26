@@ -16,15 +16,22 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showErrorBottomSheet, setShowErrorBottomSheet] = useState(false);
 
   async function signInWithEmail() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    setError("");
+    const { error, data } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      setError("Incorrect Username or Password");
+      setEmail("");
+      setPassword("");
+    }
     setLoading(false);
   }
 
@@ -35,6 +42,13 @@ const SignIn = () => {
       >
         Let’s sign you in.
       </CustomText>
+      {error ? (
+        <CustomText style={{ marginBottom: 5, marginLeft: 5, color: "red" }}>
+          {error}
+        </CustomText>
+      ) : (
+        <></>
+      )}
       <BottomSheetTextInput
         style={styles.textInput}
         placeholder="Email"

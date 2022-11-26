@@ -53,38 +53,11 @@ const data = [
 
 const Auth = () => {
   const insets = useSafeAreaInsets();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [showSigninBottomSheet, setShowSigninBottomSheet] = useState(false);
   const [showSignupBottomSheet, setShowSignupBottomSheet] = useState(false);
 
-  // for pagination dots
+  //? for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
-
-  async function signInWithEmail() {
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-  }
-
-  async function signUpWithEmail() {
-    setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      profile_url: "fake url",
-    });
-
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-  }
 
   const _handlePressButtonAsync = async (url) => {
     await WebBrowser.openBrowserAsync(url);
@@ -290,49 +263,7 @@ const Auth = () => {
             </CustomText>
           </View>
         </View>
-
-        {/* <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        /> */}
-        {/* <CustomText>Email</CustomText>
-        <TextInput
-          //   style={styles.input}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        /> */}
       </View>
-      {/* <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={"none"}
-        />
-      </View> */}
-      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
-          disabled={loading}
-          onPress={() => signInWithEmail()}
-        />
-      </View> */}
-      {/* <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign up"
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        />
-      </View> */}
       <DetachedBottomSheet
         show={showSigninBottomSheet}
         onSheetClose={() => setShowSigninBottomSheet(false)}
