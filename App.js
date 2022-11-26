@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { PortalProvider } from "@gorhom/portal";
 import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 export default function App() {
   const [session, setSession] = useState(null);

@@ -5,6 +5,7 @@ import {
   Button,
   Dimensions,
   FlatList,
+  Keyboard,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -21,6 +22,7 @@ import PaginationDot from "../app/components/Posts/PaginationDot";
 import DetachedBottomSheet from "../app/components/BottomFlatSheet/DetachedBottomSheet";
 import SignIn from "../app/components/auth/SignIn";
 import CreateAccount from "../app/components/auth/CreateAccount";
+import SignUpConfirmation from "../app/components/auth/SignUpConfirmation";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
@@ -55,18 +57,24 @@ const Auth = () => {
   const insets = useSafeAreaInsets();
   const [showSigninBottomSheet, setShowSigninBottomSheet] = useState(false);
   const [showSignupBottomSheet, setShowSignupBottomSheet] = useState(false);
+  const [showConfrimationBottomSheet, setConfirmationBottomSheet] =
+    useState(false);
 
   //? for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
 
+  const onReportPress = () => {
+    setShowSignupBottomSheet(false);
+    setConfirmationBottomSheet(true);
+  };
+
+  const onSignUpClose = () => {
+    setShowSignupBottomSheet(false);
+    Keyboard.dismiss();
+  };
+
   const _handlePressButtonAsync = async (url) => {
     await WebBrowser.openBrowserAsync(url);
-  };
-  const hideBottomSignup = () => {
-    setShowSignupBottomSheet(false);
-  };
-  const hideBottomSignin = () => {
-    setShowSigninBottomSheet(false);
   };
 
   const renderItem = ({ item, index }) => {
@@ -267,15 +275,23 @@ const Auth = () => {
       <DetachedBottomSheet
         show={showSigninBottomSheet}
         onSheetClose={() => setShowSigninBottomSheet(false)}
-        hideBottomSignup={hideBottomSignin}
       >
         <SignIn />
       </DetachedBottomSheet>
       <DetachedBottomSheet
         show={showSignupBottomSheet}
-        onSheetClose={() => setShowSignupBottomSheet(false)}
+        onSheetClose={() => onSignUpClose(false)}
       >
-        <CreateAccount hideBottomSignup={hideBottomSignup} />
+        <CreateAccount
+          hideBottomSignup={onReportPress}
+          onReportPress={onReportPress}
+        />
+      </DetachedBottomSheet>
+      <DetachedBottomSheet
+        show={showConfrimationBottomSheet}
+        onSheetClose={() => setConfirmationBottomSheet(false)}
+      >
+        <SignUpConfirmation />
       </DetachedBottomSheet>
     </View>
   );

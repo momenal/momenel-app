@@ -26,15 +26,10 @@ const DetachedBottomSheet = (props) => {
     if (show === true) {
       bottomSheetRef?.current?.expand();
     } else {
-      Keyboard.dismiss();
       bottomSheetRef?.current?.close();
     }
   }, [show]);
 
-  // const initialSnapPoints = useMemo(
-  //   () => ["CONTENT_HEIGHT"],
-  //   ["CONTENT_HEIGHT"]
-  // );
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
   const {
     animatedHandleHeight,
@@ -49,9 +44,6 @@ const DetachedBottomSheet = (props) => {
       onSheetClose();
     }
   }, []);
-
-  const handleClosePress = () => bottomSheetRef.current.close();
-  const handleOpenPress = () => bottomSheetRef.current.expand();
 
   // renders
   const renderBackdrop = useCallback(

@@ -13,12 +13,13 @@ import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
 import * as WebBrowser from "expo-web-browser";
 
-const CreateAccount = ({ hideBottomSignup }) => {
+const CreateAccount = ({ onReportPress }) => {
   const [username, setUsername] = useState("");
   const [isunique, setIsunique] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ type: "", message: "" });
 
   async function signUpWithEmail() {
     setLoading(true);
@@ -33,11 +34,8 @@ const CreateAccount = ({ hideBottomSignup }) => {
     if (error) {
       Alert.alert(error.message);
     } else {
-      //registered
-      hideBottomSignup(false);
-      setUsername("");
-      setEmail("");
-      setPassword("");
+      console.log("in");
+      onReportPress();
     }
     setLoading(false);
   }
@@ -53,7 +51,6 @@ const CreateAccount = ({ hideBottomSignup }) => {
           style={{
             fontFamily: "Nunito_700Bold",
             fontSize: 30,
-            // marginBottom: 20,
           }}
         >
           Create an Account
@@ -68,6 +65,17 @@ const CreateAccount = ({ hideBottomSignup }) => {
         </CustomText>
       </View>
       <View style={styles.textViews}>
+        {error.type === "username" ? (
+          <CustomText
+            style={{
+              marginBottom: 5,
+            }}
+          >
+            {error.message}
+          </CustomText>
+        ) : (
+          <></>
+        )}
         <BottomSheetTextInput
           style={styles.textInput}
           placeholder="Username"
@@ -134,11 +142,7 @@ const CreateAccount = ({ hideBottomSignup }) => {
           marginTop: 20,
         }}
       >
-        <CustomText
-          style={styles.termsText}
-          // adjustsFontSizeToFit
-          // numberOfLines={2}
-        >
+        <CustomText style={styles.termsText}>
           By signing up, I cofirmed that I have read and agreed to Momenel’s{" "}
           <CustomText
             style={[styles.termsText, styles.textUnderline]}
@@ -185,10 +189,8 @@ const styles = StyleSheet.create({
   termsText: {
     fontFamily: "Nunito_500Medium",
     fontSize: 13,
-    // width: "100%",
     textAlign: "center",
     color: "black",
-    // paddingVertical: "4%",
   },
   textUnderline: {
     textDecorationLine: "underline",
