@@ -12,14 +12,37 @@ import CustomText from "../app/components/customText/CustomText";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
+import { supabase } from "../app/lib/supabase";
+import Lottie from "lottie-react-native";
+import * as SplashScreen from "expo-splash-screen";
+import Loader from "../app/components/Loader";
+
+// Keep the splash screen visible while we fetch resources
+// SplashScreen.preventAutoHideAsync();
 
 const Home = ({ navigation }) => {
   const [isloading, setIsloading] = useState(true);
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
+  const [appIsReady, setAppIsReady] = useState(false);
+  const animationRef = useRef(null);
+
+  async function login() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    // console.log(user.id);
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username")
+      .eq("id", user.id);
+    console.log(data);
+    setAppIsReady(true);
+  }
 
   useEffect(() => {
+    setTimeout(login, 5000);
     fetch("https://random-data-api.com/api/v2/users")
       .then((response) => response.json())
       .then((json) => {
@@ -53,6 +76,10 @@ const Home = ({ navigation }) => {
       />
     );
   };
+
+  if (!appIsReady) {
+    return <Loader />;
+  }
 
   return (
     <View

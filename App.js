@@ -31,8 +31,18 @@ export default function App() {
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       // if (_event === "SIGNED_IN") {
-      //   console.log(session.user);
+      //   const {
+      //     data: { user },
+      //   } = await supabase.auth.getUser();
+      //   // console.log(user.id);
+      //   const { data, error } = await supabase
+      //     .from("profiles")
+      //     .select("username")
+      //     .eq("id", user.id);
+      //   console.log(data);
       // }
+
+      //
       setSession(session);
     });
   }, []);
