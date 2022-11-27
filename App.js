@@ -29,7 +29,10 @@ export default function App() {
       setSession(session);
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      // if (_event === "SIGNED_IN") {
+      //   console.log(session.user);
+      // }
       setSession(session);
     });
   }, []);

@@ -12,8 +12,9 @@ import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
 import * as WebBrowser from "expo-web-browser";
+import * as Haptics from "expo-haptics";
 
-const CreateAccount = ({ onReportPress }) => {
+const CreateAccount = ({ onReportPress, onUserExists }) => {
   const [username, setUsername] = useState("");
   const [isunique, setIsunique] = useState(null);
   const [email, setEmail] = useState("");
@@ -23,19 +24,50 @@ const CreateAccount = ({ onReportPress }) => {
 
   async function signUpWithEmail() {
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: { username: username },
-      },
-    });
 
-    if (error) {
-      Alert.alert(error.message);
+    //check if email already exists
+    const res = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("email", email.toLowerCase());
+
+    if (res.data.length > 0) {
+      console.log("eml ", res.data);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setError({ type: "auth", message: "User Already exists!" });
+
+      // Alert.alert("User Already exists!");
+
+      onUserExists();
     } else {
-      console.log("in");
-      onReportPress();
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        console.log(error.message);
+        console.log(error.message.includes("invalid format"));
+        //! error messages
+        if (error.message.includes("invalid format")) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+          setError({ type: "email", message: "Invalid Email Format" });
+        } else if (error.message.includes("provide your email")) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+          setError({ type: "email", message: error.message });
+        } else if (
+          error.message.includes("password") ||
+          error.message.includes("Password")
+        ) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+          setError({ type: "password", message: error.message });
+        } else {
+          setError({ type: "auth", message: error.message });
+        }
+        // Alert.alert(error.message);
+      } else {
+        // console.log(data);
+        onReportPress();
+      }
     }
     setLoading(false);
   }
@@ -64,7 +96,23 @@ const CreateAccount = ({ onReportPress }) => {
           Welcome to Momenel 👋
         </CustomText>
       </View>
-      <View style={styles.textViews}>
+      {error.type === "auth" ? (
+        <CustomText
+          style={{
+            // marginBottom: 5,
+            marginBottom: 20,
+            color: "red",
+            fontSize: 16,
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          {error.message}
+        </CustomText>
+      ) : (
+        <></>
+      )}
+      {/* <View style={styles.textViews}>
         {error.type === "username" ? (
           <CustomText
             style={{
@@ -91,10 +139,25 @@ const CreateAccount = ({ onReportPress }) => {
             Username already exists!
           </CustomText>
         )}
-      </View>
+      </View> */}
       <View style={styles.textViews}>
+        {error.type === "email" ? (
+          <CustomText
+            style={{
+              marginBottom: 5,
+              color: "red",
+            }}
+          >
+            {error.message}
+          </CustomText>
+        ) : (
+          <></>
+        )}
         <BottomSheetTextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            error.type === "email" ? styles.errorBorder : {},
+          ]}
           placeholder="Email"
           placeholderTextColor={"#9C9C9C"}
           value={email}
@@ -106,8 +169,23 @@ const CreateAccount = ({ onReportPress }) => {
         />
       </View>
       <View style={styles.textViews}>
+        {error.type === "password" ? (
+          <CustomText
+            style={{
+              marginBottom: 5,
+              color: "red",
+            }}
+          >
+            {error.message}
+          </CustomText>
+        ) : (
+          <></>
+        )}
         <BottomSheetTextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            error.type === "password" ? styles.errorBorder : {},
+          ]}
           placeholder="Password"
           placeholderTextColor={"#9C9C9C"}
           value={password}
@@ -186,6 +264,7 @@ const styles = StyleSheet.create({
   },
   textViews: { marginBottom: 20 },
   errorText: { color: "red" },
+  errorBorder: { borderColor: "red" },
   termsText: {
     fontFamily: "Nunito_500Medium",
     fontSize: 13,

@@ -67,9 +67,18 @@ const Auth = () => {
     setShowSignupBottomSheet(false);
     setConfirmationBottomSheet(true);
   };
+  const onUserAlreadyExists = () => {
+    setShowSignupBottomSheet(false);
+    setShowSigninBottomSheet(true);
+  };
 
   const onSignUpClose = () => {
     setShowSignupBottomSheet(false);
+    Keyboard.dismiss();
+  };
+
+  const onSignInClose = () => {
+    setShowSigninBottomSheet(false);
     Keyboard.dismiss();
   };
 
@@ -239,42 +248,11 @@ const Auth = () => {
               Sign in
             </CustomText>
           </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              marginTop: 10,
-            }}
-          >
-            <CustomText
-              style={styles.termsText}
-              // adjustsFontSizeToFit
-              // numberOfLines={2}
-            >
-              By signing up, I cofirmed that I have read and agreed to Momenel’s{" "}
-              <CustomText
-                style={[styles.termsText, styles.textUnderline]}
-                onPress={() => _handlePressButtonAsync("https://expo.dev")}
-              >
-                Terms Of Service
-              </CustomText>
-              ,{" "}
-              <CustomText
-                style={[styles.termsText, styles.textUnderline]}
-                onPress={() =>
-                  _handlePressButtonAsync("https://www.momenel.com/privacy")
-                }
-              >
-                Privacy
-              </CustomText>
-              .
-            </CustomText>
-          </View>
         </View>
       </View>
       <DetachedBottomSheet
         show={showSigninBottomSheet}
-        onSheetClose={() => setShowSigninBottomSheet(false)}
+        onSheetClose={() => onSignInClose()}
       >
         <SignIn />
       </DetachedBottomSheet>
@@ -285,6 +263,7 @@ const Auth = () => {
         <CreateAccount
           hideBottomSignup={onReportPress}
           onReportPress={onReportPress}
+          onUserExists={onUserAlreadyExists}
         />
       </DetachedBottomSheet>
       <DetachedBottomSheet

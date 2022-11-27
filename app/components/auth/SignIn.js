@@ -28,7 +28,28 @@ const SignIn = () => {
     });
 
     if (error) {
+      console.log(error.message);
       setError("Incorrect Username or Password");
+      setEmail("");
+      setPassword("");
+    }
+    setLoading(false);
+  }
+
+  async function forgetPassword() {
+    setLoading(true);
+    setError("");
+    const { data, error } = await supabase.auth.resetPasswordForEmail(
+      // "nukygiro@teleg.eu",
+      "fhaider085@gmail.com",
+      { redirectTo: "https://www.momenel.com/update" }
+    );
+
+    console.log(data);
+    console.log(error);
+
+    if (error) {
+      // console.log(error.message);
       setEmail("");
       setPassword("");
     }
@@ -88,6 +109,7 @@ const SignIn = () => {
         </LinearGradientButton>
       </TouchableOpacity>
       <CustomText
+        onPress={() => forgetPassword()}
         style={{
           fontSize: 14,
           width: "100%",
@@ -117,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 13,
     paddingVertical: "4%",
-    color: "#818181",
+    color: "black",
     fontFamily: "Nunito_500Medium",
     fontSize: 15,
     marginBottom: 20,
