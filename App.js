@@ -20,9 +20,12 @@ import { PortalProvider } from "@gorhom/portal";
 import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { useBoundStore } from "./app/Store/useBoundStore";
+import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 
 export default function App() {
   const [session, setSession] = useState(null);
+  const username = useBoundStore((state) => state.username);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -30,17 +33,17 @@ export default function App() {
     });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
-      // if (_event === "SIGNED_IN") {
-      //   const {
-      //     data: { user },
-      //   } = await supabase.auth.getUser();
-      //   // console.log(user.id);
-      //   const { data, error } = await supabase
-      //     .from("profiles")
-      //     .select("username")
-      //     .eq("id", user.id);
-      //   console.log(data);
-      // }
+      if (_event === "SIGNED_IN") {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        console.log(user.id);
+        // const { data, error } = await supabase
+        //   .from("profiles")
+        //   .select("username")
+        //   .eq("id", user.id);
+        // console.log(data);
+      }
 
       //
       setSession(session);
@@ -72,16 +75,29 @@ export default function App() {
 
   {
     return session && session.user ? (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <PortalProvider>
-            <NavigationContainer>
-              <StackNavigator />
-              <StatusBar style="dark" animated={true} />
-            </NavigationContainer>
-          </PortalProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+      !username ? (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider>
+            <PortalProvider>
+              <NavigationContainer>
+                <SignupStackNavigator />
+                {/* <StackNavigator /> */}
+              </NavigationContainer>
+            </PortalProvider>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      ) : (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider>
+            <PortalProvider>
+              <NavigationContainer>
+                <StackNavigator />
+                <StatusBar style="dark" animated={true} />
+              </NavigationContainer>
+            </PortalProvider>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      )
     ) : (
       <GestureHandlerRootView style={{ flex: 1 }}>
         <PortalProvider>
@@ -93,6 +109,29 @@ export default function App() {
       </GestureHandlerRootView>
     );
   }
+  // {
+  //   return session && session.user ? (
+  //     <GestureHandlerRootView style={{ flex: 1 }}>
+  //       <SafeAreaProvider>
+  //         <PortalProvider>
+  //           <NavigationContainer>
+  //             <StackNavigator />
+  //             <StatusBar style="dark" animated={true} />
+  //           </NavigationContainer>
+  //         </PortalProvider>
+  //       </SafeAreaProvider>
+  //     </GestureHandlerRootView>
+  //   ) : (
+  //     <GestureHandlerRootView style={{ flex: 1 }}>
+  //       <PortalProvider>
+  //         <SafeAreaProvider>
+  //           <Auth />
+  //           <StatusBar style="dark" animated={true} hidden />
+  //         </SafeAreaProvider>
+  //       </PortalProvider>
+  //     </GestureHandlerRootView>
+  //   );
+  // }
   {
     /* {session && session.user ? <StackNavigator /> : <Auth />} */
   }

@@ -1,10 +1,6 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import Home from "../../Screens/Home";
-
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CreatePost from "../components/CreatePost";
-import Comments from "../components/Comments";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
 import HomeIcon from "../components/icons/HomeIcon";

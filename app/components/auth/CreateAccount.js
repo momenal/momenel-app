@@ -43,6 +43,10 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
+
+        data: {
+          dob: "12/12/1990",
+        },
       });
       if (error) {
         console.log(error.message);
