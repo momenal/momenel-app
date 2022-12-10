@@ -2,8 +2,8 @@ export const createPostsSlice = (set) => ({
   posts: [
     {
       postId: "qws123ad09weq",
-      userName: "youknowwho",
-      // name: "kal jack",
+      userName: "farhan",
+      name: "farhan haider",
       repostedByUser: false,
       repost: {
         isRepost: false,
@@ -22,8 +22,9 @@ export const createPostsSlice = (set) => ({
           url: "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
         },
       ],
-      caption: "No more data collection",
-      createdAt: "2022-11-04T13:54:55+00:00",
+      caption:
+        "Some of my recent photos.\nWhat do you think? @farhan\nComment below ☺️\n#photo",
+      createdAt: Date.now(),
       likes: 300,
       comments: 12,
       reposts: 5,
@@ -33,23 +34,18 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: "asd2324211112311",
-      userName: "iaadlls",
+      userName: "betzy",
       repost: {
         isRepost: false,
       },
-      name: "farhan haider",
+      name: "Betzabeth's diary",
       profile_url:
         "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
         {
           id: "81cvx27893",
           type: "video",
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275037/test/pexels-cottonbro-cg-8382843_jerwhe.mp4",
-        },
-        {
-          id: "812712381293",
-          type: "video",
-          url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687293/jet_fcsz3o.mov",
         },
         {
           id: "post1435qwe2348",
@@ -62,8 +58,8 @@ export const createPostsSlice = (set) => ({
           url: "https://images.pexels.com/photos/7582107/pexels-photo-7582107.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
       ],
-      caption: "",
-      createdAt: "2022-11-02T14:48:51+00:00",
+      caption: "🤯 🤯 🤯 🤯 🤯",
+      createdAt: Date.now() - 100000,
       likes: 999941,
       comments: 10100,
       reposts: 0,
@@ -74,25 +70,23 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: "001823",
-      userName: "funnyvids",
+      userName: "memes_19",
       repost: {
         isRepost: true,
         repostedBy: "farhanverse",
         repostedAt: "2022-11-04T13:54:55+00:00",
       },
-      name: "funny vids (parody)",
       profile_url:
         "https://images.pexels.com/photos/160472/doll-boy-cheeky-toys-160472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
         {
           id: "81cvx27893",
           type: "video",
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668277265/test/v10044g50000c45repbc77u86h15j6c0_lmzu4r.mov",
+          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687245/funny_code_dgceit.mp4",
         },
       ],
-      caption:
-        "We always knew she will be a good talked lol. \n #funny #babies #babyfever",
-      createdAt: "2022-11-02T14:48:51+00:00",
+      caption: "Coding 1 month vs 1 year 😹 \n #coding #meme @farhan",
+      createdAt: Date.now() - 515000,
       likes: 999941,
       comments: 10100,
       reposts: 0,
@@ -103,18 +97,18 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: "7713ars",
-      userName: "arshadofficial",
+      userName: "Marvel",
       repost: {
         isRepost: false,
       },
-      name: "Arshad",
+      name: "Marvel",
       profile_url:
-        "https://images.unsplash.com/photo-1604732387551-69ac9cce4e59?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1541&q=80",
+        "https://i.pinimg.com/originals/b5/de/08/b5de08b9050e254b008dcc13d28ac42e.jpg",
       posts: [
         {
           id: "81cvx27893",
           type: "video",
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275841/test/v0f044gc0000cc9hr83c77u5gu1gdnpg_oujd1y.mov",
+          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670686630/avengers_k2uzpz.mp4",
         },
         {
           id: "post1435qwe2348",
@@ -128,7 +122,7 @@ export const createPostsSlice = (set) => ({
         },
       ],
       caption: "",
-      createdAt: "2022-11-02T14:48:51+00:00",
+      createdAt: Date.now() - 400000,
       likes: 999941,
       comments: 10100,
       reposts: 0,

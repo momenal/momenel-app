@@ -1,5 +1,5 @@
 export const createUserSlice = (set) => ({
-  username: "",
+  username: "ghgjh",
   profile_url: "",
   preview_url: "",
   loading: false,

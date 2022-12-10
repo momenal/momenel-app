@@ -38,6 +38,7 @@ export default function App() {
           data: { user },
         } = await supabase.auth.getUser();
         console.log(user.id);
+
         // const { data, error } = await supabase
         //   .from("profiles")
         //   .select("username")
