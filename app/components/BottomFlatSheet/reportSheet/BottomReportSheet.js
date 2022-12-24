@@ -23,8 +23,12 @@ import ReportSelect from "./ReportSelect";
 import LinearGradientButton from "../../Buttons/LinearGradientButton";
 import * as Haptics from "expo-haptics";
 
-const InputComponent = () => {
+const InputComponent = ({ onUpdate }) => {
   const [title, setTitle] = useState("");
+  const onchange = (text) => {
+    setTitle(text);
+    onUpdate(text);
+  };
   return (
     <BottomSheetTextInput
       style={{
@@ -38,7 +42,7 @@ const InputComponent = () => {
       }}
       placeholder="Optional"
       value={title}
-      onChangeText={(text) => setTitle(text)}
+      onChangeText={onchange}
       multiline
       keyboardAppearance={"dark"}
       // blurOnSubmit={true}
@@ -50,15 +54,36 @@ const InputComponent = () => {
 const BottomReportSheet = (props) => {
   let { show, onSheetClose, setShow, username } = props;
   const [activeIndex, setactiveIndex] = useState(null);
-  // const [text, onChangeText] = useState(null);
+
+  const [text, onChangeText] = useState(null);
 
   const insets = useSafeAreaInsets();
 
   const data = [
-    { heading: "Spam", description: "Depictions of violence, gore, nudity." },
     {
-      heading: "Sensitive Content",
-      description: "Depictions of violence, gore, nudity.",
+      heading: "Spam",
+      description:
+        "Posting malicious content or links, inauthentic engagement,misusing hashtags, repetitive replies and Reposts",
+    },
+    {
+      heading: "Hate Speech",
+      description:
+        "Posting content that promotes or encourages violence, hatred, or harm against an individual or group of people. For example Islamophobia, anti-Semitism, homophobia, transphobia,and racism",
+    },
+    {
+      heading: "Scam or Fraud",
+      description:
+        "Posting content or links in an attempt to sell or promote a product or service in a false or misleading manner. Posts attempting to defraud others of their money or personal information should also be reported.",
+    },
+    {
+      heading: "Privacy Violations",
+      description:
+        "Posting content that violates another person's privacy, including posting private information about others without their consent.",
+    },
+    {
+      heading: "Privacy Violations",
+      description:
+        "Posting content that violates another person's privacy, including posting private information about others without their consent.",
     },
     {
       heading: "Illegal activity and behavior",
@@ -66,14 +91,43 @@ const BottomReportSheet = (props) => {
         "Content that depicts illegal or criminal acts, threats of violence.",
     },
     {
-      heading: "Intellectual property infringment",
+      heading: "Intellectual property infringement",
       description:
-        "Impersonating another account, infringing on intellectual property rights.",
+        "Impersonating another account or business, infringing on intellectual property rights.",
+    },
+    {
+      heading: "Sensitive Content",
+      description:
+        "Content that depicts graphic violence, sexual activity, nudity, gore, or other sensitive subjects.",
+    },
+    {
+      heading: "Underage Content",
+      description:
+        "Content that depicts minors in a sexualized manner or in a manner that is otherwise inappropriate for their age.",
+    },
+    {
+      heading: "Doxxing",
+      description:
+        "Sharing or threatening to share another person's personal information, including their name, address, phone number, email address, or other identifying information without their consent.",
+    },
+    {
+      heading: "Prostitution",
+      description:
+        "Solicitation or advertising for illegal sexual activity or sex for hire.",
+    },
+    {
+      heading: "Suicide or self-injury",
+      description:
+        "Posts or comments that encourage or promote self-injury, including suicide and cutting.",
+    },
+    {
+      heading: "I don't like this content",
+      description: "Content that you dislike and/or this user is a troll",
     },
   ];
   // ref
   const setActiveIndexState = (index) => {
-    console.log(index);
+    // console.log(index);
     setactiveIndex(index);
   };
   const bottomSheetRef = useRef(null);
@@ -91,12 +145,23 @@ const BottomReportSheet = (props) => {
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
       onSheetClose();
+      onChangeText("");
+      setactiveIndex(null);
     }
   }, []);
 
   const onReport = () => {
     setShow(false);
+    onChangeText("");
+    setactiveIndex(null);
+
+    console.log("Report index: ", data[activeIndex].heading);
+    console.log("comment: ", text);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  };
+
+  const onTextUpdate = (text) => {
+    onChangeText(text);
   };
 
   // renders
@@ -120,13 +185,9 @@ const BottomReportSheet = (props) => {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           enablePanDownToClose={true}
-          // enableOverDrag={false}
           backdropComponent={renderBackdrop}
           keyboardBlurBehavior={"restore"}
           keyboardBehavior={"interactive"}
-          // footerComponent={renderFooter}
-          // detached={true}
-          // bottomInset={46}
         >
           <CustomText
             style={{
@@ -168,20 +229,26 @@ const BottomReportSheet = (props) => {
                   marginVertical: 20,
                 }}
               >
-                Provide us with more additional information.
+                Provide us with additional information.
               </CustomText>
               <View style={{ height: 100 }}>
-                <InputComponent />
+                <InputComponent onUpdate={onTextUpdate} />
               </View>
             </TouchableOpacity>
-            <TouchableWithoutFeedback onPress={() => onReport()}>
+            <TouchableWithoutFeedback
+              disabled={activeIndex != null ? false : true}
+              onPress={() => onReport()}
+            >
               <View
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
                 }}
               >
-                <LinearGradientButton style={{ marginTop: 20 }}>
+                <LinearGradientButton
+                  disabled={activeIndex != null ? false : true}
+                  style={{ marginTop: 20 }}
+                >
                   <CustomText
                     style={{
                       fontFamily: "Nunito_800ExtraBold",

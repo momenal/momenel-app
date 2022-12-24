@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import {
   SafeAreaView,
@@ -198,6 +198,6 @@ const HorizontalStories = ({
   );
 };
 
-export default HorizontalStories;
+export default memo(HorizontalStories);
 
 const styles = StyleSheet.create({});

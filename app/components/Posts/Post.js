@@ -4,13 +4,14 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  Touchable,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import React, { useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useMemo, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostsMedia from "./PostsMediaMultiple";
 import PostMediaOne from "./PostMediaOne";
@@ -22,6 +23,8 @@ import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
 import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
+import { State, TapGestureHandler } from "react-native-gesture-handler";
+import { runOnJS } from "react-native-reanimated";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -29,6 +32,7 @@ const Post = ({ data, index }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [maxHeight, setmaxHeight] = useState(0);
+  const doubleTapRef = useRef(null);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -60,6 +64,12 @@ const Post = ({ data, index }) => {
         doubleTap={doubleTap}
       />
     );
+  };
+
+  const _onDoubleTap = (event) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      runOnJS(doubleTap)();
+    }
   };
 
   const keyExtractor = useCallback((item) => item.id, []);
@@ -100,9 +110,15 @@ const Post = ({ data, index }) => {
       : Math.sign(num) * Math.abs(num);
   }
 
-  const onTextLayout = useCallback((e) => {
-    console.log(e.nativeEvent.lines.length);
-  });
+  const handleTip = () => {
+    if (data.isDonateable === true) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      //open tip modal
+    } else {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      //todo: show alert
+    }
+  };
 
   return (
     <View
@@ -132,7 +148,7 @@ const Post = ({ data, index }) => {
           <Repost
             size={23}
             color={"#8456E9"}
-            // color={data.repostedByUser ? "#8456E9" : "#999999"}
+            // color={data.isReposted ? "#8456E9" : "#999999"}
           />
           <CustomText
             style={{
@@ -156,7 +172,8 @@ const Post = ({ data, index }) => {
         index={index}
       />
       {/* media */}
-      {data.posts.length >= 2 ? (
+
+      {data.posts && data.posts.length >= 2 ? (
         <FlatList
           data={data.posts}
           horizontal
@@ -173,48 +190,56 @@ const Post = ({ data, index }) => {
             }
           )}
         />
-      ) : data.posts.length >= 1 ? (
+      ) : data.posts && data.posts.length >= 1 ? (
         <PostMediaOne data={data.posts[0]} doubleTap={doubleTap} />
       ) : (
         <></>
       )}
       {/* pagination dots */}
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "center",
-          paddingBottom: 11,
-        }}
-      >
-        {data.posts.length > 1 && (
+      {data.posts && data.posts.length > 1 && (
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "center",
+            paddingBottom: 11,
+          }}
+        >
           <PaginationDot data={data.posts} scrollX={scrollX} />
-        )}
-      </View>
+        </View>
+      )}
       {/* caption */}
       {data.caption && (
         <View
           style={{
-            borderRadius: 3,
             paddingHorizontal: ScreenWidth * 0.06,
             width: ScreenWidth,
             paddingBottom: 16,
           }}
         >
-          <StructuredText
-            mentionHashtagPress={mentionHashtagClick}
-            mentionHashtagColor={"#8759F2"}
-            numberOfLines={4}
-            // ellipsizeMode={"trail"}
-            style={{ color: "#535353", fontSize: 15 }}
+          <TapGestureHandler
+            ref={doubleTapRef}
+            onHandlerStateChange={_onDoubleTap}
+            numberOfTaps={2}
           >
-            {data.caption}
-          </StructuredText>
+            <View>
+              <StructuredText
+                mentionHashtagPress={mentionHashtagClick}
+                mentionHashtagColor={"#8759F2"}
+                numberOfLines={data.type === "text" ? 12 : 3}
+                style={
+                  data.type === "text" ? { fontSize: 19 } : { fontSize: 16 }
+                }
+              >
+                {data.caption}
+              </StructuredText>
+            </View>
+          </TapGestureHandler>
         </View>
       )}
+      {/* buttons */}
       <View
         style={{
-          // backgroundColor: "black",
           flexDirection: "row",
           width: "100%",
           paddingLeft: ScreenWidth * 0.05,
@@ -225,9 +250,7 @@ const Post = ({ data, index }) => {
           height: 30,
         }}
       >
-        <View>
-          <Heart isLiked={data.isLiked} index={index} />
-        </View>
+        <Heart isLiked={data.isLiked} index={index} />
 
         <TouchableOpacity>
           <CommentsIcon size={21} />
@@ -235,7 +258,7 @@ const Post = ({ data, index }) => {
         <TouchableOpacity
           onPress={() => {
             handleRepost(index);
-            if (data.repostedByUser === true) {
+            if (data.isReposted === true) {
               Haptics.notificationAsync(
                 Haptics.NotificationFeedbackType.Success
               );
@@ -244,13 +267,15 @@ const Post = ({ data, index }) => {
             }
           }}
         >
-          <Repost
-            size={25}
-            color={data.repostedByUser ? "#8456E9" : "#999999"}
-          />
+          <Repost size={25} color={data.isReposted ? "#8456E9" : "#999999"} />
         </TouchableOpacity>
 
-        <TipIcon size={25} />
+        <TouchableOpacity onPress={handleTip}>
+          <TipIcon
+            size={25}
+            color={data.isDonateable ? "#F12D97" : "#CECECE"}
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{

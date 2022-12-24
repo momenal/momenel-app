@@ -1,13 +1,8 @@
-import React, { memo, useCallback, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import React, { memo } from "react";
 import CustomText from "../customText/CustomText";
 import ReadMore2 from "../customText/ReadMore2";
 
 const StructuredText = memo((props) => {
-  const [expanded, setExpanded] = useState(false);
-  const onTextLayout = useCallback((e) => {
-    console.log(e.nativeEvent.lines.length);
-  });
   const prepareText = (text, mentionHashtagPress, mentionHashtagColor) => {
     const result = [];
 
@@ -29,6 +24,7 @@ const StructuredText = memo((props) => {
           mentionHashtagColor={mentionHashtagColor}
           mentionHashtagPress={mentionHashtagPress}
           text={ment}
+          style={props.style}
         />
       );
       text = text.substring(text.indexOf(ment) + ment.length, text.length);
@@ -39,88 +35,32 @@ const StructuredText = memo((props) => {
     return result;
   };
 
-  const _renderTruncatedFooter = (handlePress) => {
-    return (
-      <CustomText style={{ color: "red", marginTop: 5 }} onPress={handlePress}>
-        Read more
-      </CustomText>
-    );
-  };
-
-  const _renderRevealedFooter = (handlePress) => {
-    return (
-      <CustomText style={{ color: "gray", marginTop: 5 }} onPress={handlePress}>
-        Show less
-      </CustomText>
-    );
-  };
-
-  const _handleTextReady = () => {
-    // ...
-  };
   return (
-    <View>
-      <ReadMore2
-        numberOfLines={props.numberOfLines}
-        renderTruncatedFooter={_renderTruncatedFooter}
-        renderRevealedFooter={_renderRevealedFooter}
-        onReady={_handleTextReady}
-      >
-        {prepareText(
-          props.children,
-          props.mentionHashtagPress,
-          props.mentionHashtagColor
-        )}
-      </ReadMore2>
-      {/* <ReadMore
-        numberOfLines={props.numberOfLines}
-        renderTruncatedFooter={_renderTruncatedFooter}
-        renderRevealedFooter={_renderRevealedFooter}
-        onReady={_handleTextReady}
-      >
-        {prepareText(
-          props.children,
-          props.mentionHashtagPress,
-          props.mentionHashtagColor
-        )}
-      </ReadMore> */}
-      {/* <CustomText
-        style={[props.style]}
-        // style={[props.style, { fontSize: 20, height: 200, width: 200 }]}
-        onPress={props.onPress}
-        numberOfLines={expanded ? null : props.numberOfLines}
-        ellipsizeMode={props.ellipsizeMode}
-        onTextLayout={onTextLayout}
-        // adjustsFontSizeToFit={true}
-        // minimumFontScale={0.01}
-      >
-        {prepareText(
-          props.children,
-          props.mentionHashtagPress,
-          props.mentionHashtagColor
-        )}
-      </CustomText> */}
-      {/* {props.children.length > 4 && (
-        <TouchableOpacity onPress={() => setExpanded(!expanded)}>
-          <CustomText style={{ color: "red" }}>
-            {expanded ? "Less" : "More"}
-          </CustomText>
-        </TouchableOpacity>
-      )} */}
-    </View>
+    <ReadMore2
+      numberOfLines={props.numberOfLines}
+      style={[props.style, { fontFamily: "Nunito_400Regular" }]}
+    >
+      {prepareText(
+        props.children,
+        props.mentionHashtagPress,
+        props.mentionHashtagColor
+      )}
+    </ReadMore2>
   );
 });
 
 const Mention = (props) => {
   return (
     <CustomText
-      style={{
-        color: props.mentionHashtagColor
-          ? props.mentionHashtagColor
-          : "#0384BE",
-        fontFamily: "Nunito_700Bold",
-        fontSize: 16,
-      }}
+      style={[
+        {
+          color: props.mentionHashtagColor
+            ? props.mentionHashtagColor
+            : "#0384BE",
+          fontFamily: "Nunito_600SemiBold",
+        },
+        props.style,
+      ]}
       onPress={() => {
         if (props.mentionHashtagPress) {
           props.mentionHashtagPress(props.text);

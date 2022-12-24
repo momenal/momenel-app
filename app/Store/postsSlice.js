@@ -4,34 +4,60 @@ export const createPostsSlice = (set) => ({
       postId: "xjkBo213123",
       userName: "quotes",
       name: "Quotes",
-      repostedByUser: false,
+      type: "text",
       repost: {
-        isRepost: false,
+        isRepost: true,
+        repostedBy: "farhan",
+        repostedAt: "2022-11-04T13:54:55+00:00",
       },
       profile_url:
         "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      posts: [
-        // {
-        //   id: "poasdstwqe123",
-        //   type: "photo",
-        //   url: "https://images.pexels.com/photos/14758717/pexels-photo-14758717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        // },
-      ],
       caption:
-        "www.momenel.com In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah ",
+        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
       createdAt: Date.now(),
       likes: 300,
       comments: 12,
       reposts: 5,
       lastEdit: null,
       isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
       isSaved: true,
+      isDonateable: false,
+    },
+    {
+      postId: "xjkBo2nnnas13123",
+      userName: "quotes",
+      name: "Quotes",
+      type: "post",
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      posts: [
+        {
+          id: "poasdstwqe123",
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1671762672531-98470ef359e5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+        },
+      ],
+      caption:
+        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
+      isSaved: true,
+      isDonateable: true,
     },
     {
       postId: "991293kjdafA",
       userName: "quotes",
       name: "Quotes",
-      repostedByUser: false,
+      isReposted: false,
       repost: {
         isRepost: false,
       },
@@ -52,12 +78,13 @@ export const createPostsSlice = (set) => ({
       lastEdit: null,
       isLiked: false,
       isSaved: true,
+      isDonateable: true,
     },
     {
       postId: "qws123ad09weq",
       userName: "farhan",
       name: "farhan haider",
-      repostedByUser: false,
+      isReposted: false,
       repost: {
         isRepost: false,
       },
@@ -84,6 +111,7 @@ export const createPostsSlice = (set) => ({
       lastEdit: null,
       isLiked: false,
       isSaved: true,
+      isDonateable: false,
     },
     {
       postId: "asd2324211112311",
@@ -116,10 +144,11 @@ export const createPostsSlice = (set) => ({
       likes: 999941,
       comments: 10100,
       reposts: 0,
-      repostedByUser: false,
+      isReposted: false,
       lastEdit: null,
       isSaved: false,
       isLiked: true,
+      isDonateable: true,
     },
     // {
     //   postId: "001823",
@@ -143,7 +172,7 @@ export const createPostsSlice = (set) => ({
     //   likes: 999941,
     //   comments: 10100,
     //   reposts: 0,
-    //   repostedByUser: false,
+    //   isReposted: false,
     //   lastEdit: null,
     //   isSaved: false,
     //   isLiked: true,
@@ -179,10 +208,11 @@ export const createPostsSlice = (set) => ({
       likes: 999941,
       comments: 10100,
       reposts: 0,
-      repostedByUser: false,
+      isReposted: false,
       lastEdit: null,
       isSaved: false,
       isLiked: true,
+      isDonateable: true,
     },
 
     {
@@ -221,10 +251,11 @@ export const createPostsSlice = (set) => ({
       likes: 999941,
       comments: 10100,
       reposts: 0,
-      repostedByUser: false,
+      isReposted: false,
       lastEdit: null,
       isSaved: false,
       isLiked: true,
+      isDonateable: false,
     },
     {
       postId: "asd2211",
@@ -262,14 +293,15 @@ export const createPostsSlice = (set) => ({
       likes: 999941,
       comments: 10100,
       reposts: 0,
-      repostedByUser: false,
+      isReposted: false,
       lastEdit: null,
       isSaved: false,
       isLiked: false,
+      isDonateable: true,
     },
     {
       postId: "qw09weq",
-      repostedByUser: true, //is reposted by the user themselves?
+      isReposted: true, //is reposted by the user themselves?
       likedByUser: true,
       repost: {
         isRepost: true,
@@ -296,13 +328,14 @@ export const createPostsSlice = (set) => ({
       isLiked: true,
       isSaved: true,
       reposts: 999899,
+      isDonateable: true,
     },
 
     {
       postId: "31234jjak",
       userName: "farhanverse",
       name: "Farhan Haider",
-      repostedByUser: false,
+      isReposted: false,
       repost: {
         isRepost: false,
       },
@@ -334,7 +367,7 @@ export const createPostsSlice = (set) => ({
       postId: "djlkdsajf",
       userName: "betzyy199",
       name: "Betzabeth",
-      repostedByUser: false,
+      isReposted: false,
       repost: {
         isRepost: false,
       },
@@ -362,6 +395,7 @@ export const createPostsSlice = (set) => ({
       isLiked: false,
       lastEdit: null,
       isSaved: false,
+      isDonateable: true,
     },
   ],
   handleLike: async (index) => {
@@ -372,7 +406,7 @@ export const createPostsSlice = (set) => ({
       // },
       set((state) => {
         const newPosts = [...state.posts];
-        // console.log("repost", newPosts[index].repostedByUser);
+        // console.log("repost", newPosts[index].isReposted);
         newPosts[index].isLiked = !newPosts[index].isLiked;
         return { posts: newPosts };
       });
@@ -386,8 +420,8 @@ export const createPostsSlice = (set) => ({
       // },
       set((state) => {
         const newPosts = [...state.posts];
-        // console.log("repost", newPosts[index].repostedByUser);
-        newPosts[index].repostedByUser = !newPosts[index].repostedByUser;
+        // console.log("repost", newPosts[index].isReposted);
+        newPosts[index].isReposted = !newPosts[index].isReposted;
         return { posts: newPosts };
       });
     } catch (err) {}
@@ -412,7 +446,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           userName: Math.random(12).toString(),
           name: "Betzabeth",
-          repostedByUser: false,
+          isReposted: false,
           repost: {
             isRepost: false,
           },
@@ -467,7 +501,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          repostedByUser: false,
+          isReposted: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -476,7 +510,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           userName: Math.random(12).toString(),
           name: "Betzabeth",
-          repostedByUser: false,
+          isReposted: false,
           repost: {
             isRepost: false,
           },
@@ -526,7 +560,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          repostedByUser: false,
+          isReposted: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -535,7 +569,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           userName: Math.random(12).toString(),
           name: "Betzabeth",
-          repostedByUser: false,
+          isReposted: false,
           repost: {
             isRepost: false,
           },
@@ -585,7 +619,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          repostedByUser: false,
+          isReposted: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -594,7 +628,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           userName: Math.random(12).toString(),
           name: "Betzabeth",
-          repostedByUser: false,
+          isReposted: false,
           repost: {
             isRepost: false,
           },
@@ -644,7 +678,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          repostedByUser: false,
+          isReposted: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,

@@ -34,48 +34,53 @@ const StoriesContainer = ({ navigation }) => {
       />
     );
   };
+  const keyExtractor = useCallback((item) => item.username, []);
+  const renderListHeader = useCallback(
+    <StoryUploaderCircle navigation={navigation} />,
+    []
+  );
+  const renderListFooter = () => {
+    return (
+      <View
+        style={{
+          height: 135,
+          marginRight: 10,
+          // width: 96,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  };
+
   return (
-    <View style={{ marginTop: 6, marginBottom: 10 }}>
-      <FlatList
-        data={data}
-        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        // viewabilityConfig={{
-        //   waitForInteraction: false,
-        //   viewAreaCoveragePercentThreshold: 95,
-        // }}
-        renderItem={({ index }) => renderItem((index = { index }))}
-        keyExtractor={(item) => item.username}
-        onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
-        // onEndReached={() =>  fetchStories()}
-        horizontal={true}
-        initialNumToRender={6}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          marginHorizontal: 10,
-          paddingRight: 10,
-        }}
-        //todo: add story uploader
-        ListHeaderComponent={() => {
-          return <StoryUploaderCircle navigation={navigation} />;
-        }}
-        ListFooterComponent={() => {
-          return (
-            <View
-              style={{
-                height: 135,
-                marginRight: 10,
-                // width: 96,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator />
-            </View>
-          );
-        }}
-      />
-    </View>
+    <FlatList
+      data={data}
+      // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+      // viewabilityConfig={{
+      //   waitForInteraction: false,
+      //   viewAreaCoveragePercentThreshold: 95,
+      // }}
+      renderItem={({ index }) => renderItem((index = { index }))}
+      keyExtractor={keyExtractor}
+      onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
+      // onEndReached={() =>  fetchStories()}
+      horizontal={true}
+      initialNumToRender={6}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{
+        marginHorizontal: 10,
+        paddingRight: 10,
+        marginTop: 6,
+        marginBottom: 10,
+      }}
+      //todo: add story uploader
+      ListHeaderComponent={renderListHeader}
+      ListFooterComponent={renderListFooter}
+    />
   );
 };
 

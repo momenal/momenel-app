@@ -89,7 +89,7 @@ const StoryCircle = ({
   );
 };
 
-export default StoryCircle;
+export default React.memo(StoryCircle);
 
 const styles = StyleSheet.create({
   ImageContainer: {

@@ -23,14 +23,14 @@ const Header = (props) => {
           //   { backgroundColor: "red", overflow: "visible" },
         ]}
       >
-        <View
+        {/* <View
           style={{
             marginRight: 20,
             overflow: "visible",
           }}
         >
           <Notifications size={23} />
-        </View>
+        </View> */}
         <BalanceTab />
       </View>
     </SafeAreaView>

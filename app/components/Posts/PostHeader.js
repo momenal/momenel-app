@@ -1,12 +1,13 @@
 import {
   Dimensions,
   Image,
+  Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { memo, useMemo, useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
@@ -44,6 +45,20 @@ const PostHeader = ({
     setShowBottomSheet(false);
     setShowBottomReportSheet(true);
   };
+
+  const onReportSheetClose = () => {
+    setShowBottomReportSheet(false);
+    Keyboard.dismiss();
+  };
+
+  const Time = useMemo(
+    () => (
+      <CustomText style={styles.textMedium}>
+        {RelativeTime(createdAt)}
+      </CustomText>
+    ),
+    []
+  );
 
   return (
     <View
@@ -94,10 +109,7 @@ const PostHeader = ({
             ) : (
               <Text></Text>
             )}
-
-            <CustomText style={styles.textMedium}>
-              {RelativeTime(createdAt)}
-            </CustomText>
+            {Time}
           </View>
         </View>
       </View>
@@ -183,14 +195,14 @@ const PostHeader = ({
       <BottomReportSheet
         show={showBottomReportSheet}
         setShow={setShowBottomReportSheet}
-        onSheetClose={() => setShowBottomReportSheet(false)}
+        onSheetClose={onReportSheetClose}
         username={postsData[index].userName}
       />
     </View>
   );
 };
 
-export default PostHeader;
+export default memo(PostHeader);
 
 const styles = StyleSheet.create({
   textMedium: {

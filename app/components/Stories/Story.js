@@ -1,10 +1,8 @@
 import {
-  ActivityIndicator,
   Dimensions,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import React, { memo, useRef, useState } from "react";
 import { Video } from "expo-av";
@@ -67,10 +65,6 @@ const Story = ({
     });
   };
   return (
-    // <TouchableWithoutFeedback
-    //   onLongPress={handlePressIn}
-    //   onPressOut={handlePressOut}
-    // >
     <VisibilitySensor onChange={handleVisibility}>
       {type === "image" ? (
         <TouchableWithoutFeedback
@@ -111,15 +105,10 @@ const Story = ({
             shouldPlay={!isPause}
             resizeMode="contain"
             isLooping
-            // onLoad={() => setIsLoading(false)}
-            posterSource={
-              "https://images.unsplash.com/photo-1665249932112-d6271dd71a97?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            }
           />
         </TouchableWithoutFeedback>
       )}
     </VisibilitySensor>
-    // </TouchableWithoutFeedback>
   );
 };
 

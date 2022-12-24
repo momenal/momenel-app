@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-// import ReadMore from "./ReadMore";
-
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
+import { View, TouchableOpacity, LayoutAnimation } from "react-native";
 import React from "react";
 import CustomText from "./CustomText";
-import { useAnimatedStyle } from "react-native-reanimated";
 
 const ReadMore2 = (props) => {
   const [showText, setShowText] = useState(false);
@@ -21,22 +18,6 @@ const ReadMore2 = (props) => {
     [showText]
   );
 
-  //   let globalAnimationEnabled = false;
-  //   const enableGlobalLayoutAnimation = (enable) => {
-  //     if (!enable || globalAnimationEnabled) {
-  //       return;
-  //     }
-  //     globalAnimationEnabled = true;
-  //     console.log("enabling global animation");
-  //     if (Platform.OS === "android") {
-  //       if (UIManager.setLayoutAnimationEnabledExperimental) {
-  //         UIManager.setLayoutAnimationEnabledExperimental(true);
-  //       }
-  //     }
-  //   };
-  //   useState(() => {
-  //     enableGlobalLayoutAnimation(animate);
-  //   }, [animate]);
   useEffect(() => {
     if (showMoreButton) {
       LayoutAnimation.configureNext(readmoreAnimation);
@@ -45,14 +26,18 @@ const ReadMore2 = (props) => {
   }, [showText, showMoreButton]);
 
   const readmoreAnimation = LayoutAnimation.create(
-    300,
+    140,
     LayoutAnimation.Types.easeInEaseOut,
     LayoutAnimation.Properties.opacity
   );
 
   return (
     <View>
-      <CustomText onTextLayout={onTextLayout} numberOfLines={numberOfLines}>
+      <CustomText
+        onTextLayout={onTextLayout}
+        numberOfLines={numberOfLines}
+        style={props.style}
+      >
         {props.children}
       </CustomText>
       {showMoreButton && (
@@ -60,7 +45,15 @@ const ReadMore2 = (props) => {
           onPress={() => setShowText((showText) => !showText)}
           accessibilityRole="button"
         >
-          <CustomText>{showText ? "Read Less" : "Read More"}</CustomText>
+          <CustomText
+            style={{
+              color: "#7033FF",
+              fontFamily: "Nunito_900Black",
+              fontSize: 13,
+            }}
+          >
+            {showText ? "Read Less" : "Read More"}
+          </CustomText>
         </TouchableOpacity>
       )}
     </View>

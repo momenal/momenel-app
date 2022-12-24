@@ -9,6 +9,7 @@ import MessagesIcon from "../components/icons/MessagesIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
 import FakeLogout from "../components/FakeLogout";
+import Notifications from "../components/icons/Notifications";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -108,20 +109,14 @@ const HomeNavigator = ({ navigation }) => {
         }}
       />
       <Tab.Screen
-        name="Messages"
+        name="Notifications"
         component={Home}
         options={{
-          title: "Messages",
+          title: "Notifications",
           // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused, color }) => {
             {
-              return (
-                <MessagesIcon
-                  color={focused ? "black" : "none"}
-                  size={IconSize}
-                  strokeColor={focused ? "black" : "#999999"}
-                />
-              );
+              return <Notifications size={21} pending={true} />;
             }
           },
         }}

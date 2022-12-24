@@ -63,14 +63,25 @@ const Home = ({ navigation }) => {
     //   });
   }, []);
 
-  // const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-  //   console.log(viewableItems);
-  // }, []);
-
-  // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
-
   const renderItem = useCallback(
     ({ item, index }) => <Post data={item} index={index} />,
+    []
+  );
+  const renderStories = useCallback(
+    <StoriesContainer navigation={navigation} />,
+    []
+  );
+
+  const renderListFooter = useCallback(
+    <View
+      style={{
+        height: 60,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ActivityIndicator />
+    </View>,
     []
   );
 
@@ -98,39 +109,13 @@ const Home = ({ navigation }) => {
         data={postsData}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        ListHeaderComponent={() => <StoriesContainer navigation={navigation} />}
+        ListHeaderComponent={renderStories}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}
         onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
-        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        // viewabilityConfig={{
-        //   waitForInteraction: false,
-        //   viewAreaCoveragePercentThreshold: 95,
-        // }}
-        ItemSeparatorComponent={() => {
-          return (
-            <View
-              style={{
-                height: 0,
-              }}
-            />
-          );
-        }}
-        ListFooterComponent={() => {
-          return (
-            <View
-              style={{
-                height: 60,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator />
-            </View>
-          );
-        }}
+        ListFooterComponent={renderListFooter}
       />
     </View>
   );
