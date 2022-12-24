@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { PortalProvider } from "@gorhom/portal";
 import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 
@@ -110,40 +109,6 @@ export default function App() {
       </GestureHandlerRootView>
     );
   }
-  // {
-  //   return session && session.user ? (
-  //     <GestureHandlerRootView style={{ flex: 1 }}>
-  //       <SafeAreaProvider>
-  //         <PortalProvider>
-  //           <NavigationContainer>
-  //             <StackNavigator />
-  //             <StatusBar style="dark" animated={true} />
-  //           </NavigationContainer>
-  //         </PortalProvider>
-  //       </SafeAreaProvider>
-  //     </GestureHandlerRootView>
-  //   ) : (
-  //     <GestureHandlerRootView style={{ flex: 1 }}>
-  //       <PortalProvider>
-  //         <SafeAreaProvider>
-  //           <Auth />
-  //           <StatusBar style="dark" animated={true} hidden />
-  //         </SafeAreaProvider>
-  //       </PortalProvider>
-  //     </GestureHandlerRootView>
-  //   );
-  // }
-  {
-    /* {session && session.user ? <StackNavigator /> : <Auth />} */
-  }
-  {
-    /* <StackNavigator /> */
-  }
-  //       </NavigationContainer>
-  //     </PortalProvider>
-  //   </SafeAreaProvider>
-  // </GestureHandlerRootView>
-  // );
 }
 
 const styles = StyleSheet.create({

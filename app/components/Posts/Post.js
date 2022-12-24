@@ -9,7 +9,8 @@ import {
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import React, { useRef, useState } from "react";
+import * as WebBrowser from "expo-web-browser";
+import React, { useCallback, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostsMedia from "./PostsMediaMultiple";
 import PostMediaOne from "./PostMediaOne";
@@ -60,8 +61,31 @@ const Post = ({ data, index }) => {
       />
     );
   };
-  const mentionHashtagClick = (text) => {
-    console.log(text);
+
+  const keyExtractor = useCallback((item) => item.id, []);
+
+  const _handlePressButtonAsync = async (url) => {
+    await WebBrowser.openBrowserAsync(url);
+  };
+
+  const mentionHashtagClick = async (text) => {
+    if (text.startsWith("http")) {
+      try {
+        _handlePressButtonAsync(text);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (text.startsWith("www")) {
+      try {
+        _handlePressButtonAsync("https://" + text);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (text.startsWith("@")) {
+      console.log("@", text);
+    } else if (text.startsWith("#")) {
+      console.log("#", text);
+    }
   };
 
   function kFormatter(num) {
@@ -75,6 +99,10 @@ const Post = ({ data, index }) => {
       ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
       : Math.sign(num) * Math.abs(num);
   }
+
+  const onTextLayout = useCallback((e) => {
+    console.log(e.nativeEvent.lines.length);
+  });
 
   return (
     <View
@@ -133,7 +161,7 @@ const Post = ({ data, index }) => {
           data={data.posts}
           horizontal
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="end"
           decelerationRate={"fast"}
@@ -145,8 +173,10 @@ const Post = ({ data, index }) => {
             }
           )}
         />
-      ) : (
+      ) : data.posts.length >= 1 ? (
         <PostMediaOne data={data.posts[0]} doubleTap={doubleTap} />
+      ) : (
+        <></>
       )}
       {/* pagination dots */}
       <View
@@ -176,7 +206,7 @@ const Post = ({ data, index }) => {
             mentionHashtagColor={"#8759F2"}
             numberOfLines={4}
             // ellipsizeMode={"trail"}
-            style={{ color: "#535353", fontSize: 17 }}
+            style={{ color: "#535353", fontSize: 15 }}
           >
             {data.caption}
           </StructuredText>

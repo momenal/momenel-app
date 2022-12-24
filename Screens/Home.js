@@ -69,15 +69,12 @@ const Home = ({ navigation }) => {
 
   // const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
 
-  const renderItem = ({ item, index }) => {
-    return (
-      <Post
-        // key={item.postId}
-        data={item}
-        index={index}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({ item, index }) => <Post data={item} index={index} />,
+    []
+  );
+
+  const keyExtractor = useCallback((item) => item.postId, []);
 
   if (!appIsReady) {
     return <Loader />;
@@ -99,13 +96,14 @@ const Home = ({ navigation }) => {
     >
       <FlatList
         data={postsData}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
-        keyExtractor={(item) => item.postId}
         ListHeaderComponent={() => <StoriesContainer navigation={navigation} />}
+        maxToRenderPerBatch={5}
+        initialNumToRender={5}
         showsVerticalScrollIndicator={false}
         onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
-        initialNumToRender={5}
         // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         // viewabilityConfig={{
         //   waitForInteraction: false,

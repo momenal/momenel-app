@@ -1,6 +1,59 @@
 export const createPostsSlice = (set) => ({
   posts: [
     {
+      postId: "xjkBo213123",
+      userName: "quotes",
+      name: "Quotes",
+      repostedByUser: false,
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        // {
+        //   id: "poasdstwqe123",
+        //   type: "photo",
+        //   url: "https://images.pexels.com/photos/14758717/pexels-photo-14758717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        // },
+      ],
+      caption:
+        "www.momenel.com In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah In love with the fog. #fog @farhan https://www.momenel.com/ amd ueah ",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isSaved: true,
+    },
+    {
+      postId: "991293kjdafA",
+      userName: "quotes",
+      name: "Quotes",
+      repostedByUser: false,
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      posts: [
+        {
+          id: "poasdstwqe123",
+          type: "photo",
+          url: "https://images.pexels.com/photos/14758717/pexels-photo-14758717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        },
+      ],
+      caption: "In love with the fog. #fog @farhan https://www.momenel.com/",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isSaved: true,
+    },
+    {
       postId: "qws123ad09weq",
       userName: "farhan",
       name: "farhan haider",
@@ -42,11 +95,11 @@ export const createPostsSlice = (set) => ({
       profile_url:
         "https://images.pexels.com/photos/8864283/pexels-photo-8864283.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       posts: [
-        {
-          id: "81cvx27893",
-          type: "video",
-          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687293/jet_fcsz3o.mov",
-        },
+        // {
+        //   id: "81cvx27893",
+        //   type: "video",
+        //   url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687293/jet_fcsz3o.mov",
+        // },
         {
           id: "post1435qwe2348",
           type: "photo",
@@ -68,33 +121,33 @@ export const createPostsSlice = (set) => ({
       isSaved: false,
       isLiked: true,
     },
-    {
-      postId: "001823",
-      userName: "memes_19",
-      repost: {
-        isRepost: true,
-        repostedBy: "farhanverse",
-        repostedAt: "2022-11-04T13:54:55+00:00",
-      },
-      profile_url:
-        "https://images.pexels.com/photos/160472/doll-boy-cheeky-toys-160472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      posts: [
-        {
-          id: "81cvx27893",
-          type: "video",
-          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687245/funny_code_dgceit.mp4",
-        },
-      ],
-      caption: "Coding 1 month vs 1 year 😹 \n #coding #meme @farhan",
-      createdAt: Date.now() - 515000,
-      likes: 999941,
-      comments: 10100,
-      reposts: 0,
-      repostedByUser: false,
-      lastEdit: null,
-      isSaved: false,
-      isLiked: true,
-    },
+    // {
+    //   postId: "001823",
+    //   userName: "memes_19",
+    //   repost: {
+    //     isRepost: true,
+    //     repostedBy: "farhanverse",
+    //     repostedAt: "2022-11-04T13:54:55+00:00",
+    //   },
+    //   profile_url:
+    //     "https://images.pexels.com/photos/160472/doll-boy-cheeky-toys-160472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   posts: [
+    //     {
+    //       id: "81cvx27893",
+    //       type: "video",
+    //       url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670687245/funny_code_dgceit.mp4",
+    //     },
+    //   ],
+    //   caption: "Coding 1 month vs 1 year 😹 \n #coding #meme @farhan",
+    //   createdAt: Date.now() - 515000,
+    //   likes: 999941,
+    //   comments: 10100,
+    //   reposts: 0,
+    //   repostedByUser: false,
+    //   lastEdit: null,
+    //   isSaved: false,
+    //   isLiked: true,
+    // },
     {
       postId: "7713ars",
       userName: "Marvel",
@@ -105,11 +158,11 @@ export const createPostsSlice = (set) => ({
       profile_url:
         "https://i.pinimg.com/originals/b5/de/08/b5de08b9050e254b008dcc13d28ac42e.jpg",
       posts: [
-        {
-          id: "81cvx27893",
-          type: "video",
-          url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670686630/avengers_k2uzpz.mp4",
-        },
+        // {
+        //   id: "81cvx27893",
+        //   type: "video",
+        //   url: "https://res.cloudinary.com/dflked2ws/video/upload/v1670686630/avengers_k2uzpz.mp4",
+        // },
         {
           id: "post1435qwe2348",
           type: "photo",
@@ -147,11 +200,11 @@ export const createPostsSlice = (set) => ({
           type: "video",
           url: "https://assets.mixkit.co/videos/preview/mixkit-view-of-the-horizon-in-the-sea-while-a-sailboat-4477-large.mp4",
         },
-        {
-          id: "812781293",
-          type: "video",
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275080/test/mixkit-man-from-behind-playing-online-on-a-pc-43533_kc4x15.mp4",
-        },
+        // {
+        //   id: "812781293",
+        //   type: "video",
+        //   url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275080/test/mixkit-man-from-behind-playing-online-on-a-pc-43533_kc4x15.mp4",
+        // },
         {
           id: "post1qwe2348",
           type: "photo",
