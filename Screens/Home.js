@@ -64,7 +64,28 @@ const Home = ({ navigation }) => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item, index }) => <Post data={item} index={index} />,
+    ({ item, index }) => (
+      <Post
+        postId={item.postId}
+        index={index}
+        likes={item.likes}
+        comments={item.comments}
+        reposts={item.reposts}
+        isLiked={item.isLiked}
+        type={item.type}
+        isDonateable={item.isDonateable}
+        repost={item.repost}
+        profileUrl={item.profile_url}
+        userName={item.userName}
+        name={item.name}
+        createdAt={item.createdAt}
+        isSaved={item.isSaved}
+        posts={item.posts}
+        caption={item.caption}
+        isReposted={item.isReposted}
+      />
+    ),
+
     []
   );
   const renderStories = useCallback(

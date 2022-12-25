@@ -10,6 +10,7 @@ export const createPostsSlice = (set) => ({
         repostedBy: "farhan",
         repostedAt: "2022-11-04T13:54:55+00:00",
       },
+      posts: [],
       profile_url:
         "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       caption:
@@ -94,7 +95,7 @@ export const createPostsSlice = (set) => ({
         {
           id: "poasdstwqe123",
           type: "photo",
-          url: "https://images.unsplash.com/photo-1635336969198-ec9553adc0e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+          url: "https://images.pexels.com/photos/307008/pexels-photo-307008.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         },
         {
           id: "poasdst123",

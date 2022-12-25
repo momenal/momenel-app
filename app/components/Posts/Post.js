@@ -28,9 +28,28 @@ import { runOnJS } from "react-native-reanimated";
 
 const ScreenWidth = Dimensions.get("window").width;
 
-const Post = ({ data, index }) => {
+const Post = ({
+  postId,
+  type,
+  isLiked,
+  likes,
+  comments,
+  index,
+  repost,
+  profileUrl,
+  reposts,
+  username,
+  name,
+  createdAt,
+  isSaved,
+  posts,
+  caption,
+  isReposted,
+  isDonateable,
+}) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
+
   const [maxHeight, setmaxHeight] = useState(0);
   const doubleTapRef = useRef(null);
 
@@ -43,10 +62,19 @@ const Post = ({ data, index }) => {
 
   const handleLikeFunc = () => {
     handleLike(index);
-    if (data.isLiked === true) {
+    if (isLiked === true) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } else {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+  };
+
+  const handleRepostFunc = async () => {
+    await handleRepost(index);
+    if (isReposted === false) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } else {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
   };
 
@@ -54,17 +82,16 @@ const Post = ({ data, index }) => {
     handleLikeFunc();
   };
 
-  const renderItem = ({ item, index }) => {
-    return (
-      <PostsMedia
-        data={item}
-        maxHeight={maxHeight}
-        index={index}
-        setMaxHeightFunc={setMaxHeightFunc}
-        doubleTap={doubleTap}
-      />
-    );
-  };
+  const renderItem = ({ item, index }) => (
+    <PostsMedia
+      url={item.url}
+      type={item.type}
+      maxHeight={maxHeight}
+      index={index}
+      setMaxHeightFunc={setMaxHeightFunc}
+      doubleTap={doubleTap}
+    />
+  );
 
   const _onDoubleTap = (event) => {
     if (event.nativeEvent.state === State.ACTIVE) {
@@ -111,7 +138,7 @@ const Post = ({ data, index }) => {
   }
 
   const handleTip = () => {
-    if (data.isDonateable === true) {
+    if (isDonateable === true) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       //open tip modal
     } else {
@@ -133,7 +160,7 @@ const Post = ({ data, index }) => {
       }}
     >
       {/* reposts */}
-      {data.repost.isRepost && (
+      {repost.isRepost && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.05,
@@ -145,11 +172,7 @@ const Post = ({ data, index }) => {
             // backgroundColor: "pink",
           }}
         >
-          <Repost
-            size={23}
-            color={"#8456E9"}
-            // color={data.isReposted ? "#8456E9" : "#999999"}
-          />
+          <Repost size={23} color={"#8456E9"} />
           <CustomText
             style={{
               fontFamily: "Nunito_800ExtraBold",
@@ -158,24 +181,24 @@ const Post = ({ data, index }) => {
               fontSize: 15,
             }}
           >
-            {data.repost.repostedBy} reposted
+            {repost.repostedBy} reposted
           </CustomText>
         </View>
       )}
 
       <PostHeader
-        profileUrl={data.profile_url}
-        username={data.userName}
-        name={data.name}
-        createdAt={data.createdAt}
-        isSaved={data.isSaved}
+        profileUrl={profileUrl}
+        username={username}
+        name={name}
+        createdAt={createdAt}
+        isSaved={isSaved}
         index={index}
       />
       {/* media */}
 
-      {data.posts && data.posts.length >= 2 ? (
+      {posts && posts.length >= 2 ? (
         <FlatList
-          data={data.posts}
+          data={posts}
           horizontal
           renderItem={renderItem}
           keyExtractor={keyExtractor}
@@ -190,13 +213,13 @@ const Post = ({ data, index }) => {
             }
           )}
         />
-      ) : data.posts && data.posts.length >= 1 ? (
-        <PostMediaOne data={data.posts[0]} doubleTap={doubleTap} />
+      ) : posts && posts.length >= 1 ? (
+        <PostMediaOne data={posts[0]} doubleTap={doubleTap} />
       ) : (
         <></>
       )}
       {/* pagination dots */}
-      {data.posts && data.posts.length > 1 && (
+      {posts && posts.length > 1 && (
         <View
           style={{
             flexDirection: "row",
@@ -205,11 +228,11 @@ const Post = ({ data, index }) => {
             paddingBottom: 11,
           }}
         >
-          <PaginationDot data={data.posts} scrollX={scrollX} />
+          <PaginationDot data={posts} scrollX={scrollX} />
         </View>
       )}
       {/* caption */}
-      {data.caption && (
+      {caption && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
@@ -226,12 +249,10 @@ const Post = ({ data, index }) => {
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
-                numberOfLines={data.type === "text" ? 12 : 3}
-                style={
-                  data.type === "text" ? { fontSize: 19 } : { fontSize: 16 }
-                }
+                numberOfLines={type === "text" ? 12 : 3}
+                style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
               >
-                {data.caption}
+                {caption}
               </StructuredText>
             </View>
           </TapGestureHandler>
@@ -250,31 +271,17 @@ const Post = ({ data, index }) => {
           height: 30,
         }}
       >
-        <Heart isLiked={data.isLiked} index={index} />
+        <Heart isLiked={isLiked} index={index} />
 
         <TouchableOpacity>
           <CommentsIcon size={21} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            handleRepost(index);
-            if (data.isReposted === true) {
-              Haptics.notificationAsync(
-                Haptics.NotificationFeedbackType.Success
-              );
-            } else {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }
-          }}
-        >
-          <Repost size={25} color={data.isReposted ? "#8456E9" : "#999999"} />
+        <TouchableOpacity onPress={handleRepostFunc}>
+          <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleTip}>
-          <TipIcon
-            size={25}
-            color={data.isDonateable ? "#F12D97" : "#CECECE"}
-          />
+          <TipIcon size={25} color={isDonateable ? "#F12D97" : "#CECECE"} />
         </TouchableOpacity>
       </View>
       <View
@@ -296,7 +303,7 @@ const Post = ({ data, index }) => {
               color: "#999999",
             }}
           >
-            {kFormatter(data.likes)} Likes
+            {kFormatter(likes)} Likes
           </CustomText>
         </TouchableOpacity>
         <CustomText style={{ fontSize: 4, marginRight: 9, color: "#999999" }}>
@@ -310,17 +317,17 @@ const Post = ({ data, index }) => {
               color: "#999999",
             }}
           >
-            {kFormatter(data.comments)} Comments
+            {kFormatter(comments)} Comments
           </CustomText>
         </TouchableOpacity>
 
-        {data.reposts > 1 && (
+        {reposts > 1 && (
           <CustomText style={{ fontSize: 4, marginRight: 9, color: "#999999" }}>
             {"\u2B24"}
           </CustomText>
         )}
 
-        {data.reposts > 1 && (
+        {reposts > 1 && (
           <TouchableOpacity>
             <CustomText
               style={{
@@ -329,7 +336,7 @@ const Post = ({ data, index }) => {
                 color: "#999999",
               }}
             >
-              {kFormatter(data.reposts)} Reposts
+              {kFormatter(reposts)} Reposts
             </CustomText>
           </TouchableOpacity>
         )}
@@ -338,6 +345,7 @@ const Post = ({ data, index }) => {
   );
 };
 
-export default Post;
+export default memo(Post);
+// export default Post;
 
 const styles = StyleSheet.create({ container: { backgroundColor: "red" } });

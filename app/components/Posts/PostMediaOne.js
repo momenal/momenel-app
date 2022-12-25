@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
 import {
@@ -167,6 +167,7 @@ const PostMediaOne = ({ data, doubleTap }) => {
   );
 };
 
-export default PostMediaOne;
+// export default PostMediaOne;
+export default memo(PostMediaOne);
 
 const styles = StyleSheet.create({});

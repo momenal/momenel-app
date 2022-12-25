@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../utils/VisibilitySensor";
 import {
@@ -20,18 +20,17 @@ const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
 const PostsMediaMultiple = ({
-  data,
+  type,
+  url,
   maxHeight,
   index,
   setMaxHeightFunc,
   doubleTap,
 }) => {
-  let { url } = data;
   const video = useRef(null);
   const doubleTapRef = useRef(null);
 
   const _onSingleTap = (event) => {
-    // if (data.type === "video") {
     if (event.nativeEvent.state === State.ACTIVE) {
       HandleMute();
     }
@@ -51,7 +50,7 @@ const PostsMediaMultiple = ({
 
   useEffect(() => {
     // Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-    if (index === 0 && data.type === "photo") {
+    if (index === 0 && type === "photo") {
       Image.getSize(url, (width, height) => {
         let newHeight = height * (Iwidth / width);
 
@@ -63,7 +62,7 @@ const PostsMediaMultiple = ({
           setMaxHeightFunc(newHeight);
         }
       });
-    } else if (index === 0 && data.type === "video") {
+    } else if (index === 0 && type === "video") {
       setMaxHeightFunc(400);
     } else {
       // setHeight(maxHeight);
@@ -107,7 +106,7 @@ const PostsMediaMultiple = ({
         paddingBottom: 11.4,
       }}
     >
-      {data.type === "photo" ? (
+      {type === "photo" ? (
         <TapGestureHandler
           ref={doubleTapRef}
           onHandlerStateChange={_onDoubleTap}
@@ -195,6 +194,7 @@ const PostsMediaMultiple = ({
   );
 };
 
-export default PostsMediaMultiple;
+// export default PostsMediaMultiple;
+export default memo(PostsMediaMultiple);
 
 const styles = StyleSheet.create({ firstRd: { borderRadius: 3 } });
