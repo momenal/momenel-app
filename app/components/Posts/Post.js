@@ -345,7 +345,7 @@ const Post = ({
   );
 };
 
-export default memo(Post);
-// export default Post;
+// export default memo(Post);
+export default Post;
 
 const styles = StyleSheet.create({ container: { backgroundColor: "red" } });

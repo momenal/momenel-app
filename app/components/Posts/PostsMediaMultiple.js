@@ -194,7 +194,7 @@ const PostsMediaMultiple = ({
   );
 };
 
-// export default PostsMediaMultiple;
-export default memo(PostsMediaMultiple);
+export default PostsMediaMultiple;
+// export default memo(PostsMediaMultiple);
 
 const styles = StyleSheet.create({ firstRd: { borderRadius: 3 } });

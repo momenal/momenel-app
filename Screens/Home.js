@@ -16,6 +16,7 @@ import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
 import * as SplashScreen from "expo-splash-screen";
 import Loader from "../app/components/Loader";
+import { FlashList } from "@shopify/flash-list";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,7 @@ const Home = ({ navigation }) => {
   const postsData = useBoundStore((state) => state.posts);
   const [appIsReady, setAppIsReady] = useState(false);
   const animationRef = useRef(null);
+  const instance = useRef(null);
 
   async function login() {
     const {
@@ -64,14 +66,14 @@ const Home = ({ navigation }) => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item, index }) => (
+    ({ item, index, isLiked, isReposted }) => (
       <Post
         postId={item.postId}
         index={index}
         likes={item.likes}
         comments={item.comments}
         reposts={item.reposts}
-        isLiked={item.isLiked}
+        isLiked={isLiked}
         type={item.type}
         isDonateable={item.isDonateable}
         repost={item.repost}
@@ -82,7 +84,7 @@ const Home = ({ navigation }) => {
         isSaved={item.isSaved}
         posts={item.posts}
         caption={item.caption}
-        isReposted={item.isReposted}
+        isReposted={isReposted}
       />
     ),
 
@@ -106,7 +108,7 @@ const Home = ({ navigation }) => {
     []
   );
 
-  const keyExtractor = useCallback((item) => item.postId, []);
+  // const keyExtractor = useCallback((item) => item.postId, []);
 
   if (!appIsReady) {
     return <Loader />;
@@ -126,10 +128,20 @@ const Home = ({ navigation }) => {
         // backgroundColor: "pink",
       }}
     >
-      <FlatList
+      <FlashList
         data={postsData}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
+        estimatedItemSize={200}
+        keyExtractor={(item) => {
+          return item.postId;
+        }}
+        renderItem={({ item, index }) =>
+          renderItem({
+            item,
+            index,
+            isLiked: item.isLiked,
+            isReposted: item.isReposted,
+          })
+        }
         ListHeaderComponent={renderStories}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
@@ -137,6 +149,7 @@ const Home = ({ navigation }) => {
         onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
         ListFooterComponent={renderListFooter}
+        numColumns={1}
       />
     </View>
   );

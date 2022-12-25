@@ -167,7 +167,7 @@ const PostMediaOne = ({ data, doubleTap }) => {
   );
 };
 
-// export default PostMediaOne;
-export default memo(PostMediaOne);
+export default PostMediaOne;
+// export default memo(PostMediaOne);
 
 const styles = StyleSheet.create({});
