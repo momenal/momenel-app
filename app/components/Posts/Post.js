@@ -49,9 +49,21 @@ const Post = ({
 }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
-
   const [maxHeight, setmaxHeight] = useState(0);
   const doubleTapRef = useRef(null);
+  const [numOfLines, setnumOfLines] = useState(null);
+
+  //flashlist recycling
+  const lastItemId = useRef(postId);
+  if (postId !== lastItemId.current) {
+    lastItemId.current = postId;
+
+    if (type === "text") {
+      setnumOfLines(12);
+    } else {
+      setnumOfLines(3);
+    }
+  }
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -249,7 +261,9 @@ const Post = ({
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
-                numberOfLines={type === "text" ? 12 : 3}
+                numberOfLines={
+                  numOfLines != null ? numOfLines : type === "text" ? 12 : 3
+                }
                 style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
               >
                 {caption}

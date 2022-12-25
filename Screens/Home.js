@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Button,
   FlatList,
+  Image,
   StyleSheet,
   Text,
   View,
@@ -16,7 +17,7 @@ import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
 import * as SplashScreen from "expo-splash-screen";
 import Loader from "../app/components/Loader";
-import { FlashList } from "@shopify/flash-list";
+import { FlashList, MasonryFlashList } from "@shopify/flash-list";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -28,8 +29,6 @@ const Home = ({ navigation }) => {
   const username = useBoundStore((state) => state.username);
   const postsData = useBoundStore((state) => state.posts);
   const [appIsReady, setAppIsReady] = useState(false);
-  const animationRef = useRef(null);
-  const instance = useRef(null);
 
   async function login() {
     const {
