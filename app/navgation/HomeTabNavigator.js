@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import React from "react";
 import Home from "../../Screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,13 +15,16 @@ import Notifications from "../components/icons/Notifications";
 const Tab = createBottomTabNavigator();
 
 const HomeNavigator = ({ navigation }) => {
-  const IconSize = 21;
+  const Height = Dimensions.get("window").height * 0.024;
+  // const IconSize = 21;
+  const IconSize = Height > 21 ? 21 : Height < 18 ? 18 : Height;
+  console.log(Height * 0.03);
   return (
     <Tab.Navigator
       screenOptions={({}) => ({
         tabBarShowLabel: false,
         headerShadowVisible: false,
-        tabBarStyle: { backgroundColor: "#F9F9F9", paddingBottom: 20 },
+        tabBarStyle: { backgroundColor: "#F9F9F9", paddingVertical: 0 },
       })}
     >
       <Tab.Screen
@@ -116,7 +119,7 @@ const HomeNavigator = ({ navigation }) => {
           // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused, color }) => {
             {
-              return <Notifications size={21} pending={true} />;
+              return <Notifications size={IconSize} pending={true} />;
             }
           },
         }}
@@ -129,7 +132,7 @@ const HomeNavigator = ({ navigation }) => {
           // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused, color }) => {
             {
-              return <TabBarProfileIcon size={22} focused={focused} />;
+              return <TabBarProfileIcon size={IconSize} focused={focused} />;
             }
           },
         }}

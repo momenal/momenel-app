@@ -12,7 +12,8 @@ const TabBarProfileIcon = ({ size, focused }) => {
         width: size,
         height: size,
         borderRadius: 50,
-        padding: focused ? 14 : 0, // This should be the border width you want to have
+        padding: focused ? size * 0.66 : 0, // This should be the border width you want to have
+        // padding: focused ? 14 : 0, // This should be the border width you want to have
         overflow: "hidden",
       }}
     >
