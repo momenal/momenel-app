@@ -33,7 +33,7 @@ const Footer = ({ profileUrl, username, time, StoryId, navigation }) => {
               marginTop: -2,
             }}
           >
-            {RelativeTime(time)}
+            {time === null ? " " : RelativeTime(time)}
           </CustomText>
         </View>
       </View>

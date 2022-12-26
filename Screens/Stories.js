@@ -37,15 +37,14 @@ const Stories = ({ navigation, route }) => {
     }
   };
 
-  const renderItem = ({ index }) => {
-    const s = data[index];
+  const renderItem = ({ index, item, username }) => {
     return (
       <HorizontalStories
         index={index}
         navigation={navigation}
-        data={s.stories}
-        username={s.username}
-        profile_url={s.profile_url}
+        data={item.stories}
+        username={username}
+        profile_url={item.profile_url}
         scrollToNext={scrollToNext}
       />
     );
@@ -63,6 +62,13 @@ const Stories = ({ navigation, route }) => {
       <FlashList
         data={data}
         ref={storyFlatlistRef}
+        renderItem={({ item, index }) =>
+          renderItem({
+            item,
+            index,
+            username: item.username,
+          })
+        }
         estimatedItemSize={PAGE_HEIGHT}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -76,7 +82,6 @@ const Stories = ({ navigation, route }) => {
             });
           });
         }}
-        renderItem={({ index }) => renderItem((index = { index }))}
         keyExtractor={(item) => item.username}
         snapToAlignment="start"
         onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
@@ -103,17 +108,17 @@ const Stories = ({ navigation, route }) => {
             </View>
           );
         }}
-        ItemSeparatorComponent={() => {
-          return (
-            <View
-              style={
-                {
-                  // height: 20,
-                }
-              }
-            />
-          );
-        }}
+        // ItemSeparatorComponent={() => {
+        //   return (
+        //     <View
+        //       style={
+        //         {
+        //           // height: 20,
+        //         }
+        //       }
+        //     />
+        //   );
+        // }}
       />
     </SafeAreaView>
   );

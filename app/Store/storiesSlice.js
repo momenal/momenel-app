@@ -83,6 +83,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 1988,
@@ -90,6 +91,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 1123,
@@ -97,6 +99,7 @@ export const createStoriesSlice = (set) => ({
           type: "image",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 2415,
@@ -104,6 +107,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
       ],
     },
@@ -118,6 +122,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 22783434,
@@ -125,6 +130,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 2239789434,
@@ -132,6 +138,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
       ],
     },
@@ -147,6 +154,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 2431111068,
@@ -154,6 +162,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
       ],
     },
@@ -169,6 +178,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
         {
           id: 224787535457428,
@@ -176,72 +186,7 @@ export const createStoriesSlice = (set) => ({
           type: "video",
           duration: 2,
           isReadMore: true,
-        },
-      ],
-    },
-    {
-      username: "kkkal",
-      title: "Pune Dairies",
-      profile_url: "https://picsum.photos/200/300",
-      preview_url: "https://picsum.photos/96/135",
-      stories: [
-        {
-          id: 12647687563,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-conceptual-image-of-a-man-with-glasses-and-hair-with-32646-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
-        },
-        {
-          id: 2754724267,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
-        },
-      ],
-    },
-    {
-      username: "makeer",
-      title: "Pune Dairies",
-      profile_url: "https://picsum.photos/200/300",
-      preview_url: "https://picsum.photos/96/135",
-      stories: [
-        {
-          id: 1226523,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-urban-men-making-shapes-with-their-hands-while-dancing-3629-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
-        },
-        {
-          id: 223463426536,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
-        },
-      ],
-    },
-    {
-      username: "flkg",
-      title: "Pune Dairies",
-      profile_url: "https://picsum.photos/200/300",
-      preview_url: "https://picsum.photos/96/135",
-      stories: [
-        {
-          id: 12343532523532,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-fireworks-illuminating-the-beach-sky-4157-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
-        },
-        {
-          id: 432542364362,
-          url: "https://assets.mixkit.co/videos/preview/mixkit-abstract-image-with-movement-of-a-woman-in-pastel-colors-32713-large.mp4",
-          type: "video",
-          duration: 2,
-          isReadMore: true,
+          date: "2022-09-19T14:06:19+00:00",
         },
       ],
     },

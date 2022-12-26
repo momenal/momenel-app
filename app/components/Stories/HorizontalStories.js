@@ -34,6 +34,7 @@ const HorizontalStories = ({
 
   const changeCurrentIndex = (index) => {
     setActiveIndex(index);
+    // console.log(data[activeIndex].date);
   };
 
   const changeIsPaused = (isPaused) => {
@@ -181,6 +182,9 @@ const HorizontalStories = ({
         }}
         pagingEnabled={true}
         renderItem={({ index }) => renderItem((index = { index }))}
+        onScrollBegin={() => {
+          setActiveIndex(null);
+        }}
         onScrollEnd={(index) =>
           index === data.length - 1 && index === activeIndex
             ? storyComplete()
@@ -189,8 +193,11 @@ const HorizontalStories = ({
       />
       <Footer
         username={username}
-        time={data[activeIndex].date}
-        StoryId={data[activeIndex].id}
+        // time={data[activeIndex].date}
+        time={activeIndex == null ? null : data[activeIndex].date}
+        // time={"2022-09-19T14:06:19+00:00"}
+        // StoryId={data[activeIndex].id}
+        StoryId={activeIndex == null ? null : data[activeIndex].id}
         profileUrl={profile_url}
         navigation={navigation}
       />

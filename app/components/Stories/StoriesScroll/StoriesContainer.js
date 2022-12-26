@@ -23,7 +23,6 @@ const StoriesContainer = ({ navigation }) => {
 
   const renderItem = ({ index }) => {
     const s = data[index];
-
     return (
       <StoryCircle
         navigation={navigation}

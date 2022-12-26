@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 
 const ProgressBar = ({
@@ -134,4 +134,4 @@ ProgressBar.defaultProps = {
   onCompletion: () => {},
 };
 
-export default ProgressBar;
+export default memo(ProgressBar);
