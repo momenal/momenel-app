@@ -1,30 +1,45 @@
 export const createPostsSlice = (set) => ({
   posts: [
-    {
-      postId: Math.random(19).toString(),
-      userName: "quotes",
-      name: "Quotes",
-      type: "text",
-      repost: {
-        isRepost: true,
-        repostedBy: "farhan",
-        repostedAt: "2022-11-04T13:54:55+00:00",
-      },
-      posts: undefined,
-      profile_url:
-        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      caption:
-        "It was a #good idea. At least, they all thought it was a good idea at the time. Hindsight would reveal that in reality, it was an unbelievably terrible idea, but it would take another week for them to understand that. Right now, at this very moment.\nthey all agreed that it was the perfect course of action for the current situation.",
-      createdAt: Date.now(),
-      likes: 300,
-      comments: 12,
-      reposts: 5,
-      lastEdit: null,
-      isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
-      isDonateable: false,
-    },
+    // {
+    //   postId: Math.random(19).toString(),
+    //   userName: "quotes",
+    //   name: "Quotes",
+    //   type: "text",
+    //   repost: {
+    //     isRepost: true,
+    //     repostedBy: "farhan",
+    //     repostedAt: "2022-11-04T13:54:55+00:00",
+    //   },
+    //   posts: [
+    //     {
+    //       id: Math.random(19).toString(),
+    //       height: 700,
+    //       width: 1200,
+    //       type: "video",
+    //       url: "https://assets.mixkit.co/videos/preview/mixkit-dog-catches-a-ball-in-a-river-1494-large.mp4",
+    //     },
+    //     {
+    //       id: Math.random(19).toString(),
+    //       height: 1200,
+    //       width: 800,
+    //       type: "video",
+    //       url: "https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-smart-watch-with-the-stopwatch-running-32808-large.mp4",
+    //     },
+    //   ],
+    //   profile_url:
+    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   caption:
+    //     "It was a #good idea. At least, they all thought it was a good idea at the time. Hindsight would reveal that in reality, it was an unbelievably terrible idea, but it would take another week for them to understand that. Right now, at this very moment.\nthey all agreed that it was the perfect course of action for the current situation.",
+    //   createdAt: Date.now(),
+    //   likes: 300,
+    //   comments: 12,
+    //   reposts: 5,
+    //   lastEdit: null,
+    //   isLiked: false,
+    //   isReposted: true, // if the user himself has reposted the post
+    //   isSaved: true,
+    //   isDonateable: false,
+    // },
     {
       postId: Math.random(19).toString(),
       userName: "quotes",

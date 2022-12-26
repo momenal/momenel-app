@@ -9,6 +9,7 @@ import React, { useCallback, useRef } from "react";
 import { useBoundStore } from "../../../Store/useBoundStore";
 import StoryCircle from "./StoryCircle";
 import StoryUploaderCircle from "./YourStory/StoryUploaderCircle";
+import { FlashList } from "@shopify/flash-list";
 
 const StoriesContainer = ({ navigation }) => {
   const data = useBoundStore((state) => state.stories);
@@ -56,8 +57,10 @@ const StoriesContainer = ({ navigation }) => {
   };
 
   return (
-    <FlatList
+    // <FlatList
+    <FlashList
       data={data}
+      estimatedItemSize={96}
       // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       // viewabilityConfig={{
       //   waitForInteraction: false,
@@ -72,10 +75,7 @@ const StoriesContainer = ({ navigation }) => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        marginHorizontal: 10,
-        paddingRight: 10,
-        marginTop: 6,
-        marginBottom: 10,
+        paddingLeft: 10,
       }}
       //todo: add story uploader
       ListHeaderComponent={renderListHeader}

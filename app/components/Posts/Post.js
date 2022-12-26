@@ -216,7 +216,7 @@ const Post = ({
       {posts && posts.length >= 2 ? (
         <FlatList
           data={posts}
-          horizontal
+          horizontal={true}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           showsHorizontalScrollIndicator={false}

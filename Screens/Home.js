@@ -1,22 +1,12 @@
-import {
-  ActivityIndicator,
-  Button,
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
-import * as SplashScreen from "expo-splash-screen";
 import Loader from "../app/components/Loader";
-import { FlashList, MasonryFlashList } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -167,6 +157,7 @@ const Home = ({ navigation }) => {
           })
         }
         ListHeaderComponent={renderStories}
+        ListHeaderComponentStyle={{ paddingTop: 10, paddingBottom: 10 }}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}
