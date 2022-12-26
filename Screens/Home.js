@@ -173,11 +173,17 @@ const Home = ({ navigation }) => {
         onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
         ListFooterComponent={renderListFooter}
-
-        // onViewableItemsChanged={({ viewableItems, changed }) => {
-        //   console.log("Visible items are", viewableItems);
-        //   console.log("Changed in this iteration", changed);
-        // }}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50,
+          minimumViewTime: 500,
+        }}
+        onViewableItemsChanged={({ viewableItems, changed }) => {
+          // loop through viewable items and update the store
+          viewableItems.forEach((item) => {
+            // console.log("Visible items are", item.index);
+          });
+          // console.log("_______________________");
+        }}
       />
     </View>
   );

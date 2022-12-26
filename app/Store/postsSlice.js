@@ -10,7 +10,7 @@ export const createPostsSlice = (set) => ({
         repostedBy: "farhan",
         repostedAt: "2022-11-04T13:54:55+00:00",
       },
-      // posts: [],
+      posts: undefined,
       profile_url:
         "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       caption:
