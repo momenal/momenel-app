@@ -49,24 +49,20 @@ const PostsMediaMultiple = ({
   const [isMuted, setisMuted] = useState(false);
 
   useEffect(() => {
-    // Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-    if (index === 0 && type === "photo") {
-      Image.getSize(url, (width, height) => {
-        let newHeight = height * (Iwidth / width);
-
-        if (newHeight > ScreenHeight * 0.7) {
-          // setHeight(ScreenHeight * 0.7);
-          setMaxHeightFunc(ScreenHeight * 0.7);
-        } else {
-          // setHeight(newHeight);
-          setMaxHeightFunc(newHeight);
-        }
-      });
-    } else if (index === 0 && type === "video") {
-      setMaxHeightFunc(400);
-    } else {
-      // setHeight(maxHeight);
-    }
+    // if (index === 0 && type === "photo") {
+    //   Image.getSize(url, (width, height) => {
+    //     let newHeight = height * (Iwidth / width);
+    //     if (newHeight > ScreenHeight * 0.7) {
+    //       // setHeight(ScreenHeight * 0.7);
+    //       setMaxHeightFunc(ScreenHeight * 0.7);
+    //     } else {
+    //       // setHeight(newHeight);
+    //       setMaxHeightFunc(newHeight);
+    //     }
+    //   });
+    // } else if (index === 0 && type === "video") {
+    //   setMaxHeightFunc(400);
+    // }
   }, []);
 
   const handleVisibility = (visible) => {
@@ -96,6 +92,11 @@ const PostsMediaMultiple = ({
       video.current.setIsMutedAsync(true);
       setisMuted(true);
     }
+  };
+
+  const onVideoLoad = (response) => {
+    const size = response;
+    console.log(size);
   };
 
   return (
@@ -141,17 +142,18 @@ const PostsMediaMultiple = ({
                   shouldPlay={play}
                   positionMillis={0}
                   usePoster
-                  onReadyForDisplay={(response) => {
-                    if (index === 0) {
-                      const { width, height } = response.naturalSize;
-                      const heightScaled = height * (Iwidth / width);
-                      if (heightScaled > ScreenHeight * 0.5) {
-                        setMaxHeightFunc(ScreenHeight * 0.5);
-                      } else {
-                        setMaxHeightFunc(heightScaled);
-                      }
-                    }
-                  }}
+                  // onReadyForDisplay={(response) => {
+                  //   if (index === 0) {
+                  //     const { width, height } = response.naturalSize;
+                  //     const heightScaled = height * (Iwidth / width);
+                  //     if (heightScaled > ScreenHeight * 0.5) {
+                  //       setMaxHeightFunc(ScreenHeight * 0.5);
+                  //     } else {
+                  //       setMaxHeightFunc(heightScaled);
+                  //     }
+                  //   }
+                  // }}
+                  // onLoad={onVideoLoad}
                   style={{
                     width: Iwidth,
                     height: maxHeight,

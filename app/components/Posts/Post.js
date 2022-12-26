@@ -46,24 +46,26 @@ const Post = ({
   caption,
   isReposted,
   isDonateable,
+  height,
+  numOfLines,
 }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [maxHeight, setmaxHeight] = useState(0);
   const doubleTapRef = useRef(null);
-  const [numOfLines, setnumOfLines] = useState(null);
+  // const [numOfLines, setnumOfLines] = useState(null);
 
   //flashlist recycling
   const lastItemId = useRef(postId);
-  if (postId !== lastItemId.current) {
-    lastItemId.current = postId;
+  // if (postId !== lastItemId.current) {
+  //   lastItemId.current = postId;
 
-    if (type === "text") {
-      setnumOfLines(12);
-    } else {
-      setnumOfLines(3);
-    }
-  }
+  //   if (type === "text") {
+  //     setnumOfLines(12);
+  //   } else {
+  //     setnumOfLines(3);
+  //   }
+  // }
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -97,8 +99,9 @@ const Post = ({
   const renderItem = ({ item, index }) => (
     <PostsMedia
       url={item.url}
-      type={item.type}
-      maxHeight={maxHeight}
+      type={type}
+      maxHeight={height}
+      // maxHeight={height}
       index={index}
       setMaxHeightFunc={setMaxHeightFunc}
       doubleTap={doubleTap}
@@ -226,7 +229,35 @@ const Post = ({
           )}
         />
       ) : posts && posts.length >= 1 ? (
-        <PostMediaOne data={posts[0]} doubleTap={doubleTap} />
+        <PostMediaOne data={posts[0]} doubleTap={doubleTap} height={height} />
+      ) : type === "text" ? (
+        <View
+          style={{
+            paddingHorizontal: ScreenWidth * 0.06,
+            width: ScreenWidth,
+            paddingBottom: 16,
+          }}
+        >
+          <TapGestureHandler
+            ref={doubleTapRef}
+            onHandlerStateChange={_onDoubleTap}
+            numberOfTaps={2}
+          >
+            <View>
+              <StructuredText
+                mentionHashtagPress={mentionHashtagClick}
+                mentionHashtagColor={"#8759F2"}
+                // numberOfLines={
+                //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
+                // }
+                numberOfLines={7}
+                style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
+              >
+                {caption}
+              </StructuredText>
+            </View>
+          </TapGestureHandler>
+        </View>
       ) : (
         <></>
       )}
@@ -244,7 +275,7 @@ const Post = ({
         </View>
       )}
       {/* caption */}
-      {caption && (
+      {caption && posts.length > 0 && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
@@ -261,9 +292,10 @@ const Post = ({
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
-                numberOfLines={
-                  numOfLines != null ? numOfLines : type === "text" ? 12 : 3
-                }
+                // numberOfLines={
+                //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
+                // }
+                numberOfLines={3}
                 style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
               >
                 {caption}

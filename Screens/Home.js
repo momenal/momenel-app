@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Button,
+  Dimensions,
   FlatList,
   Image,
   StyleSheet,
@@ -29,6 +30,9 @@ const Home = ({ navigation }) => {
   const username = useBoundStore((state) => state.username);
   const postsData = useBoundStore((state) => state.posts);
   const [appIsReady, setAppIsReady] = useState(false);
+  const ScreenWidth = Dimensions.get("window").width;
+  const ScreenHeight = Dimensions.get("window").height;
+  const Iwidth = ScreenWidth - ScreenWidth * 0.1;
 
   async function login() {
     const {
@@ -64,28 +68,44 @@ const Home = ({ navigation }) => {
     //   });
   }, []);
 
+  // funtion to calcualte scaled height and width
+  const calcHeight = (width, height) => {
+    let newHeight = height * (Iwidth / width);
+    if (newHeight > ScreenHeight * 0.7) {
+      return ScreenHeight * 0.7;
+    } else {
+      return newHeight;
+    }
+  };
+
   const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted }) => (
-      <Post
-        postId={item.postId}
-        index={index}
-        likes={item.likes}
-        comments={item.comments}
-        reposts={item.reposts}
-        isLiked={isLiked}
-        type={item.type}
-        isDonateable={item.isDonateable}
-        repost={item.repost}
-        profileUrl={item.profile_url}
-        userName={item.userName}
-        name={item.name}
-        createdAt={item.createdAt}
-        isSaved={item.isSaved}
-        posts={item.posts}
-        caption={item.caption}
-        isReposted={isReposted}
-      />
-    ),
+    ({ item, index, isLiked, isReposted, height, width, numOfLines }) => {
+      return (
+        <Post
+          postId={item.postId}
+          index={index}
+          likes={item.likes}
+          comments={item.comments}
+          reposts={item.reposts}
+          isLiked={isLiked}
+          isReposted={isReposted}
+          type={item.type}
+          isDonateable={item.isDonateable}
+          repost={item.repost}
+          profileUrl={item.profile_url}
+          userName={item.userName}
+          name={item.name}
+          createdAt={item.createdAt}
+          isSaved={item.isSaved}
+          posts={item.posts}
+          caption={item.caption}
+          // height={calcHeight(width, height)}
+          height={height ? height : 0}
+          // numOfLines={item.type === "text" ? 12 : 3}
+          numOfLines={numOfLines}
+        />
+      );
+    },
 
     []
   );
@@ -129,7 +149,7 @@ const Home = ({ navigation }) => {
     >
       <FlashList
         data={postsData}
-        estimatedItemSize={200}
+        estimatedItemSize={450}
         keyExtractor={(item) => {
           return item.postId;
         }}
@@ -139,6 +159,12 @@ const Home = ({ navigation }) => {
             index,
             isLiked: item.isLiked,
             isReposted: item.isReposted,
+            postId: item.postId,
+            width: item.posts[0]?.width,
+            height: item.posts[0]?.height,
+            height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
+            numOfLines: item.type === "text" ? 7 : 3,
+            // type: item.type,
           })
         }
         ListHeaderComponent={renderStories}
@@ -148,7 +174,11 @@ const Home = ({ navigation }) => {
         onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
         ListFooterComponent={renderListFooter}
-        numColumns={1}
+
+        // onViewableItemsChanged={({ viewableItems, changed }) => {
+        //   console.log("Visible items are", viewableItems);
+        //   console.log("Changed in this iteration", changed);
+        // }}
       />
     </View>
   );

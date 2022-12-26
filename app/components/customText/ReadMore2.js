@@ -20,16 +20,16 @@ const ReadMore2 = (props) => {
 
   useEffect(() => {
     if (showMoreButton) {
-      LayoutAnimation.configureNext(readmoreAnimation);
+      // LayoutAnimation.configureNext(readmoreAnimation);
       setNumberOfLines(showText ? undefined : props.numberOfLines);
     }
   }, [showText, showMoreButton]);
 
-  const readmoreAnimation = LayoutAnimation.create(
-    140,
-    LayoutAnimation.Types.easeInEaseOut,
-    LayoutAnimation.Properties.opacity
-  );
+  // const readmoreAnimation = LayoutAnimation.create(
+  //   140,
+  //   LayoutAnimation.Types.easeInEaseOut,
+  //   LayoutAnimation.Properties.opacity
+  // );
 
   return (
     <View>

@@ -46,6 +46,13 @@ const StructuredText = memo((props) => {
         props.mentionHashtagColor
       )}
     </ReadMore2>
+    // <CustomText numberOfLines={props.numberOfLines}>
+    //   {prepareText(
+    //     props.children,
+    //     props.mentionHashtagPress,
+    //     props.mentionHashtagColor
+    //   )}
+    // </CustomText>
   );
 });
 

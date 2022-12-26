@@ -19,7 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
-const PostMediaOne = ({ data, doubleTap }) => {
+const PostMediaOne = ({ data, doubleTap, height }) => {
   let { url } = data;
   const video = useRef(null);
   const doubleTapRef = useRef(null);
@@ -36,27 +36,21 @@ const PostMediaOne = ({ data, doubleTap }) => {
   };
 
   const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
-  const [height, setHeight] = useState(500);
+  // const [height, setHeight] = useState(500);
   const [play, setPlay] = useState(false);
   const [isMuted, setisMuted] = useState(false);
 
-  const tap = Gesture.Tap()
-    .numberOfTaps(2)
-    .onStart(() => {
-      runOnJS(doubleTap)();
-    });
-
   useEffect(() => {
-    if (data.type === "photo") {
-      Image.getSize(url, (width, height) => {
-        let newHeight = height * (Iwidth / width);
-        if (newHeight > ScreenHeight * 0.7) {
-          setHeight(ScreenHeight * 0.7);
-        } else {
-          setHeight(newHeight);
-        }
-      });
-    }
+    // if (data.type === "photo") {
+    //   Image.getSize(url, (width, height) => {
+    //     let newHeight = height * (Iwidth / width);
+    //     if (newHeight > ScreenHeight * 0.7) {
+    //       setHeight(ScreenHeight * 0.7);
+    //     } else {
+    //       setHeight(newHeight);
+    //     }
+    //   });
+    // }
   }, []);
 
   const handleVisibility = (visible) => {
@@ -76,6 +70,11 @@ const PostMediaOne = ({ data, doubleTap }) => {
       video.current.setIsMutedAsync(true);
       setisMuted(true);
     }
+  };
+
+  const onVideoLoad = (response) => {
+    const size = response;
+    console.log(size);
   };
 
   return (
@@ -125,15 +124,16 @@ const PostMediaOne = ({ data, doubleTap }) => {
                   resizeMode="cover"
                   isLooping
                   shouldPlay={play}
-                  onReadyForDisplay={(response) => {
-                    const { width, height } = response.naturalSize;
-                    const heightScaled = height * (Iwidth / width);
-                    if (heightScaled > ScreenHeight * 0.6) {
-                      setHeight(ScreenHeight * 0.6);
-                    } else {
-                      setHeight(heightScaled);
-                    }
-                  }}
+                  // onLoad={onVideoLoad}
+                  // onReadyForDisplay={(response) => {
+                  //   const { width, height } = response.naturalSize;
+                  //   const heightScaled = height * (Iwidth / width);
+                  //   if (heightScaled > ScreenHeight * 0.6) {
+                  //     setHeight(ScreenHeight * 0.6);
+                  //   } else {
+                  //     setHeight(heightScaled);
+                  //   }
+                  // }}
                 />
                 <View
                   style={{
