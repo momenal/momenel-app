@@ -151,7 +151,6 @@ const HorizontalStories = ({
             width: "100%",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal: 5,
           }}
         >
           <Ionicons

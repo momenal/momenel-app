@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   ImageBackground,
   StyleSheet,
@@ -18,6 +19,11 @@ const StoryCircle = ({
   preview_url,
   hasSeen,
 }) => {
+  const Height = Dimensions.get("window").height;
+  const Width = Dimensions.get("window").width;
+  //scaled Width to keep height 40
+  // console.log(Height * 0.03);
+  // console.log(Width * 0.23);
   return (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate("Stories", { snapToIndex: index })}
@@ -30,8 +36,10 @@ const StoryCircle = ({
       >
         <ImageBackground
           style={{
-            height: 135,
-            width: 96,
+            // height: 135,
+            height: Height * 0.148,
+            // width: 96,
+            width: Width * 0.23,
             alignItems: "center",
             justifyContent: "flex-end",
           }}
@@ -48,10 +56,14 @@ const StoryCircle = ({
             // start={{ x: 0.0, y: 0.0 }}
             // end={{ x: 0.5, y: 0.5 }}
             style={{
-              width: 40,
-              height: 40,
+              // width: 10,
+              // height: 10,
+              width: Height * 0.025,
+              height: Height * 0.025,
               borderRadius: 50,
-              padding: 23, // This should be the border width you want to have
+              // padding: 23, //! This should be the border width you want to have
+              padding: Height * 0.026, //! This should be the border width you want to have
+              // padding: Height * 0.06, //! This should be the border width you want to have
               overflow: "hidden",
               borderRadius: 100,
               marginBottom: 8,
@@ -61,8 +73,10 @@ const StoryCircle = ({
           >
             <Image
               style={{
-                width: 40,
-                height: 40,
+                // width: 30,
+                // height: 30,
+                width: Height * 0.044,
+                height: Height * 0.044,
                 borderRadius: 100,
                 alignItems: "center",
                 justifyContent: "center",
@@ -90,11 +104,3 @@ const StoryCircle = ({
 };
 
 export default React.memo(StoryCircle);
-
-const styles = StyleSheet.create({
-  ImageContainer: {
-    marginBottom: 3.84,
-    alignItems: "center",
-  },
-  preview: { height: 135, width: 96, borderRadius: 15, resizeMode: "cover" },
-});

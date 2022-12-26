@@ -157,7 +157,10 @@ const Home = ({ navigation }) => {
           })
         }
         ListHeaderComponent={renderStories}
-        ListHeaderComponentStyle={{ paddingTop: 5, paddingBottom: 10 }}
+        ListHeaderComponentStyle={{
+          paddingTop: 5,
+          // paddingBottom: Dimensions.get("window").height * 0.002,
+        }}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}

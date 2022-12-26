@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   ImageBackground,
   StyleSheet,
   Text,
@@ -13,8 +14,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../../../Store/useBoundStore";
 
 const StoryUploaderCircle = ({ navigation }) => {
+  const Height = Dimensions.get("window").height;
+  const Width = Dimensions.get("window").width;
   const stories = useBoundStore((state) => state.stories);
   const preview_url = useBoundStore((state) => state.preview_url);
+
+  console.log(Height * 0.029);
 
   return (
     <TouchableOpacity
@@ -32,8 +37,10 @@ const StoryUploaderCircle = ({ navigation }) => {
         {preview_url ? (
           <ImageBackground
             style={{
-              height: 135,
-              width: 96,
+              // height: 135,
+              // width: 96,
+              height: Height * 0.148,
+              width: Width * 0.23,
               alignItems: "center",
               justifyContent: "flex-end",
             }}
@@ -50,8 +57,10 @@ const StoryUploaderCircle = ({ navigation }) => {
               }}
               style={{
                 backgroundColor: "#2C2C2C",
-                width: 40,
-                height: 40,
+                // width: 40,
+                // height: 40,
+                width: Height * 0.044,
+                height: Height * 0.044,
                 borderRadius: 50,
                 alignItems: "center",
                 justifyContent: "center",
@@ -60,15 +69,21 @@ const StoryUploaderCircle = ({ navigation }) => {
                 marginBottom: 8,
               }}
             >
-              <Ionicons name="camera-outline" size={21} color="#DADADA" />
+              <Ionicons
+                name="camera-outline"
+                size={Height * 0.024}
+                color="#DADADA"
+              />
             </TouchableOpacity>
           </ImageBackground>
         ) : (
           <LinearGradient
             colors={["#C3C3C3", "#626262"]}
             style={{
-              height: 135,
-              width: 96,
+              // height: 135,
+              // width: 96,
+              height: Height * 0.148,
+              width: Width * 0.23,
               alignItems: "center",
               justifyContent: "flex-end",
               borderRadius: 15,
@@ -82,8 +97,10 @@ const StoryUploaderCircle = ({ navigation }) => {
               // }
               style={{
                 backgroundColor: "#2C2C2C",
-                width: 40,
-                height: 40,
+                // width: 40,
+                // height: 40,
+                width: Height * 0.044,
+                height: Height * 0.044,
                 borderRadius: 50,
                 alignItems: "center",
                 justifyContent: "center",
@@ -92,7 +109,12 @@ const StoryUploaderCircle = ({ navigation }) => {
                 marginBottom: 8,
               }}
             >
-              <Ionicons name="camera-outline" size={21} color="#DADADA" />
+              {/* <Ionicons name="camera-outline" size={21} color="#DADADA" /> */}
+              <Ionicons
+                name="camera-outline"
+                size={Height * 0.024}
+                color="#DADADA"
+              />
             </TouchableOpacity>
           </LinearGradient>
         )}

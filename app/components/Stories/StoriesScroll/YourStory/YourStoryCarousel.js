@@ -67,7 +67,6 @@ const YourStoryCarousel = ({ navigation }) => {
           zIndex: 1,
           width: "100%",
           top: 65,
-          paddingHorizontal: 10,
         }}
       >
         <View
@@ -132,7 +131,6 @@ const YourStoryCarousel = ({ navigation }) => {
             width: "100%",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal: 5,
           }}
         >
           <Ionicons
