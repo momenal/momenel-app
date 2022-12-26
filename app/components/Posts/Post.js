@@ -137,6 +137,8 @@ const Post = ({
       console.log("@", text);
     } else if (text.startsWith("#")) {
       console.log("#", text);
+    } else {
+      console.log("else", text);
     }
   };
 
@@ -230,34 +232,6 @@ const Post = ({
         />
       ) : posts && posts.length >= 1 ? (
         <PostMediaOne data={posts[0]} doubleTap={doubleTap} height={height} />
-      ) : type === "text" ? (
-        <View
-          style={{
-            paddingHorizontal: ScreenWidth * 0.06,
-            width: ScreenWidth,
-            paddingBottom: 16,
-          }}
-        >
-          <TapGestureHandler
-            ref={doubleTapRef}
-            onHandlerStateChange={_onDoubleTap}
-            numberOfTaps={2}
-          >
-            <View>
-              <StructuredText
-                mentionHashtagPress={mentionHashtagClick}
-                mentionHashtagColor={"#8759F2"}
-                // numberOfLines={
-                //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
-                // }
-                numberOfLines={7}
-                style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
-              >
-                {caption}
-              </StructuredText>
-            </View>
-          </TapGestureHandler>
-        </View>
       ) : (
         <></>
       )}
@@ -275,7 +249,7 @@ const Post = ({
         </View>
       )}
       {/* caption */}
-      {caption && posts.length > 0 && (
+      {caption && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
@@ -292,11 +266,13 @@ const Post = ({
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
+                // maxCharCount={150}
+                maxCharCount={posts.length === 0 ? 500 : 150}
                 // numberOfLines={
                 //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
                 // }
-                numberOfLines={3}
-                style={type === "text" ? { fontSize: 19 } : { fontSize: 16 }}
+                // numberOfLines={3}
+                style={posts.length === 0 ? { fontSize: 19 } : { fontSize: 16 }}
               >
                 {caption}
               </StructuredText>

@@ -9,8 +9,6 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import CustomText from "../app/components/customText/CustomText";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
@@ -80,6 +78,8 @@ const Home = ({ navigation }) => {
 
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width, numOfLines }) => {
+      let scaledHeight = calcHeight(width, height);
+
       return (
         <Post
           postId={item.postId}
@@ -97,10 +97,11 @@ const Home = ({ navigation }) => {
           name={item.name}
           createdAt={item.createdAt}
           isSaved={item.isSaved}
-          posts={item.posts}
+          posts={item.posts ? item.posts : []}
           caption={item.caption}
           // height={calcHeight(width, height)}
-          height={height ? height : 0}
+          height={scaledHeight}
+          // height={height ? height : 0}
           // numOfLines={item.type === "text" ? 12 : 3}
           numOfLines={numOfLines}
         />
@@ -160,11 +161,9 @@ const Home = ({ navigation }) => {
             isLiked: item.isLiked,
             isReposted: item.isReposted,
             postId: item.postId,
-            width: item.posts[0]?.width,
-            height: item.posts[0]?.height,
-            height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
-            numOfLines: item.type === "text" ? 7 : 3,
-            // type: item.type,
+            width: item.posts ? item.posts[0].width : 0,
+            height: item.posts ? item.posts[0].height : 0,
+            // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
         }
         ListHeaderComponent={renderStories}

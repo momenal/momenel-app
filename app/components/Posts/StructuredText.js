@@ -5,19 +5,49 @@ import ReadMore2 from "../customText/ReadMore2";
 const StructuredText = memo((props) => {
   const prepareText = (text, mentionHashtagPress, mentionHashtagColor) => {
     const result = [];
+    let shouldAddMore = false;
+
+    // if number of characters is greater than 400, then replace the last 4 characters with "..."
+    let tempStr;
+    if (text.length > props.maxCharCount) {
+      tempStr = text.substring(0, props.maxCharCount) + "...";
+      shouldAddMore = true;
+    } else {
+      tempStr = text;
+      shouldAddMore = false;
+    }
+    // console.log(tempStr);
 
     // let mentList = props.children.match(/[@#][a-z0-9_\.]+/gi);
-    let mentList = props.children.match(/(http|#|@|www)(\S+)/gi);
+    let mentList = tempStr.match(/(http|#|@|www)(\S+)/gi);
 
     if (mentList == null) {
-      return [text];
+      if (shouldAddMore) {
+        result.push(tempStr);
+        result.push(
+          <Mention
+            key={"more"}
+            mentionHashtagColor={"gray"}
+            mentionHashtagPress={mentionHashtagPress}
+            text={"more"}
+            style={props.style}
+          />
+        );
+
+        return result;
+      } else {
+        return [tempStr];
+      }
+
+      // return [text];
+      // return [tempStr];
     }
     let i = 0;
     for (const ment of mentList) {
       i++;
       // console.log(ment.startsWith("https://"));
       // console.log(ment);
-      result.push(text.substring(0, text.indexOf(ment)));
+      result.push(tempStr.substring(0, tempStr.indexOf(ment)));
       result.push(
         <Mention
           key={i}
@@ -27,32 +57,47 @@ const StructuredText = memo((props) => {
           style={props.style}
         />
       );
-      text = text.substring(text.indexOf(ment) + ment.length, text.length);
+      tempStr = tempStr.substring(
+        tempStr.indexOf(ment) + ment.length,
+        tempStr.length
+      );
     }
-    if (text.length > 0) {
-      result.push(text);
+    if (tempStr.length > 0) {
+      result.push(tempStr);
+    }
+
+    if (shouldAddMore) {
+      result.push(
+        <Mention
+          key={"more"}
+          mentionHashtagColor={"gray"}
+          mentionHashtagPress={mentionHashtagPress}
+          text={"more"}
+          style={props.style}
+        />
+      );
     }
     return result;
   };
 
   return (
-    <ReadMore2
-      numberOfLines={props.numberOfLines}
-      style={[props.style, { fontFamily: "Nunito_400Regular" }]}
-    >
-      {prepareText(
-        props.children,
-        props.mentionHashtagPress,
-        props.mentionHashtagColor
-      )}
-    </ReadMore2>
-    // <CustomText numberOfLines={props.numberOfLines}>
+    // <ReadMore2
+    //   numberOfLines={props.numberOfLines}
+    //   style={[props.style, { fontFamily: "Nunito_400Regular" }]}
+    // >
     //   {prepareText(
     //     props.children,
     //     props.mentionHashtagPress,
     //     props.mentionHashtagColor
     //   )}
-    // </CustomText>
+    // </ReadMore2>
+    <CustomText style={[props.style, { fontFamily: "Nunito_400Regular" }]}>
+      {prepareText(
+        props.children,
+        props.mentionHashtagPress,
+        props.mentionHashtagColor
+      )}
+    </CustomText>
   );
 });
 
