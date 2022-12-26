@@ -1,3 +1,4 @@
+import { FlashList } from "@shopify/flash-list";
 import { StatusBar } from "expo-status-bar";
 import React, { useRef, useState } from "react";
 import {
@@ -59,9 +60,10 @@ const Stories = ({ navigation, route }) => {
       }}
     >
       <StatusBar style="light" />
-      <FlatList
+      <FlashList
         data={data}
         ref={storyFlatlistRef}
+        estimatedItemSize={PAGE_HEIGHT}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         initialScrollIndex={route.params.snapToIndex}
