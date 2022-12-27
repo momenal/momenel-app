@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 export const createPostsSlice = (set) => ({
   posts: [
     // {
@@ -215,21 +217,27 @@ export const createPostsSlice = (set) => ({
       isDonateable: false,
     },
   ],
-  handleLike: async (index) => {
+  handleLike: async (index, isLiked) => {
     try {
-      console.log("like? ", index);
-      // repost: {
-      //   isRepost: false,
-      // },
       set((state) => {
         const newPosts = [...state.posts];
-        // console.log("repost", newPosts[index].isReposted);
-        newPosts[index].isLiked = !newPosts[index].isLiked;
+        newPosts[index].isLiked = !isLiked;
+        console.log(newPosts[index].likes);
+        /* if already liked then reduce likes by 1 else increment */
+        {
+          isLiked ? newPosts[index].likes-- : newPosts[index].likes++;
+        }
+
+        //todo send req to like post
+
+        //todo if error then show alert
+        // Alert.alert("oops something went wrong :(");
+
         return { posts: newPosts };
       });
     } catch (err) {}
   },
-  handleRepost: async (index) => {
+  handleRepost: async (index, isReposted) => {
     try {
       console.log("repost", index);
       // repost: {
@@ -239,6 +247,15 @@ export const createPostsSlice = (set) => ({
         const newPosts = [...state.posts];
         // console.log("repost", newPosts[index].isReposted);
         newPosts[index].isReposted = !newPosts[index].isReposted;
+        {
+          isReposted
+            ? (newPosts[index].reposts = newPosts[index].reposts - 1)
+            : (newPosts[index].reposts = newPosts[index].reposts + 1);
+        }
+        //todo send req to repost post
+        //todo if error then show alert and revert back
+        // Alert.alert("oops something went wrong :(");
+
         return { posts: newPosts };
       });
     } catch (err) {}
@@ -255,6 +272,16 @@ export const createPostsSlice = (set) => ({
       });
     } catch (err) {}
   },
+  reportPost: async (id, comments) => {
+    try {
+      console.log("slice: report post");
+      console.log("id: ", id);
+      console.log("comments: ", comments);
+      //todo send req to report post
+      //todo if error then show alert
+    } catch (err) {}
+  },
+
   fetchMorePosts: async () => {
     try {
       console.log("called more post");

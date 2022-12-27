@@ -22,38 +22,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ReportSelect from "./ReportSelect";
 import LinearGradientButton from "../../Buttons/LinearGradientButton";
 import * as Haptics from "expo-haptics";
-
-const InputComponent = ({ onUpdate }) => {
-  const [title, setTitle] = useState("");
-  const onchange = (text) => {
-    setTitle(text);
-    onUpdate(text);
-  };
-  return (
-    <BottomSheetTextInput
-      style={{
-        flex: 1,
-        borderWidth: 1,
-        borderColor: "#999999",
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        color: "#818181",
-      }}
-      placeholder="Optional"
-      value={title}
-      onChangeText={onchange}
-      multiline
-      keyboardAppearance={"dark"}
-      // blurOnSubmit={true}
-      // returnKeyType="done"
-    />
-  );
-};
+import { useBoundStore } from "../../../Store/useBoundStore";
+import SheetInputComponent from "../SheetInputComponent";
 
 const BottomReportSheet = (props) => {
   let { show, onSheetClose, setShow, username } = props;
   const [activeIndex, setactiveIndex] = useState(null);
+  const handleReport = useBoundStore((state) => state.reportPost);
 
   const [text, onChangeText] = useState(null);
 
@@ -61,66 +36,79 @@ const BottomReportSheet = (props) => {
 
   const data = [
     {
+      id: 1,
       heading: "Spam",
       description:
         "Posting malicious content or links, inauthentic engagement,misusing hashtags, repetitive replies and Reposts",
     },
     {
+      id: 2,
       heading: "Hate Speech",
       description:
         "Posting content that promotes or encourages violence, hatred, or harm against an individual or group of people. For example Islamophobia, anti-Semitism, homophobia, transphobia,and racism",
     },
     {
+      id: 3,
       heading: "Scam or Fraud",
       description:
         "Posting content or links in an attempt to sell or promote a product or service in a false or misleading manner. Posts attempting to defraud others of their money or personal information should also be reported.",
     },
     {
+      id: 4,
       heading: "Privacy Violations",
       description:
         "Posting content that violates another person's privacy, including posting private information about others without their consent.",
     },
     {
+      id: 5,
       heading: "Privacy Violations",
       description:
         "Posting content that violates another person's privacy, including posting private information about others without their consent.",
     },
     {
+      id: 6,
       heading: "Illegal activity and behavior",
       description:
         "Content that depicts illegal or criminal acts, threats of violence.",
     },
     {
+      id: 7,
       heading: "Intellectual property infringement",
       description:
         "Impersonating another account or business, infringing on intellectual property rights.",
     },
     {
+      id: 8,
       heading: "Sensitive Content",
       description:
         "Content that depicts graphic violence, sexual activity, nudity, gore, or other sensitive subjects.",
     },
     {
+      id: 9,
       heading: "Underage Content",
       description:
         "Content that depicts minors in a sexualized manner or in a manner that is otherwise inappropriate for their age.",
     },
     {
+      id: 10,
       heading: "Doxxing",
       description:
         "Sharing or threatening to share another person's personal information, including their name, address, phone number, email address, or other identifying information without their consent.",
     },
     {
+      id: 11,
       heading: "Prostitution",
       description:
         "Solicitation or advertising for illegal sexual activity or sex for hire.",
     },
     {
+      id: 12,
       heading: "Suicide or self-injury",
       description:
         "Posts or comments that encourage or promote self-injury, including suicide and cutting.",
     },
     {
+      id: 13,
       heading: "I don't like this content",
       description: "Content that you dislike and/or this user is a troll",
     },
@@ -154,9 +142,9 @@ const BottomReportSheet = (props) => {
     setShow(false);
     onChangeText("");
     setactiveIndex(null);
-
-    console.log("Report index: ", data[activeIndex].heading);
-    console.log("comment: ", text);
+    // console.log("Report index: ", data[activeIndex].id);
+    // console.log("comment: ", text);
+    handleReport(data[activeIndex].id, text);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
 
@@ -232,7 +220,8 @@ const BottomReportSheet = (props) => {
                 Provide us with additional information.
               </CustomText>
               <View style={{ height: 100 }}>
-                <InputComponent onUpdate={onTextUpdate} />
+                {/* <InputComponent onUpdate={onTextUpdate} /> */}
+                <SheetInputComponent onUpdate={onTextUpdate} multiline={true} />
               </View>
             </TouchableOpacity>
             <TouchableWithoutFeedback

@@ -5,7 +5,7 @@ export const createUserSlice = (set) => ({
   // preview_url: "https://picsum.photos/96/135",
   loading: false,
   hasErrors: false,
-  coinsOwned: 900999990,
+  coinsOwned: 8,
 
   SetUserData: async (username, profile_url, preview_url) => {
     set(() => ({ loading: true }));

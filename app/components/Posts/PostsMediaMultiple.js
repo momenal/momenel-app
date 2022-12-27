@@ -24,7 +24,7 @@ const PostsMediaMultiple = ({
   url,
   maxHeight,
   index,
-  setMaxHeightFunc,
+
   doubleTap,
 }) => {
   const video = useRef(null);

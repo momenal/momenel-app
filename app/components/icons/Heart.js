@@ -32,15 +32,14 @@ const Heart = ({ isLiked, index }) => {
     }
   };
   const handleLikeFunc = () => {
-    // liked.value = withSpring(liked.value ? 0 : 1);
     if (isLiked === true) {
-      handleLike(index);
+      handleLike(index, isLiked);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(0);
     } else {
-      handleLike(index);
-
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      handleLike(index, isLiked);
+      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(1);
     }
   };

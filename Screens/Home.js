@@ -89,11 +89,7 @@ const Home = ({ navigation }) => {
           isSaved={item.isSaved}
           posts={item.posts ? item.posts : []}
           caption={item.caption}
-          // height={calcHeight(width, height)}
           height={scaledHeight}
-          // height={height ? height : 0}
-          // numOfLines={item.type === "text" ? 12 : 3}
-          numOfLines={numOfLines}
         />
       );
     },

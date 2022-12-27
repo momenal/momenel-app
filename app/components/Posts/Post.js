@@ -2,6 +2,7 @@ import {
   Animated,
   Dimensions,
   FlatList,
+  Keyboard,
   StyleSheet,
   Text,
   Touchable,
@@ -25,6 +26,7 @@ import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
 import { State, TapGestureHandler } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
+import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -47,53 +49,49 @@ const Post = ({
   isReposted,
   isDonateable,
   height,
-  numOfLines,
 }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
-  const [maxHeight, setmaxHeight] = useState(0);
+  const [showTipSheet, setShowTipSheet] = useState(false);
   const doubleTapRef = useRef(null);
-  // const [numOfLines, setnumOfLines] = useState(null);
-
-  //flashlist recycling
-  const lastItemId = useRef(postId);
-  // if (postId !== lastItemId.current) {
-  //   lastItemId.current = postId;
-
-  //   if (type === "text") {
-  //     setnumOfLines(12);
-  //   } else {
-  //     setnumOfLines(3);
-  //   }
-  // }
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  const setMaxHeightFunc = (h) => {
-    setmaxHeight(h);
+  //sheet
+  const onReportSheetClose = () => {
+    Keyboard.dismiss();
+    setShowTipSheet(false);
   };
 
+  /**
+   * If the user has liked the post, then the user can unlike the post. If the user has not liked the
+   * post, then the user can like the post
+   * --> for double Tap only. Pressing heart icon will not trigger this function
+   * --> Heart icon press fucntion is in Heart.js
+   */
   const handleLikeFunc = () => {
-    handleLike(index);
     if (isLiked === true) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    } else {
+      handleLike(index, isLiked);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    }
-  };
-
-  const handleRepostFunc = async () => {
-    await handleRepost(index);
-    if (isReposted === false) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } else {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      handleLike(index, isLiked);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
   };
 
   const doubleTap = () => {
     handleLikeFunc();
+  };
+
+  const handleRepostFunc = async () => {
+    await handleRepost(index, isReposted);
+    if (isReposted === false) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    } else {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
   };
 
   const renderItem = ({ item, index }) => (
@@ -103,7 +101,6 @@ const Post = ({
       maxHeight={height}
       // maxHeight={height}
       index={index}
-      setMaxHeightFunc={setMaxHeightFunc}
       doubleTap={doubleTap}
     />
   );
@@ -156,8 +153,9 @@ const Post = ({
 
   const handleTip = () => {
     if (isDonateable === true) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       //open tip modal
+      setShowTipSheet(true);
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       //todo: show alert
@@ -363,6 +361,13 @@ const Post = ({
           </TouchableOpacity>
         )}
       </View>
+      <BottomTipSheet
+        show={showTipSheet}
+        setShow={setShowTipSheet}
+        onSheetClose={onReportSheetClose}
+        username={"@farhan"}
+        postId={postId}
+      />
     </View>
   );
 };
