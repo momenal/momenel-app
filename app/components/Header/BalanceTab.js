@@ -2,8 +2,25 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import CoinIcon from "../icons/CoinIcon";
 import CustomText from "../customText/CustomText";
+import { useBoundStore } from "../../Store/useBoundStore";
 
 const BalanceTab = () => {
+  const coinsOwned = useBoundStore((state) => state.coinsOwned);
+
+  /**
+   * If the number is less than or equal to 999,999, then format it with commas. Otherwise, if the
+   * number is greater than 999,999, then format it with a "M" at the end
+   * @param num - The number to be formatted.
+   * @returns the number of the argument passed in.
+   */
+  function kFormatter(num) {
+    return Math.abs(num) <= 999999
+      ? // ? num.toLocaleString()
+        num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      : Math.abs(num) > 999999
+      ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
+      : Math.sign(num) * Math.abs(num);
+  }
   return (
     <View style={styles.container}>
       <CoinIcon size={25} />
@@ -15,7 +32,7 @@ const BalanceTab = () => {
           fontFamily: "Nunito_600SemiBold",
         }}
       >
-        5,975
+        {kFormatter(coinsOwned)}
       </CustomText>
     </View>
   );

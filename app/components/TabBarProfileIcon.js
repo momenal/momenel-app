@@ -1,8 +1,10 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { useBoundStore } from "../Store/useBoundStore";
 
 const TabBarProfileIcon = ({ size, focused }) => {
+  const profile_url = useBoundStore((state) => state.profile_url);
   return (
     <LinearGradient
       colors={["#FF4082", "#B01CEC"]}
@@ -28,8 +30,9 @@ const TabBarProfileIcon = ({ size, focused }) => {
       >
         <Image
           style={{ width: size, height: size, borderRadius: 500 }}
+          resizeMode="center"
           source={{
-            uri: "https://images.unsplash.com/photo-1549068106-b024baf5062d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+            uri: profile_url,
           }}
         />
       </View>

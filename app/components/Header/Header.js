@@ -8,29 +8,10 @@ import Notifications from "../icons/Notifications";
 const Header = (props) => {
   return (
     <SafeAreaView edges={["right", "left", "top"]} style={styles.container}>
-      <View
-        style={[
-          styles.views,
-          //   { borderWidth: 2, backgroundColor: "red", height: 99 },
-        ]}
-      >
+      <View style={[styles.views]}>
         <Logo size={35} />
       </View>
-      <View
-        style={[
-          styles.views,
-          // { borderWidth: 2, backgroundColor: "red", height: 99 },
-          //   { backgroundColor: "red", overflow: "visible" },
-        ]}
-      >
-        {/* <View
-          style={{
-            marginRight: 20,
-            overflow: "visible",
-          }}
-        >
-          <Notifications size={23} />
-        </View> */}
+      <View style={[styles.views]}>
         <BalanceTab />
       </View>
     </SafeAreaView>

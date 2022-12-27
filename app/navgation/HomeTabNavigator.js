@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
 import HomeIcon from "../components/icons/HomeIcon";
 import PlusIcon from "../components/icons/PlusIcon";
-import MessagesIcon from "../components/icons/MessagesIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
 import FakeLogout from "../components/FakeLogout";
@@ -104,7 +103,7 @@ const HomeNavigator = ({ navigation }) => {
                 <PlusIcon
                   color={focused ? "black" : "none"}
                   size={IconSize}
-                  strokeColor={focused ? "black" : "#999999"}
+                  strokeColor={focused ? "black" : "#A8A8A8"}
                 />
               );
             }
@@ -117,9 +116,15 @@ const HomeNavigator = ({ navigation }) => {
         options={{
           title: "Notifications",
           // tabBarStyle: { display: "none" },
-          tabBarIcon: ({ size, focused, color }) => {
+          tabBarIcon: ({ size, focused }) => {
             {
-              return <Notifications size={IconSize} pending={true} />;
+              return (
+                <Notifications
+                  size={IconSize}
+                  focused={focused}
+                  color={focused ? "black" : "#A8A8A8"}
+                />
+              );
             }
           },
         }}
