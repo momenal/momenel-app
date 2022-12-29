@@ -365,7 +365,7 @@ const Post = ({
         show={showTipSheet}
         setShow={setShowTipSheet}
         onSheetClose={onReportSheetClose}
-        username={"@farhan"}
+        username={username}
         postId={postId}
       />
     </View>

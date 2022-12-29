@@ -1,21 +1,57 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import CustomText from "../../customText/CustomText";
+import CoinIcon from "../../icons/CoinIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
-const TipMenuButton = () => {
+const TipMenuButton = ({ txt, onPress, focused }) => {
+  //haddle press
+  const handlePress = () => {};
+
   return (
-    <View>
-      <CustomText
-        style={{
-          fontFamily: "Nunito_700Bold",
-          color: "white",
-          fontSize: 18,
-        }}
-      >
-        20
-      </CustomText>
-    </View>
+    <LinearGradient
+      colors={["#FF4082", "#B01CEC"]}
+      start={{ x: 0.0, y: 0.6 }}
+      end={{ x: 1.0, y: 1.0 }}
+      style={{
+        borderRadius: 6,
+        padding: focused ? 4 : 0,
+        overflow: "hidden",
+      }}
+    >
+      <TouchableOpacity style={styles.container} onPress={() => onPress(txt)}>
+        <CoinIcon size={25} />
+        <CustomText
+          style={{
+            color: "black",
+            fontSize: 17,
+            marginHorizontal: 3,
+            fontFamily: "Nunito_700Bold",
+          }}
+        >
+          {txt}
+        </CustomText>
+      </TouchableOpacity>
+    </LinearGradient>
   );
 };
 
 export default TipMenuButton;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 6,
+    width: 68,
+  },
+  flex: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+});

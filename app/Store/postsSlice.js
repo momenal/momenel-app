@@ -4,7 +4,7 @@ export const createPostsSlice = (set) => ({
   posts: [
     // {
     //   postId: Math.random(19).toString(),
-    //   userName: "quotes",
+    //   username: "quotes",
     //   name: "Quotes",
     //   type: "text",
     //   repost: {
@@ -44,7 +44,7 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "thetravellingfamilynonstopaaaaaaa",
       name: "Quotes",
       type: "post",
       repost: {
@@ -75,7 +75,7 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "quotes",
       name: "Quotes",
       type: "text",
       repost: {
@@ -100,7 +100,7 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "quotes",
       name: "Quotes",
       type: "post",
       repost: {
@@ -131,7 +131,7 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "quotes",
       name: "Quotes",
       type: "post",
       repost: {
@@ -162,7 +162,7 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "quotes",
       name: "Quotes",
       type: "post",
       repost: {
@@ -193,7 +193,7 @@ export const createPostsSlice = (set) => ({
     },
     {
       postId: Math.random(19).toString(),
-      userName: "quotes",
+      username: "quotes",
       name: "Quotes",
       type: "text",
       repost: {
@@ -288,7 +288,7 @@ export const createPostsSlice = (set) => ({
       const newst = [
         {
           postId: Math.random(32).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           name: "Betzabeth",
           isReposted: false,
           repost: {
@@ -332,7 +332,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(19).toString(),
-          userName: "quotes",
+          username: "quotes",
           name: "Quotes",
           type: "text",
           repost: {
@@ -358,7 +358,7 @@ export const createPostsSlice = (set) => ({
 
         {
           postId: Math.random(19).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           repost: {
             isRepost: false,
           },
@@ -386,7 +386,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(32).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           name: "Betzabeth",
           isReposted: false,
           repost: {
@@ -423,7 +423,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(19).toString(),
-          userName: "quotes",
+          username: "quotes",
           name: "Quotes",
           type: "text",
           repost: {
@@ -448,7 +448,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(19).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           repost: {
             isRepost: false,
           },
@@ -476,7 +476,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(32).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           name: "Betzabeth",
           isReposted: false,
           repost: {
@@ -513,7 +513,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(19).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           repost: {
             isRepost: false,
           },
@@ -541,7 +541,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(32).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           name: "Betzabeth",
           isReposted: false,
           repost: {
@@ -576,7 +576,7 @@ export const createPostsSlice = (set) => ({
         },
         {
           postId: Math.random(19).toString(),
-          userName: Math.random(12).toString(),
+          username: Math.random(12).toString(),
           repost: {
             isRepost: false,
           },

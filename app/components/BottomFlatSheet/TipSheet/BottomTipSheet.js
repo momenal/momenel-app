@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Keyboard, StyleSheet, Text, View } from "react-native";
 import React, {
   forwardRef,
   useCallback,
@@ -21,6 +21,9 @@ import CustomText from "../../customText/CustomText";
 import BalanceTab from "../../Header/BalanceTab";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import TipMenuButton from "./TipMenuButton";
+import LinearGradientButton from "../../Buttons/LinearGradientButton";
+import CoinIcon from "../../icons/CoinIcon";
+import { moderateScale, scale, verticalScale } from "../../../utils/Scale";
 
 const BottomTipSheet = (props) => {
   let { show, onSheetClose, setShow, username, postId } = props;
@@ -28,20 +31,24 @@ const BottomTipSheet = (props) => {
   const bottomSheetRef = useRef(null);
   const childRef = useRef();
   const [amount, onChangeText] = useState(null);
+  const [activeTipMenu, setactiveTipMenu] = useState(null);
 
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
       onSheetClose();
       onChangeText("");
+      setactiveTipMenu(null);
     }
   }, []);
+
+  const handleTipMenuPress = (txt) => {
+    setactiveTipMenu(txt);
+    childRef.current.set(txt);
+  };
 
   const onTip = () => {
     setShow(false);
     onChangeText("");
-
-    // console.log("Report index: ", data[activeIndex].id);
-    // console.log("comment: ", text);
 
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
@@ -119,7 +126,9 @@ const BottomTipSheet = (props) => {
               <View
                 style={{
                   flexDirection: "row",
+                  flex: 1,
                   justifyContent: "space-between",
+                  flexWrap: "wrap",
                   alignItems: "center",
                   marginBottom: 15,
                 }}
@@ -129,12 +138,15 @@ const BottomTipSheet = (props) => {
                     fontFamily: "Nunito_700Bold",
                     color: "white",
                     fontSize: 18,
+                    marginTop: 10, //! keep the same as the marginTop of the BalanceTab below
                   }}
                   numberOfLines={1}
                 >
-                  Tip {username}
+                  Tip @{username}
                 </CustomText>
-                <BalanceTab showArrow={true} />
+                <View style={{ marginTop: 10 }}>
+                  <BalanceTab showArrow={true} />
+                </View>
               </View>
               <View
                 style={{
@@ -157,6 +169,7 @@ const BottomTipSheet = (props) => {
                     ref={childRef}
                     onUpdate={onTextUpdate}
                     multiline={true}
+                    setactiveTipMenu={setactiveTipMenu}
                   />
                 </TouchableOpacity>
                 <CircleButton
@@ -167,24 +180,65 @@ const BottomTipSheet = (props) => {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-around",
+                  paddingVertical: 15,
+                  alignItems: "center",
+                  height: 60,
                   marginBottom: 15,
                 }}
               >
-                <TipMenuButton />
-                <TipMenuButton />
-                <TipMenuButton />
-                <TipMenuButton />
+                <TipMenuButton
+                  txt={5}
+                  onPress={handleTipMenuPress}
+                  focused={activeTipMenu === 5 ? true : false}
+                />
+                <TipMenuButton
+                  txt={10}
+                  onPress={handleTipMenuPress}
+                  focused={activeTipMenu === 10 ? true : false}
+                />
+                <TipMenuButton
+                  txt={20}
+                  onPress={handleTipMenuPress}
+                  focused={activeTipMenu === 20 ? true : false}
+                />
+                <TipMenuButton
+                  txt={30}
+                  onPress={handleTipMenuPress}
+                  focused={activeTipMenu === 30 ? true : false}
+                />
               </View>
-              <CustomText
+              <LinearGradientButton
                 style={{
-                  fontFamily: "Nunito_700Bold",
-                  color: "white",
-                  fontSize: 18,
+                  width: "100%",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  justifyContent: "center",
                 }}
               >
-                amount: {amount}
-              </CustomText>
+                <CoinIcon size={25} />
+                <CustomText
+                  style={{
+                    fontFamily: "Nunito_700Bold",
+                    color: "white",
+                    fontSize: 18,
+                    // fontSize: moderateScale(18),
+                    paddingLeft: 10,
+                  }}
+                >
+                  Tip {amount}
+                </CustomText>
+              </LinearGradientButton>
+              <TouchableOpacity
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  marginBottom: 2,
+                  marginTop: 10,
+                }}
+              >
+                <CustomText style={{ color: "white" }}>Recharge</CustomText>
+              </TouchableOpacity>
             </View>
           </BottomSheetView>
         </BottomSheet>
@@ -207,23 +261,31 @@ const SheetInputComponent = forwardRef((props, ref) => {
   }, [title]);
 
   useImperativeHandle(ref, () => ({
+    set(value) {
+      setTitle(value.toString());
+    },
     increment() {
       if (title == "") {
         setTitle("5");
       } else {
         setTitle((parseInt(title) + 5).toString());
+        props.setactiveTipMenu(-1);
       }
     },
     decrement() {
       if (title == "") {
         setTitle("0");
+        props.setactiveTipMenu(-1);
       } else if (parseInt(title) <= 0) {
         setTitle("0");
+        props.setactiveTipMenu(-1);
       } else {
         if (parseInt(title) - 5 <= 0) {
           setTitle("0");
+          props.setactiveTipMenu(-1);
         } else {
           setTitle((parseInt(title) - 5).toString());
+          props.setactiveTipMenu(-1);
         }
       }
     },
@@ -273,8 +335,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   circle: {
-    width: 50,
-    height: 50,
+    // width: Dimensions.get("window").width * 0.12,
+    // height: Dimensions.get("window").width * 0.12,
+    width: verticalScale(40),
+    height: verticalScale(40),
+    // width: 50,
+    // height: 50,
     borderRadius: 25,
     backgroundColor: "#CDCDCD",
     alignItems: "center",

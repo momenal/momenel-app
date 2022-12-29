@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { memo, useMemo, useRef, useState } from "react";
+import React, { memo, useCallback, useMemo, useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
@@ -17,6 +17,7 @@ import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import BottomReportSheet from "../BottomFlatSheet/reportSheet/BottomReportSheet";
+import { scale } from "../../utils/Scale";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -60,6 +61,8 @@ const PostHeader = ({
     []
   );
 
+  const memoizedScale = useCallback((size) => scale(size), []);
+
   return (
     <View
       style={{
@@ -80,13 +83,15 @@ const PostHeader = ({
             uri: profileUrl,
           }}
         />
-        <View>
+        <View style={{}}>
           <CustomText
             style={{
               color: "#262628",
-              fontSize: 16,
+              // fontSize: 16,
+              fontSize: memoizedScale(13.5),
               fontFamily: "Nunito_600SemiBold",
             }}
+            numberOfLines={1}
           >
             {name ? name : `@${username}`}
           </CustomText>
@@ -98,7 +103,12 @@ const PostHeader = ({
             }}
           >
             {name ? (
-              <CustomText style={styles.textMedium}>@{username}</CustomText>
+              <CustomText
+                numberOfLines={1}
+                style={[styles.textMedium, { maxWidth: memoizedScale(170) }]}
+              >
+                @{username}
+              </CustomText>
             ) : (
               <Text></Text>
             )}

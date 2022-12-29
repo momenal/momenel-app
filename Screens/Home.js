@@ -67,9 +67,9 @@ const Home = ({ navigation }) => {
   };
 
   const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width, numOfLines }) => {
+    ({ item, index, isLiked, isReposted, height, width }) => {
       let scaledHeight = calcHeight(width, height);
-
+      console.log(item.username);
       return (
         <Post
           postId={item.postId}
@@ -83,7 +83,7 @@ const Home = ({ navigation }) => {
           isDonateable={item.isDonateable}
           repost={item.repost}
           profileUrl={item.profile_url}
-          userName={item.userName}
+          username={item.username}
           name={item.name}
           createdAt={item.createdAt}
           isSaved={item.isSaved}
