@@ -1,5 +1,7 @@
 import {
   Keyboard,
+  KeyboardAvoidingView,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -31,6 +33,7 @@ const BottomReportSheet = (props) => {
   const handleReport = useBoundStore((state) => state.reportPost);
 
   const [text, onChangeText] = useState(null);
+  const [textValue, settextValue] = useState();
 
   const insets = useSafeAreaInsets();
 
@@ -120,7 +123,7 @@ const BottomReportSheet = (props) => {
   };
   const bottomSheetRef = useRef(null);
 
-  const snapPoints = useMemo(() => ["80%"], []);
+  const snapPoints = useMemo(() => ["93%"], []);
 
   useEffect(() => {
     if (show === true) {
@@ -184,6 +187,7 @@ const BottomReportSheet = (props) => {
               paddingHorizontal: 20,
               marginVertical: 8,
             }}
+            // numberOfLines={1}
           >
             Report @{username}'s post
           </CustomText>
@@ -216,13 +220,27 @@ const BottomReportSheet = (props) => {
                   fontSize: 20,
                   marginVertical: 20,
                 }}
+                adjustsFontSizeToFit={true}
+                numberOfLines={1}
               >
                 Provide us with additional information.
               </CustomText>
-              <View style={{ height: 100 }}>
-                {/* <InputComponent onUpdate={onTextUpdate} /> */}
-                <SheetInputComponent onUpdate={onTextUpdate} multiline={true} />
-              </View>
+              {/* <View style={{ height: 100 }}> */}
+              {/* <InputComponent onUpdate={onTextUpdate} /> */}
+              {/* <SheetInputComponent onUpdate={onTextUpdate} multiline={true} />
+               */}
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <TextInput
+                  // style={styles.input}
+                  onChangeText={onChangeText}
+                  value={text}
+                  placeholder="Type here..."
+                />
+              </KeyboardAvoidingView>
+
+              {/* </View> */}
             </TouchableOpacity>
             <TouchableWithoutFeedback
               disabled={activeIndex != null ? false : true}
@@ -236,7 +254,7 @@ const BottomReportSheet = (props) => {
               >
                 <LinearGradientButton
                   disabled={activeIndex != null ? false : true}
-                  style={{ marginTop: 20 }}
+                  style={{ marginTop: 20, marginBottom: 10 }}
                 >
                   <CustomText
                     style={{
@@ -246,6 +264,8 @@ const BottomReportSheet = (props) => {
                       textAlign: "center",
                       color: "white",
                     }}
+                    adjustsFontSizeToFit={true}
+                    numberOfLines={1}
                   >
                     Report
                   </CustomText>

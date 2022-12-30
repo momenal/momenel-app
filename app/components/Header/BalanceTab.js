@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import CoinIcon from "../icons/CoinIcon";
 import CustomText from "../customText/CustomText";
 import { useBoundStore } from "../../Store/useBoundStore";
 import { Ionicons } from "@expo/vector-icons";
+import { scale } from "../../utils/Scale";
 
 const BalanceTab = ({ showArrow }) => {
   const coinsOwned = useBoundStore((state) => state.coinsOwned);
+  const memoScale = useCallback((value) => scale(value), []);
 
   /**
    * If the number is less than or equal to 999,999, then format it with commas. Otherwise, if the
@@ -22,14 +24,16 @@ const BalanceTab = ({ showArrow }) => {
       ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
       : Math.sign(num) * Math.abs(num);
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.flex}>
-        <CoinIcon size={25} />
+        {/* <CoinIcon size={25} /> */}
+        <CoinIcon size={memoScale(21)} />
         <CustomText
           style={{
             color: "white",
-            fontSize: 16,
+            fontSize: memoScale(13.5),
             marginHorizontal: 3,
             fontFamily: "Nunito_600SemiBold",
           }}
@@ -52,8 +56,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 9.5,
-    paddingVertical: 8,
+    paddingHorizontal: 9,
+    paddingVertical: 6,
     borderRadius: 6,
   },
   flex: {

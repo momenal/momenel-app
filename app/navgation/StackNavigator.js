@@ -41,7 +41,12 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Report"
         component={Report}
-        options={{ gestureDirection: "vertical", headerShown: false }}
+        options={{
+          headerShown: true,
+          title: "",
+          headerBackTitle: "",
+          headerShadowVisible: false,
+        }}
       />
     </Stack.Navigator>
   );

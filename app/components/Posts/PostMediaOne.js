@@ -72,11 +72,6 @@ const PostMediaOne = ({ data, doubleTap, height }) => {
     }
   };
 
-  const onVideoLoad = (response) => {
-    const size = response;
-    console.log(size);
-  };
-
   return (
     <View
       style={{

@@ -28,6 +28,7 @@ const PostHeader = ({
   createdAt,
   isSaved,
   index,
+  navigation,
 }) => {
   const SavePost = useBoundStore((state) => state.SavePost);
   const postsData = useBoundStore((state) => state.posts);
@@ -42,9 +43,13 @@ const PostHeader = ({
   };
 
   const onReportPress = () => {
-    console.log("rep");
     setShowBottomSheet(false);
-    setShowBottomReportSheet(true);
+    navigation.navigate("Report", {
+      contentId: postsData[index].postId,
+      username: postsData[index].username,
+      contentType: "post",
+    });
+    // setShowBottomReportSheet(true);
   };
 
   const onReportSheetClose = () => {
@@ -61,7 +66,11 @@ const PostHeader = ({
     []
   );
 
-  const memoizedScale = useCallback((size) => scale(size), []);
+  const memoizedScale = useCallback((size) => {
+    return scale(size);
+  }, []);
+
+  console.log(memoizedScale(17));
 
   return (
     <View
@@ -88,7 +97,9 @@ const PostHeader = ({
             style={{
               color: "#262628",
               // fontSize: 16,
+              // fontSize: memoizedScale(13.5),
               fontSize: memoizedScale(13.5),
+              paddingBottom: 2,
               fontFamily: "Nunito_600SemiBold",
             }}
             numberOfLines={1}
@@ -133,7 +144,7 @@ const PostHeader = ({
           style={{ marginLeft: 6 }}
           onPress={() => setShowBottomSheet(true)}
         >
-          <Ellipsis size={21} />
+          <Ellipsis size={memoizedScale(18)} />
         </TouchableOpacity>
       </View>
       <BottomSheet
@@ -145,7 +156,7 @@ const PostHeader = ({
             flex: 1,
             alignItems: "center",
             paddingTop: 10,
-            paddingBottom: insets.bottom,
+            paddingBottom: insets.bottom + 15,
             paddingHorizontal: 20,
             // backgroundColor: "pink",
           }}
@@ -206,7 +217,7 @@ const PostHeader = ({
         show={showBottomReportSheet}
         setShow={setShowBottomReportSheet}
         onSheetClose={onReportSheetClose}
-        username={postsData[index].userName}
+        username={postsData[index].username}
       />
     </View>
   );

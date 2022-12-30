@@ -1,5 +1,11 @@
 import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
@@ -7,6 +13,7 @@ import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
 import Loader from "../app/components/Loader";
 import { FlashList } from "@shopify/flash-list";
+import { scale } from "../app/utils/Scale";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -69,9 +76,9 @@ const Home = ({ navigation }) => {
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width }) => {
       let scaledHeight = calcHeight(width, height);
-      console.log(item.username);
       return (
         <Post
+          navigation={navigation}
           postId={item.postId}
           index={index}
           likes={item.likes}

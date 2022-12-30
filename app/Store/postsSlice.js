@@ -44,7 +44,7 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
-      username: "thetravellingfamilynonstopaaaaaaa",
+      username: "thetravellingfamilynonstopaaaaaaahelloevenbuggernamehere",
       name: "Quotes",
       type: "post",
       repost: {
@@ -272,11 +272,12 @@ export const createPostsSlice = (set) => ({
       });
     } catch (err) {}
   },
-  reportPost: async (id, comments) => {
+  reportPost: async (id, contentId, contentType, comments) => {
     try {
       console.log("slice: report post");
       console.log("id: ", id);
       console.log("comments: ", comments);
+      console.log("contentId: ", contentId);
       //todo send req to report post
       //todo if error then show alert
     } catch (err) {}

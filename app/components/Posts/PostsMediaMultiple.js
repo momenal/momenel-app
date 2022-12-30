@@ -94,11 +94,6 @@ const PostsMediaMultiple = ({
     }
   };
 
-  const onVideoLoad = (response) => {
-    const size = response;
-    console.log(size);
-  };
-
   return (
     <View
       style={{

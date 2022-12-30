@@ -9,11 +9,11 @@ const LinearGradientButton = (props) => {
       end={{ x: 1, y: 1.0 }}
       style={[
         {
-          width: "40%",
+          width: props.width || "100%",
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 9,
-          paddingVertical: 8,
+          borderRadius: 10,
+          paddingVertical: "3%",
         },
         props.style,
       ]}

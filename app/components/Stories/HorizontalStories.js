@@ -161,7 +161,6 @@ const HorizontalStories = ({
           />
         </View>
       </View>
-
       <Carousel
         ref={ref}
         data={data}

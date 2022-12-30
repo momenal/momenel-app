@@ -31,6 +31,7 @@ import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 const ScreenWidth = Dimensions.get("window").width;
 
 const Post = ({
+  navigation,
   postId,
   type,
   isLiked,
@@ -202,6 +203,7 @@ const Post = ({
       )}
 
       <PostHeader
+        navigation={navigation}
         profileUrl={profileUrl}
         username={username}
         name={name}

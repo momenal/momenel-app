@@ -18,11 +18,12 @@ const SheetInputComponent = ({ onUpdate, multiline }) => {
         paddingVertical: 5,
         color: "#818181",
       }}
-      placeholder="Optional"
+      placeholder="Optional sheet"
       value={title}
       onChangeText={onchange}
       multiline={multiline}
       keyboardAppearance={"dark"}
+      blurOnSubmit={false}
       // blurOnSubmit={true}
       // returnKeyType="done"
     />
