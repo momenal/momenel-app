@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   Image,
   StyleSheet,
@@ -12,6 +13,7 @@ import {
   Gesture,
   TapGestureHandler,
   State,
+  GestureDetector,
 } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,24 +26,39 @@ const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
   const video = useRef(null);
   const doubleTapRef = useRef(null);
   const isFocused = useIsFocused();
-
-  const _onSingleTap = (event) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      HandleMute();
-    }
-    // }
-  };
-
-  const _onDoubleTap = (event) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      runOnJS(doubleTap)();
-    }
-  };
   // const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;
   // const [height, setHeight] = useState(0);
   const [play, setPlay] = useState(false);
-  const [isMuted, setisMuted] = useState(false);
+  const [showPauseIcon, setShowPauseIcon] = useState(true);
+
+  const _singleTap = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(1)
+    .maxDuration(250)
+    .onStart(() => {
+      if (!showPauseIcon) {
+        video?.current.pauseAsync();
+      } else {
+        video?.current.playAsync();
+      }
+    });
+
+  const _doubleTap = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(2)
+    .maxDuration(250)
+    .onStart(() => {
+      doubleTap();
+    });
+
+  const _longPressGesture = Gesture.LongPress()
+    .runOnJS(true)
+    .onEnd((e, success) => {
+      if (success) {
+        Alert.alert(`Long pressed for ${e.duration} ms!`);
+      }
+    });
 
   useEffect(() => {
     // if (index === 0 && type === "photo") {
@@ -69,16 +86,6 @@ const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
     }
   };
 
-  const HandleMute = () => {
-    if (isMuted) {
-      video.current.setIsMutedAsync(false);
-      setisMuted(false);
-    } else {
-      video.current.setIsMutedAsync(true);
-      setisMuted(true);
-    }
-  };
-
   return (
     <View
       style={{
@@ -88,11 +95,7 @@ const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
       }}
     >
       {type === "photo" ? (
-        <TapGestureHandler
-          ref={doubleTapRef}
-          onHandlerStateChange={_onDoubleTap}
-          numberOfTaps={2}
-        >
+        <GestureDetector gesture={_doubleTap}>
           <Image
             source={{ uri: url }}
             style={[
@@ -101,75 +104,72 @@ const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
             ]}
             resizeMode={"contain"}
           />
-        </TapGestureHandler>
+        </GestureDetector>
       ) : (
         <VisibilitySensor onChange={handleVisibility}>
-          <TapGestureHandler
-            onHandlerStateChange={_onSingleTap}
-            waitFor={doubleTapRef}
+          <GestureDetector
+            gesture={Gesture.Exclusive(
+              _doubleTap,
+              _singleTap,
+              _longPressGesture
+            )}
           >
-            <TapGestureHandler
-              ref={doubleTapRef}
-              onHandlerStateChange={_onDoubleTap}
-              numberOfTaps={2}
-            >
-              <View>
-                <Video
-                  ref={video}
-                  source={{
-                    uri: url,
-                  }}
-                  shouldPlay={play && isFocused}
-                  positionMillis={0}
-                  usePoster
-                  // onReadyForDisplay={(response) => {
-                  //   if (index === 0) {
-                  //     const { width, height } = response.naturalSize;
-                  //     const heightScaled = height * (Iwidth / width);
-                  //     if (heightScaled > ScreenHeight * 0.5) {
-                  //       setMaxHeightFunc(ScreenHeight * 0.5);
-                  //     } else {
-                  //       setMaxHeightFunc(heightScaled);
-                  //     }
-                  //   }
-                  // }}
-                  // onLoad={onVideoLoad}
-                  style={{
-                    width: Iwidth,
-                    height: maxHeight,
-                    borderRadius: 3,
-                    backgroundColor: "white",
-                  }}
-                  resizeMode="contain"
-                  useNativeControls={false}
-                  isLooping
-                />
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    bottom: 5,
-                    left: 0,
-                    right: 10,
-                    justifyContent: "flex-end",
-                    alignItems: "flex-end",
-                  }}
-                >
-                  {isMuted && (
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: "black",
-                        padding: 6,
-                        borderRadius: 50,
-                      }}
-                    >
-                      <Ionicons name="md-volume-mute" size={15} color="white" />
-                    </TouchableOpacity>
-                  )}
-                </View>
+            <View>
+              <Video
+                ref={video}
+                source={{
+                  uri: url,
+                }}
+                shouldPlay={play && isFocused}
+                positionMillis={0}
+                usePoster
+                onPlaybackStatusUpdate={(status) => {
+                  setShowPauseIcon(!status.isPlaying);
+                }}
+                style={{
+                  width: Iwidth,
+                  height: maxHeight,
+                  borderRadius: 3,
+                  backgroundColor: "white",
+                }}
+                resizeMode="contain"
+                useNativeControls={false}
+                isLooping
+              />
+              <View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {showPauseIcon && (
+                  <View
+                    style={{
+                      backgroundColor: "#8456E9",
+                      borderRadius: 200,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 10,
+                      borderWidth: 3,
+                      borderColor: "white",
+                    }}
+                  >
+                    <Ionicons
+                      name="play"
+                      size={24}
+                      color="white"
+                      style={{ marginLeft: 2 }}
+                    />
+                  </View>
+                )}
               </View>
-            </TapGestureHandler>
-          </TapGestureHandler>
+            </View>
+          </GestureDetector>
         </VisibilitySensor>
       )}
     </View>

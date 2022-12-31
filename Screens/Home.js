@@ -40,7 +40,8 @@ const Home = ({ navigation }) => {
   }
 
   useEffect(() => {
-    setTimeout(login, 2000);
+    // setTimeout(login, 2000);
+    login();
   }, []);
 
   // funtion to calcualte scaled height and width
