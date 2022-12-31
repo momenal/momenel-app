@@ -16,7 +16,6 @@ import { useBoundStore } from "../../Store/useBoundStore";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
-import BottomReportSheet from "../BottomFlatSheet/reportSheet/BottomReportSheet";
 import { scale } from "../../utils/Scale";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -33,7 +32,7 @@ const PostHeader = ({
   const SavePost = useBoundStore((state) => state.SavePost);
   const postsData = useBoundStore((state) => state.posts);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [showBottomReportSheet, setShowBottomReportSheet] = useState(false);
+
   const insets = useSafeAreaInsets();
 
   const onSavePress = () => {
@@ -49,12 +48,6 @@ const PostHeader = ({
       username: postsData[index].username,
       contentType: "post",
     });
-    // setShowBottomReportSheet(true);
-  };
-
-  const onReportSheetClose = () => {
-    setShowBottomReportSheet(false);
-    Keyboard.dismiss();
   };
 
   const Time = useMemo(
@@ -213,12 +206,6 @@ const PostHeader = ({
           </TouchableOpacity>
         </View>
       </BottomSheet>
-      <BottomReportSheet
-        show={showBottomReportSheet}
-        setShow={setShowBottomReportSheet}
-        onSheetClose={onReportSheetClose}
-        username={postsData[index].username}
-      />
     </View>
   );
 };

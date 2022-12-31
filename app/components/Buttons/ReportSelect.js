@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import CustomText from "../../customText/CustomText";
+import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 
 const ReportSelect = ({

@@ -45,8 +45,9 @@ const Footer = ({ profileUrl, username, time, StoryId, navigation }) => {
         }}
         onPress={() =>
           navigation.replace("Report", {
-            itemId: StoryId,
-            otherParam: "anything you want here",
+            contentId: StoryId,
+            username: username,
+            contentType: "story",
           })
         }
       >

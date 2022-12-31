@@ -11,7 +11,7 @@ import {
 import { useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBoundStore } from "../app/Store/useBoundStore";
-import ReportSelect from "../app/components/BottomFlatSheet/reportSheet/ReportSelect";
+import ReportSelect from "../app/components/Buttons/ReportSelect";
 import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -209,7 +209,7 @@ const Report = ({ route, navigation }) => {
           }}
           // numberOfLines={1}
         >
-          Report @{username}'s post
+          Report @{username}'s {contentType}
         </CustomText>
         {data.map((i, index) => {
           return (
