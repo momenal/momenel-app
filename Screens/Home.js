@@ -19,10 +19,7 @@ import { scale } from "../app/utils/Scale";
 // SplashScreen.preventAutoHideAsync();
 
 const Home = ({ navigation }) => {
-  const [isloading, setIsloading] = useState(true);
-  const SetUserData = useBoundStore((state) => state.SetUserData);
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
-  const username = useBoundStore((state) => state.username);
   const postsData = useBoundStore((state) => state.posts);
   const [appIsReady, setAppIsReady] = useState(false);
   const ScreenWidth = Dimensions.get("window").width;
@@ -43,24 +40,7 @@ const Home = ({ navigation }) => {
   }
 
   useEffect(() => {
-    // setTimeout(login, 5000);
-    login();
-    // fetch("https://random-data-api.com/api/v2/users")
-    //   .then((response) => response.json())
-    //   .then((json) => {
-    //     // console.log(json.uid);
-    //     let username = "farhanverse";
-    //     let fname = "farhan";
-    //     let profile_url =
-    //       "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
-    //     let preview_url =
-    //       "https://images.unsplash.com/photo-1592298285277-64da3dc70efb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80";
-    //     SetUserData(
-    //       (username = username),
-    //       (profile_url = profile_url),
-    //       (preview_url = preview_url)
-    //     );
-    //   });
+    setTimeout(login, 2000);
   }, []);
 
   // funtion to calcualte scaled height and width
@@ -156,6 +136,7 @@ const Home = ({ navigation }) => {
             postId: item.postId,
             width: item.posts ? item.posts[0].width : 0,
             height: item.posts ? item.posts[0].height : 0,
+
             // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
         }

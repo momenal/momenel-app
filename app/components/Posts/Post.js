@@ -4,18 +4,15 @@ import {
   FlatList,
   Keyboard,
   StyleSheet,
-  Text,
-  Touchable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
-import PostsMedia from "./PostsMediaMultiple";
-import PostMediaOne from "./PostMediaOne";
+import PostsMedia from "./postMedia/PostsMediaMultiple";
+import PostMediaOne from "./postMedia/PostMediaOne";
 import PaginationDot from "./PaginationDot";
 import StructuredText from "./StructuredText";
 import CommentsIcon from "../icons/CommentsIcon";

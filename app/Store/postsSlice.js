@@ -6,7 +6,7 @@ export const createPostsSlice = (set) => ({
     //   postId: Math.random(19).toString(),
     //   username: "quotes",
     //   name: "Quotes",
-    //   type: "text",
+    //   type: "post",
     //   repost: {
     //     isRepost: true,
     //     repostedBy: "farhan",
@@ -15,17 +15,10 @@ export const createPostsSlice = (set) => ({
     //   posts: [
     //     {
     //       id: Math.random(19).toString(),
-    //       height: 700,
+    //       height: 1500,
     //       width: 1200,
     //       type: "video",
-    //       url: "https://assets.mixkit.co/videos/preview/mixkit-dog-catches-a-ball-in-a-river-1494-large.mp4",
-    //     },
-    //     {
-    //       id: Math.random(19).toString(),
-    //       height: 1200,
-    //       width: 800,
-    //       type: "video",
-    //       url: "https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-smart-watch-with-the-stopwatch-running-32808-large.mp4",
+    //       url: "https://res.cloudinary.com/dxnnrbruf/video/upload/v1672509480/funny_code_fdcd37.mp4",
     //     },
     //   ],
     //   profile_url:
@@ -42,6 +35,37 @@ export const createPostsSlice = (set) => ({
     //   isSaved: true,
     //   isDonateable: false,
     // },
+    {
+      postId: Math.random(19).toString(),
+      username: "quotes",
+      name: "Quotes",
+      type: "post",
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      posts: [
+        {
+          id: Math.random(19).toString(),
+          height: 1200,
+          width: 1200,
+          type: "video",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4",
+        },
+      ],
+      caption:
+        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
+      isSaved: true,
+      isDonateable: true,
+    },
     {
       postId: Math.random(19).toString(),
       username: "thetravellingfamilynonstopaaaaaaahelloevenbuggernamehere",
@@ -76,7 +100,7 @@ export const createPostsSlice = (set) => ({
     {
       postId: Math.random(19).toString(),
       username: "quotes",
-      name: "Quotes",
+      name: "Insights101",
       type: "text",
       repost: {
         isRepost: true,
@@ -98,37 +122,7 @@ export const createPostsSlice = (set) => ({
       isSaved: true,
       isDonateable: false,
     },
-    {
-      postId: Math.random(19).toString(),
-      username: "quotes",
-      name: "Quotes",
-      type: "post",
-      repost: {
-        isRepost: false,
-      },
-      profile_url:
-        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-      posts: [
-        {
-          id: Math.random(19).toString(),
-          height: 1200,
-          width: 1200,
-          type: "video",
-          url: "https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4",
-        },
-      ],
-      caption:
-        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
-      createdAt: Date.now(),
-      likes: 300,
-      comments: 12,
-      reposts: 5,
-      lastEdit: null,
-      isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
-      isDonateable: true,
-    },
+
     {
       postId: Math.random(19).toString(),
       username: "quotes",

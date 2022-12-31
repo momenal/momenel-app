@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
-import VisibilitySensor from "../../utils/VisibilitySensor";
+import VisibilitySensor from "../../../utils/VisibilitySensor";
 import {
   Gesture,
   TapGestureHandler,
@@ -15,20 +15,15 @@ import {
 } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
-const PostsMediaMultiple = ({
-  type,
-  url,
-  maxHeight,
-  index,
-
-  doubleTap,
-}) => {
+const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
   const video = useRef(null);
   const doubleTapRef = useRef(null);
+  const isFocused = useIsFocused();
 
   const _onSingleTap = (event) => {
     if (event.nativeEvent.state === State.ACTIVE) {
@@ -73,16 +68,6 @@ const PostsMediaMultiple = ({
       setPlay(false);
     }
   };
-
-  const tap = Gesture.Tap()
-    .numberOfTaps(1)
-    .onStart(() => {
-      console.log("one");
-    })
-    .numberOfTaps(2)
-    .onStart(() => {
-      runOnJS(doubleTap)();
-    });
 
   const HandleMute = () => {
     if (isMuted) {
@@ -134,7 +119,7 @@ const PostsMediaMultiple = ({
                   source={{
                     uri: url,
                   }}
-                  shouldPlay={play}
+                  shouldPlay={play && isFocused}
                   positionMillis={0}
                   usePoster
                   // onReadyForDisplay={(response) => {

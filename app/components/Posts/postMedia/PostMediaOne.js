@@ -7,14 +7,12 @@ import {
 } from "react-native";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
-import VisibilitySensor from "../../utils/VisibilitySensor";
-import {
-  Gesture,
-  State,
-  TapGestureHandler,
-} from "react-native-gesture-handler";
+import VisibilitySensor from "../../../utils/VisibilitySensor";
+import { State, TapGestureHandler } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
+import LinearGradientButton from "../../Buttons/LinearGradientButton";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
@@ -23,6 +21,12 @@ const PostMediaOne = ({ data, doubleTap, height }) => {
   let { url } = data;
   const video = useRef(null);
   const doubleTapRef = useRef(null);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    console.log("video isFocused", isFocused);
+  }, [isFocused]);
+
   const _onSingleTap = (event) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       HandleMute();
@@ -118,7 +122,8 @@ const PostMediaOne = ({ data, doubleTap, height }) => {
                   useNativeControls={false}
                   resizeMode="cover"
                   isLooping
-                  shouldPlay={play}
+                  shouldPlay={play && isFocused}
+
                   // onLoad={onVideoLoad}
                   // onReadyForDisplay={(response) => {
                   //   const { width, height } = response.naturalSize;
@@ -130,6 +135,38 @@ const PostMediaOne = ({ data, doubleTap, height }) => {
                   //   }
                   // }}
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {!play && (
+                    <View
+                      style={{
+                        backgroundColor: "#8456E9",
+                        borderRadius: 200,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                        borderWidth: 3,
+                        borderColor: "white",
+                      }}
+                    >
+                      <Ionicons
+                        name="play"
+                        size={24}
+                        color="white"
+                        style={{ marginLeft: 2 }}
+                      />
+                    </View>
+                  )}
+                </View>
                 <View
                   style={{
                     position: "absolute",
