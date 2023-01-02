@@ -63,8 +63,6 @@ const PostHeader = ({
     return scale(size);
   }, []);
 
-  console.log(memoizedScale(17));
-
   return (
     <View
       style={{

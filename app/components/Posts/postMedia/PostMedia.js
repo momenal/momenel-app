@@ -8,7 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 
-const PostMediaOne = ({ url, type, height, doubleTap }) => {
+const PostMediaOne = ({ url, type, height, doubleTap, index }) => {
   //todo: change this to url and add to paramerters
   const video = useRef(null);
   const isFocused = useIsFocused();
@@ -69,7 +69,7 @@ const PostMediaOne = ({ url, type, height, doubleTap }) => {
             style={{
               width: Iwidth,
               height: height,
-              borderRadius: 3,
+              borderRadius: index === 0 ? 3 : 0, //! if we dont set index to 0 then image that doesn't cover the while width have lines on the sides
               overflow: "hidden",
             }}
             resizeMode={"contain"}

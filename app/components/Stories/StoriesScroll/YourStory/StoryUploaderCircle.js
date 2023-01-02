@@ -19,8 +19,6 @@ const StoryUploaderCircle = ({ navigation }) => {
   const stories = useBoundStore((state) => state.stories);
   const preview_url = useBoundStore((state) => state.preview_url);
 
-  console.log(Height * 0.029);
-
   return (
     <TouchableOpacity
       onPress={() => {

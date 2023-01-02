@@ -190,8 +190,8 @@ export const createPostsSlice = (set) => ({
 
     {
       postId: Math.random(19).toString(),
-      username: "quotes",
-      name: "Quotes",
+      username: "catsofmomenel",
+      name: "Cats lol",
       type: "post",
       repost: {
         isRepost: false,
@@ -201,14 +201,13 @@ export const createPostsSlice = (set) => ({
       posts: [
         {
           id: Math.random(19).toString(),
-          height: 800,
-          width: 1600,
+          width: 6000,
+          height: 4000,
           type: "photo",
-          url: "https://images.unsplash.com/photo-1672002759660-93f177240b60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+          url: "https://images.pexels.com/photos/1183434/pexels-photo-1183434.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         },
       ],
-      caption:
-        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
+      caption: "Hilaroius cat 🤣",
       createdAt: Date.now(),
       likes: 300,
       comments: 12,
@@ -281,7 +280,6 @@ export const createPostsSlice = (set) => ({
       set((state) => {
         const newPosts = [...state.posts];
         newPosts[index].isLiked = !isLiked;
-        console.log(newPosts[index].likes);
         /* if already liked then reduce likes by 1 else increment */
         {
           isLiked ? newPosts[index].likes-- : newPosts[index].likes++;

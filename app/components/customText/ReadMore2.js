@@ -11,7 +11,6 @@ const ReadMore2 = (props) => {
 
   const onTextLayout = useCallback(
     (e) => {
-      console.log(e.nativeEvent.lines.length);
       if (e.nativeEvent.lines.length >= props.numberOfLines && !showText) {
         setShowMoreButton(true);
         setNumberOfLines(props.numberOfLines);

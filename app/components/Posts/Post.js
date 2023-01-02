@@ -20,7 +20,12 @@ import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
 import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
-import { State, TapGestureHandler } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  State,
+  TapGestureHandler,
+} from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 
@@ -90,20 +95,29 @@ const Post = ({
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <PostMedia
       url={item.url}
       type={item.type}
       doubleTap={doubleTap}
       height={height}
+      index={index}
     />
   );
 
-  const _onDoubleTap = (event) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      runOnJS(doubleTap)();
-    }
-  };
+  // const _onDoubleTap = (event) => {
+  //   if (event.nativeEvent.state === State.ACTIVE) {
+  //     runOnJS(doubleTap)();
+  //   }
+  // };
+
+  const _doubleTap = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(2)
+    .maxDuration(250)
+    .onStart(() => {
+      doubleTap();
+    });
 
   const keyExtractor = useCallback((item) => item.id, []);
 
@@ -177,8 +191,6 @@ const Post = ({
             width: "100%",
             flexDirection: "row",
             alignItems: "center",
-
-            // backgroundColor: "pink",
           }}
         >
           <Repost size={23} color={"#8456E9"} />
@@ -229,6 +241,7 @@ const Post = ({
           type={posts[0].type}
           doubleTap={doubleTap}
           height={height}
+          index={0}
         />
       ) : (
         <></>
@@ -255,11 +268,12 @@ const Post = ({
             paddingBottom: 16,
           }}
         >
-          <TapGestureHandler
+          {/* <TapGestureHandler
             ref={doubleTapRef}
             onHandlerStateChange={_onDoubleTap}
             numberOfTaps={2}
-          >
+          > */}
+          <GestureDetector gesture={_doubleTap}>
             <View>
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
@@ -275,7 +289,8 @@ const Post = ({
                 {caption}
               </StructuredText>
             </View>
-          </TapGestureHandler>
+          </GestureDetector>
+          {/* </TapGestureHandler> */}
         </View>
       )}
       {/* buttons */}
