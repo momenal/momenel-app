@@ -1,21 +1,8 @@
-import {
-  Alert,
-  Dimensions,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { memo, useEffect, useRef, useState } from "react";
+import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../../utils/VisibilitySensor";
-import {
-  Gesture,
-  TapGestureHandler,
-  State,
-  GestureDetector,
-} from "react-native-gesture-handler";
-import { runOnJS } from "react-native-reanimated";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -24,7 +11,6 @@ const ScreenHeight = Dimensions.get("window").height;
 
 const PostsMediaMultiple = ({ type, url, maxHeight, index, doubleTap }) => {
   const video = useRef(null);
-  const doubleTapRef = useRef(null);
   const isFocused = useIsFocused();
   // const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;

@@ -37,6 +37,58 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
+      username: "photooos",
+      name: "photooos",
+      type: "post",
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      posts: [
+        // {
+        //   id: Math.random(19).toString(),
+        //   width: 4160,
+        //   height: 6240,
+        //   type: "photo",
+        //   url: "https://images.pexels.com/photos/14246458/pexels-photo-14246458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        // },
+        {
+          id: Math.random(19).toString(),
+          width: 2970,
+          height: 2958,
+          type: "photo",
+          url: "https://images.pexels.com/photos/13986931/pexels-photo-13986931.jpeg",
+        },
+        {
+          id: Math.random(19).toString(),
+          height: 700,
+          width: 1200,
+          type: "video",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4",
+        },
+        {
+          id: Math.random(19).toString(),
+          height: 1200,
+          width: 1200,
+          type: "photo",
+          url: "https://images.pexels.com/photos/11987710/pexels-photo-11987710.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        },
+      ],
+      caption:
+        "He was an expert but not in a @discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
+      isSaved: true,
+      isDonateable: true,
+    },
+    {
+      postId: Math.random(19).toString(),
       username: "quotes",
       name: "Quotes",
       type: "post",
@@ -48,11 +100,25 @@ export const createPostsSlice = (set) => ({
       posts: [
         {
           id: Math.random(19).toString(),
-          height: 1200,
+          height: 700,
           width: 1200,
           type: "video",
           url: "https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4",
         },
+        {
+          id: Math.random(19).toString(),
+          height: 1200,
+          width: 1200,
+          type: "photo",
+          url: "https://images.pexels.com/photos/11987710/pexels-photo-11987710.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        },
+        // {
+        //   id: Math.random(19).toString(),
+        //   height: 1200,
+        //   width: 1200,
+        //   type: "video",
+        //   url: "https://assets.mixkit.co/videos/preview/mixkit-female-models-in-a-convertible-car-43192-large.mp4",
+        // },
       ],
       caption:
         "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
@@ -79,14 +145,13 @@ export const createPostsSlice = (set) => ({
       posts: [
         {
           id: Math.random(19).toString(),
-          height: 600,
-          width: 1200,
+          width: 2048,
+          height: 2730,
           type: "photo",
-          url: "https://images.unsplash.com/photo-1671762672531-98470ef359e5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+          url: "https://images.pexels.com/photos/13999202/pexels-photo-13999202.jpeg",
         },
       ],
-      caption:
-        "He was an expert but not in a @discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new worker who watched in amazement.",
+      caption: "isn't this gorgeous\n#travel #photography",
       createdAt: Date.now(),
       likes: 300,
       comments: 12,

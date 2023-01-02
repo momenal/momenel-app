@@ -11,8 +11,7 @@ import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import React, { useCallback, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
-import PostsMedia from "./postMedia/PostsMediaMultiple";
-import PostMediaOne from "./postMedia/PostMediaOne";
+import PostMedia from "./postMedia/PostMedia";
 import PaginationDot from "./PaginationDot";
 import StructuredText from "./StructuredText";
 import CommentsIcon from "../icons/CommentsIcon";
@@ -30,7 +29,6 @@ const ScreenWidth = Dimensions.get("window").width;
 const Post = ({
   navigation,
   postId,
-  type,
   isLiked,
   likes,
   comments,
@@ -92,14 +90,12 @@ const Post = ({
     }
   };
 
-  const renderItem = ({ item, index }) => (
-    <PostsMedia
+  const renderItem = ({ item }) => (
+    <PostMedia
       url={item.url}
-      type={type}
-      maxHeight={height}
-      // maxHeight={height}
-      index={index}
+      type={item.type}
       doubleTap={doubleTap}
+      height={height}
     />
   );
 
@@ -228,7 +224,12 @@ const Post = ({
           )}
         />
       ) : posts && posts.length >= 1 ? (
-        <PostMediaOne data={posts[0]} doubleTap={doubleTap} height={height} />
+        <PostMedia
+          url={posts[0].url}
+          type={posts[0].type}
+          doubleTap={doubleTap}
+          height={height}
+        />
       ) : (
         <></>
       )}

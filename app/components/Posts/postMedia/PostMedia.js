@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../../utils/VisibilitySensor";
@@ -7,15 +7,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
-const ScreenHeight = Dimensions.get("window").height;
 
-const PostMediaOne = ({ data, height, doubleTap }) => {
-  let { url } = data;
+const PostMediaOne = ({ url, type, height, doubleTap }) => {
+  //todo: change this to url and add to paramerters
   const video = useRef(null);
   const isFocused = useIsFocused();
-  const [Iwidth, setWidth] = useState(ScreenWidth - ScreenWidth * 0.1);
+  const Iwidth = ScreenWidth - ScreenWidth * 0.1;
   const [play, setPlay] = useState(false);
-
   const [showPauseIcon, setShowPauseIcon] = useState(true);
 
   const handleVisibility = (visible) => {
@@ -32,13 +30,7 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
     .numberOfTaps(1)
     .maxDuration(250)
     .onStart(() => {
-      //todo: naviagte to full screen video
       video?.current.presentFullscreenPlayer();
-      // if (!showPauseIcon) {
-      //   video?.current.pauseAsync();
-      // } else {
-      //   video?.current.playAsync();
-      // }
     });
 
   const _doubleTap = Gesture.Tap()
@@ -70,7 +62,7 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
         paddingBottom: 11.4,
       }}
     >
-      {data.type === "photo" ? (
+      {type === "photo" ? (
         <GestureDetector gesture={_doubleTap}>
           <Image
             source={{ uri: url }}
@@ -78,7 +70,9 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
               width: Iwidth,
               height: height,
               borderRadius: 3,
+              overflow: "hidden",
             }}
+            resizeMode={"contain"}
           />
         </GestureDetector>
       ) : (
@@ -93,13 +87,20 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
             <View>
               <Video
                 ref={video}
-                style={{ width: Iwidth, height: height, borderRadius: 3 }}
+                style={{
+                  width: Iwidth,
+                  height: height,
+                  borderRadius: 3,
+                  backgroundColor: "white",
+                }}
                 source={{
                   uri: url,
                 }}
+                usePoster
                 positionMillis={0}
                 useNativeControls={false}
-                resizeMode="cover"
+                // resizeMode="cover" //todo: change this to contain if needed
+                resizeMode={"contain"}
                 isLooping
                 shouldPlay={play && isFocused}
                 onPlaybackStatusUpdate={(status) => {
