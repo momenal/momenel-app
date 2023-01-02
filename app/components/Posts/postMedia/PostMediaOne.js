@@ -32,11 +32,13 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
     .numberOfTaps(1)
     .maxDuration(250)
     .onStart(() => {
-      if (!showPauseIcon) {
-        video?.current.pauseAsync();
-      } else {
-        video?.current.playAsync();
-      }
+      //todo: naviagte to full screen video
+      video?.current.presentFullscreenPlayer();
+      // if (!showPauseIcon) {
+      //   video?.current.pauseAsync();
+      // } else {
+      //   video?.current.playAsync();
+      // }
     });
 
   const _doubleTap = Gesture.Tap()
@@ -49,9 +51,13 @@ const PostMediaOne = ({ data, height, doubleTap }) => {
 
   const _longPressGesture = Gesture.LongPress()
     .runOnJS(true)
+    .onStart(() => {
+      video?.current.pauseAsync();
+    })
     .onEnd((e, success) => {
       if (success) {
-        Alert.alert(`Long pressed for ${e.duration} ms!`);
+        video?.current.playAsync();
+        // Alert.alert(`Long pressed for ${e.duration} ms!`);
       }
     });
 
