@@ -8,7 +8,15 @@ import { useIsFocused } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 
-const PostMediaOne = ({ url, type, height, doubleTap, index }) => {
+const PostMediaOne = ({
+  url,
+  type,
+  height,
+  doubleTap,
+  index,
+  navigation,
+  username,
+}) => {
   //todo: change this to url and add to paramerters
   const video = useRef(null);
   const isFocused = useIsFocused();
@@ -31,6 +39,13 @@ const PostMediaOne = ({ url, type, height, doubleTap, index }) => {
     .maxDuration(250)
     .onStart(() => {
       video?.current.presentFullscreenPlayer();
+    });
+  const _singleTapPhoto = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(1)
+    .maxDuration(250)
+    .onStart(() => {
+      navigation.navigate("Zoom", { url, username });
     });
 
   const _doubleTap = Gesture.Tap()
@@ -63,7 +78,9 @@ const PostMediaOne = ({ url, type, height, doubleTap, index }) => {
       }}
     >
       {type === "photo" ? (
-        <GestureDetector gesture={_doubleTap}>
+        <GestureDetector
+          gesture={Gesture.Exclusive(_doubleTap, _singleTapPhoto)}
+        >
           <Image
             source={{ uri: url }}
             style={{

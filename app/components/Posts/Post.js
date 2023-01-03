@@ -97,6 +97,8 @@ const Post = ({
 
   const renderItem = ({ item, index }) => (
     <PostMedia
+      navigation={navigation}
+      username={username}
       url={item.url}
       type={item.type}
       doubleTap={doubleTap}
@@ -237,6 +239,8 @@ const Post = ({
         />
       ) : posts && posts.length >= 1 ? (
         <PostMedia
+          navigation={navigation}
+          username={username}
           url={posts[0].url}
           type={posts[0].type}
           doubleTap={doubleTap}
