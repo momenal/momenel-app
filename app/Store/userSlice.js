@@ -1,5 +1,5 @@
 export const createUserSlice = (set) => ({
-  username: "ghgjh",
+  username: "farhanverseuser",
   profile_url:
     "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   // preview_url: "https://picsum.photos/96/135",

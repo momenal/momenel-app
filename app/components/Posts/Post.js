@@ -20,13 +20,7 @@ import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
 import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
-import {
-  Gesture,
-  GestureDetector,
-  State,
-  TapGestureHandler,
-} from "react-native-gesture-handler";
-import { runOnJS } from "react-native-reanimated";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -334,7 +328,11 @@ const Post = ({
           height: 30,
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("ByUser", { type: "likes", postId: postId })
+          }
+        >
           <CustomText
             style={{
               fontFamily: "Nunito_700Bold",
@@ -367,7 +365,11 @@ const Post = ({
         )}
 
         {reposts > 1 && (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ByUser", { type: "reposts", postId: postId })
+            }
+          >
             <CustomText
               style={{
                 fontFamily: "Nunito_700Bold",

@@ -37,6 +37,122 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
+      username: "3dpedia",
+      name: "3d renered imagessssssssssssssssssssssssssss",
+      type: "post",
+      repost: {
+        isRepost: false,
+      },
+      profile_url:
+        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      posts: [
+        {
+          id: Math.random(19).toString(),
+          width: 4320,
+          height: 5400,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1667790384695-97a0e8a98a93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2160,
+          height: 2700,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1638937480132-ebdc0219a4af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2462,
+          height: 3482,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1628204146743-ee4c51566096?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2462,
+          height: 3482,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1634654422250-9f4526b8453c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=822&q=80",
+        },
+
+        {
+          id: Math.random(19).toString(),
+          width: 2462,
+          height: 9000,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1634655613075-b1f7446b2ec8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 4320,
+          height: 3482,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1651925757999-4d6d94adbde4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 3000,
+          height: 3000,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1635046252884-5ad97aab0c97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 3200,
+          height: 2400,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1611262588019-db6cc2032da3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2000,
+          height: 3000,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1633536838356-80807d2321d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2000,
+          height: 3000,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1651290984981-56cf9f7e105c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 4000,
+          height: 3000,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1634335572482-c43700ecbc23?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2160,
+          height: 2700,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1644691075420-10e570de79a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+        {
+          id: Math.random(19).toString(),
+          width: 2000,
+          height: 2500,
+          type: "photo",
+          url: "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80",
+        },
+      ],
+      caption:
+        "Rewind 2022 ⏪\n#render #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
+      isSaved: true,
+      isDonateable: true,
+    },
+    {
+      postId: Math.random(19).toString(),
       username: "photooos",
       name: "photooos",
       type: "post",
@@ -46,13 +162,13 @@ export const createPostsSlice = (set) => ({
       profile_url:
         "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
       posts: [
-        // {
-        //   id: Math.random(19).toString(),
-        //   width: 4160,
-        //   height: 6240,
-        //   type: "photo",
-        //   url: "https://images.pexels.com/photos/14246458/pexels-photo-14246458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-        // },
+        {
+          id: Math.random(19).toString(),
+          width: 4160,
+          height: 6240,
+          type: "photo",
+          url: "https://images.pexels.com/photos/14246458/pexels-photo-14246458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        },
         {
           id: Math.random(19).toString(),
           width: 2970,
@@ -132,6 +248,7 @@ export const createPostsSlice = (set) => ({
       isSaved: true,
       isDonateable: true,
     },
+
     {
       postId: Math.random(19).toString(),
       username: "thetravellingfamilynonstopaaaaaaahelloevenbuggernamehere",
@@ -275,6 +392,8 @@ export const createPostsSlice = (set) => ({
       isDonateable: false,
     },
   ],
+  likes: [],
+  reposts: [],
   handleLike: async (index, isLiked) => {
     try {
       set((state) => {
@@ -339,7 +458,6 @@ export const createPostsSlice = (set) => ({
       //todo if error then show alert
     } catch (err) {}
   },
-
   fetchMorePosts: async () => {
     try {
       console.log("called more post");
@@ -666,5 +784,85 @@ export const createPostsSlice = (set) => ({
         posts: [...state.posts, ...newst],
       }));
     } catch (err) {}
+  },
+  fetchLikes: async (postId) => {
+    try {
+      console.log("fetching likes", postId);
+      //todo: const response = await axios.get(`/api/posts/${postId}/likes`);
+      set((state) => ({
+        //todo:  likes: [...state.likes, ...response.data],
+        likes: [
+          ...state.likes,
+          {
+            username: "farhan",
+            profile_url:
+              "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
+            isFollowing: true,
+          },
+          {
+            username: "betzy",
+            profile_url:
+              "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
+            isFollowing: false,
+          },
+        ],
+      }));
+    } catch (err) {}
+  },
+  fetchReposts: async (postId) => {
+    try {
+      console.log("fetching reposts", postId);
+      //todo: const response = await axios.get(`/api/posts/${postId}/likes`);
+      set((state) => ({
+        //todo:  reposts: [...state.likes, ...response.data],
+        reposts: [
+          ...state.reposts,
+          {
+            username: "jack_the_farmer",
+            profile_url:
+              "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
+            isFollowing: false,
+          },
+          {
+            username: "Ali",
+            profile_url:
+              "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
+            isFollowing: false,
+          },
+        ],
+      }));
+    } catch (err) {}
+  },
+
+  handleUserFollowFromList: async (type, username) => {
+    try {
+      //todo: const response = await axios.post(`/api/users/${username}/follow`);
+      // find the user in the list and update the isFollowing property
+      set((state) => {
+        if (type === "likes") {
+          const updatedLikes = state.likes.map((likes) => {
+            if (likes.username === username) {
+              likes.isFollowing = !likes.isFollowing;
+            }
+            return likes;
+          });
+          return {
+            likes: updatedLikes,
+          };
+        } else if (type === "reposts") {
+          const updatedReposts = state.reposts.map((reposts) => {
+            if (reposts.username === username) {
+              reposts.isFollowing = !reposts.isFollowing;
+            }
+            return reposts;
+          });
+          return {
+            reposts: updatedReposts,
+          };
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
   },
 });

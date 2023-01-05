@@ -10,6 +10,7 @@ import Zoom from "../../Screens/Zoom";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
+import ByUserList from "../../Screens/ByUserList";
 
 const Stack = createNativeStackNavigator();
 
@@ -77,6 +78,16 @@ const StackNavigator = ({}) => {
             backgroundColor: "black",
           },
           headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="ByUser"
+        component={ByUserList}
+        options={{
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerTintColor: "black",
         }}
       />
     </Stack.Navigator>

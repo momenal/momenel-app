@@ -92,6 +92,7 @@ const PostHeader = ({
               fontSize: memoizedScale(13.5),
               paddingBottom: 2,
               fontFamily: "Nunito_600SemiBold",
+              maxWidth: memoizedScale(210),
             }}
             numberOfLines={1}
           >
