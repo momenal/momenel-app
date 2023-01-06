@@ -26,7 +26,8 @@ import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 import { scale } from "../../utils/Scale";
-import { FlashList } from "@shopify/flash-list";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -404,31 +405,30 @@ const Post = ({
         username={username}
         postId={postId}
       />
-      <DetachedBottomSheet
+      <DetachedBottomSheetWithScroll
         show={showBottomSheet}
         onSheetClose={() => setShowBottomSheet(false)}
       >
         <View
           style={{
-            maxHeight: Dimensions.get("window").height * 0.8,
+            paddingHorizontal: "5%",
+            paddingTop: "2%",
+            paddingBottom: "5%",
           }}
         >
-          <ScrollView keyboardShouldPersistTaps={"always"} style={{}}>
-            <StructuredText
-              mentionHashtagPress={mentionHashtagClick}
-              mentionHashtagColor={"#8759F2"}
-              style={{
-                fontSize: FontSize + 2,
-                paddingHorizontal: "5%",
-                paddingVertical: "5%",
-              }}
-            >
-              {caption}
-            </StructuredText>
-          </ScrollView>
-          <Button title="close" onPress={() => setShowBottomSheet(false)} />
+          <StructuredText
+            mentionHashtagPress={mentionHashtagClick}
+            mentionHashtagColor={"#8759F2"}
+            style={{
+              fontSize: FontSize + 2,
+            }}
+          >
+            {caption}
+          </StructuredText>
+
+          {/* <Button title="close" onPress={() => setShowBottomSheet(false)} /> */}
         </View>
-      </DetachedBottomSheet>
+      </DetachedBottomSheetWithScroll>
     </View>
   );
 };
