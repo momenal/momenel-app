@@ -13,7 +13,6 @@ import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
 import Loader from "../app/components/Loader";
 import { FlashList } from "@shopify/flash-list";
-import { scale } from "../app/utils/Scale";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();

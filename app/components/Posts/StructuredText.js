@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import CustomText from "../customText/CustomText";
-import ReadMore2 from "../customText/ReadMore2";
 
 const StructuredText = memo((props) => {
   const prepareText = (text, mentionHashtagPress, mentionHashtagColor) => {
@@ -81,16 +80,6 @@ const StructuredText = memo((props) => {
   };
 
   return (
-    // <ReadMore2
-    //   numberOfLines={props.numberOfLines}
-    //   style={[props.style, { fontFamily: "Nunito_400Regular" }]}
-    // >
-    //   {prepareText(
-    //     props.children,
-    //     props.mentionHashtagPress,
-    //     props.mentionHashtagColor
-    //   )}
-    // </ReadMore2>
     <CustomText style={[props.style, { fontFamily: "Nunito_400Regular" }]}>
       {prepareText(
         props.children,

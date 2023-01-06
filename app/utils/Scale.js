@@ -6,7 +6,6 @@ const guidelineBaseWidth = 350;
 const guidelineBaseHeight = 680;
 
 const scale = (size) => {
-  console.log("Scaleeeeeee", size);
   return (width / guidelineBaseWidth) * size;
 };
 const verticalScale = (size) => (height / guidelineBaseHeight) * size;

@@ -63,6 +63,9 @@ const PostHeader = ({
     return scale(size);
   }, []);
 
+  const size = useMemo(() => scale(26), []);
+  console.log(size);
+
   return (
     <View
       style={{
@@ -78,7 +81,12 @@ const PostHeader = ({
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
-          style={{ width: 35, height: 35, borderRadius: 500, marginRight: 10 }}
+          style={{
+            width: size,
+            height: size,
+            borderRadius: 500,
+            marginRight: "5%",
+          }}
           source={{
             uri: profileUrl,
           }}

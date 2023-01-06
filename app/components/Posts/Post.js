@@ -1,15 +1,17 @@
 import {
   Animated,
+  Button,
   Dimensions,
   FlatList,
   Keyboard,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostMedia from "./postMedia/PostMedia";
 import PaginationDot from "./PaginationDot";
@@ -18,10 +20,13 @@ import CommentsIcon from "../icons/CommentsIcon";
 import Repost from "../icons/Repost";
 import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
+import DetachedBottomSheet from "../BottomFlatSheet/DetachedBottomSheet";
 import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
+import { scale } from "../../utils/Scale";
+import { FlashList } from "@shopify/flash-list";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -48,7 +53,8 @@ const Post = ({
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [showTipSheet, setShowTipSheet] = useState(false);
-  const doubleTapRef = useRef(null);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const FontSize = useMemo(() => scale(13), []);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -138,6 +144,8 @@ const Post = ({
       console.log("@", text);
     } else if (text.startsWith("#")) {
       console.log("#", text);
+    } else if (text.startsWith("more")) {
+      setShowBottomSheet(true);
     } else {
       console.log("else", text);
     }
@@ -189,13 +197,13 @@ const Post = ({
             alignItems: "center",
           }}
         >
-          <Repost size={23} color={"#8456E9"} />
+          <Repost size={FontSize + 8} color={"#8456E9"} />
           <CustomText
             style={{
               fontFamily: "Nunito_800ExtraBold",
               color: "#999999",
-              marginLeft: 8,
-              fontSize: 15,
+              marginLeft: "2%",
+              fontSize: FontSize,
             }}
           >
             {repost.repostedBy} reposted
@@ -282,7 +290,11 @@ const Post = ({
                 //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
                 // }
                 // numberOfLines={3}
-                style={posts.length === 0 ? { fontSize: 19 } : { fontSize: 16 }}
+                style={
+                  posts.length === 0
+                    ? { fontSize: FontSize + 3 }
+                    : { fontSize: FontSize }
+                }
               >
                 {caption}
               </StructuredText>
@@ -336,6 +348,7 @@ const Post = ({
           <CustomText
             style={{
               fontFamily: "Nunito_700Bold",
+              fontSize: FontSize - 1,
               marginRight: 9,
               color: "#999999",
             }}
@@ -350,6 +363,7 @@ const Post = ({
           <CustomText
             style={{
               fontFamily: "Nunito_700Bold",
+              fontSize: FontSize - 1,
               marginRight: 9,
               color: "#999999",
             }}
@@ -373,6 +387,7 @@ const Post = ({
             <CustomText
               style={{
                 fontFamily: "Nunito_700Bold",
+                fontSize: FontSize - 1,
                 marginRight: 9,
                 color: "#999999",
               }}
@@ -389,6 +404,31 @@ const Post = ({
         username={username}
         postId={postId}
       />
+      <DetachedBottomSheet
+        show={showBottomSheet}
+        onSheetClose={() => setShowBottomSheet(false)}
+      >
+        <View
+          style={{
+            maxHeight: Dimensions.get("window").height * 0.8,
+          }}
+        >
+          <ScrollView keyboardShouldPersistTaps={"always"} style={{}}>
+            <StructuredText
+              mentionHashtagPress={mentionHashtagClick}
+              mentionHashtagColor={"#8759F2"}
+              style={{
+                fontSize: FontSize + 2,
+                paddingHorizontal: "5%",
+                paddingVertical: "5%",
+              }}
+            >
+              {caption}
+            </StructuredText>
+          </ScrollView>
+          <Button title="close" onPress={() => setShowBottomSheet(false)} />
+        </View>
+      </DetachedBottomSheet>
     </View>
   );
 };

@@ -5,6 +5,7 @@ import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -38,7 +39,11 @@ const PostMediaOne = ({
     .numberOfTaps(1)
     .maxDuration(250)
     .onStart(() => {
-      video?.current.presentFullscreenPlayer();
+      if (!showPauseIcon) {
+        video?.current.presentFullscreenPlayer();
+      } else {
+        video?.current.playAsync();
+      }
     });
   const _singleTapPhoto = Gesture.Tap()
     .runOnJS(true)
@@ -136,7 +141,11 @@ const PostMediaOne = ({
                 }}
               >
                 {showPauseIcon && (
-                  <View
+                  <TouchableOpacity
+                    onPress={() => {
+                      // video?.current.playAsync();
+                      // video?.current.
+                    }}
                     style={{
                       backgroundColor: "#8456E9",
                       borderRadius: 200,
@@ -145,6 +154,7 @@ const PostMediaOne = ({
                       padding: 10,
                       borderWidth: 3,
                       borderColor: "white",
+                      zIndex: 100,
                     }}
                   >
                     <Ionicons
@@ -153,7 +163,7 @@ const PostMediaOne = ({
                       color="white"
                       style={{ marginLeft: 2 }}
                     />
-                  </View>
+                  </TouchableOpacity>
                 )}
               </View>
             </View>

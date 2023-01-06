@@ -71,9 +71,7 @@ export default function App() {
 
   if (!fontsLoaded) {
     return null;
-  }
-
-  {
+  } else {
     return session && session.user ? (
       !username ? (
         <GestureHandlerRootView style={{ flex: 1 }}>
