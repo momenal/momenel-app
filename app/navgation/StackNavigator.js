@@ -2,7 +2,6 @@ import React from "react";
 import Home from "../../Screens/Home";
 import HomeTabNavigator from "./HomeTabNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Comments from "../components/Comments";
 import Stories from "../../Screens/Stories";
 import Report from "../../Screens/Report";
 import YourStoryCarousel from "../components/Stories/StoriesScroll/YourStory/YourStoryCarousel";
@@ -11,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import ByUserList from "../../Screens/ByUserList";
+import Comments from "../../Screens/Comments";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +25,6 @@ const StackNavigator = ({}) => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Cars" component={Home} />
       <Stack.Screen
         name="Stories"
         component={Stories}
@@ -42,7 +41,12 @@ const StackNavigator = ({}) => {
       <Stack.Screen
         name="Comments"
         component={Comments}
-        options={{ gestureDirection: "vertical", headerShown: false }}
+        options={{
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerTintColor: "black",
+        }}
       />
       <Stack.Screen
         name="Report"

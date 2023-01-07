@@ -171,9 +171,15 @@ const Post = ({
       setShowTipSheet(true);
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+
       //todo: show alert
     }
   };
+
+  function handleComments() {
+    navigation.navigate("Comments", { type: "post", postId: postId });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  }
 
   return (
     <View
@@ -319,7 +325,7 @@ const Post = ({
       >
         <Heart isLiked={isLiked} index={index} />
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleComments}>
           <CommentsIcon size={21} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleRepostFunc}>
