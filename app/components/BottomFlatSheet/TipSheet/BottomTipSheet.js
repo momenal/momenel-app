@@ -1,4 +1,11 @@
-import { Dimensions, Keyboard, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, {
   forwardRef,
   useCallback,
@@ -11,27 +18,29 @@ import React, {
 import { Portal } from "@gorhom/portal";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetFooter,
   BottomSheetTextInput,
   BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
-// import BottomSheet from "../BottomSheet";
+import * as Haptics from "expo-haptics";
 import CustomText from "../../customText/CustomText";
 import BalanceTab from "../../Header/BalanceTab";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import TipMenuButton from "./TipMenuButton";
 import LinearGradientButton from "../../Buttons/LinearGradientButton";
 import CoinIcon from "../../icons/CoinIcon";
-import { moderateScale, scale, verticalScale } from "../../../utils/Scale";
+import { scale, verticalScale } from "../../../utils/Scale";
+import { useBoundStore } from "../../../Store/useBoundStore";
 
 const BottomTipSheet = (props) => {
   let { show, onSheetClose, setShow, username, postId } = props;
+  const handleTip = useBoundStore((state) => state.handleTip);
+  const coinsOwned = useBoundStore((state) => state.coinsOwned);
 
   const bottomSheetRef = useRef(null);
   const childRef = useRef();
   const [amount, onChangeText] = useState(null);
   const [activeTipMenu, setactiveTipMenu] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
@@ -42,15 +51,30 @@ const BottomTipSheet = (props) => {
   }, []);
 
   const handleTipMenuPress = (txt) => {
-    setactiveTipMenu(txt);
-    childRef.current.set(txt);
+    if (txt <= coinsOwned) {
+      setError(null);
+      setactiveTipMenu(txt);
+      childRef?.current.set(txt);
+    } else {
+      setError({ message: "Insufficient coins" });
+      setactiveTipMenu(coinsOwned);
+      childRef?.current.set(coinsOwned);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
   };
 
   const onTip = () => {
-    setShow(false);
-    onChangeText("");
-
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    handleTip(postId, "post", amount).then((res) => {
+      if (res === true) {
+        setShow(false);
+        onChangeText("");
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        childRef?.current.set("");
+      } else {
+        setError({ message: "Opps! Something went wrong." });
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      }
+    });
   };
 
   const onTextUpdate = (text) => {
@@ -60,8 +84,18 @@ const BottomTipSheet = (props) => {
   useEffect(() => {
     if (show === true) {
       bottomSheetRef?.current?.expand();
+
+      if (coinsOwned < 5) {
+        childRef?.current.set(coinsOwned.toString());
+        onChangeText(coinsOwned.toString());
+      } else {
+        onChangeText("5");
+        childRef?.current.set("5");
+      }
+      setError(null);
     } else {
       bottomSheetRef?.current?.close();
+      setError(null);
     }
   }, [show]);
 
@@ -89,17 +123,6 @@ const BottomTipSheet = (props) => {
     []
   );
 
-  const renderFooter = useCallback(
-    (props) => (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={{}}>
-          <CustomText>Foot</CustomText>
-        </View>
-      </BottomSheetFooter>
-    ),
-    []
-  );
-
   return (
     <>
       <Portal>
@@ -123,6 +146,20 @@ const BottomTipSheet = (props) => {
                 paddingHorizontal: 24,
               }}
             >
+              {error && (
+                <View
+                  style={{
+                    width: "100%",
+                    alignItems: "center",
+                    // paddingBottom: 30,
+                    paddingVertical: "2%",
+                  }}
+                >
+                  <CustomText style={{ color: "red" }}>
+                    {error.message}
+                  </CustomText>
+                </View>
+              )}
               <View
                 style={{
                   flexDirection: "row",
@@ -137,14 +174,15 @@ const BottomTipSheet = (props) => {
                   style={{
                     fontFamily: "Nunito_700Bold",
                     color: "white",
-                    fontSize: 18,
+                    fontSize: scale(14),
                     marginTop: 10, //! keep the same as the marginTop of the BalanceTab below
+                    maxWidth: "60%",
                   }}
                   numberOfLines={1}
                 >
                   Tip @{username}
                 </CustomText>
-                <View style={{ marginTop: 10 }}>
+                <View style={{ marginTop: 10, marginLeft: "2%" }}>
                   <BalanceTab showArrow={true} />
                 </View>
               </View>
@@ -158,7 +196,7 @@ const BottomTipSheet = (props) => {
               >
                 <CircleButton
                   txt={"-"}
-                  onPress={() => childRef.current.decrement()}
+                  onPress={() => childRef?.current.decrement()}
                 />
                 <TouchableOpacity
                   activeOpacity={1}
@@ -168,13 +206,15 @@ const BottomTipSheet = (props) => {
                   <SheetInputComponent
                     ref={childRef}
                     onUpdate={onTextUpdate}
-                    multiline={true}
+                    multiline={false}
                     setactiveTipMenu={setactiveTipMenu}
+                    coinsOwned={coinsOwned}
+                    setError={setError}
                   />
                 </TouchableOpacity>
                 <CircleButton
                   txt={"+"}
-                  onPress={() => childRef.current.increment()}
+                  onPress={() => childRef?.current.increment()}
                 />
               </View>
               <View
@@ -190,46 +230,61 @@ const BottomTipSheet = (props) => {
                 <TipMenuButton
                   txt={5}
                   onPress={handleTipMenuPress}
-                  focused={activeTipMenu === 5 ? true : false}
+                  focused={activeTipMenu === 5 || amount === "5" ? true : false}
                 />
                 <TipMenuButton
                   txt={10}
                   onPress={handleTipMenuPress}
-                  focused={activeTipMenu === 10 ? true : false}
+                  focused={
+                    activeTipMenu === 10 || amount === "10" ? true : false
+                  }
                 />
                 <TipMenuButton
                   txt={20}
                   onPress={handleTipMenuPress}
-                  focused={activeTipMenu === 20 ? true : false}
+                  focused={
+                    activeTipMenu === 20 || amount === "20" ? true : false
+                  }
                 />
                 <TipMenuButton
                   txt={30}
                   onPress={handleTipMenuPress}
-                  focused={activeTipMenu === 30 ? true : false}
+                  focused={
+                    activeTipMenu === 30 || amount === "30" ? true : false
+                  }
                 />
               </View>
-              <LinearGradientButton
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
+
+              <TouchableOpacity
+                disabled={amount <= 0 ? true : false}
+                onPress={onTip}
               >
-                <CoinIcon size={25} />
-                <CustomText
+                <LinearGradientButton
+                  disabled={amount <= 0 ? true : false}
                   style={{
-                    fontFamily: "Nunito_700Bold",
-                    color: "white",
-                    fontSize: 18,
-                    // fontSize: moderateScale(18),
-                    paddingLeft: 10,
+                    width: "100%",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
-                  Tip {amount}
-                </CustomText>
-              </LinearGradientButton>
+                  <CoinIcon size={25} />
+                  <CustomText
+                    style={{
+                      fontFamily: "Nunito_700Bold",
+                      color: "white",
+                      fontSize: 18,
+                      // fontSize: moderateScale(18),
+                      paddingLeft: 10,
+                    }}
+                  >
+                    Tip {amount}
+                  </CustomText>
+                </LinearGradientButton>
+              </TouchableOpacity>
+
               <TouchableOpacity
+                onpress={() => console.log("recharge")}
                 style={{
                   width: "100%",
                   alignItems: "center",
@@ -251,9 +306,17 @@ export default BottomTipSheet;
 
 const SheetInputComponent = forwardRef((props, ref) => {
   const [title, setTitle] = useState(0);
+
   const onchange = (text) => {
-    setTitle(text);
-    props.onUpdate(text);
+    // if text greater than coinsOwned then set to coinsOwned
+    if (parseInt(text) > props.coinsOwned) {
+      setTitle(props.coinsOwned.toString());
+      props.onUpdate(props.coinsOwned.toString());
+    } else {
+      setTitle(text);
+      props.onUpdate(text);
+      props.setError(null);
+    }
   };
 
   useEffect(() => {
@@ -267,10 +330,29 @@ const SheetInputComponent = forwardRef((props, ref) => {
     increment() {
       if (title == "") {
         setTitle("5");
+        props.setactiveTipMenu(5);
+        props.setError(null);
+      } else if (parseInt(title) <= 0) {
+        setTitle("5");
+        props.setactiveTipMenu(5);
+        props.setError(null);
       } else {
-        setTitle((parseInt(title) + 5).toString());
-        props.setactiveTipMenu(-1);
+        if (parseInt(title) + 5 > props.coinsOwned) {
+          setTitle(props.coinsOwned.toString());
+          props.setactiveTipMenu(-1);
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        } else {
+          setTitle((parseInt(title) + 5).toString());
+          props.setactiveTipMenu(-1);
+          props.setError(null);
+        }
       }
+      // if (title == "") {
+      //   setTitle("5");
+      // } else {
+      //   setTitle((parseInt(title) + 5).toString());
+      //   props.setactiveTipMenu(-1);
+      // }
     },
     decrement() {
       if (title == "") {
@@ -288,6 +370,7 @@ const SheetInputComponent = forwardRef((props, ref) => {
           props.setactiveTipMenu(-1);
         }
       }
+      props.setError(null);
     },
   }));
 
@@ -299,15 +382,16 @@ const SheetInputComponent = forwardRef((props, ref) => {
         paddingHorizontal: 10,
         paddingVertical: 5,
         color: "#383838",
-        height: 60,
-        minWidth: 75,
+        // height: 60,
+        height: scale(51),
+        // minWidth: 75,
+        minWidth: scale(68),
         maxWidth: 150,
-        // paddingHorizontal: 30,
         textAlign: "center",
-        fontSize: 20,
+        fontSize: scale(16),
         fontFamily: "Nunito_700Bold",
       }}
-      placeholder="20"
+      placeholder="0"
       value={title}
       onChangeText={onchange}
       multiline={false}
@@ -337,8 +421,8 @@ const styles = StyleSheet.create({
   circle: {
     // width: Dimensions.get("window").width * 0.12,
     // height: Dimensions.get("window").width * 0.12,
-    width: verticalScale(40),
-    height: verticalScale(40),
+    width: scale(40),
+    height: scale(40),
     // width: 50,
     // height: 50,
     borderRadius: 25,

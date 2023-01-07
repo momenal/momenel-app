@@ -3,10 +3,12 @@ import { createPostsSlice } from "./postsSlice";
 import { createStoriesSlice } from "./storiesSlice";
 import { createUserSlice } from "./userSlice";
 import { createNotificationsSlice } from "./notificationsSlice";
+import { createUtilHelperSlice } from "./UtilHelpersSlice";
 
 export const useBoundStore = create((...a) => ({
   ...createStoriesSlice(...a),
   ...createUserSlice(...a),
   ...createPostsSlice(...a),
   ...createNotificationsSlice(...a),
+  ...createUtilHelperSlice(...a),
 }));

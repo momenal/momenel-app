@@ -404,6 +404,7 @@ const Post = ({
         onSheetClose={onReportSheetClose}
         username={username}
         postId={postId}
+        type={"post"}
       />
       <DetachedBottomSheetWithScroll
         show={showBottomSheet}

@@ -3,6 +3,7 @@ import React from "react";
 import CustomText from "../../customText/CustomText";
 import CoinIcon from "../../icons/CoinIcon";
 import { LinearGradient } from "expo-linear-gradient";
+import { scale } from "../../../utils/Scale";
 
 const TipMenuButton = ({ txt, onPress, focused }) => {
   //haddle press
@@ -20,7 +21,7 @@ const TipMenuButton = ({ txt, onPress, focused }) => {
       }}
     >
       <TouchableOpacity style={styles.container} onPress={() => onPress(txt)}>
-        <CoinIcon size={25} />
+        <CoinIcon size={scale(20)} />
         <CustomText
           style={{
             color: "black",
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 6,
-    width: 68,
+    // width: 68,
+    width: scale(56),
   },
   flex: {
     flexDirection: "row",

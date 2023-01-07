@@ -1,5 +1,3 @@
-import { Alert } from "react-native";
-
 export const createPostsSlice = (set) => ({
   posts: [
     // {
@@ -37,7 +35,7 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
-      username: "3dpedia",
+      username: "3dpediaimagessssssssssssssssssssssssssss",
       name: "3d renered imagessssssssssssssssssssssssssss",
       type: "post",
       repost: {
