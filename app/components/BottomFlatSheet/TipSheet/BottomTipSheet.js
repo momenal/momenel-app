@@ -28,7 +28,7 @@ import BalanceTab from "../../Header/BalanceTab";
 import TipMenuButton from "./TipMenuButton";
 import LinearGradientButton from "../../Buttons/LinearGradientButton";
 import CoinIcon from "../../icons/CoinIcon";
-import { scale, verticalScale } from "../../../utils/Scale";
+import { scale } from "../../../utils/Scale";
 import { useBoundStore } from "../../../Store/useBoundStore";
 
 const BottomTipSheet = (props) => {
@@ -41,6 +41,7 @@ const BottomTipSheet = (props) => {
   const [amount, onChangeText] = useState(null);
   const [activeTipMenu, setactiveTipMenu] = useState(null);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState("");
 
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
@@ -64,12 +65,18 @@ const BottomTipSheet = (props) => {
   };
 
   const onTip = () => {
+    setError(null);
+    setStatus("sending tip...");
     handleTip(postId, "post", amount).then((res) => {
       if (res === true) {
-        setShow(false);
-        onChangeText("");
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        childRef?.current.set("");
+        setStatus("tip sent!");
+        setTimeout(() => {
+          setShow(false);
+          onChangeText("");
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          childRef?.current.set("");
+          setStatus(null);
+        }, 1200);
       } else {
         setError({ message: "Opps! Something went wrong." });
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -160,6 +167,18 @@ const BottomTipSheet = (props) => {
                   </CustomText>
                 </View>
               )}
+
+              <View
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  // paddingBottom: 30,
+                  // paddingVertical: "2%",
+                }}
+              >
+                <CustomText style={{ color: "green" }}>{status}</CustomText>
+              </View>
+
               <View
                 style={{
                   flexDirection: "row",

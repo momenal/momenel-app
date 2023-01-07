@@ -3,7 +3,7 @@ export const createUtilHelperSlice = (set) => ({
     try {
       console.log("tipping post", postId, postType, amount);
       // todo: const response = await axios.post(`/api/posts/${postId}/tip`, {
-      return false;
+      return true;
     } catch (err) {
       console.error(err);
     }
