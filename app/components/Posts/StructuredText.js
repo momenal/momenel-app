@@ -97,7 +97,7 @@ const Mention = (props) => {
         {
           color: props.mentionHashtagColor
             ? props.mentionHashtagColor
-            : "#0384BE",
+            : "#8759F2",
           fontFamily: "Nunito_600SemiBold",
         },
         props.style,
