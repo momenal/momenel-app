@@ -33,6 +33,36 @@ export const createPostsSlice = (set) => ({
     //   isSaved: true,
     //   isDonateable: false,
     // },
+    // {
+    //   postId: Math.random(19).toString(),
+    //   username: "gifpedia",
+    //   name: "Gifs official",
+    //   type: "post",
+    //   repost: {
+    //     isRepost: false,
+    //   },
+    //   profile_url:
+    //     "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+    //   posts: [
+    //     {
+    //       id: Math.random(19).toString(),
+    //       width: 4000,
+    //       height: 2300,
+    //       type: "photo",
+    //       url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
+    //     },
+    //   ],
+    //   caption: "#cat",
+    //   createdAt: Date.now(),
+    //   likes: 300,
+    //   comments: 12,
+    //   reposts: 5,
+    //   lastEdit: null,
+    //   isLiked: false,
+    //   isReposted: true, // if the user himself has reposted the post
+    //   isSaved: true,
+    //   isDonateable: true,
+    // },
     {
       postId: Math.random(19).toString(),
       username: "3dpediaimagessssssssssssssssssssssssssss",
@@ -140,7 +170,7 @@ export const createPostsSlice = (set) => ({
       caption:
         "Rewind 2022 ⏪\n#render #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3dartist #3danimation #3dmodel #3drendering #3dmodel #3d #3drender #3dmodel #3dmodeling #3 end",
       createdAt: Date.now(),
-      likes: 300,
+      likes: 7998,
       comments: 12,
       reposts: 5,
       lastEdit: null,

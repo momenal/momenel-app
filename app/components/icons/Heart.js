@@ -11,12 +11,13 @@ import { Octicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../Store/useBoundStore";
 import * as Haptics from "expo-haptics";
 
-const Heart = ({ isLiked, index }) => {
+const Heart = ({ isLiked, onPress }) => {
   const liked = useSharedValue(isLiked ? 1 : 0);
-  const handleLike = useBoundStore((state) => state.handleLike);
+  // const handleLike = useBoundStore((state) => state.handleLike);
 
   const [isFirst, setisFirst] = useState(true);
   useEffect(() => {
+    // dont show animation on first render first render
     if (!isFirst) {
       handleAnimation();
     }
@@ -33,11 +34,13 @@ const Heart = ({ isLiked, index }) => {
   };
   const handleLikeFunc = () => {
     if (isLiked === true) {
-      handleLike(index, isLiked);
+      onPress();
+      // handleLike(index, isLiked);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(0);
     } else {
-      handleLike(index, isLiked);
+      onPress();
+      // handleLike(index, isLiked);
       // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(1);

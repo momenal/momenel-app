@@ -48,6 +48,8 @@ const Comments = ({ route, navigation }) => {
           "Speak to me often. Even if I don't understand your words, I feel your voice speaking to me. 👉",
         time: Date.now() - 100000,
         likes: 210,
+        isLiked: true, //? is liked by user themselves
+        gifUrl: "https://media.tenor.com/GVhHT5O4lMcAAAAd/ferrari-car.gif",
       },
       {
         _id: "2",
@@ -56,6 +58,8 @@ const Comments = ({ route, navigation }) => {
         comment: "Admirable atmosphere mate. 🔥",
         time: "2021-05-01T12:00:00.000Z",
         likes: 102,
+        isLiked: false,
+        gifUrl: null,
       },
       {
         _id: "3asd",
@@ -64,6 +68,7 @@ const Comments = ({ route, navigation }) => {
         comment: "take a look at this @betzi",
         time: "2021-05-01T12:00:00.000Z",
         likes: 10,
+        isLiked: false,
       },
     ];
     setComments(data);
@@ -72,17 +77,20 @@ const Comments = ({ route, navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       fetchComments();
-    }, 2000);
+    }, 0);
   }, []);
 
   const renderItem = useCallback(({ item, username }) => {
     return (
       <Comment
+        commentId={item._id}
         username={username}
         profile_url={item.profile_url}
         likes={item.likes}
         time={item.time}
         comment={item.comment}
+        isLiked={item.isLiked}
+        gifUrl={item.gifUrl}
       />
     );
   });
@@ -118,7 +126,6 @@ const Comments = ({ route, navigation }) => {
           renderItem={({ item }) =>
             renderItem({
               item,
-
               username: item.username,
             })
           }
