@@ -24,11 +24,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
+import StatusOverlay from "../app/components/StatusOverlay";
 
 const Comments = ({ route, navigation }) => {
   const { type, postId } = route.params;
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
+  const [deletingComment, setDeletingComment] = useState(false);
   const [text, onChangeText] = useState("");
   const flatListRef = useRef(null);
   const username = useBoundStore((state) => state.username);
@@ -65,12 +67,12 @@ const Comments = ({ route, navigation }) => {
         gifUrl: null,
       },
       {
-        _id: "3asd",
+        _id: Math.random().toString(),
         profile_url: "https://picsum.photos/200",
         username: "2farhanverse",
         comment: "take a look at this @betzi",
         time: "2021-05-01T12:00:00.000Z",
-        likes: 10,
+        likes: 1090000,
         isLiked: false,
       },
     ];
@@ -92,10 +94,11 @@ const Comments = ({ route, navigation }) => {
 
     //todo: use params and send a req to server to post comment
     setPostingComment(true);
+
     // treating this as fake api delay -->change as needed
     setTimeout(() => {
       setPostingComment(false);
-    }, 200);
+    }, 1200);
     setTimeout(() => {
       addComment(comment);
     }, 300);
@@ -116,6 +119,23 @@ const Comments = ({ route, navigation }) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   }
 
+  const handleDelete = (commentId) => {
+    setDeletingComment(true);
+    console.log("delete", commentId);
+    //todo: delete comment from api
+    // treating this as fake api delay -->change as needed
+    //find and remove comment from comments array
+    setTimeout(() => {
+      let newArr = comments.filter((item) => item._id !== commentId);
+      setComments(newArr);
+      setDeletingComment(false);
+    }, 1000);
+    //todo: show alert if delete failed
+
+    flatListRef.current?.prepareForLayoutAnimationRender();
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
   useEffect(() => {
     setTimeout(() => {
       fetchComments();
@@ -125,6 +145,7 @@ const Comments = ({ route, navigation }) => {
   const renderItem = useCallback(({ item, username }) => {
     return (
       <Comment
+        navigation={navigation}
         commentId={item._id}
         username={username}
         profile_url={item.profile_url}
@@ -133,6 +154,7 @@ const Comments = ({ route, navigation }) => {
         comment={item.comment}
         isLiked={item.isLiked}
         gifUrl={item.gifUrl}
+        handleDelete={handleDelete}
       />
     );
   });
@@ -141,7 +163,7 @@ const Comments = ({ route, navigation }) => {
     <View style={styles.container}>
       {comments === null ? (
         <Loader />
-      ) : // <ActivityIndicator color={"black"} />
+      ) : // : // <ActivityIndicator color={"black"} />
       comments.length === 0 ? (
         <ScrollView
           keyboardDismissMode="interactive"
@@ -177,7 +199,7 @@ const Comments = ({ route, navigation }) => {
           showsHorizontalScrollIndicator={false}
           // initialScrollIndex={route.params.snapToIndex}
           snapToAlignment="start"
-          // onEndReached={() => setTimeout(fetchStories, 2000)} //! fake 2 sec delay
+          // onEndReached={() => setTimeout(fetchComments, 2000)} //! fake 2 sec delay
           onEndReachedThreshold={2}
           decelerationRate={"normal"}
           initialNumToRender={30}
@@ -293,30 +315,16 @@ const Comments = ({ route, navigation }) => {
       </KeyboardAccessoryView>
       {/* status overlay */}
       {postingComment && (
-        <View
-          style={{
-            backgroundColor: "white",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingBottom: headerHeight,
-          }}
-        >
-          <View style={{ height: "20%" }}>
-            <Loader />
-          </View>
-          <GradientText
-            style={{ fontSize: 22, fontFamily: "Nunito_600SemiBold" }}
-            numberOfLines={1}
-            adjustsFontSizeToFit
-          >
-            Posting your comment...
-          </GradientText>
-        </View>
+        <StatusOverlay
+          headerHeight={headerHeight}
+          status={"Posting your comment..."}
+        />
+      )}
+      {deletingComment && (
+        <StatusOverlay
+          headerHeight={headerHeight}
+          status={"Deleting comment..."}
+        />
       )}
     </View>
   );

@@ -1,9 +1,8 @@
 import {
-  Alert,
+  Animated,
   Dimensions,
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -16,8 +15,98 @@ import StructuredText from "./StructuredText";
 import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { Ionicons } from "@expo/vector-icons";
+import { useBoundStore } from "../../Store/useBoundStore";
+
+const AnimatedIconComponent = Animated.createAnimatedComponent(Ionicons);
+
+const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {
+  const scale = dragX.interpolate({
+    inputRange: [-100, 0],
+    outputRange: [2, 0],
+    extrapolate: "clamp",
+  });
+  return (
+    <>
+      {/* todo: handle delete */}
+      <TouchableOpacity onPress={() => handleDelete(commentId)}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#ff0000",
+            justifyContent: "center",
+            alignItems: "center",
+            width: Dimensions.get("window").width * 0.12,
+          }}
+        >
+          <AnimatedIconComponent
+            name="md-trash-bin-outline"
+            size={24}
+            color="white"
+            style={{
+              transform: [{ scale }],
+            }}
+          />
+          {/* <Animated.Text
+            style={{
+              color: "white",
+              paddingHorizontal: 10,
+              fontWeight: "600",
+              transform: [{ scale }],
+            }}
+          >
+            Archive
+          </Animated.Text> */}
+        </View>
+      </TouchableOpacity>
+    </>
+  );
+};
+const RightActions = (progress, dragX, navigation, commentId, username) => {
+  const scale = dragX.interpolate({
+    inputRange: [-100, 0],
+    outputRange: [2.2, 0],
+    extrapolate: "clamp",
+  });
+
+  function handleReport() {
+    navigation.navigate("Report", {
+      contentId: commentId,
+      username: username,
+      contentType: "comment",
+    });
+  }
+
+  return (
+    <>
+      {/* todo: handle delete */}
+      <TouchableOpacity onPress={handleReport}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#a0a0a0",
+            justifyContent: "center",
+            alignItems: "center",
+            width: Dimensions.get("window").width * 0.12,
+          }}
+        >
+          <AnimatedIconComponent
+            name="ios-alert-circle-outline"
+            size={24}
+            color="white"
+            style={{
+              transform: [{ scale }],
+            }}
+          />
+        </View>
+      </TouchableOpacity>
+    </>
+  );
+};
 
 const Comment = ({
+  navigation,
   username,
   profile_url,
   likes,
@@ -25,10 +114,21 @@ const Comment = ({
   comment,
   isLiked,
   commentId,
-  gifUrl,
+  handleDelete,
 }) => {
   const [isLikedS, setisLikedS] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
+  const LoggedInUsername = useBoundStore((state) => state.username);
+
+  function kFormatter(num) {
+    return Math.abs(num) <= 999999
+      ? // ? num.toLocaleString()
+        num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      : Math.abs(num) > 999999
+      ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
+      : Math.sign(num) * Math.abs(num);
+  }
+
   function handleLike() {
     //todo: send like to api using commentId
     //todo: if like send successfully then update isLikedS and likeCount like below else show error
@@ -47,66 +147,82 @@ const Comment = ({
     });
 
   return (
-    <GestureDetector gesture={_doubleTap}>
-      <View
-        style={{
-          flexDirection: "row",
-          paddingHorizontal: "3%",
-          paddingVertical: "2%",
-        }}
-      >
-        <TouchableOpacity
+    <Swipeable
+      renderRightActions={(progress, dragX) =>
+        LoggedInUsername === username
+          ? RightActionsIfAdmin(progress, dragX, commentId, handleDelete)
+          : RightActions(progress, dragX, navigation, commentId, username)
+      }
+      overshootRight={false}
+      friction={1.8}
+    >
+      <GestureDetector gesture={_doubleTap}>
+        <View
           style={{
-            backgroundColor: "pink",
-            width: 34,
-            height: 34,
-            borderRadius: 50,
-            overflow: "hidden",
+            flexDirection: "row",
+            paddingHorizontal: "3%",
+            paddingVertical: "2%",
+            backgroundColor: "#fff",
           }}
         >
-          <Image
-            source={{ uri: profile_url }}
-            // style={{ height: 34, width: 34, borderRadius: 50 }}
-            style={{ flex: 1, width: undefined, height: undefined }}
-          />
-        </TouchableOpacity>
-        <View style={{ flex: 1, marginLeft: "2%" }}>
-          <View
+          <TouchableOpacity
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              backgroundColor: "pink",
+              width: 34,
+              height: 34,
+              borderRadius: 50,
+              overflow: "hidden",
             }}
           >
-            <TouchableOpacity>
-              <GradientText
-                style={{ fontSize: scale(12), fontFamily: "Nunito_700Bold" }}
-                adjustsFontSizeToFit={true}
-                numberOfLines={1}
-              >
-                {username}
-              </GradientText>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleLike}
-              style={{ flexDirection: "row", alignItems: "center" }}
+            <Image
+              source={{ uri: profile_url }}
+              // style={{ height: 34, width: 34, borderRadius: 50 }}
+              style={{ flex: 1, width: undefined, height: undefined }}
+            />
+          </TouchableOpacity>
+          <View style={{ flex: 1, marginLeft: "2%" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              {likes > 0 && (
-                <CustomText
-                  style={{ color: "#999999", paddingRight: "2%", fontSize: 13 }}
+              <TouchableOpacity>
+                <GradientText
+                  style={{ fontSize: scale(12), fontFamily: "Nunito_700Bold" }}
+                  adjustsFontSizeToFit={true}
+                  numberOfLines={1}
                 >
-                  {likeCount}
-                </CustomText>
-              )}
-              <TouchableOpacity onPress={handleLike}>
-                <Heart isLiked={isLikedS} onPress={handleLike} size={15} />
+                  {username}
+                </GradientText>
               </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-          <View style={{ marginVertical: "1%" }}>
-            <StructuredText style={{ fontSize: 16 }}>{comment}</StructuredText>
-          </View>
-          {/* {gifUrl && (
+              <TouchableOpacity
+                onPress={handleLike}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                {likes > 0 && (
+                  <CustomText
+                    style={{
+                      color: "#999999",
+                      paddingRight: "2%",
+                      fontSize: 13,
+                    }}
+                  >
+                    {kFormatter(likeCount)}
+                  </CustomText>
+                )}
+                <TouchableOpacity onPress={handleLike}>
+                  <Heart isLiked={isLikedS} onPress={handleLike} size={15} />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginVertical: "1%" }}>
+              <StructuredText style={{ fontSize: 16 }}>
+                {comment}
+              </StructuredText>
+            </View>
+            {/* {gifUrl && (
             <Image
               source={{ uri: gifUrl }}
               style={{
@@ -117,14 +233,15 @@ const Comment = ({
               }}
             />
           )} */}
-          <View>
-            <CustomText style={{ color: "#ADADAD", fontSize: 12 }}>
-              {RelativeTime(time)}
-            </CustomText>
+            <View>
+              <CustomText style={{ color: "#ADADAD", fontSize: 12 }}>
+                {RelativeTime(time)}
+              </CustomText>
+            </View>
           </View>
         </View>
-      </View>
-    </GestureDetector>
+      </GestureDetector>
+    </Swipeable>
   );
 };
 

@@ -20,13 +20,11 @@ import CommentsIcon from "../icons/CommentsIcon";
 import Repost from "../icons/Repost";
 import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
-import DetachedBottomSheet from "../BottomFlatSheet/DetachedBottomSheet";
 import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 import { scale } from "../../utils/Scale";
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 
 const ScreenWidth = Dimensions.get("window").width;
