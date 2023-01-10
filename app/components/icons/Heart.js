@@ -11,7 +11,7 @@ import { Octicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../Store/useBoundStore";
 import * as Haptics from "expo-haptics";
 
-const Heart = ({ isLiked, onPress }) => {
+const Heart = ({ isLiked, onPress, size }) => {
   const liked = useSharedValue(isLiked ? 1 : 0);
   // const handleLike = useBoundStore((state) => state.handleLike);
 
@@ -69,16 +69,14 @@ const Heart = ({ isLiked, onPress }) => {
   });
 
   return (
-    <View>
-      <Pressable onPress={handleLikeFunc}>
-        <Animated.View style={[StyleSheet.absoluteFillObject, outlineStyle]}>
-          <Octicons name="heart" size={23} color="#999999" />
-        </Animated.View>
-        <Animated.View style={fillStyle}>
-          <Octicons name="heart-fill" size={23} color="#FF6060" />
-        </Animated.View>
-      </Pressable>
-    </View>
+    <Pressable onPress={handleLikeFunc}>
+      <Animated.View style={[StyleSheet.absoluteFillObject, outlineStyle]}>
+        <Octicons name="heart" size={size} color="#999999" />
+      </Animated.View>
+      <Animated.View style={fillStyle}>
+        <Octicons name="heart-fill" size={size} color="#FF6060" />
+      </Animated.View>
+    </Pressable>
   );
 };
 

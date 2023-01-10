@@ -323,7 +323,7 @@ const Post = ({
           height: 30,
         }}
       >
-        <Heart isLiked={isLiked} onPress={handleLikeFunc} />
+        <Heart isLiked={isLiked} onPress={handleLikeFunc} size={23} />
 
         <TouchableOpacity onPress={handleComments}>
           <CommentsIcon size={21} />

@@ -27,6 +27,7 @@ const StructuredText = memo((props) => {
           <Mention
             key={"more"}
             mentionHashtagColor={"gray"}
+            // mentionHashtagColor={"#7033FF"}
             mentionHashtagPress={mentionHashtagPress}
             text={"more"}
             style={props.style}

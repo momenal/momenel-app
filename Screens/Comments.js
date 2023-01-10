@@ -8,21 +8,19 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Keyboard,
+  LayoutAnimation,
+  UIManager,
 } from "react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Loader from "../app/components/Loader";
 import { useHeaderHeight } from "@react-navigation/elements";
 import GradientText from "../app/components/customText/GradientText";
 import { scale } from "../app/utils/Scale";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { FlashList } from "@shopify/flash-list";
-import CustomText from "../app/components/customText/CustomText";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import KeyboardAccessoryView from "../app/components/KeyboardAccessoryView";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
@@ -30,8 +28,11 @@ import Comment from "../app/components/Posts/Comment";
 const Comments = ({ route, navigation }) => {
   const { type, postId } = route.params;
   const [comments, setComments] = useState(null);
+  const [postingComment, setPostingComment] = useState(false);
   const [text, onChangeText] = useState("");
-  const [showSearchGif, setShowSearchGif] = useState(false);
+  const flatListRef = useRef(null);
+  const username = useBoundStore((state) => state.username);
+
   const headerHeight = useHeaderHeight();
   const userProfileUrl = useBoundStore((state) => state.profile_url);
   const insets = useSafeAreaInsets();
@@ -42,7 +43,8 @@ const Comments = ({ route, navigation }) => {
     let data = [
       {
         _id: "1",
-        profile_url: "https://picsum.photos/200",
+        profile_url:
+          "https://images.unsplash.com/photo-1610276198568-eb6d0ff53e48?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
         username: "farhanverse",
         comment:
           "Speak to me often. Even if I don't understand your words, I feel your voice speaking to me. 👉",
@@ -53,7 +55,8 @@ const Comments = ({ route, navigation }) => {
       },
       {
         _id: "2",
-        profile_url: "https://picsum.photos/200",
+        profile_url:
+          "https://images.unsplash.com/photo-1618151313441-bc79b11e5090?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
         username: "2farhanverse",
         comment: "Admirable atmosphere mate. 🔥",
         time: "2021-05-01T12:00:00.000Z",
@@ -72,6 +75,45 @@ const Comments = ({ route, navigation }) => {
       },
     ];
     setComments(data);
+  }
+
+  function postComment(txt) {
+    let comment = {
+      _id: Math.random().toString(),
+      profile_url: "https://picsum.photos/200",
+      username: username,
+      comment: txt,
+      time: Date.now(),
+      likes: 10,
+      isLiked: false,
+    };
+    Keyboard.dismiss();
+    onChangeText("");
+
+    //todo: use params and send a req to server to post comment
+    setPostingComment(true);
+    // treating this as fake api delay -->change as needed
+    setTimeout(() => {
+      setPostingComment(false);
+    }, 200);
+    setTimeout(() => {
+      addComment(comment);
+    }, 300);
+  }
+
+  function addComment(comment) {
+    const newComments = [comment, ...comments];
+    setComments(newComments);
+    if (flatListRef) {
+      flatListRef.current.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    }
+
+    // animate
+    flatListRef.current?.prepareForLayoutAnimationRender();
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   }
 
   useEffect(() => {
@@ -121,6 +163,7 @@ const Comments = ({ route, navigation }) => {
         </ScrollView>
       ) : (
         <FlashList
+          ref={flatListRef}
           data={comments}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) =>
@@ -230,27 +273,12 @@ const Comments = ({ route, navigation }) => {
                       multiline={true}
                     />
                   </View>
-                  <TouchableOpacity
-                    style={{
-                      alignItems: "flex-end",
-                      justifyContent: "center",
-                      marginLeft: 2,
-                      marginTop: 2,
-                    }}
-                    onPress={() => {
-                      setShowSearchGif(!showSearchGif);
-                    }}
-                    underlayColor="transparent"
-                  >
-                    <GradientText
-                      style={{ fontSize: 14, fontFamily: "Nunito_700Bold" }}
-                    >
-                      Gif
-                    </GradientText>
-                  </TouchableOpacity>
                 </View>
                 {(isKeyboardVisible || text.length > 0) && (
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={text.length <= 0 ? true : false}
+                    onPress={() => postComment(text)}
+                  >
                     <Ionicons
                       name="paper-plane"
                       size={scale(20)}
@@ -263,6 +291,33 @@ const Comments = ({ route, navigation }) => {
           );
         }}
       </KeyboardAccessoryView>
+      {/* status overlay */}
+      {postingComment && (
+        <View
+          style={{
+            backgroundColor: "white",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: headerHeight,
+          }}
+        >
+          <View style={{ height: "20%" }}>
+            <Loader />
+          </View>
+          <GradientText
+            style={{ fontSize: 22, fontFamily: "Nunito_600SemiBold" }}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            Posting your comment...
+          </GradientText>
+        </View>
+      )}
     </View>
   );
 };
