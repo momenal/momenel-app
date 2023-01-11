@@ -1,8 +1,7 @@
 import { View } from "react-native";
-import Loader from "./Loader";
 import GradientText from "./customText/GradientText";
 
-const StatusOverlay = ({ headerHeight = 0, status = "pending" }) => {
+const StatusOverlay = ({ headerHeight = 0, status = "pending", loader }) => {
   return (
     <View
       style={{
@@ -17,9 +16,6 @@ const StatusOverlay = ({ headerHeight = 0, status = "pending" }) => {
         paddingBottom: headerHeight,
       }}
     >
-      <View style={{ height: "20%" }}>
-        <Loader />
-      </View>
       <GradientText
         style={{ fontSize: 22, fontFamily: "Nunito_600SemiBold" }}
         numberOfLines={1}

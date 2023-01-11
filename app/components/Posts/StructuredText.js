@@ -81,7 +81,10 @@ const StructuredText = memo((props) => {
   };
 
   return (
-    <CustomText style={[props.style, { fontFamily: "Nunito_400Regular" }]}>
+    <CustomText
+      style={[props.style, { fontFamily: "Nunito_400Regular" }]}
+      selectable={true}
+    >
       {prepareText(
         props.children,
         props.mentionHashtagPress,

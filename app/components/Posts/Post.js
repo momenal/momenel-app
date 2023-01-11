@@ -364,7 +364,7 @@ const Post = ({
         <CustomText style={{ fontSize: 4, marginRight: 9, color: "#999999" }}>
           {"\u2B24"}
         </CustomText>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleComments}>
           <CustomText
             style={{
               fontFamily: "Nunito_700Bold",

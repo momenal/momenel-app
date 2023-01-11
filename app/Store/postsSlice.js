@@ -482,6 +482,7 @@ export const createPostsSlice = (set) => ({
       console.log("id: ", id);
       console.log("comments: ", comments);
       console.log("contentId: ", contentId);
+      console.log("contentType ", contentType);
       //todo send req to report post
       //todo if error then show alert
     } catch (err) {}

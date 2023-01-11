@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Dimensions,
   Keyboard,
@@ -19,13 +20,13 @@ import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 
 const Report = ({ route, navigation }) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const { contentId, username, contentType } = route.params;
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [activeIndex, setactiveIndex] = useState(null);
   const [text, onChangeText] = useState("");
-  const handleReport = useBoundStore((state) => state.reportPost);
+  // const handleReport = useBoundStore((state) => state.reportPost);
+  const handleReport = useBoundStore((state) => state.handleReport);
   const insets = useSafeAreaInsets();
-  const animationRef = useRef(null);
 
   const setActiveIndexState = (index) => {
     // console.log(index);
@@ -113,11 +114,23 @@ const Report = ({ route, navigation }) => {
   ];
 
   const onReport = () => {
-    handleReport(data[activeIndex].id, contentId, contentType, text);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setIsSubmitted(true);
-    onChangeText("");
-    setactiveIndex(null);
+    handleReport(data[activeIndex].id, contentId, contentType, text).then(
+      (res) => {
+        if (res === true) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          setIsSubmitted(true);
+          onChangeText("");
+          setactiveIndex(null);
+        } else {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+          Alert.alert(
+            "Oops!",
+            "Something went wrong.\nPlease try again later.",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+          );
+        }
+      }
+    );
   };
 
   const onDone = () => {

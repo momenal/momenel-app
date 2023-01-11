@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import GradientText from "../customText/GradientText";
 import { scale } from "../../utils/Scale";
@@ -18,6 +18,7 @@ import * as Haptics from "expo-haptics";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../Store/useBoundStore";
+import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 
 const AnimatedIconComponent = Animated.createAnimatedComponent(Ionicons);
 
@@ -119,6 +120,8 @@ const Comment = ({
   const [isLikedS, setisLikedS] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
   const LoggedInUsername = useBoundStore((state) => state.username);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const FontSize = useMemo(() => scale(14), []);
 
   function kFormatter(num) {
     return Math.abs(num) <= 999999
@@ -145,6 +148,30 @@ const Comment = ({
     .onStart(() => {
       handleLike();
     });
+
+  const mentionHashtagClick = async (text) => {
+    if (text.startsWith("http")) {
+      try {
+        _handlePressButtonAsync(text);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (text.startsWith("www")) {
+      try {
+        _handlePressButtonAsync("https://" + text);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (text.startsWith("@")) {
+      console.log("@", text);
+    } else if (text.startsWith("#")) {
+      console.log("#", text);
+    } else if (text.startsWith("more")) {
+      setShowBottomSheet(true);
+    } else {
+      console.log("else", text);
+    }
+  };
 
   return (
     <Swipeable
@@ -218,7 +245,11 @@ const Comment = ({
               </TouchableOpacity>
             </View>
             <View style={{ marginVertical: "1%" }}>
-              <StructuredText style={{ fontSize: 16 }}>
+              <StructuredText
+                style={{ fontSize: 16 }}
+                maxCharCount={150}
+                mentionHashtagPress={mentionHashtagClick}
+              >
                 {comment}
               </StructuredText>
             </View>
@@ -241,6 +272,31 @@ const Comment = ({
           </View>
         </View>
       </GestureDetector>
+      {/* read more */}
+      <DetachedBottomSheetWithScroll
+        show={showBottomSheet}
+        onSheetClose={() => setShowBottomSheet(false)}
+      >
+        <View
+          style={{
+            paddingHorizontal: "5%",
+            paddingTop: "2%",
+            paddingBottom: "5%",
+          }}
+        >
+          <StructuredText
+            mentionHashtagPress={mentionHashtagClick}
+            mentionHashtagColor={"#8759F2"}
+            style={{
+              fontSize: FontSize,
+            }}
+          >
+            {comment}
+          </StructuredText>
+
+          {/* <Button title="close" onPress={() => setShowBottomSheet(false)} /> */}
+        </View>
+      </DetachedBottomSheetWithScroll>
     </Swipeable>
   );
 };

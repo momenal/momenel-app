@@ -1,27 +1,23 @@
-import { View, Text } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Lottie from "lottie-react-native";
 
-const Loader = () => {
+const Loader = ({ play }) => {
   const animationRef = useRef(null);
+  useEffect(() => {
+    console.log("play loader");
+    animationRef.current?.play(21, 125);
+  }, [play]);
   return (
-    <SafeAreaView
-      style={{
-        // backgroundColor: "pink",
-        height: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Lottie
-        autoPlay
-        style={{ width: 220, height: 220 }}
-        autoSize
-        ref={animationRef}
-        source={require("../../assets/loader.json")}
-      />
-    </SafeAreaView>
+    <Lottie
+      // autoPlay
+      style={{ width: 220, height: 220 }}
+      autoSize
+      ref={animationRef}
+      source={require("../../assets/loader.json")}
+      loop={true}
+    />
+    // </SafeAreaView>
   );
 };
 
