@@ -82,6 +82,7 @@ const Auth = () => {
     Keyboard.dismiss();
   };
 
+  // todo: show privacy policy and terms and conditions
   const _handlePressButtonAsync = async (url) => {
     await WebBrowser.openBrowserAsync(url);
   };

@@ -65,6 +65,39 @@ export const createPostsSlice = (set) => ({
     // },
     {
       postId: Math.random(19).toString(),
+      username: "quotes",
+      name: "Insights101",
+      // type: "text",
+      repost: {
+        isRepost: true,
+        repostedBy: "farhan",
+        repostedAt: "2022-11-04T13:54:55+00:00",
+      },
+      posts: [], //! can be null too
+      // posts: [
+      //   {
+      //     id: Math.random(19).toString(),
+      //     width: 2048,
+      //     height: 2730,
+      //     type: "photo",
+      //     url: "https://images.pexels.com/photos/13999202/pexels-photo-13999202.jpeg",
+      //   },
+      // ],
+      profile_url:
+        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      caption: "Love this!",
+      createdAt: Date.now(),
+      likes: 300,
+      comments: 12,
+      reposts: 5,
+      lastEdit: null,
+      isLiked: false,
+      isReposted: true, // if the user himself has reposted the post
+      isSaved: true,
+      isDonateable: false,
+    },
+    {
+      postId: Math.random(19).toString(),
       username: "3dpediaimagessssssssssssssssssssssssssss",
       name: "3d renered imagessssssssssssssssssssssssssss",
       type: "post",
@@ -306,31 +339,6 @@ export const createPostsSlice = (set) => ({
       isReposted: true, // if the user himself has reposted the post
       isSaved: true,
       isDonateable: true,
-    },
-    {
-      postId: Math.random(19).toString(),
-      username: "quotes",
-      name: "Insights101",
-      type: "text",
-      repost: {
-        isRepost: true,
-        repostedBy: "farhan",
-        repostedAt: "2022-11-04T13:54:55+00:00",
-      },
-      // posts: [],
-      profile_url:
-        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      caption:
-        "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream #fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. @Nobody seemed to fully understand the beauty of this accomplishment except for the new worko that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to  understand the beauty of this accomplishment except for the new o that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it. Nobody seemed to fully understand the beauty of this accomplishment except for the new er who watched in amazement.",
-      createdAt: Date.now(),
-      likes: 300,
-      comments: 12,
-      reposts: 5,
-      lastEdit: null,
-      isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
-      isDonateable: false,
     },
 
     {

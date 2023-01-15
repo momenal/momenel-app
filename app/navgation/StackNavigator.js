@@ -11,13 +11,19 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import ByUserList from "../../Screens/ByUserList";
 import Comments from "../../Screens/Comments";
+import CreatePost from "../../Screens/CreatePost";
+import PostHeaderButton from "../components/Buttons/PostHeaderButton";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({}) => {
   const navigation = useNavigation();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+      }}
+    >
       <Stack.Screen
         name="Home"
         component={HomeTabNavigator}
@@ -56,6 +62,32 @@ const StackNavigator = ({}) => {
           title: "",
           headerBackTitle: "",
           headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="CreatePost"
+        component={CreatePost}
+        options={{
+          gestureDirection: "vertical",
+          headerTitle: "",
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          gestureEnabled: false,
+          // headerShown: false,
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{
+                marginRight: 10,
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                paddingTop: 2,
+              }}
+              onPress={() => navigation.goBack()}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+          ),
+          headerRight: PostHeaderButton,
         }}
       />
       <Stack.Screen

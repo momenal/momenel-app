@@ -1,16 +1,12 @@
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
-  InputAccessoryView,
   ScrollView,
-  ActivityIndicator,
   Dimensions,
   Image,
   Keyboard,
   LayoutAnimation,
-  UIManager,
 } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Loader from "../app/components/Loader";

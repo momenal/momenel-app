@@ -1,17 +1,15 @@
 import {
   Animated,
-  Button,
   Dimensions,
   FlatList,
   Keyboard,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostMedia from "./postMedia/PostMedia";
 import PaginationDot from "./PaginationDot";
@@ -290,13 +288,13 @@ const Post = ({
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
                 // maxCharCount={150}
-                maxCharCount={posts.length === 0 ? 500 : 150}
+                maxCharCount={posts?.length === 0 ? 500 : 150}
                 // numberOfLines={
                 //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
                 // }
                 // numberOfLines={3}
                 style={
-                  posts.length === 0
+                  posts?.length === 0
                     ? { fontSize: FontSize + 3 }
                     : { fontSize: FontSize }
                 }

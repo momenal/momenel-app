@@ -9,6 +9,8 @@ import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
 import FakeLogout from "../components/FakeLogout";
 import Notifications from "../components/icons/Notifications";
+import CreatePost from "../../Screens/CreatePost";
+import PlaceholderScreen from "../components/PlaceholderScreen";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,6 +26,9 @@ const HomeNavigator = ({ navigation }) => {
         tabBarShowLabel: false,
         headerShadowVisible: false,
         tabBarStyle: { backgroundColor: "#F9F9F9", paddingVertical: 0 },
+        headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+        // unmountOnBlur: true,
+        freezeOnBlur: true,
       })}
     >
       <Tab.Screen
@@ -92,12 +97,13 @@ const HomeNavigator = ({ navigation }) => {
         }}
       />
       <Tab.Screen
-        name="CreatePost"
-        component={Home}
+        name="Create"
+        component={PlaceholderScreen}
         options={{
-          title: "Create Post",
-          // tabBarStyle: { display: "none" },
-          tabBarIcon: ({ size, focused, color }) => {
+          title: "",
+          unmountOnBlur: true,
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
             {
               return (
                 <PlusIcon
@@ -109,6 +115,13 @@ const HomeNavigator = ({ navigation }) => {
             }
           },
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+            navigation.navigate("CreatePost");
+          },
+        })}
       />
       <Tab.Screen
         name="Notifications"

@@ -134,8 +134,8 @@ const Home = ({ navigation }) => {
             isLiked: item.isLiked,
             isReposted: item.isReposted,
             postId: item.postId,
-            width: item.posts ? item.posts[0].width : 0,
-            height: item.posts ? item.posts[0].height : 0,
+            width: item.posts?.length > 0 ? item.posts[0].width : 0,
+            height: item.posts?.length > 0 ? item.posts[0].height : 0,
 
             // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
