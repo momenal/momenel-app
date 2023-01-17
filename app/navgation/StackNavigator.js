@@ -8,7 +8,7 @@ import YourStoryCarousel from "../components/Stories/StoriesScroll/YourStory/You
 import Zoom from "../../Screens/Zoom";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import ByUserList from "../../Screens/ByUserList";
 import Comments from "../../Screens/Comments";
 import CreatePost from "../../Screens/CreatePost";
@@ -87,7 +87,12 @@ const StackNavigator = ({}) => {
               <Ionicons name="close" size={24} color="black" />
             </TouchableOpacity>
           ),
-          headerRight: PostHeaderButton,
+          headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+              {/* <Ionicons name="images" size={16} color="black" /> */}
+              <PostHeaderButton />
+            </View>
+          ),
         }}
       />
       <Stack.Screen

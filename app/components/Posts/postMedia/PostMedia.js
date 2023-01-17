@@ -50,7 +50,7 @@ const PostMediaOne = ({
     .numberOfTaps(1)
     .maxDuration(250)
     .onStart(() => {
-      navigation.navigate("Zoom", { url, username });
+      navigation?.navigate("Zoom", { url, username });
     });
 
   const _doubleTap = Gesture.Tap()

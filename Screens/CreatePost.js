@@ -1,177 +1,402 @@
+// https://github.com/dabakovich/react-native-controlled-mentions/blob/3.0.0-feat-use-mentions/example/mentions-app.tsx#L90
+
 import {
-  Button,
+  Alert,
+  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
   LayoutAnimation,
+  Platform,
+  Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { useMentions, parseValue } from "react-native-controlled-mentions";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import PostHeaderButton from "../app/components/Buttons/PostHeaderButton";
-import { useBoundStore } from "../app/Store/useBoundStore";
-import { scale } from "../app/utils/Scale";
-import CustomText from "../app/components/customText/CustomText";
-import KeyboardAccessoryView from "../app/components/KeyboardAccessoryView";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
-import InputScrollView from "../app/components/InputScrollView";
+import { scale } from "../app/utils/Scale";
+import { useBoundStore } from "../app/Store/useBoundStore";
+import CustomText from "../app/components/customText/CustomText";
+import PostHeaderButton from "../app/components/Buttons/PostHeaderButton";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Suggestions from "../app/components/Inputs/Suggestions";
+import * as ImagePicker from "expo-image-picker";
+import CreatePostMedia from "../app/components/CreatePost/CreatePostMedia";
+
+let users = [
+  {
+    id: "1",
+    name: "David Tabaka",
+  },
+  {
+    id: "2",
+    name: "Mary",
+  },
+  {
+    id: "3",
+    name: "Tony",
+  },
+  {
+    id: "4",
+    name: "Mike",
+  },
+  {
+    id: "5",
+    name: "Grey",
+  },
+];
+
+let hashtags = [
+  {
+    id: "todo",
+    name: "todo",
+  },
+  {
+    id: "help",
+    name: "help",
+  },
+  {
+    id: "loveyou",
+    name: "loveyou",
+  },
+  {
+    id: "loveyou2",
+    name: "loveyou",
+  },
+];
+
+const triggersConfig = {
+  mention: {
+    trigger: "@",
+    isInsertSpaceAfterMention: true,
+    allowedSpacesCount: 0,
+    textStyle: {
+      fontWeight: "bold",
+      color: "#7033FF",
+    },
+  },
+  hashtag: {
+    trigger: "#",
+    isInsertSpaceAfterMention: true,
+    allowedSpacesCount: 0,
+    textStyle: {
+      fontWeight: "bold",
+      color: "#7033FF",
+    },
+  },
+};
 
 const CreatePost = ({ navigation }) => {
-  const [text, setText] = useState("");
-  const [content, setContent] = useState(null);
-  const headerHeight = useHeaderHeight();
-
-  const [textInputOffset, settextInputOffset] = useState(0);
-  const scrollViewRef = useRef(null);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const profile_url = useBoundStore((state) => state.profile_url);
   const username = useBoundStore((state) => state.username);
+  const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
+  const [textValue, setTextValue] = useState("");
+  const [content, setContent] = useState([]);
+  const MAX_CONTENT_LENGTH = 8; //todoL: change after meeting
+
+  const filteredArray = (arrayA, arrayB) => {
+    return arrayB.filter((element) => {
+      return (
+        arrayA.findIndex((item) => item.assetId === element.assetId) === -1
+      );
+    });
+  };
+
+  // remove item from content array by assetId
+  // const removeItem = (assetId) => {
+  //   const filtered = content.filter((item) => item.assetId !== assetId);
+  //   setContent(filtered);
+  // };
+  const removeItem = (uri) => {
+    const filtered = content.filter((item) => item.uri !== uri);
+    setContent(filtered);
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      // orderedSelection: true,
+      quality: 1.0,
+      allowsEditing: false,
+      //TODO:SET TO TRUE base64: true,
+      // base64: true,
+      selectionLimit: 5,
+    });
+
+    if (!result.canceled) {
+      if (result.assets.length + content.length > MAX_CONTENT_LENGTH) {
+        {
+          Alert.alert(
+            "Oops!",
+            `You can upload up to ${MAX_CONTENT_LENGTH} photos and videos at a time.`
+          );
+        }
+        return;
+      }
+      if (Platform.OS === "ios") {
+        const filtered = filteredArray(content, result.assets);
+        if (filtered.length === 0) {
+          Alert.alert(
+            "Oops!",
+            "Looks like you already selected some of these images. \n\n Don't worry, we removed the duplicates for you."
+          );
+          // Alert.alert(
+          //   "Looks like you already selected some of these images. \n Don't worry, we removed the duplicates for you."
+          // );
+        }
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setContent([...content, ...filtered]);
+      } else {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setContent([...content, ...result.assets]);
+      }
+    }
+  };
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      videoMaxDuration: 120,
+      orderedSelection: true,
+      quality: 1,
+      //TODO:SET TO TRUE base64: true,
+      selectionLimit: 5,
+    });
+
+    if (!result.canceled) {
+      const filtered = filteredArray(content, result.assets);
+      if (result.assets.length + content.length > MAX_CONTENT_LENGTH) {
+        {
+          Alert.alert(
+            "Oops!",
+            `You can upload up to ${MAX_CONTENT_LENGTH} photos and videos at a time.`
+          );
+        }
+        return;
+      }
+      if (Platform.OS === "ios") {
+        const filtered = filteredArray(content, result.assets);
+        if (filtered.length === 0) {
+          Alert.alert(
+            "Oops!",
+            "Looks like you already selected some of these videos. \n\n Don't worry, we removed the duplicates for you."
+          );
+        }
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setContent([...content, ...filtered]);
+      } else {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setContent([...content, ...result.assets]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      const keyboardDidShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        () => {
+          setKeyboardVisible(true);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        "keyboardDidHide",
+        () => {
+          setKeyboardVisible(false);
+        }
+      );
+
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    } else {
+      const keyboardDidShowListener = Keyboard.addListener(
+        "keyboardWillShow",
+        () => {
+          setKeyboardVisible(true);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        "keyboardWillHide",
+        () => {
+          setKeyboardVisible(false);
+        }
+      );
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }
+  }, []);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
-          <Ionicons name="images" size={scale(18)} color="black" />
-          <PostHeaderButton
-            onPress={() => console.log("press")}
-            disabled={text.length > 0 ? false : true}
-          />
-        </View>
+        <PostHeaderButton
+          onPress={() => console.log("press")}
+          disabled={textValue.length > 0 || content.length > 0 ? false : true}
+          style={{ marginRight: "1%" }}
+        />
       ),
     });
-  }, [navigation]);
-  console.log(textInputOffset);
-  //   styles
+  }, [navigation, textValue]);
+
+  const [isSuggestionsVisible, setisSuggestionsVisible] = useState(false);
+  const { parts, plainText } = parseValue(textValue, [
+    triggersConfig.mention,
+    triggersConfig.hashtag,
+  ]);
+
+  //   console.log("parts", parts);
+  //   console.log("textValue", plainText);
+
+  const { textInputProps, triggers } = useMentions({
+    value: textValue,
+    onChange: setTextValue,
+    triggersConfig,
+  });
+  function lay(params) {
+    console.log(params);
+    if (params > 0) {
+      setisSuggestionsVisible(true);
+    } else {
+      setisSuggestionsVisible(false);
+    }
+  }
+
   const sizeProfile = useMemo(() => scale(30), []);
   const fontSize = useMemo(() => scale(15), []);
 
   return (
-    <View style={{ backgroundColor: "white", flex: 1 }}>
-      <InputScrollView
-        androidAdjustResize={true}
-        keyboardDismissMode="on-drag"
-        topOffset={headerHeight + 20}
-        keyboardAvoidingViewProps={{
-          keyboardVerticalOffset: headerHeight,
-        }}
-        // useAnimatedScrollView={true}
-        height="100%"
-        multilineInputStyle={{
-          fontSize: fontSize,
-          fontFamily: "Nunito_600SemiBold",
+    <KeyboardAvoidingView
+      enabled={Platform.OS === "ios"}
+      behavior="padding"
+      keyboardVerticalOffset={headerHeight}
+      style={{
+        flex: 1,
+        justifyContent: "flex-end",
+        backgroundColor: "white",
+      }}
+    >
+      <View
+        keyboardShouldPersistTaps="handled"
+        style={{
+          flex: 1,
+          justifyContent: "space-between",
+          //   marginBottom: 20,
         }}
       >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardDismissMode="interactive"
+          // style={{ marginBottom: 40 }} //! change this to match keyboard accessory height
+          style={{ marginBottom: isSuggestionsVisible ? 0 : 41 }} //! change this to match keyboard accessory height
+        >
+          {/* header */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: "3%",
+            }}
+          >
+            <Image
+              source={{ uri: profile_url }}
+              style={{
+                height: sizeProfile,
+                width: sizeProfile,
+                borderRadius: sizeProfile / 2,
+                marginRight: "2%",
+              }}
+            />
+            <CustomText style={{ fontSize: scale(15) }}>@{username}</CustomText>
+          </View>
+          <View>
+            <TextInput
+              placeholder="What's happening?"
+              placeholderTextColor="#687684"
+              autoFocus={true}
+              selectTextOnFocus={false}
+              keyboardType="twitter"
+              multiline
+              scrollEnabled={false}
+              style={{
+                fontFamily: "Nunito_600SemiBold",
+                fontSize: fontSize,
+                alignItems: "center",
+                marginBottom: "3%",
+                marginTop: "2%",
+                marginHorizontal: "4%",
+              }}
+              {...textInputProps}
+            />
+            {content.length > 0 && (
+              <CreatePostMedia data={content} onRemove={removeItem} />
+            )}
+          </View>
+        </ScrollView>
+        <Suggestions
+          suggestions={hashtags}
+          {...triggers.hashtag}
+          onLayoutFunc={lay}
+          pre={"#"}
+        />
+        <Suggestions
+          suggestions={users}
+          {...triggers.mention}
+          onLayoutFunc={lay}
+          pre={"@"}
+        />
         <View
           style={{
             flexDirection: "row",
+            justifyContent: "space-between",
+            paddingVertical: 8,
+            paddingHorizontal: 12,
             alignItems: "center",
-            paddingHorizontal: "3%",
+            margintop: 20,
+            position: "absolute",
+            bottom: isKeyboardVisible ? 0 : insets.bottom,
+            width: "100%",
+            zIndex: 1,
+            backgroundColor: "white",
           }}
         >
-          <Image
-            source={{ uri: profile_url }}
+          <View
             style={{
-              height: sizeProfile,
-              width: sizeProfile,
-              borderRadius: sizeProfile / 2,
-              marginRight: "2%",
+              flexDirection: "row",
+              alignItems: "center",
             }}
-          />
-          <CustomText style={{ fontSize: scale(15) }}>@{username}</CustomText>
-        </View>
-        <TextInput
-          value={text}
-          onChangeText={setText}
-          multiline
-          placeholder="What's happening?"
-          placeholderTextColor="#687684"
-          autoFocus={true}
-          scrollEnabled={false}
-          selectTextOnFocus={false}
-          style={{
-            fontFamily: "Nunito_600SemiBold",
-            fontSize: fontSize,
-            alignItems: "center",
-            marginBottom: "3%",
-            marginTop: "2%",
-            marginHorizontal: "5%",
-            // backgroundColor: "pink",
-          }}
-        />
-        <View style={{ paddingBottom: 100 }}>
-          <Image
-            source={{ uri: profile_url }}
-            style={{
-              height: 200,
-              width: 200,
-              borderRadius: 10,
-              marginRight: "2%",
-            }}
-          />
-        </View>
-      </InputScrollView>
-
-      {/* <KeyboardAccessoryView
-        alwaysVisible={true}
-        inSafeAreaView={true}
-        animateOn={"none"}
-        hideBorder={true}
-        androidAdjustResize
-        style={{
-          backgroundColor: "white",
-          paddingHorizontal: "3%",
-          //   borderTopColor: "#E5E5E5",
-          //   borderTopWidth: 0.6,
-        }}
-      >
-        {({ isKeyboardVisible }) => {
-          return (
-            <View
-              style={{
-                // paddingBottom: isKeyboardVisible ? 0 : insets.bottom + 5,
-                paddingTop: isKeyboardVisible ? 0 : "3%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                // backgroundColor: "red",
-              }}
-              onLayout={(event) => {
-                var { height } = event.nativeEvent.layout;
-                settextInputOffset(isKeyboardVisible ? height : 0);
-              }}
+          >
+            <TouchableOpacity
+              onPress={pickImage}
+              style={{ marginRight: "15%" }}
             >
               <Ionicons name="images" size={scale(18)} color="black" />
-              {isKeyboardVisible && (
-                <TouchableOpacity onPress={() => Keyboard.dismiss()}>
-                  <CustomText
-                    style={{
-                      fontFamily: "Nunito_700Bold",
-                      fontSize: scale(12.5),
-                    }}
-                  >
-                    Done
-                  </CustomText>
-                </TouchableOpacity>
-              )}
-            </View>
-          );
-        }}
-      </KeyboardAccessoryView> */}
-    </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={pickVideo}>
+              <Ionicons name="ios-videocam" size={scale(19)} color="black" />
+            </TouchableOpacity>
+          </View>
+          {isKeyboardVisible && (
+            <Pressable onPress={Keyboard.dismiss}>
+              <CustomText>Done</CustomText>
+            </Pressable>
+          )}
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default CreatePost;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
