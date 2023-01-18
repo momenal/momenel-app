@@ -5,8 +5,8 @@ import { scale } from "../../utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
 
 const Media = ({ item }) => {
-  console.log(item.width, item.height);
   const [videoSize, setVideoSize] = useState({ width: 0, height: 0 });
+  const [showPauseIcon, setShowPauseIcon] = useState(true);
   const video = useRef(null);
 
   let Iheight = scale(185);
@@ -38,6 +38,9 @@ const Media = ({ item }) => {
               borderRadius: 3,
               backgroundColor: "white",
             }}
+            onPlaybackStatusUpdate={(status) => {
+              setShowPauseIcon(!status.isPlaying);
+            }}
             source={{
               uri: item.uri,
             }}
@@ -51,10 +54,17 @@ const Media = ({ item }) => {
               });
             }}
           />
+
           <TouchableOpacity
             onPress={() => {
-              video?.current.presentFullscreenPlayer();
-              video?.current.playAsync();
+              if (showPauseIcon) {
+                setShowPauseIcon(false);
+                video.current?.presentFullscreenPlayer();
+                video.current?.playAsync();
+              } else {
+                setShowPauseIcon(true);
+                video.current?.pauseAsync();
+              }
             }}
             style={{
               position: "absolute",
@@ -67,9 +77,9 @@ const Media = ({ item }) => {
               borderRadius: 200,
               justifyContent: "center",
               alignItems: "center",
-              // padding: 10,
               borderWidth: 2,
               borderColor: "white",
+              opacity: showPauseIcon ? 1 : 0,
             }}
           >
             <Ionicons

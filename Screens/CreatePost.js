@@ -1,5 +1,3 @@
-// https://github.com/dabakovich/react-native-controlled-mentions/blob/3.0.0-feat-use-mentions/example/mentions-app.tsx#L90
-
 import {
   Alert,
   Dimensions,
@@ -109,14 +107,68 @@ const CreatePost = ({ navigation }) => {
     });
   };
 
-  // remove item from content array by assetId
-  // const removeItem = (assetId) => {
-  //   const filtered = content.filter((item) => item.assetId !== assetId);
-  //   setContent(filtered);
-  // };
+  // used to generate unique id for each image/video asset to handle null id issue on android
+  //! not to be used as read id on the backend
+  function guidGenerator() {
+    var S4 = function () {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return (
+      S4() +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      S4() +
+      S4()
+    );
+  }
+
   const removeItem = (uri) => {
     const filtered = content.filter((item) => item.uri !== uri);
     setContent(filtered);
+  };
+
+  const handleContentPick = ({ result, message }) => {
+    if (result.assets.length + content.length > MAX_CONTENT_LENGTH) {
+      {
+        Alert.alert(
+          "Oops!",
+          `You can upload up to ${MAX_CONTENT_LENGTH} photos and videos per post.`
+        );
+      }
+      return;
+    }
+    const newRecords = result.assets.map((item) => {
+      if (item.assetId === null) {
+        return { ...item, assetId: guidGenerator() };
+      } else {
+        return { ...item };
+      }
+    });
+    const filtered = filteredArray(content, newRecords);
+    if (filtered.length < result.assets.length) {
+      Alert.alert("Oops!", message, [
+        {
+          text: "Ok",
+          onPress: () => {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut
+            );
+            setContent([...content, ...filtered]);
+          },
+          style: "cancel",
+        },
+      ]);
+    } else {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setContent([...content, ...filtered]);
+    }
   };
 
   const pickImage = async () => {
@@ -132,34 +184,16 @@ const CreatePost = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      if (result.assets.length + content.length > MAX_CONTENT_LENGTH) {
-        {
-          Alert.alert(
-            "Oops!",
-            `You can upload up to ${MAX_CONTENT_LENGTH} photos and videos at a time.`
-          );
-        }
-        return;
-      }
-      if (Platform.OS === "ios") {
-        const filtered = filteredArray(content, result.assets);
-        if (filtered.length === 0) {
-          Alert.alert(
-            "Oops!",
-            "Looks like you already selected some of these images. \n\n Don't worry, we removed the duplicates for you."
-          );
-          // Alert.alert(
-          //   "Looks like you already selected some of these images. \n Don't worry, we removed the duplicates for you."
-          // );
-        }
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setContent([...content, ...filtered]);
-      } else {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setContent([...content, ...result.assets]);
-      }
+      handleContentPick({
+        result,
+        message:
+          result.assets.length > 1
+            ? "Looks like you already selected some of these photos. \n\nDon't worry, we removed the duplicates for you."
+            : "Looks like you already selected this photo. \n\nDon't worry, we removed the duplicate for you.",
+      });
     }
   };
+
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
@@ -173,30 +207,10 @@ const CreatePost = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      const filtered = filteredArray(content, result.assets);
-      if (result.assets.length + content.length > MAX_CONTENT_LENGTH) {
-        {
-          Alert.alert(
-            "Oops!",
-            `You can upload up to ${MAX_CONTENT_LENGTH} photos and videos at a time.`
-          );
-        }
-        return;
-      }
-      if (Platform.OS === "ios") {
-        const filtered = filteredArray(content, result.assets);
-        if (filtered.length === 0) {
-          Alert.alert(
-            "Oops!",
-            "Looks like you already selected some of these videos. \n\n Don't worry, we removed the duplicates for you."
-          );
-        }
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setContent([...content, ...filtered]);
-      } else {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setContent([...content, ...result.assets]);
-      }
+      handleContentPick({
+        result,
+        message: "Looks like you already selected this video.",
+      });
     }
   };
 
@@ -249,16 +263,13 @@ const CreatePost = ({ navigation }) => {
         />
       ),
     });
-  }, [navigation, textValue]);
+  }, [navigation, textValue, content]);
 
   const [isSuggestionsVisible, setisSuggestionsVisible] = useState(false);
   const { parts, plainText } = parseValue(textValue, [
     triggersConfig.mention,
     triggersConfig.hashtag,
   ]);
-
-  //   console.log("parts", parts);
-  //   console.log("textValue", plainText);
 
   const { textInputProps, triggers } = useMentions({
     value: textValue,

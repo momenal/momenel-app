@@ -11,8 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { scale } from "../../utils/Scale";
 
 const CreatePostMedia = ({ data, onRemove }) => {
-  console.log(data);
-  const keyExtractor = useCallback((item) => item.assetId + Math.random(), []);
+  const keyExtractor = useCallback((item) => item.assetId, []);
   const renderItem = ({ item }) => (
     <View>
       <Media item={item} />
