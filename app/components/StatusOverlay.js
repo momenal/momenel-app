@@ -1,7 +1,8 @@
 import { View } from "react-native";
+import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
 
-const StatusOverlay = ({ headerHeight = 0, status = "pending", loader }) => {
+const StatusOverlay = ({ headerHeight = 0, status = "pending", message }) => {
   return (
     <View
       style={{
@@ -23,6 +24,13 @@ const StatusOverlay = ({ headerHeight = 0, status = "pending", loader }) => {
       >
         {status}
       </GradientText>
+      {message && (
+        <CustomText
+          style={{ fontSize: 15, marginTop: "2%", textAlign: "center" }}
+        >
+          {message}
+        </CustomText>
+      )}
     </View>
   );
 };

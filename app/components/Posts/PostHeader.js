@@ -64,7 +64,6 @@ const PostHeader = ({
   }, []);
 
   const size = useMemo(() => scale(26), []);
-  console.log(size);
 
   return (
     <View

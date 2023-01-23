@@ -10,7 +10,7 @@ const Zoom = ({ route, navigation }) => {
   const { url, username } = route.params;
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
-  console.log(headerHeight);
+
   useEffect(() => {
     navigation.setOptions({ title: "@" + username });
   }, []);

@@ -4,6 +4,7 @@ import {
   Dimensions,
   Keyboard,
   KeyboardAvoidingView,
+  LayoutAnimation,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -29,7 +30,6 @@ const Report = ({ route, navigation }) => {
   const insets = useSafeAreaInsets();
 
   const setActiveIndexState = (index) => {
-    // console.log(index);
     setactiveIndex(index);
   };
 
@@ -116,8 +116,10 @@ const Report = ({ route, navigation }) => {
   const onReport = () => {
     handleReport(data[activeIndex].id, contentId, contentType, text).then(
       (res) => {
+        console.log(res);
         if (res === true) {
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           setIsSubmitted(true);
           onChangeText("");
           setactiveIndex(null);
@@ -125,8 +127,7 @@ const Report = ({ route, navigation }) => {
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
           Alert.alert(
             "Oops!",
-            "Something went wrong.\nPlease try again later.",
-            [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+            "Something went wrong.\nPlease try again later."
           );
         }
       }

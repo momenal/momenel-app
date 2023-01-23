@@ -1,10 +1,12 @@
+import { Alert } from "react-native";
+
 export const createPostsSlice = (set) => ({
   posts: [
     // {
     //   postId: Math.random(19).toString(),
     //   username: "quotes",
     //   name: "Quotes",
-    //   type: "post",
+
     //   repost: {
     //     isRepost: true,
     //     repostedBy: "farhan",
@@ -13,10 +15,11 @@ export const createPostsSlice = (set) => ({
     //   posts: [
     //     {
     //       id: Math.random(19).toString(),
-    //       height: 1500,
-    //       width: 1200,
+    //       height: 1024,
+    //       width: 576,
     //       type: "video",
-    //       url: "https://res.cloudinary.com/dxnnrbruf/video/upload/v1672509480/funny_code_fdcd37.mp4",
+    //       // url: "https://customer-pswsg66nv24jq2cx.cloudflarestream.com/23aef827b9074268839fc65cc584de0a/manifest/video.m3u8", //!cloudflare
+    //       url: "https://vz-09489f4f-454.b-cdn.net/6f40bbc4-28c6-4eec-813b-39cc07613a17/playlist.m3u8", //!bunny
     //     },
     //   ],
     //   profile_url:
@@ -29,78 +32,109 @@ export const createPostsSlice = (set) => ({
     //   reposts: 5,
     //   lastEdit: null,
     //   isLiked: false,
-    //   isReposted: true, // if the user himself has reposted the post
-    //   isSaved: true,
+    //   repostedByUser: true, // if the user himself has reposted the post
+
     //   isDonateable: false,
     // },
     // {
     //   postId: Math.random(19).toString(),
-    //   username: "gifpedia",
-    //   name: "Gifs official",
-    //   type: "post",
+    //   username: "quotes",
+    //   name: "Insights101",
+    //   // type: "text",
     //   repost: {
-    //     isRepost: false,
+    //     isRepost: true,
+    //     repostedBy: "farhan",
+    //     repostedAt: "2022-11-04T13:54:55+00:00",
     //   },
-    //   profile_url:
-    //     "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+    //   posts: [], //! can be null too
     //   posts: [
     //     {
     //       id: Math.random(19).toString(),
-    //       width: 4000,
-    //       height: 2300,
+    //       width: 1200,
+    //       height: 630,
     //       type: "photo",
-    //       url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
+    //       url: "https://fake10pullzone.b-cdn.net/socialnewui.png", //!bunnyet
     //     },
     //   ],
-    //   caption: "#cat",
+    //   profile_url:
+    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   caption: "Love this!",
     //   createdAt: Date.now(),
     //   likes: 300,
     //   comments: 12,
     //   reposts: 5,
     //   lastEdit: null,
     //   isLiked: false,
-    //   isReposted: true, // if the user himself has reposted the post
-    //   isSaved: true,
-    //   isDonateable: true,
+    //   repostedByUser: true, // if the user himself has reposted the pos
+    //   isDonateable: false,
+    // },
+    // {
+    //   postId: Math.random(19).toString(),
+    //   username: "quotes",
+    //   name: "Insights101",
+    //   // type: "text",
+    //   repost: {
+    //     isRepost: true,
+    //     repostedBy: "farhan",
+    //     repostedAt: "2022-11-04T13:54:55+00:00",
+    //   },
+    //   posts: [], //! can be null too
+    //   posts: [
+    //     {
+    //       id: Math.random(19).toString(),
+    //       width: 498,
+    //       height: 266,
+    //       type: "photo",
+    //       url: "https://fake10pullzone.b-cdn.net/lol.gif", //!bunnyet
+    //     },
+    //   ],
+    //   profile_url:
+    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   caption: "Love this!",
+    //   createdAt: Date.now(),
+    //   likes: 300,
+    //   comments: 12,
+    //   reposts: 5,
+    //   lastEdit: null,
+    //   isLiked: false,
+    //   repostedByUser: true, // if the user himself has reposted the pos
+    //   isDonateable: false,
     // },
     {
       postId: Math.random(19).toString(),
-      username: "quotes",
-      name: "Insights101",
-      // type: "text",
+      username: "gifpedia",
+      name: "Gifs official",
+
       repost: {
-        isRepost: true,
-        repostedBy: "farhan",
-        repostedAt: "2022-11-04T13:54:55+00:00",
+        isRepost: false,
       },
-      posts: [], //! can be null too
-      // posts: [
-      //   {
-      //     id: Math.random(19).toString(),
-      //     width: 2048,
-      //     height: 2730,
-      //     type: "photo",
-      //     url: "https://images.pexels.com/photos/13999202/pexels-photo-13999202.jpeg",
-      //   },
-      // ],
       profile_url:
-        "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      caption: "Love this!",
+        "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      posts: [
+        {
+          id: Math.random(19).toString(),
+          width: 4000,
+          height: 2300,
+          type: "photo",
+          url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
+        },
+      ],
+      caption: "#cat",
       createdAt: Date.now(),
       likes: 300,
       comments: 12,
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
-      isDonateable: false,
+      repostedByUser: true, // if the user himself has reposted the post
+
+      isDonateable: true,
     },
+
     {
       postId: Math.random(19).toString(),
       username: "3dpediaimagessssssssssssssssssssssssssss",
       name: "3d renered imagessssssssssssssssssssssssssss",
-      type: "post",
       repost: {
         isRepost: false,
       },
@@ -208,15 +242,14 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
     {
       postId: Math.random(19).toString(),
       username: "photooos",
       name: "photooos",
-      type: "post",
+
       repost: {
         isRepost: false,
       },
@@ -260,15 +293,14 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
     {
       postId: Math.random(19).toString(),
       username: "quotes",
       name: "Quotes",
-      type: "post",
+
       repost: {
         isRepost: false,
       },
@@ -305,8 +337,7 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
 
@@ -314,7 +345,7 @@ export const createPostsSlice = (set) => ({
       postId: Math.random(19).toString(),
       username: "thetravellingfamilynonstopaaaaaaahelloevenbuggernamehere",
       name: "Quotes",
-      type: "post",
+
       repost: {
         isRepost: false,
       },
@@ -336,8 +367,7 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
 
@@ -345,7 +375,7 @@ export const createPostsSlice = (set) => ({
       postId: Math.random(19).toString(),
       username: "catsofmomenel",
       name: "Cats lol",
-      type: "post",
+
       repost: {
         isRepost: false,
       },
@@ -367,15 +397,14 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
     {
       postId: Math.random(19).toString(),
       username: "quotes",
       name: "Quotes",
-      type: "post",
+
       repost: {
         isRepost: false,
       },
@@ -398,8 +427,7 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: true,
     },
     {
@@ -423,8 +451,7 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      isReposted: true, // if the user himself has reposted the post
-      isSaved: true,
+      repostedByUser: true, // if the user himself has reposted the pos
       isDonateable: false,
     },
   ],
@@ -449,7 +476,7 @@ export const createPostsSlice = (set) => ({
       });
     } catch (err) {}
   },
-  handleRepost: async (index, isReposted) => {
+  handleRepost: async (index, repostedByUser) => {
     try {
       console.log("repost", index);
       // repost: {
@@ -457,10 +484,10 @@ export const createPostsSlice = (set) => ({
       // },
       set((state) => {
         const newPosts = [...state.posts];
-        // console.log("repost", newPosts[index].isReposted);
-        newPosts[index].isReposted = !newPosts[index].isReposted;
+        // console.log("repost", newPosts[index].repostedByUser);
+        newPosts[index].repostedByUser = !newPosts[index].repostedByUser;
         {
-          isReposted
+          repostedByUser
             ? (newPosts[index].reposts = newPosts[index].reposts - 1)
             : (newPosts[index].reposts = newPosts[index].reposts + 1);
         }
@@ -475,24 +502,8 @@ export const createPostsSlice = (set) => ({
   SavePost: async (index) => {
     try {
       console.log("slice: save post");
-      //todo send req to save post
-      set((state) => {
-        const newPosts = [...state.posts];
-        newPosts[index].isSaved = !newPosts[index].isSaved;
-
-        return { posts: newPosts };
-      });
-    } catch (err) {}
-  },
-  reportPost: async (id, contentId, contentType, comments) => {
-    try {
-      console.log("slice: report post");
-      console.log("id: ", id);
-      console.log("comments: ", comments);
-      console.log("contentId: ", contentId);
-      console.log("contentType ", contentType);
-      //todo send req to report post
-      //todo if error then show alert
+      //todo send req to save post and show suitable alert
+      Alert.alert("post saved");
     } catch (err) {}
   },
   fetchMorePosts: async () => {
@@ -503,7 +514,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           username: Math.random(12).toString(),
           name: "Betzabeth",
-          isReposted: false,
+          repostedByUser: false,
           repost: {
             isRepost: false,
           },
@@ -564,8 +575,7 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           lastEdit: null,
           isLiked: false,
-          isReposted: true, // if the user himself has reposted the post
-          isSaved: true,
+          repostedByUser: true, // if the user himself has reposted the pos
           isDonateable: false,
         },
 
@@ -592,7 +602,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          isReposted: false,
+          repostedByUser: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -601,7 +611,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           username: Math.random(12).toString(),
           name: "Betzabeth",
-          isReposted: false,
+          repostedByUser: false,
           repost: {
             isRepost: false,
           },
@@ -655,8 +665,7 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           lastEdit: null,
           isLiked: false,
-          isReposted: true, // if the user himself has reposted the post
-          isSaved: true,
+          repostedByUser: true, // if the user himself has reposted the pos
           isDonateable: false,
         },
         {
@@ -682,7 +691,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          isReposted: false,
+          repostedByUser: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -691,7 +700,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           username: Math.random(12).toString(),
           name: "Betzabeth",
-          isReposted: false,
+          repostedByUser: false,
           repost: {
             isRepost: false,
           },
@@ -747,7 +756,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          isReposted: false,
+          repostedByUser: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -756,7 +765,7 @@ export const createPostsSlice = (set) => ({
           postId: Math.random(32).toString(),
           username: Math.random(12).toString(),
           name: "Betzabeth",
-          isReposted: false,
+          repostedByUser: false,
           repost: {
             isRepost: false,
           },
@@ -810,7 +819,7 @@ export const createPostsSlice = (set) => ({
           likes: 999941,
           comments: 10100,
           reposts: 0,
-          isReposted: false,
+          repostedByUser: false,
           lastEdit: null,
           isSaved: false,
           isLiked: true,
@@ -870,7 +879,7 @@ export const createPostsSlice = (set) => ({
       }));
     } catch (err) {}
   },
-
+  // handle follow or unfollow user from the likes or reposts list
   handleUserFollowFromList: async (type, username) => {
     try {
       //todo: const response = await axios.post(`/api/users/${username}/follow`);

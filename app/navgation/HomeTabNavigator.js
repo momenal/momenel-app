@@ -19,7 +19,7 @@ const HomeNavigator = ({ navigation }) => {
   const Height = Dimensions.get("window").height * 0.024;
   // const IconSize = 21;
   const IconSize = Height > 21 ? 21 : Height < 18 ? 18 : Height;
-  console.log(Height * 0.03);
+
   return (
     <Tab.Navigator
       screenOptions={({}) => ({

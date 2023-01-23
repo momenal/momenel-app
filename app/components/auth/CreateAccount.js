@@ -32,7 +32,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
       .eq("email", email.toLowerCase());
 
     if (res.data.length > 0) {
-      console.log("eml ", res.data);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setError({ type: "auth", message: "User Already exists!" });
 
@@ -49,8 +48,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         },
       });
       if (error) {
-        console.log(error.message);
-        console.log(error.message.includes("invalid format"));
         //! error messages
         if (error.message.includes("invalid format")) {
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -69,7 +66,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         }
         // Alert.alert(error.message);
       } else {
-        // console.log(data);
         onReportPress();
       }
     }

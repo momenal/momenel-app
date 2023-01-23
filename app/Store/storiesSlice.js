@@ -24,9 +24,9 @@ export const createStoriesSlice = (set) => ({
       profile_url:
         "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
       preview_url:
-        "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "https://vz-09489f4f-454.b-cdn.net/e4431b8e-6f10-4922-8ef6-0e042afc32e1/thumbnail.jpg", //bunnynet
       own_preview_url:
-        "https://images.unsplash.com/photo-1463438690606-f6778b8c1d10?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "https://vz-09489f4f-454.b-cdn.net/8a4fc477-bbb2-460d-8f02-88f9de14c965/preview.webp",
       stories: [
         {
           id: 179,
@@ -75,7 +75,7 @@ export const createStoriesSlice = (set) => ({
       hasSeen: true,
       profile_url: "https://picsum.photos/200/300",
       preview_url:
-        "https://images.unsplash.com/photo-1666970427106-e1f500280529?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "https://vz-09489f4f-454.b-cdn.net/983a4704-73f7-44a1-a31a-4ab48959cee7/thumbnail.jpg",
       stories: [
         {
           id: 182823,

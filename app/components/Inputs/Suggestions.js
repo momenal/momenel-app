@@ -14,7 +14,6 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
         fetch("https://retoolapi.dev/49VR5o/suggestion").then((res) => {
           res.json().then((data) => {
             setSuggestions(data);
-            // console.log(data);
           });
         });
       } else {
@@ -24,7 +23,6 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
         ).then((res) => {
           res.json().then((data) => {
             setSuggestions(data);
-            // console.log(data);
           });
         });
       }

@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
       .from("profiles")
       .select("username")
       .eq("id", user.id);
-    // console.log(data);
+    //todo: update username with .username
     setAppIsReady(true);
   }
 
@@ -107,11 +107,6 @@ const Home = ({ navigation }) => {
     return <Loader />;
   }
 
-  // if (!username) {
-  //   console.log(username);
-  //   return <FillInfo />;
-  // }
-
   return (
     <View
       style={{
@@ -132,7 +127,7 @@ const Home = ({ navigation }) => {
             item,
             index,
             isLiked: item.isLiked,
-            isReposted: item.isReposted,
+            isReposted: item.repostedByUser,
             postId: item.postId,
             width: item.posts?.length > 0 ? item.posts[0].width : 0,
             height: item.posts?.length > 0 ? item.posts[0].height : 0,
@@ -160,7 +155,6 @@ const Home = ({ navigation }) => {
           viewableItems.forEach((item) => {
             // console.log("Visible items are", item.index);
           });
-          // console.log("_______________________");
         }}
       />
     </View>

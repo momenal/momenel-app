@@ -5,7 +5,6 @@ import Lottie from "lottie-react-native";
 const Loader = ({ play }) => {
   const animationRef = useRef(null);
   useEffect(() => {
-    console.log("play loader");
     animationRef.current?.play(21, 125);
   }, [play]);
   return (

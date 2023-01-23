@@ -28,7 +28,6 @@ const SignIn = () => {
     });
 
     if (error) {
-      console.log(error.message);
       setError("Incorrect Username or Password");
       setEmail("");
       setPassword("");
@@ -45,11 +44,7 @@ const SignIn = () => {
       { redirectTo: "https://www.momenel.com/update" }
     );
 
-    console.log(data);
-    console.log(error);
-
     if (error) {
-      // console.log(error.message);
       setEmail("");
       setPassword("");
     }

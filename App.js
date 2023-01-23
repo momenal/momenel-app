@@ -36,16 +36,8 @@ export default function App() {
         const {
           data: { user },
         } = await supabase.auth.getUser();
-        // console.log(user.id);
-
-        // const { data, error } = await supabase
-        //   .from("profiles")
-        //   .select("username")
-        //   .eq("id", user.id);
-        // console.log(data);
       }
 
-      //
       setSession(session);
     });
   }, []);

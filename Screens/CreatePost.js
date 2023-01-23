@@ -1,6 +1,5 @@
 import {
   Alert,
-  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -8,7 +7,6 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -25,48 +23,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Suggestions from "../app/components/Inputs/Suggestions";
 import * as ImagePicker from "expo-image-picker";
 import CreatePostMedia from "../app/components/CreatePost/CreatePostMedia";
-
-let users = [
-  {
-    id: "1",
-    name: "David Tabaka",
-  },
-  {
-    id: "2",
-    name: "Mary",
-  },
-  {
-    id: "3",
-    name: "Tony",
-  },
-  {
-    id: "4",
-    name: "Mike",
-  },
-  {
-    id: "5",
-    name: "Grey",
-  },
-];
-
-let hashtags = [
-  {
-    id: "todo",
-    name: "todo",
-  },
-  {
-    id: "help",
-    name: "help",
-  },
-  {
-    id: "loveyou",
-    name: "loveyou",
-  },
-  {
-    id: "loveyou2",
-    name: "loveyou",
-  },
-];
+import StatusOverlay from "../app/components/StatusOverlay";
 
 const triggersConfig = {
   mention: {
@@ -91,13 +48,16 @@ const triggersConfig = {
 
 const CreatePost = ({ navigation }) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
+  const [isPostingSuccessful, setIsPostingSuccessful] = useState(false);
   const profile_url = useBoundStore((state) => state.profile_url);
   const username = useBoundStore((state) => state.username);
+  const CreatePost = useBoundStore((state) => state.handleCreatePost);
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const [textValue, setTextValue] = useState("");
   const [content, setContent] = useState([]);
-  const MAX_CONTENT_LENGTH = 8; //todoL: change after meeting
+  const MAX_CONTENT_LENGTH = 10;
 
   const filteredArray = (arrayA, arrayB) => {
     return arrayB.filter((element) => {
@@ -175,11 +135,10 @@ const CreatePost = ({ navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      // orderedSelection: true,
+      orderedSelection: true,
       quality: 1.0,
       allowsEditing: false,
-      //TODO:SET TO TRUE base64: true,
-      // base64: true,
+      base64: false,
       selectionLimit: 5,
     });
 
@@ -202,7 +161,7 @@ const CreatePost = ({ navigation }) => {
       videoMaxDuration: 120,
       orderedSelection: true,
       quality: 1,
-      //TODO:SET TO TRUE base64: true,
+      base64: false,
       selectionLimit: 5,
     });
 
@@ -213,6 +172,40 @@ const CreatePost = ({ navigation }) => {
       });
     }
   };
+
+  const handleCreatePost = async ({ posts, caption, parts }) => {
+    Keyboard.dismiss();
+    setIsPosting(true);
+    const response = await CreatePost({ posts, caption, parts });
+    if (response) {
+      setIsPosting(false);
+      setIsPostingSuccessful(true);
+      // navigation.navigate("Home");
+    } else {
+      setIsPosting(false);
+      setIsPostingSuccessful(false);
+    }
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <PostHeaderButton
+          onPress={() =>
+            handleCreatePost({ posts: content, caption: plainText, parts })
+          }
+          disabled={
+            isPosting === true || isPostingSuccessful === true
+              ? true
+              : textValue.length > 0 || content.length > 0
+              ? false
+              : true
+          }
+          style={{ marginRight: "1%" }}
+        />
+      ),
+    });
+  }, [navigation, textValue, content, isPosting, isPostingSuccessful]);
 
   useEffect(() => {
     if (Platform.OS === "android") {
@@ -252,18 +245,6 @@ const CreatePost = ({ navigation }) => {
       };
     }
   }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <PostHeaderButton
-          onPress={() => console.log("press")}
-          disabled={textValue.length > 0 || content.length > 0 ? false : true}
-          style={{ marginRight: "1%" }}
-        />
-      ),
-    });
-  }, [navigation, textValue, content]);
 
   const [isSuggestionsVisible, setisSuggestionsVisible] = useState(false);
   const { parts, plainText } = parseValue(textValue, [
@@ -356,18 +337,8 @@ const CreatePost = ({ navigation }) => {
             )}
           </View>
         </ScrollView>
-        <Suggestions
-          suggestions={hashtags}
-          {...triggers.hashtag}
-          onLayoutFunc={lay}
-          pre={"#"}
-        />
-        <Suggestions
-          suggestions={users}
-          {...triggers.mention}
-          onLayoutFunc={lay}
-          pre={"@"}
-        />
+        <Suggestions {...triggers.hashtag} onLayoutFunc={lay} pre={"#"} />
+        <Suggestions {...triggers.mention} onLayoutFunc={lay} pre={"@"} />
         <View
           style={{
             flexDirection: "row",
@@ -406,6 +377,20 @@ const CreatePost = ({ navigation }) => {
           )}
         </View>
       </View>
+      {isPosting && (
+        <StatusOverlay
+          headerHeight={headerHeight}
+          status={"Posting your post..."}
+          message={"Please wait"}
+        />
+      )}
+      {isPostingSuccessful && (
+        <StatusOverlay
+          headerHeight={headerHeight}
+          status={"Post submitted successfully"}
+          message={"It may take up to 20 minutes to appear on your profile"}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };
