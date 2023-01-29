@@ -8,35 +8,44 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    if (keyword !== null) {
+    console.log("keyword", keyword);
+    if (keyword !== null && keyword !== undefined) {
       //todo: call backend to get suggestions based off keyword and {pre}
-      if (keyword === "") {
-        fetch("https://retoolapi.dev/49VR5o/suggestion").then((res) => {
-          res.json().then((data) => {
-            setSuggestions(data);
-          });
-        });
-      } else {
+      if (keyword !== "") {
         //! on retool it will not show anything if keyword doesn't exactly match
         fetch(
-          `https://retoolapi.dev/49VR5o/suggestion?hashtag=${keyword}`
+          // `https://retoolapi.dev/49VR5o/suggestion?hashtag=${keyword}`
+          `https://retoolapi.dev/49VR5o/suggestion`
         ).then((res) => {
           res.json().then((data) => {
-            setSuggestions(data);
+            if (pre === "#") {
+              if (data.some((item) => keyword === item.hashtag)) {
+                setSuggestions(data);
+              } else {
+                const newList = [
+                  { hashtag: keyword, id: "newHashtag" },
+                  ...data,
+                ];
+                setSuggestions(newList);
+              }
+            } else {
+              setSuggestions(data);
+            }
           });
         });
       }
+    } else {
+      setSuggestions([]);
     }
-  }, [keyword]);
+  }, [keyword && keyword]);
 
-  if (keyword == null) {
-    return null;
-  }
-
-  //todo: use keyword to fetch suggestions console.log(keyword); and then setSuggestions and render based off that
   function customOnpress(params) {
     onSelect(params);
     onLayoutFunc(0);
+  }
+
+  if (keyword == null) {
+    return null;
   }
 
   return (
@@ -44,7 +53,7 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
       style={{
         zIndex: 2,
         maxHeight: 200,
-        backgroundColor: "#CCCED3",
+        backgroundColor: "#DDDDDD",
         width: Dimensions.get("window").width,
         borderTopStartRadius: 10,
         borderTopEndRadius: 10,
@@ -54,24 +63,18 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
       }}
     >
       <ScrollView keyboardShouldPersistTaps="always">
-        {suggestions
-          .filter((one) =>
-            one.hashtag
-              .toLocaleLowerCase()
-              .includes(keyword.toLocaleLowerCase())
-          )
-          .map((one) => (
-            <Pressable
-              key={one.id}
-              onPress={() => customOnpress({ ...one, name: one.hashtag })} //change name to hashtag or whatever based on hashtag
-              style={{ padding: 12 }}
-            >
-              <CustomText style={{ color: "black" }}>
-                {pre}
-                {one.hashtag}
-              </CustomText>
-            </Pressable>
-          ))}
+        {suggestions.map((one) => (
+          <Pressable
+            key={one.id}
+            onPress={() => customOnpress({ ...one, name: one.hashtag })} //change name to hashtag or whatever based on hashtag
+            style={{ padding: 12 }}
+          >
+            <CustomText style={{ color: "black" }}>
+              {pre}
+              {one.hashtag}
+            </CustomText>
+          </Pressable>
+        ))}
       </ScrollView>
     </View>
   );
