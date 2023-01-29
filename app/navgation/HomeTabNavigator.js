@@ -11,6 +11,7 @@ import FakeLogout from "../components/FakeLogout";
 import Notifications from "../components/icons/Notifications";
 import CreatePost from "../../Screens/CreatePost";
 import PlaceholderScreen from "../components/PlaceholderScreen";
+import Discover from "../../Screens/Discover";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -80,7 +81,7 @@ const HomeNavigator = ({ navigation }) => {
       />
       <Tab.Screen
         name="Discover"
-        component={Home}
+        component={Discover}
         options={{
           tabBarIcon: ({ size, focused, color }) => {
             {

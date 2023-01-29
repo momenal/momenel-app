@@ -1,4 +1,5 @@
 import { Alert } from "react-native";
+import { supabase } from "../lib/supabase";
 
 export const createUtilHelperSlice = (set, get) => ({
   handleTip: async (postId, postType, amount) => {
@@ -12,6 +13,10 @@ export const createUtilHelperSlice = (set, get) => ({
   },
   handleCreatePost: async ({ posts, caption, parts }) => {
     try {
+      // supabase.auth.getSession().then(({ data: { session } }) => {
+      //   console.log("session: ", session.access_token);
+      // });
+
       // console.log("posts: ", posts);
       let formData = new FormData();
       let dimensions = [];
@@ -37,6 +42,10 @@ export const createUtilHelperSlice = (set, get) => ({
       await fetch("http://192.168.0.14:8000/posts/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `lkasjflajsdf`,
+        },
       })
         .then((response) => {
           if (!response.ok) {
@@ -44,18 +53,19 @@ export const createUtilHelperSlice = (set, get) => ({
           } else return response.json();
         })
         .then((response) => {
-          console.log("response: ", response.status);
-          console.log("response: ", response);
+          // console.log("response: ", response.status);
+          // console.log("response: ", response);
           res = true;
         })
         .catch((err) => {
-          // console.log("err: ", err);
           Alert.alert("Error", "Something went wrong");
-          return false;
+          res = false;
         });
 
       return res;
-    } catch (err) {}
+    } catch (err) {
+      return false;
+    }
   },
   handleReport: async (id, contentId, contentType, comments) => {
     try {
