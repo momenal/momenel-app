@@ -32,7 +32,8 @@ import { scale } from "../../../utils/Scale";
 import { useBoundStore } from "../../../Store/useBoundStore";
 
 const BottomTipSheet = (props) => {
-  let { show, onSheetClose, setShow, username, postId } = props;
+  let { show, onSheetClose, setShow, setShowPurchaseSheet, username, postId } =
+    props;
   const handleTip = useBoundStore((state) => state.handleTip);
   const coinsOwned = useBoundStore((state) => state.coinsOwned);
 
@@ -240,7 +241,8 @@ const BottomTipSheet = (props) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-around",
-                  paddingVertical: 15,
+                  // paddingVertical: 15,
+                  paddingHorizontal: 15,
                   alignItems: "center",
                   height: 60,
                   marginBottom: 15,
@@ -303,7 +305,10 @@ const BottomTipSheet = (props) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onpress={() => console.log("recharge")}
+                onPress={() => {
+                  setShow(false);
+                  setShowPurchaseSheet(true);
+                }}
                 style={{
                   width: "100%",
                   alignItems: "center",

@@ -24,6 +24,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 import { scale } from "../../utils/Scale";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
+import BottomPurchaseSheet from "../BottomFlatSheet/PurchaseSheet/BottomPurchaseSheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -50,13 +51,14 @@ const Post = ({
   const handleRepost = useBoundStore((state) => state.handleRepost);
   const handleLike = useBoundStore((state) => state.handleLike);
   const [showTipSheet, setShowTipSheet] = useState(false);
+  const [showPurchaseSheet, setShowPurchaseSheet] = useState(false);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(13), []);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  //sheet
+  //report sheet
   const onReportSheetClose = () => {
     Keyboard.dismiss();
     setShowTipSheet(false);
@@ -415,6 +417,12 @@ const Post = ({
         username={username}
         postId={postId}
         type={"post"}
+        setShowPurchaseSheet={setShowPurchaseSheet}
+      />
+      <BottomPurchaseSheet
+        show={showPurchaseSheet}
+        setShow={setShowPurchaseSheet}
+        onSheetClose={() => setShowPurchaseSheet(false)}
       />
       <DetachedBottomSheetWithScroll
         show={showBottomSheet}
@@ -436,8 +444,6 @@ const Post = ({
           >
             {caption}
           </StructuredText>
-
-          {/* <Button title="close" onPress={() => setShowBottomSheet(false)} /> */}
         </View>
       </DetachedBottomSheetWithScroll>
     </View>
