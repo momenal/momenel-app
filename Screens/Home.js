@@ -13,49 +13,19 @@ import { supabase } from "../app/lib/supabase";
 import Lottie from "lottie-react-native";
 import Loader from "../app/components/Loader";
 import { FlashList } from "@shopify/flash-list";
-
-// Keep the splash screen visible while we fetch resources
-// SplashScreen.preventAutoHideAsync();
+import { CalcHeight } from "../app/utils/CalcHeight";
 
 const Home = ({ navigation }) => {
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
-  const [appIsReady, setAppIsReady] = useState(false);
-  const ScreenWidth = Dimensions.get("window").width;
-  const ScreenHeight = Dimensions.get("window").height;
-  const Iwidth = ScreenWidth - ScreenWidth * 0.1;
-
-  async function login() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    // console.log(user.id);
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("username")
-      .eq("id", user.id);
-    //todo: update username with .username
-    setAppIsReady(true);
-  }
 
   useEffect(() => {
-    // setTimeout(login, 2000);
-    login();
+    // todo: fetch posts from db
   }, []);
-
-  // funtion to calcualte scaled height and width
-  const calcHeight = (width, height) => {
-    let newHeight = height * (Iwidth / width);
-    if (newHeight > ScreenHeight * 0.7) {
-      return ScreenHeight * 0.7;
-    } else {
-      return newHeight;
-    }
-  };
 
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width }) => {
-      let scaledHeight = calcHeight(width, height);
+      let scaledHeight = CalcHeight(width, height);
       return (
         <Post
           navigation={navigation}
@@ -101,11 +71,7 @@ const Home = ({ navigation }) => {
     []
   );
 
-  // const keyExtractor = useCallback((item) => item.postId, []);
-
-  if (!appIsReady) {
-    return <Loader />;
-  }
+  const keyExtractor = useCallback((item) => item.postId, []);
 
   return (
     <View
@@ -113,15 +79,12 @@ const Home = ({ navigation }) => {
         backgroundColor: "white",
         height: "100%",
         marginBottom: 800,
-        // backgroundColor: "pink",
       }}
     >
       <FlashList
         data={postsData}
         estimatedItemSize={450}
-        keyExtractor={(item) => {
-          return item.postId;
-        }}
+        keyExtractor={keyExtractor}
         renderItem={({ item, index }) =>
           renderItem({
             item,

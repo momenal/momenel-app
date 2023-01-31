@@ -138,9 +138,17 @@ const Post = ({
         console.log(error);
       }
     } else if (text.startsWith("@")) {
-      console.log("@", text);
+      //todo: navigate to user profile
+      // navigation.navigate("Search", {
+      //   type: "mention",
+      //   query: text,
+      // });
+      // console.log("@", text);
     } else if (text.startsWith("#")) {
-      console.log("#", text);
+      navigation.navigate("Search", {
+        type: "hashtag",
+        query: text,
+      });
     } else if (text.startsWith("more")) {
       setShowBottomSheet(true);
     } else {

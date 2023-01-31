@@ -12,6 +12,7 @@ import ByUserList from "../../Screens/ByUserList";
 import Comments from "../../Screens/Comments";
 import CreatePost from "../../Screens/CreatePost";
 import PostHeaderButton from "../components/Buttons/PostHeaderButton";
+import Search from "../../Screens/Search";
 
 const Stack = createNativeStackNavigator();
 
@@ -128,6 +129,19 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          headerShown: false,
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerTintColor: "black",
+          gestureDirection: "vertical",
+          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>

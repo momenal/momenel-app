@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from "./Logo";
 import BalanceTab from "./BalanceTab";
-import Notifications from "../icons/Notifications";
 import { scale } from "../../utils/Scale";
 
 const Header = () => {

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View, TextInput } from "react-native";
 import React from "react";
 import Home from "../../Screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,8 +10,12 @@ import Header from "../components/Header/Header";
 import FakeLogout from "../components/FakeLogout";
 import Notifications from "../components/icons/Notifications";
 import CreatePost from "../../Screens/CreatePost";
+import { Ionicons } from "@expo/vector-icons";
 import PlaceholderScreen from "../components/PlaceholderScreen";
 import Discover from "../../Screens/Discover";
+import { scale } from "../utils/Scale";
+import GradientText from "../components/customText/GradientText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,6 +99,7 @@ const HomeNavigator = ({ navigation }) => {
               );
             }
           },
+          headerShown: false,
         }}
       />
       <Tab.Screen

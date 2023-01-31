@@ -187,6 +187,7 @@ const CreatePost = ({ navigation }) => {
     }
   };
 
+  // update header right button
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -207,6 +208,7 @@ const CreatePost = ({ navigation }) => {
     });
   }, [navigation, textValue, content, isPosting, isPostingSuccessful]);
 
+  // keyboard listeners
   useEffect(() => {
     if (Platform.OS === "android") {
       const keyboardDidShowListener = Keyboard.addListener(
