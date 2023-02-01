@@ -41,7 +41,10 @@ const HomeNavigator = ({ navigation }) => {
       screenOptions={({}) => ({
         tabBarShowLabel: false,
         headerShadowVisible: false,
-        tabBarStyle: { backgroundColor: "#F9F9F9", paddingVertical: 0 },
+        tabBarStyle: {
+          backgroundColor: "#F9F9F9",
+          paddingVertical: 0,
+        },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
         // unmountOnBlur: true,
         freezeOnBlur: true,
@@ -163,33 +166,14 @@ const HomeNavigator = ({ navigation }) => {
         name="Profile"
         component={Profile}
         // component={FakeLogout}
+
         options={{
+          headerShown: false,
           title: "",
-          // tabBarStyle: { display: "none" },
           tabBarIcon: ({ focused }) => {
             {
               return <TabBarProfileIcon size={IconSize} focused={focused} />;
             }
-          },
-          headerLeft: () => {
-            return (
-              <CustomText
-                style={{
-                  paddingLeft: 20,
-                  fontFamily: "Nunito_700Bold",
-                  fontSize: scale(18),
-                }}
-              >
-                {username}
-              </CustomText>
-            );
-          },
-          headerRight: () => {
-            return (
-              <TouchableOpacity style={{ paddingRight: 20 }}>
-                <Ellipsis size={18} />
-              </TouchableOpacity>
-            );
           },
         }}
       />
