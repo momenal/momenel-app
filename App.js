@@ -24,6 +24,7 @@ import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 
 export default function App() {
   const [session, setSession] = useState(null);
+  const SetUserId = useBoundStore((state) => state.SetUserId);
   const username = useBoundStore((state) => state.username);
 
   useEffect(() => {
@@ -36,6 +37,9 @@ export default function App() {
         const {
           data: { user },
         } = await supabase.auth.getUser();
+        console.log("signed in");
+        console.log("user", user.id);
+        SetUserId(user.id);
       }
 
       setSession(session);

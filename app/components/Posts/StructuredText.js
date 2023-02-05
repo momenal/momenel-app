@@ -17,7 +17,8 @@ const StructuredText = memo((props) => {
     }
 
     // let mentList = props.children.match(/[@#][a-z0-9_\.]+/gi);
-    let mentList = tempStr.match(/(http|#|@|www)(\S+)/gi);
+    // let mentList = tempStr.match(/(http|#|@|www)(\S+)/gi);
+    let mentList = tempStr.match(/(https:\/\/www|#|@|www)(\S+)/gi);
 
     if (mentList == null) {
       if (shouldAddMore) {
