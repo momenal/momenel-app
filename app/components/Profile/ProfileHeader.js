@@ -15,6 +15,7 @@ import StructuredText from "../Posts/StructuredText";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import ContactOption from "./ContactOption";
+import { useRoute } from "@react-navigation/native";
 
 const ProfileHeader = ({
   navigation,
@@ -33,6 +34,8 @@ const ProfileHeader = ({
   contactOptions,
   username,
 }) => {
+  const { name: RouteName } = useRoute();
+
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
@@ -114,78 +117,116 @@ const ProfileHeader = ({
         }}
       >
         <View
-          style={{
-            height: "100%",
-            width: "100%",
-            marginHorizontal: "4%",
-            paddingTop: topInset + 5,
-            paddingBottom: "4%",
-
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-          }}
+          style={[
+            {
+              height: "100%",
+              width: "100%",
+              paddingHorizontal: "4%",
+              paddingTop: topInset + 5,
+              paddingBottom: "4%",
+              flexDirection: "row",
+            },
+            RouteName === "UserProfile"
+              ? { justifyContent: "space-between" }
+              : { justifyContent: "flex-end" },
+          ]}
         >
-          <TouchableOpacity
-            onPress={() => {
-              id === userId
-                ? navigation.navigate("Settings")
-                : setShowBottomSheetModal(true);
-            }}
+          {RouteName === "UserProfile" && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                backgroundColor: "#EEEEEE",
+                borderRadius: 40,
+                opacity: 0.8,
+                padding: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons name="md-chevron-back" size={scale(16)} color="black" />
+            </TouchableOpacity>
+          )}
+          <View
             style={{
-              backgroundColor: "#EEEEEE",
-              borderRadius: 40,
-              opacity: 0.8,
-              marginLeft: 15,
-              padding: 8,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+
+              // height: "100%",
+              // width: "100%",
             }}
           >
-            <Ionicons name="ellipsis-vertical" size={scale(16)} color="black" />
-          </TouchableOpacity>
-          {id === userId ? (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity
-                onPress={() => console.log("navigate to edit profile page")}
-              >
-                <LinearGradientButton style={{ width: scale(80), height: 34 }}>
-                  <CustomText style={{ color: "white" }}>
-                    Edit Profile
-                  </CustomText>
-                </LinearGradientButton>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity onPress={handleFollow}>
-                <LinearGradientButton style={{ width: scale(80), height: 34 }}>
-                  <CustomText style={{ color: "white" }}>
-                    {isFollowing ? "Following" : "Follow"}
-                  </CustomText>
-                </LinearGradientButton>
-              </TouchableOpacity>
-              {contactOptions && (
+            <TouchableOpacity
+              onPress={() => {
+                id === userId
+                  ? navigation.navigate("Settings")
+                  : setShowBottomSheetModal(true);
+              }}
+              style={{
+                backgroundColor: "#EEEEEE",
+                borderRadius: 40,
+                opacity: 0.8,
+                marginLeft: 15,
+                padding: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons
+                name="ellipsis-vertical"
+                size={scale(16)}
+                color="black"
+              />
+            </TouchableOpacity>
+            {id === userId ? (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <TouchableOpacity
-                  onPress={() => setShowBottomContactSheet(true)}
-                  style={{
-                    backgroundColor: "#EEEEEE",
-                    borderRadius: 40,
-                    opacity: 0.8,
-                    marginLeft: 15,
-                    padding: 8,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                  onPress={() => console.log("navigate to edit profile page")}
                 >
-                  <Ionicons
-                    name="md-paper-plane"
-                    size={scale(15)}
-                    color="black"
-                  />
+                  <LinearGradientButton
+                    style={{ width: scale(80), height: 34 }}
+                  >
+                    <CustomText style={{ color: "white" }}>
+                      Edit Profile
+                    </CustomText>
+                  </LinearGradientButton>
                 </TouchableOpacity>
-              )}
-            </View>
-          )}
+              </View>
+            ) : (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TouchableOpacity onPress={handleFollow}>
+                  <LinearGradientButton
+                    style={{ width: scale(80), height: 34 }}
+                  >
+                    <CustomText style={{ color: "white" }}>
+                      {isFollowing ? "Following" : "Follow"}
+                    </CustomText>
+                  </LinearGradientButton>
+                </TouchableOpacity>
+                {contactOptions && (
+                  <TouchableOpacity
+                    onPress={() => setShowBottomContactSheet(true)}
+                    style={{
+                      backgroundColor: "#EEEEEE",
+                      borderRadius: 40,
+                      opacity: 0.8,
+                      marginLeft: 15,
+                      padding: 8,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Ionicons
+                      name="md-paper-plane"
+                      size={scale(15)}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+          </View>
         </View>
       </ImageBackground>
       <View style={{ marginTop: "3%", marginHorizontal: "4%" }}>

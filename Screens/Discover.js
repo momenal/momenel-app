@@ -22,6 +22,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const Discover = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const handleLike = useBoundStore((state) => state.handleLike);
 
   const [trendingHashtags, setTrendingHashtags] = useState([
     "#dezinced",
@@ -144,6 +145,7 @@ const Discover = ({ navigation }) => {
           posts={item.posts ? item.posts : []}
           caption={item.caption}
           height={scaledHeight}
+          handleLike={handleLike}
         />
       );
     },

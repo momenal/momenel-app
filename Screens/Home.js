@@ -18,6 +18,7 @@ import { CalcHeight } from "../app/utils/CalcHeight";
 const Home = ({ navigation }) => {
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
+  const handleLike = useBoundStore((state) => state.handleLike);
 
   useEffect(() => {
     // todo: fetch posts from db
@@ -47,11 +48,11 @@ const Home = ({ navigation }) => {
           posts={item.posts ? item.posts : []}
           caption={item.caption}
           height={scaledHeight}
+          handleLike={handleLike}
         />
       );
     },
-
-    []
+    [postsData]
   );
   const renderStories = useCallback(
     <StoriesContainer navigation={navigation} />,

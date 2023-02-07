@@ -2,6 +2,7 @@ import {
   Dimensions,
   Image,
   Keyboard,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -90,7 +91,9 @@ const PostHeader = ({
             uri: profileUrl,
           }}
         />
-        <View style={{}}>
+        <Pressable
+          onPress={() => navigation.navigate("UserProfile", { id: "asd" })}
+        >
           <CustomText
             style={{
               color: "#262628",
@@ -131,7 +134,7 @@ const PostHeader = ({
             )}
             {Time}
           </View>
-        </View>
+        </Pressable>
       </View>
       <View
         style={{

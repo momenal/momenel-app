@@ -47,9 +47,9 @@ const Post = ({
   isReposted,
   isDonateable,
   height,
+  handleLike,
 }) => {
   const handleRepost = useBoundStore((state) => state.handleRepost);
-  const handleLike = useBoundStore((state) => state.handleLike);
   const [showTipSheet, setShowTipSheet] = useState(false);
   const [showPurchaseSheet, setShowPurchaseSheet] = useState(false);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -72,10 +72,11 @@ const Post = ({
    */
   const handleLikeFunc = () => {
     if (isLiked === true) {
-      handleLike(index, isLiked);
+      handleLike(index, isLiked, postId);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     } else {
-      handleLike(index, isLiked);
+      handleLike(index, isLiked, postId);
+
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
@@ -105,12 +106,6 @@ const Post = ({
       index={index}
     />
   );
-
-  // const _onDoubleTap = (event) => {
-  //   if (event.nativeEvent.state === State.ACTIVE) {
-  //     runOnJS(doubleTap)();
-  //   }
-  // };
 
   const _doubleTap = Gesture.Tap()
     .runOnJS(true)

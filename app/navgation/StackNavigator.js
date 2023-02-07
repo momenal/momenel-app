@@ -14,6 +14,8 @@ import CreatePost from "../../Screens/CreatePost";
 import PostHeaderButton from "../components/Buttons/PostHeaderButton";
 import Search from "../../Screens/Search";
 import Settings from "../../Screens/Settings";
+import Profile from "../components/Profile/Profile";
+import PostsList from "../../Screens/PostsList";
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +132,24 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="PostsList"
+        component={PostsList}
+        options={{
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerTitle: "Posts",
+          headerShadowVisible: false,
+          headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={Profile}
+        options={{
+          headerShown: false,
         }}
       />
       <Stack.Screen
