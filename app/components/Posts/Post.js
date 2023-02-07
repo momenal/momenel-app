@@ -355,7 +355,7 @@ const Post = ({
       >
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("ByUser", { type: "likes", postId: postId })
+            navigation.navigate("UserList", { type: "likes", Id: postId })
           }
         >
           <CustomText
@@ -394,7 +394,10 @@ const Post = ({
         {reposts > 1 && (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("ByUser", { type: "reposts", postId: postId })
+              navigation.navigate("UserList", {
+                type: "reposts",
+                Id: postId,
+              })
             }
           >
             <CustomText

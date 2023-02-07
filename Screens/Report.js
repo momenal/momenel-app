@@ -10,7 +10,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import ReportSelect from "../app/components/Buttons/ReportSelect";
@@ -27,111 +27,141 @@ const Report = ({ route, navigation }) => {
   const [text, onChangeText] = useState("");
   // const handleReport = useBoundStore((state) => state.reportPost);
   const handleReport = useBoundStore((state) => state.handleReport);
+  const [data, setData] = useState([]);
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (contentType === "post") {
+      setData([
+        {
+          id: 1,
+          heading: "Spam",
+          description:
+            "Posting malicious content or links, inauthentic engagement,misusing hashtags, repetitive replies and Reposts",
+        },
+        {
+          id: 2,
+          heading: "Hate Speech",
+          description:
+            "Posting content that promotes or encourages violence, hatred, or harm against an individual or group of people. For example Islamophobia, anti-Semitism, homophobia, transphobia,and racism",
+        },
+        {
+          id: 3,
+          heading: "Scam or Fraud",
+          description:
+            "Posting content or links in an attempt to sell or promote a product or service in a false or misleading manner. Posts attempting to defraud others of their money or personal information should also be reported.",
+        },
+        {
+          id: 4,
+          heading: "Privacy Violations",
+          description:
+            "Posting content that violates another person's privacy, including posting private information about others without their consent.",
+        },
+        {
+          id: 5,
+          heading: "Illegal activity and behavior",
+          description:
+            "Content that depicts illegal or criminal acts, threats of violence.",
+        },
+        {
+          id: 6,
+          heading: "Intellectual property infringement",
+          description:
+            "Impersonating another account or business, infringing on intellectual property rights.",
+        },
+        {
+          id: 7,
+          heading: "Sensitive Content",
+          description:
+            "Content that depicts graphic violence, sexual activity, nudity, gore, or other sensitive subjects.",
+        },
+        {
+          id: 8,
+          heading: "Underage Content",
+          description:
+            "Content that depicts minors in a sexualized manner or in a manner that is otherwise inappropriate for their age.",
+        },
+        {
+          id: 9,
+          heading: "Doxxing",
+          description:
+            "Sharing or threatening to share another person's personal information, including their name, address, phone number, email address, or other identifying information without their consent.",
+        },
+        {
+          id: 10,
+          heading: "Prostitution",
+          description:
+            "Solicitation or advertising for illegal sexual activity or sex for hire.",
+        },
+        {
+          id: 11,
+          heading: "Suicide or self-injury",
+          description:
+            "Posts or comments that encourage or promote self-injury, including suicide and cutting.",
+        },
+        {
+          id: 12,
+          heading: "I don't like this content",
+          description: "Content that you dislike and/or this user is a troll",
+        },
+        {
+          id: 1000,
+          heading: "Other",
+          description: "Provide us with additional information below.",
+        },
+      ]);
+    } else {
+      setData([
+        {
+          id: 1,
+          heading: "Fake Account",
+          description: `Flag this account for impersonating you or someone else. This doesn't include accounts that are parody or satire.`,
+        },
+        {
+          id: 2,
+          heading: "Underage user",
+          description:
+            "Flag this user for being under the minimum age requirement.",
+        },
+        {
+          id: 3,
+          heading: "Impersonating a brand or business",
+          description:
+            "Flag this account for pretending to be a brand or business.",
+        },
+        {
+          id: 4,
+          heading: "Hate speech or graphic violence",
+          description:
+            "Flag this account for promoting hate or displaying violent content.",
+        },
+        {
+          id: 1000,
+          heading: "Other",
+          description: "Provide us with additional information below.",
+        },
+      ]);
+    }
+  }, []);
 
   const setActiveIndexState = (index) => {
     setactiveIndex(index);
   };
 
-  const data = [
-    {
-      id: 1,
-      heading: "Spam",
-      description:
-        "Posting malicious content or links, inauthentic engagement,misusing hashtags, repetitive replies and Reposts",
-    },
-    {
-      id: 2,
-      heading: "Hate Speech",
-      description:
-        "Posting content that promotes or encourages violence, hatred, or harm against an individual or group of people. For example Islamophobia, anti-Semitism, homophobia, transphobia,and racism",
-    },
-    {
-      id: 3,
-      heading: "Scam or Fraud",
-      description:
-        "Posting content or links in an attempt to sell or promote a product or service in a false or misleading manner. Posts attempting to defraud others of their money or personal information should also be reported.",
-    },
-    {
-      id: 4,
-      heading: "Privacy Violations",
-      description:
-        "Posting content that violates another person's privacy, including posting private information about others without their consent.",
-    },
-    {
-      id: 5,
-      heading: "Privacy Violations",
-      description:
-        "Posting content that violates another person's privacy, including posting private information about others without their consent.",
-    },
-    {
-      id: 6,
-      heading: "Illegal activity and behavior",
-      description:
-        "Content that depicts illegal or criminal acts, threats of violence.",
-    },
-    {
-      id: 7,
-      heading: "Intellectual property infringement",
-      description:
-        "Impersonating another account or business, infringing on intellectual property rights.",
-    },
-    {
-      id: 8,
-      heading: "Sensitive Content",
-      description:
-        "Content that depicts graphic violence, sexual activity, nudity, gore, or other sensitive subjects.",
-    },
-    {
-      id: 9,
-      heading: "Underage Content",
-      description:
-        "Content that depicts minors in a sexualized manner or in a manner that is otherwise inappropriate for their age.",
-    },
-    {
-      id: 10,
-      heading: "Doxxing",
-      description:
-        "Sharing or threatening to share another person's personal information, including their name, address, phone number, email address, or other identifying information without their consent.",
-    },
-    {
-      id: 11,
-      heading: "Prostitution",
-      description:
-        "Solicitation or advertising for illegal sexual activity or sex for hire.",
-    },
-    {
-      id: 12,
-      heading: "Suicide or self-injury",
-      description:
-        "Posts or comments that encourage or promote self-injury, including suicide and cutting.",
-    },
-    {
-      id: 13,
-      heading: "I don't like this content",
-      description: "Content that you dislike and/or this user is a troll",
-    },
-  ];
-
   const onReport = () => {
-    handleReport(data[activeIndex].id, contentId, contentType, text).then(
-      (res) => {
-        console.log(res);
-        if (res === true) {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-          setIsSubmitted(true);
-          onChangeText("");
-          setactiveIndex(null);
-        } else {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-          Alert.alert(
-            "Oops!",
-            "Something went wrong.\nPlease try again later."
-          );
-        }
-      }
-    );
+    //todo: send req to server
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsSubmitted(true);
+    onChangeText("");
+    setactiveIndex(null);
+
+    //todo: show error message if something went wrong
+    //       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    //       Alert.alert(
+    //         "Oops!",
+    //         "Something went wrong.\nPlease try again later."
+    //       );
   };
 
   const onDone = () => {
@@ -225,6 +255,7 @@ const Report = ({ route, navigation }) => {
         >
           Report @{username}'s {contentType}
         </CustomText>
+
         {data.map((i, index) => {
           return (
             <ReportSelect
