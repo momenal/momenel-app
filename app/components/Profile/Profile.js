@@ -94,7 +94,7 @@ const Profile = ({ navigation }) => {
                     url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                   },
                 ],
-                caption: "#cat",
+                caption: "#firstpost",
                 createdAt: Date.now(),
                 likes: 300,
                 comments: 12,
@@ -126,7 +126,7 @@ const Profile = ({ navigation }) => {
                 isDonateable: true,
               },
               {
-                postId: "askjdlkasjdmasdi",
+                postId: "oadks;fksda;kf;lk",
                 username: "farhanverse",
                 name: "farhan",
                 repost: {
@@ -137,13 +137,13 @@ const Profile = ({ navigation }) => {
                 posts: [
                   {
                     id: Math.random(19).toString(),
-                    width: 6000,
-                    height: 4000,
+                    width: 1080,
+                    height: 1920,
                     type: "video",
-                    url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                    url: "https://assets.mixkit.co/videos/preview/mixkit-palm-frond-lifeguard-station-1194-large.mp4",
                   },
                 ],
-                caption: "#cat",
+                caption: "#video",
                 createdAt: Date.now(),
                 likes: 300,
                 comments: 12,
@@ -395,13 +395,13 @@ const Profile = ({ navigation }) => {
                 posts: [
                   {
                     id: Math.random(19).toString(),
-                    width: 6000,
-                    height: 4000,
+                    width: 1080,
+                    height: 1920,
                     type: "video",
-                    url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                    url: "https://assets.mixkit.co/videos/preview/mixkit-palm-frond-lifeguard-station-1194-large.mp4",
                   },
                 ],
-                caption: "#cat",
+                caption: "#video",
                 createdAt: Date.now(),
                 likes: 300,
                 comments: 12,
@@ -629,7 +629,7 @@ const Profile = ({ navigation }) => {
               url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             },
           ],
-          caption: "#cat",
+          caption: "another pso",
           createdAt: Date.now(),
           likes: 300,
           comments: 12,
@@ -853,7 +853,12 @@ const Profile = ({ navigation }) => {
             padding: "2%",
             width: "100%",
           }}
-          onPress={() => console.log(index)}
+          onPress={() =>
+            navigation.navigate("PostsList", {
+              scrollToIndex: index,
+              posts: data.posts,
+            })
+          }
         >
           <View
             style={{
@@ -893,15 +898,39 @@ const Profile = ({ navigation }) => {
       >
         <ImageBackground
           // todo: get thumbnail from bunny if item.posts[0].type is video
-          source={{ uri: item.posts[0].url }}
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            height: CalcHeight(width, height),
-            borderRadius: 4,
-            backgroundColor: "pink",
-            //   marginHorizontal: 10,
-          }}
+          source={
+            item.posts[0]?.type === "video"
+              ? {
+                  //todo: get thumbnail from bunny
+                  uri: "https://images.unsplash.com/photo-1674849437950-9f636aefd740?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+                }
+              : { uri: item.posts[0].url }
+          }
+          style={
+            item.posts[0]?.type === "video"
+              ? {
+                  flexDirection: "row",
+                  width: "100%",
+                  borderRadius: 4,
+                  backgroundColor: "black",
+                  height: CalcHeight(7680, 4320),
+                }
+              : {
+                  flexDirection: "row",
+                  width: "100%",
+                  height: CalcHeight(width, height),
+                  borderRadius: 4,
+                  backgroundColor: "black",
+                }
+          }
+          // style={{
+          //   flexDirection: "row",
+          //   width: "100%",
+          //   height: CalcHeight(width, height),
+          //   borderRadius: 4,
+          //   backgroundColor: "black",
+          //   //   marginHorizontal: 10,
+          // }}
           imageStyle={{ borderRadius: 6 }}
           resizeMode="contain"
         >

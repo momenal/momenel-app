@@ -1,35 +1,45 @@
 // list of posts
 // example usage: when press on a post in mansory list
 
-import { View, Text } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import { View, FlatList } from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import { FlashList } from "@shopify/flash-list";
 import { CalcHeight } from "../app/utils/CalcHeight";
 import Post from "../app/components/Posts/Post";
 
 const PostsList = ({ navigation }) => {
+  const flashListRef = useRef(null);
   const { params } = useRoute();
-  //   console.log(params.posts);
-  //   console.log(params.scrollToIndex);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     setData(params.posts);
+    setTimeout(() => {
+      flashListRef?.current?.scrollToIndex({
+        animated: true,
+        index: params.scrollToIndex,
+        viewPosition: 0,
+      });
+    }, 200);
   }, []);
 
-  function handleLike(index, isLiked, postId) {
-    // todo: send like to db with postId
-    let newData = [...data];
-    newData[index].isLiked = !isLiked;
-    if (isLiked) {
-      newData[index].likes -= 1;
-    } else {
-      newData[index].likes += 1;
-    }
+  const handleLike = useCallback(
+    async (index, isLiked, postId) => {
+      let newData = [...params.posts];
+      let post = newData[index];
+      if (post.isLiked) {
+        post.likes -= 1;
+        post.isLiked = false;
+      } else {
+        post.likes += 1;
+        post.isLiked = true;
+      }
+      setData(newData);
 
-    setData(newData);
-  }
+      //todo: send like to db with postId
+    },
+    [data]
+  );
 
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width }) => {
@@ -64,12 +74,10 @@ const PostsList = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <FlashList
+      <FlatList
+        keyExtractor={(item, index) => index}
+        ref={flashListRef}
         data={data}
-        estimatedItemSize={450}
-        // keyExtractor={(item) => {
-        //   return item.postId;
-        // }}
         renderItem={({ item, index }) =>
           renderItem({
             item,
@@ -79,25 +87,23 @@ const PostsList = ({ navigation }) => {
             postId: item.postId,
             width: item.posts?.length > 0 ? item.posts[0].width : 0,
             height: item.posts?.length > 0 ? item.posts[0].height : 0,
-            // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
         }
-        maxToRenderPerBatch={10}
-        initialNumToRender={5}
+        // maxToRenderPerBatch={params.scrollToIndex}
         showsVerticalScrollIndicator={false}
-        // onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
-        // onEndReachedThreshold={2}
-        keyboardDismissMode="on-drag"
-        // ListFooterComponent={renderListFooter}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
-          minimumViewTime: 500,
-        }}
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // loop through viewable items and update the store
-          viewableItems.forEach((item) => {
-            // console.log("Visible items are", item.index);
-          });
+        onScrollToIndexFailed={(error) => {
+          //   flashListRef.current.scrollToOffset({
+          //     offset: error.averageItemLength * error.index,
+          //     animated: true,
+          //   });
+          setTimeout(() => {
+            if (data.length !== 0 && flashListRef !== null) {
+              flashListRef.current.scrollToIndex({
+                index: error.index,
+                animated: true,
+              });
+            }
+          }, 100);
         }}
       />
     </View>

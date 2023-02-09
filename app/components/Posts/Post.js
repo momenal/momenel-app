@@ -85,7 +85,7 @@ const Post = ({
   const doubleTap = () => {
     handleLikeFunc();
   };
-  console.log("isReposted", isReposted);
+
   const handleRepostFunc = async () => {
     await handleRepost(index, isReposted);
     if (isReposted === false) {
