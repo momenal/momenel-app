@@ -16,6 +16,7 @@ import Search from "../../Screens/Search";
 import Settings from "../../Screens/Settings";
 import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
+import EditProfile from "../../Screens/EditProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -150,6 +151,19 @@ const StackNavigator = ({}) => {
         component={Profile}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          // headerShown: false,
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerTitle: "Edit Profile",
+          headerShadowVisible: false,
+          headerTintColor: "black",
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen

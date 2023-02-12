@@ -1,6 +1,6 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import {
   useFonts,
   Nunito_400Regular,
@@ -39,6 +39,9 @@ export default function App() {
         } = await supabase.auth.getUser();
         console.log("signed in");
         console.log("user", user.id);
+        if (!user.id) {
+          Alert.alert("Error", "Please try again");
+        }
         SetUserId(user.id);
       }
 

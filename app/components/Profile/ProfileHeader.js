@@ -41,6 +41,7 @@ const ProfileHeader = ({
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
   const [showBottomContactSheet, setShowBottomContactSheet] = useState(false);
   const userId = useBoundStore((state) => state.userId);
+  console.log(userId);
 
   const scale12 = useMemo(() => scale(12), []);
 
@@ -132,6 +133,7 @@ const ProfileHeader = ({
           ]}
         >
           {RouteName === "UserProfile" && (
+            // back button
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
@@ -179,10 +181,10 @@ const ProfileHeader = ({
                 color="black"
               />
             </TouchableOpacity>
-            {id === userId ? (
+            {RouteName === "Profile" ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <TouchableOpacity
-                  onPress={() => console.log("navigate to edit profile page")}
+                  onPress={() => navigation.navigate("EditProfile")}
                 >
                   <LinearGradientButton
                     style={{ width: scale(80), height: 34 }}

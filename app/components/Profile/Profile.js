@@ -919,8 +919,8 @@ const Profile = ({ navigation }) => {
                   flexDirection: "row",
                   width: "100%",
                   height: CalcHeight(width, height),
-                  borderRadius: 4,
-                  backgroundColor: "black",
+                  borderRadius: 5,
+                  backgroundColor: "white",
                 }
           }
           // style={{
