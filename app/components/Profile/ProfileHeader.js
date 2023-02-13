@@ -33,15 +33,25 @@ const ProfileHeader = ({
   following,
   contactOptions,
   username,
+  isRefreshing,
 }) => {
   const { name: RouteName } = useRoute();
+  const bgColors = [
+    "#C7EFCF",
+    "#FEC7C7",
+    "#C7DFFD",
+    "#363946",
+    "#EDA2C0",
+    "#f5bfd7",
+    "#f0eafc",
+  ];
 
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
   const [showBottomContactSheet, setShowBottomContactSheet] = useState(false);
   const userId = useBoundStore((state) => state.userId);
-  console.log(userId);
+  // console.log(userId);
 
   const scale12 = useMemo(() => scale(12), []);
 
@@ -93,17 +103,21 @@ const ProfileHeader = ({
   };
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View
+      style={[
+        { backgroundColor: "white" },
+        isRefreshing === true ? { marginTop: topInset + 5 } : {},
+      ]}
+    >
       <ImageBackground
-        source={{
-          uri:
-            profile_url ||
-            `https://source.unsplash.com/random/${
-              Dimensions.get("window").width
-            }${
-              Dimensions.get("window").width
-            }/?experimental,3d-renders,digital-image,art`,
-        }}
+        source={
+          profile_url
+            ? {
+                uri: profile_url,
+              }
+            : null
+          // : require("../../../assets/placeholder.png")
+        }
         resizeMode="cover"
         style={{
           // width: Dimensions.get("window").width,
@@ -111,6 +125,8 @@ const ProfileHeader = ({
           maxHeight: Dimensions.get("window").height * 0.4,
           backgroundColor: "white",
           alignItems: "flex-end",
+          backgroundColor:
+            bgColors[Math.floor(Math.random() * bgColors.length)],
         }}
         imageStyle={{
           height: Dimensions.get("window").width,
@@ -161,7 +177,7 @@ const ProfileHeader = ({
           >
             <TouchableOpacity
               onPress={() => {
-                id === userId
+                RouteName === "Profile"
                   ? navigation.navigate("Settings")
                   : setShowBottomSheetModal(true);
               }}

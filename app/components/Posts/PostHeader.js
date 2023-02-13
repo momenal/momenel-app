@@ -80,17 +80,27 @@ const PostHeader = ({
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Image
-          style={{
-            width: size,
-            height: size,
-            borderRadius: 500,
-            marginRight: "5%",
-          }}
-          source={{
-            uri: profileUrl,
-          }}
-        />
+        {profileUrl ? (
+          <Image
+            style={{
+              width: size,
+              height: size,
+              borderRadius: 500,
+              marginRight: "2%",
+            }}
+            source={{
+              uri: profileUrl,
+            }}
+          />
+        ) : (
+          <Ionicons
+            name="person-circle-sharp"
+            size={size + 4}
+            color="#999999"
+            style={{ marginRight: "2%" }}
+          />
+        )}
+
         <Pressable
           onPress={() => navigation.navigate("UserProfile", { id: "asd" })}
         >

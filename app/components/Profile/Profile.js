@@ -6,6 +6,7 @@ import {
   Pressable,
   TouchableOpacity,
   LayoutAnimation,
+  RefreshControl,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useMemo, useState, useEffect, memo } from "react";
@@ -15,7 +16,7 @@ import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import { supabase } from "../../lib/supabase";
 import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
@@ -25,7 +26,7 @@ const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
   console.log(RouteParams);
   const [data, setData] = useState(null);
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [isFollowing, setisFollowing] = useState();
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
@@ -36,7 +37,6 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     setisLoading(true);
-
     //todo: fetch user data with session
 
     if (RouteParams?.id !== null && RouteParams?.id !== undefined) {
@@ -306,8 +306,8 @@ const Profile = ({ navigation }) => {
             // id: "some-other-id",
             username: "farhanverse",
             name: "Farhan 👋",
-            profile_url:
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
+            // profile_url:
+            // "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
 
             bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
             location: "from Mars 🌌",
@@ -993,6 +993,16 @@ const Profile = ({ navigation }) => {
     );
   };
 
+  const onRefresh = () => {
+    //set isRefreshing to true
+    setIsRefreshing(true);
+    // callApiMethod()
+    // and set isRefreshing to false at the end of your callApiMethod()
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1000);
+  };
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       {isLoading === true ? (
@@ -1084,6 +1094,7 @@ const Profile = ({ navigation }) => {
         <MasonryFlashList
           ListHeaderComponent={
             <ProfileHeader
+              isRefreshing={isRefreshing}
               username={data?.id === userId ? loggedUsername : data?.username}
               handleFollow={handleFollow}
               navigation={navigation}
@@ -1106,6 +1117,17 @@ const Profile = ({ navigation }) => {
           disableAutoLayout={true}
           data={data?.posts}
           numColumns={2}
+          progressViewOffset={500}
+          refreshControl={
+            <RefreshControl
+              colors={"black"}
+              tintColor={"black"}
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              progressViewOffset={topInset}
+              size={6}
+            />
+          }
           renderItem={({ item, index }) =>
             renderItem({
               item,
