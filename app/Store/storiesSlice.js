@@ -40,7 +40,7 @@ export const createStoriesSlice = (set) => ({
         },
         {
           id: 10091,
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668277265/test/v10044g50000c45repbc77u86h15j6c0_lmzu4r.mov",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-seagulls-standing-on-flying-above-a-rail-by-the-sea-45579-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,
@@ -48,7 +48,7 @@ export const createStoriesSlice = (set) => ({
         },
         {
           id: 10123091,
-          url: "https://res.cloudinary.com/momenalsite/video/upload/v1668275841/test/v0f044gc0000cc9hr83c77u5gu1gdnpg_oujd1y.mov",
+          url: "https://assets.mixkit.co/videos/preview/mixkit-man-runs-past-ground-level-shot-32809-large.mp4",
           type: "video",
           duration: 2,
           isReadMore: true,

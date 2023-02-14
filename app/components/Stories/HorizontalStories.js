@@ -1,9 +1,6 @@
 import React, { memo, useCallback, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
 import ProgressBar from "./ProgressBar";
 import Story from "./Story";
@@ -147,15 +144,18 @@ const HorizontalStories = ({
         <View
           style={{
             marginTop: 10,
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            width: 30,
+            height: 30,
+            justifyContent: "center",
             alignItems: "center",
+            backgroundColor: "black",
+            borderRadius: 100,
           }}
         >
           <Ionicons
             name="ios-close"
-            size={30}
+            size={20}
             color="white"
             onPress={() => navigation.navigate("Home")}
           />
@@ -168,7 +168,6 @@ const HorizontalStories = ({
         width={PAGE_WIDTH}
         windowSize={PAGE_WIDTH}
         height={PAGE_WIDTH * (16 / 9)}
-        // height={(PAGE_WIDTH - 40) * (16 / 9)}
         panGestureHandlerProps={{
           activeOffsetX: [-10, 10],
         }}

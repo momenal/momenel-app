@@ -22,6 +22,17 @@ const Story = ({
 }) => {
   const [isPause, setisPause] = useState(false);
   const videoRef = useRef();
+  const bgColors = [
+    // "white",
+    // "#32322C",
+    // "#001514",
+    // "#001514",
+    // "#AD343E",
+    // "#C1666B",
+    "#061826",
+    // "#BADEFC",
+    // "#FFFAFF",
+  ];
 
   const handleVisibility = (visible) => {
     // handle visibility change
@@ -76,7 +87,8 @@ const Story = ({
             style={{
               width: ScreenWidth,
               height: "100%",
-              backgroundColor: "#fa8246",
+              backgroundColor:
+                bgColors[Math.floor(Math.random() * bgColors.length)],
             }}
             resizeMode="contain"
           />

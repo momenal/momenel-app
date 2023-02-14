@@ -1,14 +1,12 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
 import CustomText from "../customText/CustomText";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
 
 const Footer = ({ profileUrl, username, time, StoryId, navigation }) => {
   const [Height, setHeight] = useState(0);
-  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.container}>
@@ -71,15 +69,11 @@ export default Footer;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 2,
-    // position: "absolute",
-    // bottom: 0,
-    // backgroundColor: "pink",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     overflow: "hidden",
-    // marginVertical: 15,
+
     marginTop: 6,
     paddingHorizontal: 10,
   },
