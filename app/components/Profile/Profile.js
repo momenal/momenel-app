@@ -49,8 +49,7 @@ const Profile = ({ navigation }) => {
             id: "some-other-id",
             username: "someotheruser",
             name: "someoneelse 👋",
-            profile_url:
-              "https://images.unsplash.com/photo-1675645987272-830297942557?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+            profile_url: "https://source.unsplash.com/random/1200x1200",
             bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
             location: "from Mars 🌌",
             link: "https://www.momenel.com",

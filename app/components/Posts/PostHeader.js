@@ -26,7 +26,6 @@ const PostHeader = ({
   username,
   name,
   createdAt,
-  isSaved,
   index,
   navigation,
 }) => {
@@ -80,29 +79,33 @@ const PostHeader = ({
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        {profileUrl ? (
-          <Image
-            style={{
-              width: size,
-              height: size,
-              borderRadius: 500,
-              marginRight: "2%",
-            }}
-            source={{
-              uri: profileUrl,
-            }}
-          />
-        ) : (
-          <Ionicons
-            name="person-circle-sharp"
-            size={size + 4}
-            color="#999999"
-            style={{ marginRight: "2%" }}
-          />
-        )}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UserProfile", { id: username })}
+        >
+          {profileUrl ? (
+            <Image
+              style={{
+                width: size,
+                height: size,
+                borderRadius: 500,
+                marginRight: "2%",
+              }}
+              source={{
+                uri: profileUrl,
+              }}
+            />
+          ) : (
+            <Ionicons
+              name="person-circle-sharp"
+              size={size + 4}
+              color="#999999"
+              style={{ marginRight: "2%" }}
+            />
+          )}
+        </TouchableOpacity>
 
         <Pressable
-          onPress={() => navigation.navigate("UserProfile", { id: "asd" })}
+          onPress={() => navigation.navigate("UserProfile", { id: username })}
         >
           <CustomText
             style={{

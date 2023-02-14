@@ -7,9 +7,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import CustomText from "../../customText/CustomText";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 const StoryCircle = ({
   navigation,
@@ -19,8 +20,19 @@ const StoryCircle = ({
   preview_url,
   hasSeen,
 }) => {
-  const Height = Dimensions.get("window").height;
-  const Width = Dimensions.get("window").width;
+  const Height = useMemo(() => Dimensions.get("window").height, []);
+  const Width = useMemo(() => Dimensions.get("window").width, []);
+  const bgColors = [
+    "#C7EFCF",
+    "#FEC7C7",
+    "#C7DFFD",
+    "#EDA2C0",
+    "#f5bfd7",
+    "#f0eafc",
+    "#b7a2ed",
+    "#a2edeb",
+  ];
+
   //scaled Width to keep height 40
   // console.log(Height * 0.03);
   // console.log(Width * 0.23);
@@ -36,9 +48,7 @@ const StoryCircle = ({
       >
         <ImageBackground
           style={{
-            // height: 135,
             height: Height * 0.148,
-            // width: 96,
             width: Width * 0.23,
             alignItems: "center",
             justifyContent: "flex-end",
@@ -52,12 +62,7 @@ const StoryCircle = ({
             colors={!hasSeen ? ["#F62E8E", "#AC1AF0"] : ["#A0A0A0", "#F0F0F0"]}
             start={[0, 0]}
             end={[1.1, 0]}
-            // locations={[0, 1]}
-            // start={{ x: 0.0, y: 0.0 }}
-            // end={{ x: 0.5, y: 0.5 }}
             style={{
-              // width: 10,
-              // height: 10,
               width: Height * 0.025,
               height: Height * 0.025,
               borderRadius: 50,
@@ -73,13 +78,13 @@ const StoryCircle = ({
           >
             <Image
               style={{
-                // width: 30,
-                // height: 30,
                 width: Height * 0.044,
                 height: Height * 0.044,
                 borderRadius: 100,
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor:
+                  bgColors[Math.floor(Math.random() * bgColors.length)],
               }}
               source={{
                 uri: profile_url,

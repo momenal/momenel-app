@@ -20,11 +20,13 @@ export const createStoriesSlice = (set) => ({
   stories: [
     {
       username: "farhanverse",
-      hasSeen: false,
-      profile_url:
-        "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
+      // hasSeen: true,
+      // profile_url:
+      //   "https://images.unsplash.com/photo-1666300301526-bf13f6ef96cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
+      // preview_url:
+      //   "https://vz-09489f4f-454.b-cdn.net/e4431b8e-6f10-4922-8ef6-0e042afc32e1/thumbnail.jpg", //bunnynet
       preview_url:
-        "https://vz-09489f4f-454.b-cdn.net/e4431b8e-6f10-4922-8ef6-0e042afc32e1/thumbnail.jpg", //bunnynet
+        "https://images.pexels.com/photos/15049798/pexels-photo-15049798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", //bunnynet
       own_preview_url:
         "https://vz-09489f4f-454.b-cdn.net/8a4fc477-bbb2-460d-8f02-88f9de14c965/preview.webp",
       stories: [

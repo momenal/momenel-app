@@ -41,8 +41,8 @@ const Comments = ({ route, navigation }) => {
     let data = [
       {
         _id: "1asddvasfgrs",
-        profile_url:
-          "https://images.unsplash.com/photo-1610276198568-eb6d0ff53e48?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
+        // profile_url:
+        //   "https://images.unsplash.com/photo-1610276198568-eb6d0ff53e48?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
         username: "farhanverse",
         comment:
           "Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉",

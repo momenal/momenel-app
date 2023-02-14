@@ -194,18 +194,28 @@ const Comment = ({
         >
           <TouchableOpacity
             style={{
-              backgroundColor: "pink",
+              backgroundColor: "white",
               width: 34,
               height: 34,
               borderRadius: 50,
               overflow: "hidden",
             }}
+            onPress={() => navigation.navigate("UserProfile", { id: username })}
           >
-            <Image
-              source={{ uri: profile_url }}
-              // style={{ height: 34, width: 34, borderRadius: 50 }}
-              style={{ flex: 1, width: undefined, height: undefined }}
-            />
+            {!profile_url ? (
+              <Ionicons
+                name="person-circle-sharp"
+                size={34}
+                color="#999999"
+                style={{ marginRight: "2%" }}
+              />
+            ) : (
+              <Image
+                source={{ uri: profile_url }}
+                // style={{ height: 34, width: 34, borderRadius: 50 }}
+                style={{ flex: 1, width: undefined, height: undefined }}
+              />
+            )}
           </TouchableOpacity>
           <View style={{ flex: 1, marginLeft: "2%" }}>
             <View
@@ -215,7 +225,11 @@ const Comment = ({
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("UserProfile", { id: username })
+                }
+              >
                 <GradientText
                   style={{ fontSize: scale(12), fontFamily: "Nunito_700Bold" }}
                   adjustsFontSizeToFit={true}
@@ -293,8 +307,6 @@ const Comment = ({
           >
             {comment}
           </StructuredText>
-
-          {/* <Button title="close" onPress={() => setShowBottomSheet(false)} /> */}
         </View>
       </DetachedBottomSheetWithScroll>
     </Swipeable>
