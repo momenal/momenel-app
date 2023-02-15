@@ -19,20 +19,21 @@ const Story = ({
   index,
   changeIsPaused,
   storyComplete,
+  bgColor,
 }) => {
   const [isPause, setisPause] = useState(false);
   const videoRef = useRef();
-  const bgColors = [
-    // "white",
-    // "#32322C",
-    // "#001514",
-    // "#001514",
-    // "#AD343E",
-    // "#C1666B",
-    "#061826",
-    // "#BADEFC",
-    // "#FFFAFF",
-  ];
+  // const bgColors = [
+  //   // "white",
+  //   // "#32322C",
+  //   // "#001514",
+  //   // "#001514",
+  //   // "#AD343E",
+  //   // "#C1666B",
+  //   "#061826",
+  //   // "#BADEFC",
+  //   // "#FFFAFF",
+  // ];
 
   const handleVisibility = (visible) => {
     // handle visibility change
@@ -87,8 +88,7 @@ const Story = ({
             style={{
               width: ScreenWidth,
               height: "100%",
-              backgroundColor:
-                bgColors[Math.floor(Math.random() * bgColors.length)],
+              backgroundColor: bgColor || "#1B1B1B",
             }}
             resizeMode="contain"
           />

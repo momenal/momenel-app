@@ -1,13 +1,7 @@
 export const createStoriesSlice = (set) => ({
+  preview_url:
+    "https://images.unsplash.com/photo-1675367169773-b5a6d120c185?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
   userStories: [
-    {
-      id: 174313249,
-      url: "https://images.unsplash.com/photo-1665355417090-718ee9f12e4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-      type: "image",
-      duration: 2,
-      isReadMore: true,
-      date: "2022-09-19T14:06:19+00:00",
-    },
     {
       id: 2213443,
       url: "https://assets.mixkit.co/videos/preview/mixkit-dynamic-animation-of-the-head-of-a-screaming-man-32645-large.mp4",
@@ -15,6 +9,18 @@ export const createStoriesSlice = (set) => ({
       duration: 2,
       isReadMore: true,
       date: "2022-10-19T14:14:19+00:00",
+      views: 2002,
+      bgColor: "#FF4F00",
+    },
+    {
+      id: 174313249,
+      url: "https://images.unsplash.com/photo-1676339817124-836bd7a23a47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+      type: "image",
+      duration: 2,
+      isReadMore: true,
+      date: "2022-09-19T14:06:19+00:00",
+      views: 20000,
+      bgColor: "#318CE7",
     },
   ],
   stories: [
@@ -37,6 +43,7 @@ export const createStoriesSlice = (set) => ({
           duration: 2,
           isReadMore: true,
           date: "2022-09-19T14:06:19+00:00",
+          bgColor: "#C0C0C0",
         },
         {
           id: 10091,
@@ -77,7 +84,9 @@ export const createStoriesSlice = (set) => ({
       hasSeen: true,
       profile_url: "https://picsum.photos/200/300",
       preview_url:
-        "https://vz-09489f4f-454.b-cdn.net/983a4704-73f7-44a1-a31a-4ab48959cee7/thumbnail.jpg",
+        "https://images.unsplash.com/photo-1675384201055-a5d68374fb7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+      // preview_url:
+      //   "https://vz-09489f4f-454.b-cdn.net/983a4704-73f7-44a1-a31a-4ab48959cee7/thumbnail.jpg",
       stories: [
         {
           id: 182823,

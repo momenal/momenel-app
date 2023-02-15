@@ -41,7 +41,7 @@ const Post = ({
   username,
   name,
   createdAt,
-  isSaved,
+
   posts,
   caption,
   isReposted,
@@ -225,7 +225,6 @@ const Post = ({
         username={username}
         name={name}
         createdAt={createdAt}
-        isSaved={isSaved}
         index={index}
       />
       {/* media */}

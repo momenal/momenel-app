@@ -5,12 +5,12 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import Carousel from "react-native-reanimated-carousel";
-
 import { Ionicons } from "@expo/vector-icons";
 import ProgressBarReanimated2 from "../../ProgressBarReanimated2";
 import Story from "../../Story";
 import ProgressBar from "../../ProgressBar";
 import { useBoundStore } from "../../../../Store/useBoundStore";
+import CustomText from "../../../customText/CustomText";
 
 const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
@@ -20,6 +20,7 @@ const YourStoryCarousel = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const ref = useRef(null);
   const [currentPosition, setcurrentPosition] = useState(0); // current position
+
   const [isPaused, setIsPaused] = useState(false); // is image or video long pressed
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -39,6 +40,25 @@ const YourStoryCarousel = ({ navigation }) => {
     let perc = (data.position / data.duration) * 100;
     setcurrentPosition(perc);
   });
+
+  function kFormatter(num) {
+    return Math.abs(num) <= 9999
+      ? // ? num.toLocaleString()
+        num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      : // num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      Math.abs(num) > 9999 && Math.abs(num) <= 999940
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.abs(num) > 999940 //999999
+      ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
+      : Math.sign(num) * Math.abs(num);
+  }
+
+  //delete story
+  const deleteStory = () => {
+    console.log("delete story");
+    console.log(data[activeIndex].id);
+  };
+
   const renderItem = ({ index }) => {
     const s = data[index];
     return (
@@ -50,6 +70,7 @@ const YourStoryCarousel = ({ navigation }) => {
         onPostionChange={getVideoPosition}
         changeIsPaused={changeIsPaused}
         storyComplete={storyComplete}
+        bgColor={s.bgColor}
       />
     );
   };
@@ -73,7 +94,6 @@ const YourStoryCarousel = ({ navigation }) => {
           style={{
             display: "flex",
             flexDirection: "row",
-
             width: "100%",
           }}
         >
@@ -127,21 +147,24 @@ const YourStoryCarousel = ({ navigation }) => {
         <View
           style={{
             marginTop: 10,
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            width: 30,
+            height: 30,
+            justifyContent: "center",
             alignItems: "center",
+            backgroundColor: "black",
+            borderRadius: 100,
+            marginLeft: "1%",
           }}
         >
           <Ionicons
             name="ios-close"
-            size={30}
+            size={20}
             color="white"
             onPress={() => navigation.navigate("Home")}
           />
         </View>
       </View>
-
       <Carousel
         vertical={false}
         width={PAGE_WIDTH}
@@ -167,9 +190,34 @@ const YourStoryCarousel = ({ navigation }) => {
       />
 
       <View
-        style={{ flex: 1, backgroundColor: "red", justifyContent: "flex-end" }}
+        style={{
+          flex: 1,
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexDirection: "row",
+          marginHorizontal: "4%",
+          paddingTop: 5,
+        }}
       >
-        <Text style={{ color: "white" }}>jhsad</Text>
+        <View
+          style={{
+            // flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <Ionicons name="eye" size={24} color="white" />
+          <CustomText style={{ color: "white", marginLeft: 5 }}>
+            {kFormatter(data[activeIndex].views)}
+          </CustomText>
+        </View>
+        <Ionicons
+          name="trash-sharp"
+          size={24}
+          color="red"
+          onPress={deleteStory}
+        />
       </View>
     </SafeAreaView>
   );

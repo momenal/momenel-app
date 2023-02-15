@@ -498,13 +498,7 @@ export const createPostsSlice = (set) => ({
       });
     } catch (err) {}
   },
-  SavePost: async (index) => {
-    try {
-      console.log("slice: save post");
-      //todo send req to save post and show suitable alert
-      Alert.alert("post saved");
-    } catch (err) {}
-  },
+
   fetchMorePosts: async () => {
     try {
       console.log("called more post");
@@ -551,7 +545,6 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           isLiked: false,
           lastEdit: null,
-          isSaved: false,
         },
         {
           postId: Math.random(19).toString(),
@@ -603,7 +596,7 @@ export const createPostsSlice = (set) => ({
           reposts: 0,
           repostedByUser: false,
           lastEdit: null,
-          isSaved: false,
+
           isLiked: true,
         },
         {
@@ -641,7 +634,6 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           isLiked: false,
           lastEdit: null,
-          isSaved: false,
         },
         {
           postId: Math.random(19).toString(),
@@ -692,7 +684,7 @@ export const createPostsSlice = (set) => ({
           reposts: 0,
           repostedByUser: false,
           lastEdit: null,
-          isSaved: false,
+
           isLiked: true,
         },
         {
@@ -730,7 +722,6 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           isLiked: false,
           lastEdit: null,
-          isSaved: false,
         },
         {
           postId: Math.random(19).toString(),
@@ -757,7 +748,7 @@ export const createPostsSlice = (set) => ({
           reposts: 0,
           repostedByUser: false,
           lastEdit: null,
-          isSaved: false,
+
           isLiked: true,
         },
         {
@@ -793,7 +784,6 @@ export const createPostsSlice = (set) => ({
           reposts: 5,
           isLiked: false,
           lastEdit: null,
-          isSaved: false,
         },
         {
           postId: Math.random(19).toString(),
@@ -820,7 +810,7 @@ export const createPostsSlice = (set) => ({
           reposts: 0,
           repostedByUser: false,
           lastEdit: null,
-          isSaved: false,
+
           isLiked: true,
         },
       ];

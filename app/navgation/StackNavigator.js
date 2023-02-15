@@ -17,6 +17,7 @@ import Settings from "../../Screens/Settings";
 import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
+import UploadStory from "../../Screens/UploadStory";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,15 @@ const StackNavigator = ({}) => {
         name="YourStory"
         component={YourStoryCarousel}
         options={{ gestureDirection: "vertical", headerShown: false }}
+      />
+      <Stack.Screen
+        name="UploadStory"
+        component={UploadStory}
+        options={{
+          gestureDirection: "vertical",
+          gestureEnabled: false,
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="Comments"

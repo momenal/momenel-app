@@ -141,7 +141,6 @@ const Discover = ({ navigation }) => {
           username={item.username}
           name={item.name}
           createdAt={item.createdAt}
-          isSaved={item.isSaved}
           posts={item.posts ? item.posts : []}
           caption={item.caption}
           height={scaledHeight}

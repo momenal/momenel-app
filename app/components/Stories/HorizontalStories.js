@@ -63,6 +63,7 @@ const HorizontalStories = ({
         changeIsPaused={changeIsPaused}
         storyComplete={storyComplete}
         showSheet={showSheet}
+        bgColor={s.bgColor}
       />
     );
   };
@@ -151,6 +152,7 @@ const HorizontalStories = ({
             alignItems: "center",
             backgroundColor: "black",
             borderRadius: 100,
+            marginLeft: "1%",
           }}
         >
           <Ionicons

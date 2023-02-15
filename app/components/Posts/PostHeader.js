@@ -29,17 +29,10 @@ const PostHeader = ({
   index,
   navigation,
 }) => {
-  const SavePost = useBoundStore((state) => state.SavePost);
   const postsData = useBoundStore((state) => state.posts);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   const insets = useSafeAreaInsets();
-
-  const onSavePress = () => {
-    SavePost(index);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setShowBottomSheet(false);
-  };
 
   const onReportPress = () => {
     setShowBottomSheet(false);
@@ -176,31 +169,6 @@ const PostHeader = ({
             // backgroundColor: "pink",
           }}
         >
-          {/* <Text>{postsData[index].userName}</Text> */}
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              width: "100%",
-              backgroundColor: "#EAEAEA",
-              paddingVertical: 15,
-              paddingHorizontal: 18,
-              marginBottom: 15,
-              borderRadius: 12,
-            }}
-            onPress={() => onSavePress()}
-          >
-            <Ionicons name="md-bookmark" size={20} color="black" />
-            <CustomText
-              style={{
-                // fontFamily: "Nunito_400Regular",
-                fontSize: 16,
-                marginLeft: 10,
-              }}
-            >
-              Save
-            </CustomText>
-          </TouchableOpacity>
           <TouchableOpacity
             style={{
               flexDirection: "row",
