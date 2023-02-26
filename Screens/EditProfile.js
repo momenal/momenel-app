@@ -1,10 +1,14 @@
 import {
   ActivityIndicator,
   Alert,
+  Button,
+  Dimensions,
   Image,
+  ImageBackground,
   KeyboardAvoidingView,
   LayoutAnimation,
   Platform,
+  Pressable,
   ScrollView,
   Text,
   TextInput,
@@ -25,6 +29,7 @@ const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
   const [isLoading, setIsLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
+  const [cover_url, setCover_url] = useState(null);
   const [name, setName] = useState(null);
   const [bio, setBio] = useState(null);
   const [website, setWebsite] = useState(null);
@@ -48,6 +53,15 @@ const EditProfile = ({ navigation }) => {
     //   message: "Invalid URL",
     // },
   ]);
+  const bgColors = [
+    "#C7EFCF",
+    "#FEC7C7",
+    "#C7DFFD",
+    "#363946",
+    "#EDA2C0",
+    "#f5bfd7",
+    "#f0eafc",
+  ];
 
   //get session
   const gS = async () => {
@@ -63,6 +77,15 @@ const EditProfile = ({ navigation }) => {
     setUsername("farhanverse");
     setName("Farhan");
     setBio(`Developer | Designer | Writer | Photographer | Gamer | Foodie`);
+    setImageUri(null);
+    setCover_url(null);
+    // setImageUri(
+    //   "https://images.unsplash.com/photo-1677264547603-d67614ae255b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    // );
+
+    // setCover_url(
+    //   "https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+    // );
 
     setTimeout(() => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -70,28 +93,63 @@ const EditProfile = ({ navigation }) => {
     }, 0);
   }, []);
 
-  const pickImage = async () => {
+  // update header right button
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="Save" disabled={!isChanged} onPress={handleSubmit} />
+      ),
+    });
+  }, [navigation, isChanged]);
+
+  const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1.0,
+      quality: 0,
       allowsEditing: true,
       base64: false,
       aspect: [1, 1],
     });
 
     if (!result.canceled) {
-      // console.log(result.assets[0].uri);
-
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setImageUri(result.assets[0].uri);
       setIsChanged(true);
     }
   };
+  const pickCoverImage = async () => {
+    let result;
+    Platform.OS === "ios"
+      ? (result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 1.0,
+          base64: false,
+        }))
+      : (result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 1.0,
+          allowsEditing: true,
+          base64: false,
+          aspect: [9, 16],
+        }));
 
-  const removeImage = () => {
-    setImageUri(
-      "https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    );
+    if (!result.canceled) {
+      // console.log(result.assets[0].uri);
+
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setCover_url(result.assets[0].uri);
+      setIsChanged(true);
+    }
+  };
+
+  const removeProfileImage = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setImageUri(null);
+    setIsChanged(true);
+  };
+  const removeCoverImage = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setCover_url(null);
     setIsChanged(true);
   };
 
@@ -161,7 +219,176 @@ const EditProfile = ({ navigation }) => {
           style={{ height: "100%", backgroundColor: "white" }}
           keyboardDismissMode={"on-drag"}
         >
-          <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
+          {!cover_url && (
+            <Pressable
+              style={{
+                height: (Dimensions.get("window").width * 9) / 16,
+                maxHeight: (Dimensions.get("window").width * 9) / 16,
+                backgroundColor: "white",
+                alignItems: "flex-end",
+                justifyContent: "flex-end",
+                backgroundColor:
+                  bgColors[Math.floor(Math.random() * bgColors.length)],
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  padding: "2%",
+                  borderRadius: 20,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: 10,
+                }}
+                onPress={pickCoverImage}
+              >
+                <Ionicons name="camera" size={scale(18)} color="black" />
+              </TouchableOpacity>
+            </Pressable>
+          )}
+          {cover_url && (
+            <ImageBackground
+              source={
+                cover_url
+                  ? {
+                      uri: cover_url,
+                    }
+                  : null
+              }
+              resizeMode="cover"
+              style={{
+                height: (Dimensions.get("window").width * 9) / 16,
+                maxHeight: (Dimensions.get("window").width * 9) / 16,
+                backgroundColor: "white",
+                alignItems: "flex-end",
+                justifyContent: "flex-end",
+                backgroundColor:
+                  bgColors[Math.floor(Math.random() * bgColors.length)],
+              }}
+              imageStyle={{
+                //   height: Dimensions.get("window").width,
+                height: (Dimensions.get("window").width * 9) / 16,
+                //   maxHeight: (Dimensions.get("window").width * 9) / 16,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  padding: "2%",
+                  borderRadius: 20,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: 10,
+                }}
+                onPress={pickCoverImage}
+              >
+                <Ionicons name="camera" size={scale(18)} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  padding: "2%",
+                  borderRadius: 20,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: 10,
+                }}
+                onPress={removeCoverImage}
+              >
+                <Ionicons name="trash" size={scale(15)} color="red" />
+              </TouchableOpacity>
+            </ImageBackground>
+          )}
+          {/* profile image */}
+          {!imageUri && (
+            <Pressable
+              onPress={pickProfileImage}
+              style={{
+                marginLeft: "3%",
+                height: scale(126),
+                width: scale(126),
+                borderRadius: scale(126) / 2,
+                marginTop: (-Dimensions.get("window").width * 9) / 44,
+                backgroundColor: "white",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons
+                name="ios-person-add"
+                size={scale(50)}
+                color="#999999"
+              />
+            </Pressable>
+          )}
+          {imageUri && (
+            <View
+              style={{
+                marginLeft: "3%",
+                marginTop: (-Dimensions.get("window").width * 9) / 44,
+                width: scale(126),
+              }}
+            >
+              <Image
+                source={
+                  imageUri
+                    ? {
+                        uri: imageUri,
+                      }
+                    : null
+                }
+                resizeMode="cover"
+                style={{
+                  height: scale(126),
+                  width: scale(126),
+                  borderRadius: scale(126) / 2,
+                  borderColor: "white",
+                  borderWidth: 6,
+                  backgroundColor: "white",
+                  alignItems: "flex-end",
+                }}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: -scale(126) / 3,
+                  // width: scale(25),
+                  // backgroundColor: "red",
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    width: scale(25),
+                    height: scale(25),
+                    borderRadius: 20,
+                    backgroundColor: "white",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: 10,
+                  }}
+                  onPress={removeProfileImage}
+                >
+                  <Ionicons name="trash" size={scale(18)} color="red" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: scale(25),
+                    height: scale(25),
+                    borderRadius: 20,
+                    backgroundColor: "white",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: 10,
+                  }}
+                  onPress={pickProfileImage}
+                >
+                  <Ionicons name="camera" size={scale(18)} color="black" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          {/* <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}> 
             {!imageUri ? (
               <Ionicons
                 name="person-circle-sharp"
@@ -177,11 +404,15 @@ const EditProfile = ({ navigation }) => {
                       }
                     : null
                 }
-                style={{ width: scale150, height: scale150 }}
+                style={{
+                  width: scale150,
+                  height: scale150,
+                  borderRadius: scale150 / 2,
+                }}
               />
-            )}
+            )} */}
 
-            <View
+          {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
@@ -201,7 +432,7 @@ const EditProfile = ({ navigation }) => {
                 <Ionicons name="md-trash-outline" size={24} color="red" />
               </TouchableOpacity>
             </View>
-          </View>
+          </View>*/}
           <View
             style={{ width: "100%", paddingHorizontal: "5%", marginTop: "6%" }}
           >
@@ -249,7 +480,7 @@ const EditProfile = ({ navigation }) => {
               errors={Errors}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ width: "100%", paddingHorizontal: "10%", marginTop: "6%" }}
             disabled={!isChanged || username === ""}
             onPress={handleSubmit}
@@ -257,7 +488,7 @@ const EditProfile = ({ navigation }) => {
             <LinearGradientButton disabled={!isChanged || username === ""}>
               <CustomText style={{ color: "white" }}>Save</CustomText>
             </LinearGradientButton>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
       )}
     </KeyboardAvoidingView>
