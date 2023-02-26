@@ -20,8 +20,11 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
       disabled={disabled}
       onPress={onPress}
       style={{
-        flexDirection: "row",
-        alignItems: "baseline",
+        // flexDirection: "row",
+        // alignItems: "baseline",
+        alignItems: "center",
+        // justifyContent: "center",
+        // marginLeft: "2%",
       }}
     >
       <CustomText

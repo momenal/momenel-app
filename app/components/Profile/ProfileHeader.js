@@ -23,6 +23,7 @@ const ProfileHeader = ({
   handleFollow,
   handleBlock,
   profile_url,
+  cover_url,
   isFollowing,
   name,
   bio,
@@ -35,6 +36,7 @@ const ProfileHeader = ({
   username,
   isRefreshing,
 }) => {
+  console.log("ss", profile_url);
   const { name: RouteName } = useRoute();
   const bgColors = [
     "#C7EFCF",
@@ -51,10 +53,7 @@ const ProfileHeader = ({
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
   const [showBottomContactSheet, setShowBottomContactSheet] = useState(false);
   const userId = useBoundStore((state) => state.userId);
-  // console.log(userId);
-
   const scale12 = useMemo(() => scale(12), []);
-
   const mentionHashtagClick = async (text) => {
     const _handlePressButtonAsync = async (url) => {
       await WebBrowser.openBrowserAsync(url);
@@ -101,7 +100,6 @@ const ProfileHeader = ({
       await WebBrowser.openBrowserAsync("https://www." + url);
     }
   };
-
   return (
     <View
       style={[
@@ -111,26 +109,25 @@ const ProfileHeader = ({
     >
       <ImageBackground
         source={
-          profile_url
+          cover_url
             ? {
-                uri: profile_url,
+                uri: cover_url,
               }
             : null
           // : require("../../../assets/placeholder.png")
         }
         resizeMode="cover"
         style={{
-          // width: Dimensions.get("window").width,
-          // height: Dimensions.get("window").width,
-          maxHeight: Dimensions.get("window").height * 0.4,
+          maxHeight: (Dimensions.get("window").width * 9) / 16,
           backgroundColor: "white",
           alignItems: "flex-end",
           backgroundColor:
             bgColors[Math.floor(Math.random() * bgColors.length)],
         }}
         imageStyle={{
-          height: Dimensions.get("window").width,
-          maxHeight: Dimensions.get("window").height * 0.4,
+          //   height: Dimensions.get("window").width,
+          height: (Dimensions.get("window").width * 9) / 16,
+          //   maxHeight: (Dimensions.get("window").width * 9) / 16,
         }}
       >
         <View
@@ -170,9 +167,6 @@ const ProfileHeader = ({
             style={{
               justifyContent: "space-between",
               alignItems: "flex-end",
-
-              // height: "100%",
-              // width: "100%",
             }}
           >
             <TouchableOpacity
@@ -191,11 +185,19 @@ const ProfileHeader = ({
                 alignItems: "center",
               }}
             >
-              <Ionicons
-                name="ellipsis-vertical"
-                size={scale(16)}
-                color="black"
-              />
+              {RouteName === "Profile" ? (
+                <Ionicons
+                  name="settings-sharp"
+                  size={scale(16)}
+                  color="black"
+                />
+              ) : (
+                <Ionicons
+                  name="ellipsis-vertical"
+                  size={scale(16)}
+                  color="black"
+                />
+              )}
             </TouchableOpacity>
             {RouteName === "Profile" ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -247,11 +249,83 @@ const ProfileHeader = ({
           </View>
         </View>
       </ImageBackground>
-      <View style={{ marginTop: "3%", marginHorizontal: "4%" }}>
+      {/* profile image and username */}
+      <View
+        style={{
+          marginTop: "3%",
+          flexDirection: "row",
+        }}
+      >
+        <View
+          style={{
+            marginLeft: "3%",
+            marginTop: (-Dimensions.get("window").width * 9) / 44,
+          }}
+        >
+          {/* profile image */}
+          <Image
+            source={
+              profile_url
+                ? {
+                    uri: profile_url,
+                  }
+                : null
+            }
+            resizeMode="cover"
+            style={{
+              height: scale(126),
+              width: scale(126),
+              borderRadius: scale(126) / 2,
+              borderColor: "white",
+              borderWidth: scale12 - 10,
+              backgroundColor: "white",
+              alignItems: "flex-end",
+              backgroundColor:
+                bgColors[Math.floor(Math.random() * bgColors.length)],
+            }}
+          />
+        </View>
+        {/* info tags */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            marginHorizontal: "3%",
+          }}
+        >
+          <AmntTag value={postsAmount} txt={"Posts"} disabled={true} />
+          <AmntTag
+            value={followers}
+            txt={"Followers"}
+            onPress={() =>
+              navigation.navigate("UserList", {
+                type: "followers",
+                id: id,
+                totalAmount: followers,
+              })
+            }
+          />
+          <AmntTag
+            value={following}
+            txt={"Following"}
+            disabled={id !== userId}
+            onPress={() =>
+              navigation.navigate("UserList", {
+                type: "following",
+                id: id,
+                totalAmount: followers,
+              })
+            }
+          />
+        </View>
+      </View>
+      <View style={{ marginHorizontal: "3%", marginTop: "2%" }}>
         {name && (
           <CustomText
-            style={{ fontFamily: "Nunito_800ExtraBold", fontSize: scale(22) }}
-            numberOfLines={2}
+            style={{ fontFamily: "Nunito_800ExtraBold", fontSize: scale(19) }}
+            numberOfLines={1}
           >
             {name}
           </CustomText>
@@ -278,7 +352,7 @@ const ProfileHeader = ({
         <View
           style={{
             marginTop: "1%",
-            marginHorizontal: "4%",
+            marginHorizontal: "3%",
             marginVertical: 5,
           }}
         >
@@ -296,7 +370,7 @@ const ProfileHeader = ({
         <View
           style={{
             marginTop: "1%",
-            marginHorizontal: "3.5%",
+            marginHorizontal: "2.5%",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -320,7 +394,8 @@ const ProfileHeader = ({
           onPress={() => handleLinkPressAsync(link)}
           style={{
             marginTop: "1%",
-            marginHorizontal: "3.5%",
+            marginBottom: "2%",
+            marginHorizontal: "2.5%",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -344,40 +419,7 @@ const ProfileHeader = ({
           </CustomText>
         </TouchableOpacity>
       )}
-      {/* info tags */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginHorizontal: "5%",
-          marginVertical: "3%",
-        }}
-      >
-        <AmntTag value={postsAmount} txt={"Posts"} disabled={true} />
-        <AmntTag
-          value={followers}
-          txt={"Followers"}
-          onPress={() =>
-            navigation.navigate("UserList", {
-              type: "followers",
-              id: id,
-              totalAmount: followers,
-            })
-          }
-        />
-        <AmntTag
-          value={following}
-          txt={"Following"}
-          disabled={id !== userId}
-          onPress={() =>
-            navigation.navigate("UserList", {
-              type: "following",
-              id: id,
-              totalAmount: followers,
-            })
-          }
-        />
-      </View>
+
       {/* sheets */}
       {/* sheet to read full bio if it exceeds allowed lenght */}
       <DetachedBottomSheetWithScroll
@@ -514,4 +556,4 @@ const ProfileHeader = ({
   );
 };
 
-export default memo(ProfileHeader);
+export default ProfileHeader;
