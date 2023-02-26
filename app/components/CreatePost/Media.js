@@ -14,7 +14,6 @@ const Media = ({ item }) => {
     let newWidth = width * (Iheight / height);
     return newWidth;
   };
-  console.log(Math.ceil(scaledWidth(item.width, item.height)));
   return (
     <View style={{ marginRight: 10 }}>
       {item.type === "image" ? (

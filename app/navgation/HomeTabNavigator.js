@@ -13,18 +13,15 @@ import HomeIcon from "../components/icons/HomeIcon";
 import PlusIcon from "../components/icons/PlusIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
-import FakeLogout from "../components/FakeLogout";
-import Notifications from "../components/icons/Notifications";
+import NotificationsIcon from "../components/icons/Notifications";
 
-import { Ionicons } from "@expo/vector-icons";
 import PlaceholderScreen from "../components/PlaceholderScreen";
 import Discover from "../../Screens/Discover";
 
 import { useBoundStore } from "../Store/useBoundStore";
-import Ellipsis from "../components/icons/Ellipsis";
-import CustomText from "../components/customText/CustomText";
-import { scale } from "../utils/Scale";
+
 import Profile from "../components/Profile/Profile";
+import Notifications from "../../Screens/Notifications";
 
 // const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,7 +34,8 @@ const HomeNavigator = ({ navigation }) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      // initialRouteName="Feed"
+      initialRouteName="Notifications"
       screenOptions={({}) => ({
         tabBarShowLabel: false,
         headerShadowVisible: false,
@@ -145,14 +143,14 @@ const HomeNavigator = ({ navigation }) => {
       />
       <Tab.Screen
         name="Notifications"
-        component={Home}
+        component={Notifications}
         options={{
           title: "Notifications",
           // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused }) => {
             {
               return (
-                <Notifications
+                <NotificationsIcon
                   size={IconSize}
                   focused={focused}
                   color={focused ? "black" : "#A8A8A8"}
