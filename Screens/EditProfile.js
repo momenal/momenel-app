@@ -14,16 +14,16 @@ import {
   TextInput,
   View,
 } from "react-native";
-
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { scale } from "../app/utils/Scale";
 import { useHeaderHeight } from "@react-navigation/elements";
 import CustomText from "../app/components/customText/CustomText";
+import CustomTextInput from "../app/components/Profile/CustomTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
-import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../app/lib/supabase";
+import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 
 const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
@@ -33,7 +33,9 @@ const EditProfile = ({ navigation }) => {
   const [name, setName] = useState(null);
   const [bio, setBio] = useState(null);
   const [website, setWebsite] = useState(null);
-  const [username, setUsername] = useState("farhanverse");
+  const [username, setUsername] = useState("");
+  const [backgroundColor, setbackgroundColor] = useState();
+
   const [isChanged, setIsChanged] = useState(false);
   const [Errors, setErrors] = useState([
     // {
@@ -73,6 +75,7 @@ const EditProfile = ({ navigation }) => {
     setIsLoading(true);
     //todo: get user data
     gS(); // gets session token
+    setbackgroundColor(bgColors[Math.floor(Math.random() * bgColors.length)]);
     //todo: then set the user info
     setUsername("farhanverse");
     setName("Farhan");
@@ -93,14 +96,7 @@ const EditProfile = ({ navigation }) => {
     }, 0);
   }, []);
 
-  // update header right button
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button title="Save" disabled={!isChanged} onPress={handleSubmit} />
-      ),
-    });
-  }, [navigation, isChanged]);
+  // const getInput
 
   const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -153,45 +149,64 @@ const EditProfile = ({ navigation }) => {
     setIsChanged(true);
   };
 
-  // validate url function
-  function isValidHttpUrl(string) {
-    let url;
-    try {
-      url = new URL(string);
-    } catch (_) {
-      return false;
-    }
-    return url.protocol === "https:";
+  function isValidURL(url) {
+    var pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ); // fragment locator
+    return !!pattern.test(url);
   }
 
   //handle submit
   const handleSubmit = () => {
-    // validate inputs
-    if (website && !isValidHttpUrl(website)) {
+    setErrors([]);
+
+    if (username?.length < 1) {
       setErrors([
+        ...Errors,
+        {
+          message: "Username is required",
+          type: "username",
+        },
+      ]);
+      setIsChanged(false);
+      return;
+    }
+    if (website?.length >= 1 && !isValidURL(website)) {
+      setErrors([
+        ...Errors,
         {
           message: "Invalid URL",
           type: "link",
         },
       ]);
+      setIsChanged(false);
       return;
     }
 
     //todo: send data to server
 
     // if errors show errors else show success
-    // setErrors([
-    //   {
-    //     message: "Username already taken",
-    //     type: "username",
-    //   },
-    // ]);
 
     setIsChanged(false);
-    // Alert.alert("Success", "Profile updated successfully");
+
+    if (Errors.length === 0) {
+      Alert.alert("Success", "Profile updated successfully", [
+        {
+          text: "OK",
+          onPress: () => {
+            navigation.goBack();
+          },
+        },
+      ]);
+    }
   };
 
-  const scale150 = useMemo(() => scale(150), []);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "position" : "height"}
@@ -227,8 +242,7 @@ const EditProfile = ({ navigation }) => {
                 backgroundColor: "white",
                 alignItems: "flex-end",
                 justifyContent: "flex-end",
-                backgroundColor:
-                  bgColors[Math.floor(Math.random() * bgColors.length)],
+                backgroundColor: backgroundColor,
               }}
             >
               <TouchableOpacity
@@ -388,51 +402,6 @@ const EditProfile = ({ navigation }) => {
               </View>
             </View>
           )}
-          {/* <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}> 
-            {!imageUri ? (
-              <Ionicons
-                name="person-circle-sharp"
-                size={scale150 - 70}
-                color="#999999"
-              />
-            ) : (
-              <Image
-                source={
-                  imageUri
-                    ? {
-                        uri: imageUri,
-                      }
-                    : null
-                }
-                style={{
-                  width: scale150,
-                  height: scale150,
-                  borderRadius: scale150 / 2,
-                }}
-              />
-            )} */}
-
-          {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                width: "100%",
-                marginTop: "5%",
-              }}
-            >
-              <TouchableOpacity
-                style={{ width: 200, marginRight: "4%" }}
-                onPress={pickImage}
-              >
-                <LinearGradientButton>
-                  <CustomText style={{ color: "white" }}>Upload</CustomText>
-                </LinearGradientButton>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ padding: 5 }} onPress={removeImage}>
-                <Ionicons name="md-trash-outline" size={24} color="red" />
-              </TouchableOpacity>
-            </View>
-          </View>*/}
           <View
             style={{ width: "100%", paddingHorizontal: "5%", marginTop: "6%" }}
           >
@@ -456,7 +425,6 @@ const EditProfile = ({ navigation }) => {
               }}
               errors={Errors}
             />
-
             <CustomTextInput
               title="Bio"
               placeholder="Introduce yourself to the world 👋"
@@ -468,7 +436,6 @@ const EditProfile = ({ navigation }) => {
               multiLine={true}
               errors={Errors}
             />
-
             <CustomTextInput
               title="Link"
               placeholder="https://..."
@@ -480,7 +447,7 @@ const EditProfile = ({ navigation }) => {
               errors={Errors}
             />
           </View>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={{ width: "100%", paddingHorizontal: "10%", marginTop: "6%" }}
             disabled={!isChanged || username === ""}
             onPress={handleSubmit}
@@ -488,74 +455,10 @@ const EditProfile = ({ navigation }) => {
             <LinearGradientButton disabled={!isChanged || username === ""}>
               <CustomText style={{ color: "white" }}>Save</CustomText>
             </LinearGradientButton>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </ScrollView>
       )}
     </KeyboardAvoidingView>
-  );
-};
-
-const CustomTextInput = ({
-  title,
-  placeholder,
-  value,
-  onChangeText,
-  multiLine = false,
-  errors,
-}) => {
-  const [isErrors, setIsErrors] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  useEffect(() => {
-    errors.map((error) => {
-      if (error.type === title.toLowerCase()) {
-        setErrorMessage(error.message);
-      }
-    });
-  }, [errors]);
-
-  const OnChangeTextWrapper = (text) => {
-    if (errorMessage) {
-      setErrorMessage(null);
-    }
-    onChangeText(text);
-  };
-  return (
-    <View
-      style={{
-        marginBottom: "5%",
-      }}
-    >
-      {errorMessage && (
-        <CustomText
-          style={{
-            color: "red",
-            fontSize: 13,
-            fontFamily: "Nunito_400Regular",
-          }}
-        >
-          {errorMessage}
-        </CustomText>
-      )}
-      <CustomText>{title}</CustomText>
-      <TextInput
-        style={{
-          borderBottomWidth: 1,
-          borderBottomColor: errorMessage ? "red" : "#999999",
-          color: errorMessage ? "red" : "black",
-          fontFamily: "Nunito_600SemiBold",
-          fontSize: 15,
-          marginTop: "2%",
-          paddingBottom: "3%",
-          maxHeight: multiLine ? 150 : 50,
-        }}
-        multiline={multiLine}
-        placeholder={placeholder}
-        placeholderTextColor="#999999"
-        onChangeText={OnChangeTextWrapper}
-        value={value}
-        autoCapitalize="none"
-      />
-    </View>
   );
 };
 
