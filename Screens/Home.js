@@ -1,17 +1,9 @@
 import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect } from "react";
 import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 import { supabase } from "../app/lib/supabase";
-import Lottie from "lottie-react-native";
-import Loader from "../app/components/Loader";
 import { FlashList } from "@shopify/flash-list";
 import { CalcHeight } from "../app/utils/CalcHeight";
 
@@ -94,14 +86,11 @@ const Home = ({ navigation }) => {
             postId: item.postId,
             width: item.posts?.length > 0 ? item.posts[0].width : 0,
             height: item.posts?.length > 0 ? item.posts[0].height : 0,
-
-            // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
         }
         ListHeaderComponent={renderStories}
         ListHeaderComponentStyle={{
           paddingTop: 5,
-          // paddingBottom: Dimensions.get("window").height * 0.002,
         }}
         maxToRenderPerBatch={5}
         initialNumToRender={5}

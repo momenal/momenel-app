@@ -34,8 +34,7 @@ const HomeNavigator = ({ navigation }) => {
 
   return (
     <Tab.Navigator
-      // initialRouteName="Feed"
-      initialRouteName="Profile"
+      initialRouteName="Feed"
       screenOptions={({}) => ({
         tabBarShowLabel: false,
         headerShadowVisible: false,
@@ -52,34 +51,8 @@ const HomeNavigator = ({ navigation }) => {
         name="Feed"
         component={Home}
         options={{
-          // headerStyle: { backgroundColor: "red", height: 115 },
-          // headerLeft: () => {
-          //   return (
-          //     <View style={{ paddingLeft: 20 }}>
-          //       <Logo size={35} />
-          //     </View>
-          //   );
-          // },
-          // headerRight: () => {
-          //   return (
-          //     <View style={[styles.views, { paddingRight: 20 }]}>
-          //       <Text style={{ marginRight: 10 }}>Noti</Text>
-          //       <BalanceTab />
-          //     </View>
-          //   );
-          // },
-          // headerTitleAlign: "left",
-          header: ({ navigation, route, options, back }) => {
-            // const title = getHeaderTitle(options, route.name);
-
-            return (
-              <Header
-              // title={title}
-              // leftButton={
-              //   back ? <MyBackButton onPress={navigation.goBack} /> : undefined
-              // }
-              />
-            );
+          header: () => {
+            return <Header />;
           },
           tabBarIcon: ({ size, focused, color }) => {
             {

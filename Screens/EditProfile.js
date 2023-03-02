@@ -86,9 +86,9 @@ const EditProfile = ({ navigation }) => {
     //   "https://images.unsplash.com/photo-1677264547603-d67614ae255b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
     // );
 
-    // setCover_url(
-    //   "https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-    // );
+    setCover_url(
+      "https://media.tenor.com/L1EZ8-ftKKAAAAAC/elf-will-ferrell.gif"
+    );
 
     setTimeout(() => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -130,8 +130,6 @@ const EditProfile = ({ navigation }) => {
         }));
 
     if (!result.canceled) {
-      // console.log(result.assets[0].uri);
-
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setCover_url(result.assets[0].uri);
       setIsChanged(true);

@@ -45,7 +45,7 @@ const Profile = ({ navigation }) => {
         //todo: fetch user data with session
         setTimeout(() => {
           setData({
-            isBlockedByYou: false, //! if you blocked the other user
+            isBlockedByYou: true, //! if you blocked the other user
             isBlockedByUser: false, //! if the other user blocked you
             id: "some-other-id",
             username: "someotheruser",
@@ -290,11 +290,11 @@ const Profile = ({ navigation }) => {
             ],
           });
           setisFollowing(true); //todo: get this from the server
-        }, 1000);
+        }, 0);
         setTimeout(() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
           setisLoading(false);
-        }, 1005);
+        }, 0);
       });
     } else {
       supabase.auth.getSession().then(({ data: { session } }) => {
@@ -1026,8 +1026,30 @@ const Profile = ({ navigation }) => {
             alignContent: "center",
           }}
         >
+          <View
+            style={{ flex: 1, flexDirection: "row", marginHorizontal: "3%" }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                backgroundColor: "#EAEAEA",
+                borderRadius: 40,
+                opacity: 0.8,
+                padding: 8,
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: topInset,
+                height: scale(30),
+                width: scale(30),
+              }}
+            >
+              <Ionicons name="md-chevron-back" size={scale(16)} color="black" />
+            </TouchableOpacity>
+          </View>
           {data?.isBlockedByYou ? (
-            <View style={{ alignItems: "center" }}>
+            <View style={{ flex: 2, alignItems: "center" }}>
               <CustomText
                 style={{
                   fontSize: 40,
