@@ -136,8 +136,6 @@ const HomeNavigator = ({ navigation }) => {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        // component={FakeLogout}
-
         options={{
           headerShown: false,
           title: "",
