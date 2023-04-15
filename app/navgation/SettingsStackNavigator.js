@@ -6,12 +6,18 @@ import { Ionicons } from "@expo/vector-icons";
 import AccountScreen from "../components/Settings/AccountScreen";
 import PersonalInfo from "../components/Settings/PersonalInfo";
 import DeleteAccount from "../components/Settings/DeleteAccount";
+import YourActivity from "../components/Settings/LikedPosts";
+import LikedPosts from "../components/Settings/LikedPosts";
+import BlockedAccounts from "../components/Settings/BlockedAccounts";
+import SupportScreen from "../components/Settings/SupportScreen";
+import InviteScreen from "../components/Settings/InviteScreen";
+import { scale } from "../utils/Scale";
 
 const Stack = createNativeStackNavigator();
 
 const BackButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
-    <Ionicons name="chevron-back" size={24} color="black" />
+    <Ionicons name="chevron-back" size={scale(24)} color="black" />
   </TouchableOpacity>
 );
 
@@ -20,12 +26,7 @@ const SettingsStackNavigator = ({ navigation }) => {
     <Stack.Navigator
       initialRouteName="Settings"
       screenOptions={({}) => ({
-        tabBarShowLabel: false,
         headerShadowVisible: false,
-        tabBarStyle: {
-          backgroundColor: "#F9F9F9",
-          paddingVertical: 0,
-        },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
       })}
     >
@@ -42,40 +43,47 @@ const SettingsStackNavigator = ({ navigation }) => {
         component={AccountScreen}
         options={{
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
-        name="Activity"
-        component={BackButton}
+        name="Likes"
+        component={LikedPosts}
         options={{
           headerShadowVisible: false,
-          headerTitle: "Your Activity",
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerTitle: "Liked Posts",
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
-        name="Blocked Accounts"
-        component={BackButton}
+        name="Blocked"
+        component={BlockedAccounts}
         options={{
+          headerTitle: "Blocked Accounts",
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
         name="Support"
-        component={BackButton}
+        component={SupportScreen}
         options={{
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
-        name="Invite Friends"
-        component={BackButton}
+        name="Invite"
+        component={InviteScreen}
         options={{
+          headerTitle: "",
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
@@ -84,7 +92,8 @@ const SettingsStackNavigator = ({ navigation }) => {
         options={{
           headerTitle: "Personal Info",
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
       <Stack.Screen
@@ -93,7 +102,8 @@ const SettingsStackNavigator = ({ navigation }) => {
         options={{
           headerTitle: "Delete Account",
           headerShadowVisible: false,
-          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          headerBackTitle: "",
+          headerTintColor: "black",
         }}
       />
     </Stack.Navigator>

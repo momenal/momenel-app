@@ -1,5 +1,6 @@
-import { View, ScrollView, Button } from "react-native";
+import { ScrollView, Button } from "react-native";
 import SettingsTab from "../app/components/Settings/SettingsTab";
+import { supabase } from "../app/lib/supabase";
 
 const Settings = ({ navigation }) => {
   return (
@@ -12,8 +13,8 @@ const Settings = ({ navigation }) => {
         onPress={() => navigation.navigate("Account")}
       />
       <SettingsTab
-        title="Your Activity"
-        onPress={() => navigation.navigate("Activity")}
+        title="Liked Posts"
+        onPress={() => navigation.navigate("Likes")}
       />
       <SettingsTab
         title="Blocked Accounts"
@@ -27,8 +28,11 @@ const Settings = ({ navigation }) => {
         title="Invite Friends"
         onPress={() => navigation.navigate("Invite")}
       />
-
-      <Button title="Logout" color={"#8652FF"} />
+      <Button
+        title="Logout"
+        color={"#8652FF"}
+        onPress={() => supabase.auth.signOut()}
+      />
     </ScrollView>
   );
 };
