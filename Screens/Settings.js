@@ -5,11 +5,27 @@ const Settings = ({ navigation }) => {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
-      contentContainerStyle={{ alignItems: "flex-end", paddingTop: "2%" }}
+      contentContainerStyle={{ alignItems: "center", paddingTop: "2%" }}
     >
       <SettingsTab
         title="Account"
-        onPress={() => console.log("account pressed")}
+        onPress={() => navigation.navigate("Account")}
+      />
+      <SettingsTab
+        title="Your Activity"
+        onPress={() => navigation.navigate("Activity")}
+      />
+      <SettingsTab
+        title="Blocked Accounts"
+        onPress={() => navigation.navigate("Blocked")}
+      />
+      <SettingsTab
+        title="Support"
+        onPress={() => navigation.navigate("Support")}
+      />
+      <SettingsTab
+        title="Invite Friends"
+        onPress={() => navigation.navigate("Invite")}
       />
 
       <Button title="Logout" color={"#8652FF"} />

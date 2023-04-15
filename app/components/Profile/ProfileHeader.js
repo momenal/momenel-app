@@ -172,7 +172,7 @@ const ProfileHeader = ({
             <TouchableOpacity
               onPress={() => {
                 RouteName === "Profile"
-                  ? navigation.navigate("Settings")
+                  ? navigation.navigate("Setting")
                   : setShowBottomSheetModal(true);
               }}
               style={{

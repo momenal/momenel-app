@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 
-const SettingsTab = ({ title }) => {
+const SettingsTab = ({ title, onPress }) => {
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -24,7 +25,7 @@ const SettingsTab = ({ title }) => {
         {title}
       </CustomText>
       <Ionicons name="chevron-forward" size={17} color="black" />
-    </View>
+    </Pressable>
   );
 };
 

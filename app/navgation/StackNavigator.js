@@ -18,6 +18,7 @@ import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
 import UploadStory from "../../Screens/UploadStory";
+import SettingsStackNavigator from "./SettingsStackNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -190,15 +191,10 @@ const StackNavigator = ({}) => {
         }}
       />
       <Stack.Screen
-        name="Settings"
-        component={Settings}
+        name="Setting"
+        component={SettingsStackNavigator}
         options={{
-          // headerShown: false,
-          // headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-          headerBackTitle: "",
-          headerShadowVisible: false,
-          headerTintColor: "black",
-          gestureEnabled: false,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
