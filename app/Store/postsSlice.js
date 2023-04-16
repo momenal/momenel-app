@@ -107,8 +107,6 @@ export const createPostsSlice = (set) => ({
       repost: {
         isRepost: false,
       },
-      // profile_url:
-      //   "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
       posts: [
         {
           id: Math.random(19).toString(),
@@ -125,8 +123,7 @@ export const createPostsSlice = (set) => ({
       reposts: 5,
       lastEdit: null,
       isLiked: false,
-      repostedByUser: true, // if the user himself has reposted the post
-
+      repostedByUser: true,
       isDonateable: true,
     },
 

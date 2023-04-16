@@ -41,15 +41,15 @@ const Post = ({
   username,
   name,
   createdAt,
-
   posts,
   caption,
   isReposted,
   isDonateable,
   height,
   handleLike,
+  handleRepost,
 }) => {
-  const handleRepost = useBoundStore((state) => state.handleRepost);
+  // const handleRepost = useBoundStore((state) => state.handleRepost);
   const [showTipSheet, setShowTipSheet] = useState(false);
   const [showPurchaseSheet, setShowPurchaseSheet] = useState(false);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -87,7 +87,7 @@ const Post = ({
   };
 
   const handleRepostFunc = async () => {
-    await handleRepost(index, isReposted);
+    await handleRepost(index, isReposted, postId);
     if (isReposted === false) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     } else {

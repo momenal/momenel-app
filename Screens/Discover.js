@@ -25,22 +25,22 @@ const Discover = ({ navigation }) => {
   const handleLike = useBoundStore((state) => state.handleLike);
 
   const [trendingHashtags, setTrendingHashtags] = useState([
-    "#dezinced",
-    "#leavers",
-    "#carboniferous",
-    "#crudites",
-    "#bicarbs",
-    "#indexed",
-    "#steroidogenesis",
-    "chias",
-    "#ordonnances",
-    "#teapoys",
+    // "#dezinced",
+    // "#leavers",
+    // "#carboniferous",
+    // "#crudites",
+    // "#bicarbs",
+    // "#indexed",
+    // "#steroidogenesis",
+    // "chias",
+    // "#ordonnances",
+    // "#teapoys",
   ]);
 
   const [followingHashtags, setFollowingHashtags] = useState([
-    { id: "1", hashtag: "#cars" },
-    { id: "2", hashtag: "#cats" },
-    { id: "3", hashtag: "#memes" },
+    // { id: "1", hashtag: "#cars" },
+    // { id: "2", hashtag: "#cats" },
+    // { id: "3", hashtag: "#memes" },
   ]);
 
   useEffect(() => {
@@ -64,60 +64,63 @@ const Discover = ({ navigation }) => {
   }, []);
 
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
-  //todo: change this to discover posts data
+  //todo: change this to discover posts data from server
   const postsData = useBoundStore((state) => state.posts);
 
   const renderHeader = (
     <View style={{}}>
       {/* top hashtags */}
-      <View>
-        <CustomText
-          style={{
-            fontFamily: "Nunito_700Bold",
-            marginHorizontal: 12,
-            marginBottom: "1%",
-          }}
-        >
-          Top Hashtags
-        </CustomText>
-        <FlashList
-          data={trendingHashtags}
-          renderItem={({ item }) => <Tag tag={item} navigation={navigation} />}
-          horizontal
-          estimatedItemSize={50}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingLeft: 12,
-          }}
-        />
-      </View>
+      {trendingHashtags.length > 0 && (
+        <View>
+          <CustomText
+            style={{
+              fontFamily: "Nunito_700Bold",
+              marginHorizontal: 12,
+              marginBottom: "1%",
+            }}
+          >
+            Top Hashtags
+          </CustomText>
+          <FlashList
+            data={trendingHashtags}
+            renderItem={({ item }) => (
+              <Tag tag={item} navigation={navigation} />
+            )}
+            horizontal
+            estimatedItemSize={50}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingLeft: 12,
+            }}
+          />
+        </View>
+      )}
       {/* following hashtags */}
-      <View style={{ marginVertical: "5%" }}>
-        <CustomText
-          style={{
-            fontFamily: "Nunito_700Bold",
-            marginHorizontal: 12,
-            marginBottom: "1%",
-          }}
-        >
-          Following Hashtags
-        </CustomText>
-        <FlashList
-          data={followingHashtags}
-          renderItem={({ item }) => <Tag tag={item} navigation={navigation} />}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          estimatedItemSize={50}
-          contentContainerStyle={{
-            paddingLeft: 12,
-          }}
-        />
-      </View>
-      {/* <View style={{ paddingHorizontal: "3%", marginVertical: "3%" }}>
-        <CustomText style={{ fontFamily: "Nunito_700Bold" }}>
-          #newtomomenel
-        </CustomText>
-      </View> */}
+      {followingHashtags.length > 0 && (
+        <View style={{ marginVertical: "5%" }}>
+          <CustomText
+            style={{
+              fontFamily: "Nunito_700Bold",
+              marginHorizontal: 12,
+              marginBottom: "1%",
+            }}
+          >
+            Following Hashtags
+          </CustomText>
+          <FlashList
+            data={followingHashtags}
+            renderItem={({ item }) => (
+              <Tag tag={item} navigation={navigation} />
+            )}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            estimatedItemSize={50}
+            contentContainerStyle={{
+              paddingLeft: 12,
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 
@@ -132,7 +135,6 @@ const Discover = ({ navigation }) => {
           likes={item.likes}
           comments={item.comments}
           reposts={item.reposts}
-          isLiked={isLiked}
           isReposted={isReposted}
           type={item.type}
           isDonateable={item.isDonateable}
@@ -145,6 +147,7 @@ const Discover = ({ navigation }) => {
           caption={item.caption}
           height={scaledHeight}
           handleLike={handleLike}
+          isLiked={isLiked}
         />
       );
     },
@@ -202,7 +205,17 @@ const Discover = ({ navigation }) => {
             marginRight: "3%",
           }}
         >
-          <Ionicons name="ios-search" size={scale(16)} color="#727477" />
+          <Ionicons
+            name="ios-search"
+            size={scale(16)}
+            color="#727477"
+            onPress={() =>
+              navigation.navigate("Search", {
+                type: null,
+                query: null,
+              })
+            }
+          />
           <Pressable
             onPress={() =>
               navigation.navigate("Search", {
@@ -210,12 +223,19 @@ const Discover = ({ navigation }) => {
                 query: null,
               })
             }
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              width: "100%",
+              marginLeft: "3%",
+            }}
           >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
-                marginLeft: "2%",
+                width: "100%",
+                height: "100%",
               }}
             >
               <CustomText
@@ -250,11 +270,9 @@ const Discover = ({ navigation }) => {
             // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
           })
         }
-        // todo: change this to a custom component
         ListHeaderComponent={renderHeader}
         ListHeaderComponentStyle={{
           paddingTop: 5,
-          // paddingBottom: Dimensions.get("window").height * 0.002,
         }}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
@@ -267,6 +285,7 @@ const Discover = ({ navigation }) => {
           itemVisiblePercentThreshold: 50,
           minimumViewTime: 500,
         }}
+        // todo: implement viewability below
         onViewableItemsChanged={({ viewableItems, changed }) => {
           // loop through viewable items and update the store
           viewableItems.forEach((item) => {

@@ -26,7 +26,7 @@ const StackNavigator = ({}) => {
   const navigation = useNavigation();
   return (
     <Stack.Navigator
-      initialRouteName="Setting"
+      initialRouteName="Home"
       screenOptions={{
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
       }}

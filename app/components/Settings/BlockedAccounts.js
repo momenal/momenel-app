@@ -41,7 +41,7 @@ const BlockedAccounts = ({ navigation }) => {
 
       setBlockedAccounts(data);
       setIsLoading(false);
-    }, 0);
+    }, 1000);
   };
 
   const toggleBlock = (id) => {
