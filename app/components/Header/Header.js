@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from "./Logo";
-import BalanceTab from "./BalanceTab";
 import { scale } from "../../utils/Scale";
 
 const Header = () => {
@@ -12,9 +11,6 @@ const Header = () => {
     <SafeAreaView edges={["right", "left", "top"]} style={styles.container}>
       <View style={[styles.views]}>
         <Logo size={memoScale(28)} />
-      </View>
-      <View style={[styles.views]}>
-        <BalanceTab />
       </View>
     </SafeAreaView>
   );

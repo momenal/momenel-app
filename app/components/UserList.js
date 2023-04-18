@@ -12,14 +12,7 @@ import {
 import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
 
-const UserList = ({
-  type,
-  username,
-  profile_url,
-  isFollowing,
-  tip,
-  onPress,
-}) => {
+const UserList = ({ type, username, profile_url, isFollowing, onPress }) => {
   const size = useMemo(() => scale(25), []);
   const fontSize = useMemo(() => scale(13), []);
 
@@ -58,28 +51,6 @@ const UserList = ({
           >
             {username}
           </CustomText>
-          {tip && (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: "2%",
-              }}
-            >
-              <CoinIcon size={fontSize + 2} />
-              <CustomText
-                style={{
-                  fontFamily: "Nunito_600SemiBold",
-                  fontSize: fontSize - 3,
-                  width: Dimensions.get("window").width / 2.4,
-                  marginLeft: 2,
-                }}
-                numberOfLines={1}
-              >
-                {tip}
-              </CustomText>
-            </View>
-          )}
         </View>
       </View>
       <TouchableOpacity

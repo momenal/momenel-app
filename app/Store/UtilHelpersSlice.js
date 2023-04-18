@@ -2,15 +2,6 @@ import { Alert } from "react-native";
 import { supabase } from "../lib/supabase";
 
 export const createUtilHelperSlice = (set, get) => ({
-  handleTip: async (postId, postType, amount) => {
-    try {
-      console.log("tipping post", postId, postType, amount);
-      // todo: const response = await axios.post(`/api/posts/${postId}/tip`, {
-      return true;
-    } catch (err) {
-      console.error(err);
-    }
-  },
   handleCreatePost: async ({ posts, caption, parts }) => {
     try {
       // supabase.auth.getSession().then(({ data: { session } }) => {

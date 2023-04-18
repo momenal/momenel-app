@@ -7,7 +7,7 @@ export const createUserSlice = (set, get) => ({
     "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   loading: false,
   hasErrors: false,
-  coinsOwned: 12000,
+
   SetUserId: async (userId) => {
     try {
       set(() => ({
@@ -27,21 +27,6 @@ export const createUserSlice = (set, get) => ({
         loading: false,
         hasErrors: false,
       }));
-    } catch (err) {
-      set(() => ({ hasErrors: true, loading: false }));
-    }
-  },
-
-  HandleCoinsPurchase: async (params) => {
-    console.log("HandleCoinsPurchase", params.id);
-    set(() => ({ loading: true }));
-    try {
-      set(() => ({
-        coinsOwned: get().coinsOwned + params.coinsAmount,
-        loading: false,
-        hasErrors: false,
-      }));
-      return { status: true };
     } catch (err) {
       set(() => ({ hasErrors: true, loading: false }));
     }

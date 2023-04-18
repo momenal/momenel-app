@@ -29,8 +29,6 @@ const ByUserList = ({ route, navigation }) => {
     } else if (type === "reposts") {
       navigation.setOptions({ title: "Reposts" });
       fetchReposts(Id);
-    } else if (type === "tips") {
-      navigation.setOptions({ title: "Tips" });
     } else if (type === "followers") {
       navigation.setOptions({
         title: `Followers`,
@@ -138,7 +136,7 @@ const ByUserList = ({ route, navigation }) => {
             ? Reposts
             : type === "followers" || type === "following"
             ? data
-            : Tips
+            : []
         }
         renderItem={({ item }) =>
           renderItem({

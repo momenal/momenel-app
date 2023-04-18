@@ -16,15 +16,11 @@ import PaginationDot from "./PaginationDot";
 import StructuredText from "./StructuredText";
 import CommentsIcon from "../icons/CommentsIcon";
 import Repost from "../icons/Repost";
-import TipIcon from "../icons/TipIcon";
 import CustomText from "../customText/CustomText";
-import { useBoundStore } from "../../Store/useBoundStore";
 import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import BottomTipSheet from "../BottomFlatSheet/TipSheet/BottomTipSheet";
 import { scale } from "../../utils/Scale";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
-import BottomPurchaseSheet from "../BottomFlatSheet/PurchaseSheet/BottomPurchaseSheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -50,19 +46,12 @@ const Post = ({
   handleRepost,
 }) => {
   // const handleRepost = useBoundStore((state) => state.handleRepost);
-  const [showTipSheet, setShowTipSheet] = useState(false);
-  const [showPurchaseSheet, setShowPurchaseSheet] = useState(false);
+
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(13), []);
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
-
-  //report sheet
-  const onReportSheetClose = () => {
-    Keyboard.dismiss();
-    setShowTipSheet(false);
-  };
 
   /**
    * If the user has liked the post, then the user can unlike the post. If the user has not liked the
@@ -164,18 +153,6 @@ const Post = ({
       ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
       : Math.sign(num) * Math.abs(num);
   }
-
-  const handleTip = () => {
-    if (isDonateable === true) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      //open tip modal
-      setShowTipSheet(true);
-    } else {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-
-      //todo: show alert
-    }
-  };
 
   function handleComments() {
     navigation.navigate("Comments", { type: "post", postId: postId });
@@ -331,10 +308,6 @@ const Post = ({
         <TouchableOpacity onPress={handleRepostFunc}>
           <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={handleTip}>
-          <TipIcon size={25} color={isDonateable ? "#F12D97" : "#CECECE"} />
-        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -407,20 +380,6 @@ const Post = ({
           </TouchableOpacity>
         )}
       </View>
-      <BottomTipSheet
-        show={showTipSheet}
-        setShow={setShowTipSheet}
-        onSheetClose={onReportSheetClose}
-        username={username}
-        postId={postId}
-        type={"post"}
-        setShowPurchaseSheet={setShowPurchaseSheet}
-      />
-      <BottomPurchaseSheet
-        show={showPurchaseSheet}
-        setShow={setShowPurchaseSheet}
-        onSheetClose={() => setShowPurchaseSheet(false)}
-      />
       <DetachedBottomSheetWithScroll
         show={showBottomSheet}
         onSheetClose={() => setShowBottomSheet(false)}
