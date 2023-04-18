@@ -45,7 +45,7 @@ const Profile = ({ navigation }) => {
         //todo: fetch user data with session
         setTimeout(() => {
           setData({
-            isBlockedByYou: true, //! if you blocked the other user
+            isBlockedByYou: false, //! if you blocked the other user
             isBlockedByUser: false, //! if the other user blocked you
             id: "some-other-id",
             username: "someotheruser",
@@ -73,12 +73,12 @@ const Profile = ({ navigation }) => {
               {
                 postId: "askjdlkasjdmasdi",
                 username: "farhanverse",
-                name: "farhan",
+                name: "should",
                 repost: {
                   isRepost: false,
                 },
                 profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+                  "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
                 posts: [
                   {
                     id: Math.random(19).toString(),
@@ -332,12 +332,12 @@ const Profile = ({ navigation }) => {
               {
                 postId: "askjdlkasjdmasdi",
                 username: "farhanverse",
-                name: "farhan",
+                name: "farhan here",
                 repost: {
                   isRepost: false,
                 },
                 profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+                  "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
                 posts: [
                   {
                     id: Math.random(19).toString(),

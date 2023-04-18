@@ -87,7 +87,7 @@ const Notifications = ({ navigation }) => {
     //       posts: fakeRes,
     //     });
     //   });
-    navigation.navigate("PostSingle", {
+    navigation.navigate("PostsList", {
       id: "jsakd",
     });
   };

@@ -19,7 +19,6 @@ import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
 import UploadStory from "../../Screens/UploadStory";
 import SettingsStackNavigator from "./SettingsStackNavigator";
-import PostSingle from "../../Screens/PostSingle";
 
 const Stack = createNativeStackNavigator();
 
@@ -159,17 +158,7 @@ const StackNavigator = ({}) => {
           headerTintColor: "black",
         }}
       />
-      <Stack.Screen
-        name="PostSingle"
-        component={PostSingle}
-        options={{
-          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-          headerBackTitle: "",
-          headerTitle: "Posts",
-          headerShadowVisible: false,
-          headerTintColor: "black",
-        }}
-      />
+
       <Stack.Screen
         name="UserProfile"
         component={Profile}
