@@ -1,6 +1,5 @@
 import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect } from "react";
-import StoriesContainer from "../app/components/Stories/StoriesScroll/StoriesContainer";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 import { supabase } from "../app/lib/supabase";
@@ -17,6 +16,7 @@ const Home = ({ navigation }) => {
     // todo: fetch posts from db
     fetchNotifications();
 
+    //todo: implement this --> fetch notifications every 5 minutes
     // const intervalId = setInterval(() => {
     //   fetchNotifications();
     // }, 10000); //todo: set this --> fetch notifications every 5 minutes
@@ -52,10 +52,6 @@ const Home = ({ navigation }) => {
       );
     },
     [postsData]
-  );
-  const renderStories = useCallback(
-    <StoriesContainer navigation={navigation} />,
-    []
   );
 
   const renderListFooter = useCallback(
@@ -96,10 +92,6 @@ const Home = ({ navigation }) => {
             height: item.posts?.length > 0 ? item.posts[0].height : 0,
           })
         }
-        ListHeaderComponent={renderStories}
-        ListHeaderComponentStyle={{
-          paddingTop: 5,
-        }}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}

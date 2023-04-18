@@ -1,9 +1,9 @@
 import React from "react";
 import HomeTabNavigator from "./HomeTabNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Stories from "../../Screens/Stories";
+
 import Report from "../../Screens/Report";
-import YourStoryCarousel from "../components/Stories/StoriesScroll/YourStory/YourStoryCarousel";
+
 import Zoom from "../../Screens/Zoom";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +17,6 @@ import Settings from "../../Screens/Settings";
 import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
-import UploadStory from "../../Screens/UploadStory";
 import SettingsStackNavigator from "./SettingsStackNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -38,28 +37,7 @@ const StackNavigator = ({}) => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Stories"
-        component={Stories}
-        options={{
-          gestureDirection: "vertical",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="YourStory"
-        component={YourStoryCarousel}
-        options={{ gestureDirection: "vertical", headerShown: false }}
-      />
-      <Stack.Screen
-        name="UploadStory"
-        component={UploadStory}
-        options={{
-          gestureDirection: "vertical",
-          gestureEnabled: false,
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="Comments"
         component={Comments}
