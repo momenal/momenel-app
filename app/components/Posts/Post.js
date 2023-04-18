@@ -195,7 +195,7 @@ const Post = ({
       }}
     >
       {/* reposts */}
-      {repost.isRepost && (
+      {repost?.isRepost && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.05,
@@ -449,5 +449,3 @@ const Post = ({
 
 // export default memo(Post);
 export default Post;
-
-const styles = StyleSheet.create({ container: { backgroundColor: "red" } });

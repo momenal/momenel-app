@@ -101,7 +101,7 @@ const Profile = ({ navigation }) => {
                 comments: 12,
                 reposts: 5,
                 lastEdit: null,
-                isLiked: false,
+                isLiked: true,
                 repostedByUser: true, // if the user himself has reposted the post
                 isDonateable: true,
               },

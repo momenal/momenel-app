@@ -11,9 +11,17 @@ const Home = ({ navigation }) => {
   const fetchMorePosts = useBoundStore((state) => state.fetchMorePosts);
   const postsData = useBoundStore((state) => state.posts);
   const handleLike = useBoundStore((state) => state.handleLike);
+  const fetchNotifications = useBoundStore((state) => state.fetchNotifications);
 
   useEffect(() => {
     // todo: fetch posts from db
+    fetchNotifications();
+
+    // const intervalId = setInterval(() => {
+    //   fetchNotifications();
+    // }, 10000); //todo: set this --> fetch notifications every 5 minutes
+
+    // return () => clearInterval(intervalId);
   }, []);
 
   const renderItem = useCallback(

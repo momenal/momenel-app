@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
@@ -17,118 +19,82 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { RelativeTime } from "../app/utils/RelativeTime";
+import { useBoundStore } from "../app/Store/useBoundStore";
 
 const Notifications = ({ navigation }) => {
-  const [notifications, setNotifications] = useState([]);
-  const [isLoading, setisLoading] = useState(false);
   const headerHeight = useHeaderHeight();
-  const UpdateNotificationsRead = () => {
-    const unreadNotifications = notifications.filter(
-      (notification) => notification.isRead === false
-    );
-    // todo: update notifications as read on server
-    console.log(unreadNotifications);
-  };
-  useEffect(() => {
-    setisLoading(true);
-    //todo: fetch notifications
-    fetch("https://demo2190748.mockable.io/Notifications")
-      .then((response) => response.json())
-      .then((json) => {
-        // console.log(json);
-        setNotifications(json);
-        setisLoading(false);
-      });
-    // setNotifications([
-    //   {
-    //     id: 1,
-    //     type: "like",
-    //     username: "johndoe",
-    //     postId: 1,
-    //     postImage:
-    //       "https://images.unsplash.com/photo-1676202731475-afd55cddb97a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80",
-    //     profileImage:
-    //       "https://images.unsplash.com/photo-1676944350229-f16879749ba7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-    //     timestamp: Date.now() + 1000000,
-    //     isRead: false,
-    //   },
-    //   {
-    //     id: 2,
-    //     type: "comment",
-    //     username: "johndoe",
-    //     postId: 39912000,
-    //     postImage:
-    //       "https://images.unsplash.com/photo-1673506073231-3d4896dd45c2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1166&q=80",
-    //     profileImage: "https://picsum.photos/300/300",
-    //     timestamp: "2021-05-01T12:00:00.000Z",
-    //     isRead: true,
-    //   },
-    //   {
-    //     id: 3,
-    //     type: "repost",
-    //     username: "farhanverse",
-    //     postId: 89918293890,
-    //     postImage: "https://source.unsplash.com/random/80x80",
-    //     profileImage: "https://source.unsplash.com/random/80x80/?person",
-    //     timestamp: "2021-05-01T12:00:00.000Z",
-    //     isRead: true,
-    //   },
-    //   {
-    //     id: 4,
-    //     username: "kkalra",
-    //     type: "mention",
-    //     postId: 89918293890,
-    //     postImage: "https://source.unsplash.com/random/90x90",
-    //     profileImage: "https://source.unsplash.com/random/80x80/?person",
-    //     timestamp: "2021-05-01T12:00:00.000Z",
-    //     isRead: true,
-    //   },
-    //   {
-    //     id: 4,
-    //     type: "tip",
-    //     tipAmount: 20, // only for tip
-    //     username: "jackly",
-    //     postId: 89918293890,
-    //     postImage: "https://source.unsplash.com/random/100x100",
-    //     profileImage: "https://source.unsplash.com/random/70x70/?person",
-    //     timestamp: "2021-05-01T12:00:00.000Z",
-    //     isRead: true,
-    //   },
-    //   {
-    //     id: 5,
-    //     type: "follow",
-    //     isFollowing: false, // only for follow
-    //     username: "nathan11998",
-    //     postId: 89918293890,
-    //     postImage: "https://source.unsplash.com/random/100x100",
-    //     profileImage: "https://source.unsplash.com/random/70x70/?person",
-    //     timestamp: "2021-05-01T12:00:00.000Z",
-    //     isRead: true,
-    //   },
-    // ]);
-    // setTimeout(() => {
-    //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    //   setisLoading(false);
-    // }, 0);
+  const notifications = useBoundStore((state) => state.notifications);
+  const fetchNotifications = useBoundStore((state) => state.fetchNotifications);
+  const handleFollow = useBoundStore((state) => state.handleFollow);
+  const handleNotificationsRead = useBoundStore(
+    (state) => state.handleNotificationsRead
+  );
+  const [isLoading, setisLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-    // update notifications as read on mount
-    // UpdateNotificationsRead();
+  useEffect(() => {
+    if (notifications.length === 0) fetchNotificationsWrapper();
+    else handleNotificationsRead();
   }, []);
-  const handleFollow = (username) => {
-    console.log("followed", username);
-    //todo: send follow request to server
-    // update notifications as read and update follow status
-    const updatedNotifications = notifications.map((notification) => {
-      if (notification.username === username) {
-        return { ...notification, isFollowing: true, isRead: true };
-      }
-      return notification;
-    });
-    setNotifications(updatedNotifications);
+
+  const fetchNotificationsWrapper = async () => {
+    setisLoading(true);
+    await fetchNotifications();
+    setisLoading(false);
   };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchNotifications();
+    setIsRefreshing(false);
+  };
+
+  const handlePress = (id) => {
+    const fakeRes = [
+      {
+        postId: Math.random(19).toString(),
+        username: "gifpedia",
+        name: "Gifs official",
+        repost: {
+          isRepost: false,
+        },
+        posts: [
+          {
+            id: Math.random(19).toString(),
+            width: 4000,
+            height: 2300,
+            type: "photo",
+            url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
+          },
+        ],
+        caption: "#cat",
+        createdAt: Date.now(),
+        likes: 300,
+        comments: 12,
+        reposts: 5,
+        lastEdit: null,
+        isLiked: false,
+        repostedByUser: true,
+        isDonateable: true,
+      },
+    ];
+    // fetch post data from db and then navigate to postList
+    // fetch(`https://run.mocky.io/v3/ce50730d-1497-4664-ade9-4fe1c1626344`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     navigation.navigate("PostsList", {
+    //       scrollToIndex: 0,
+    //       posts: fakeRes,
+    //     });
+    //   });
+    navigation.navigate("PostSingle", {
+      id: "jsakd",
+    });
+  };
+
   const scaledHeight = useMemo(() => scale(30), []);
   const renderItem = ({ item }) => (
-    <Pressable
+    <TouchableOpacity
       style={{
         marginHorizontal: "2%",
         marginVertical: "3%",
@@ -137,7 +103,7 @@ const Notifications = ({ navigation }) => {
         maxWidth: Dimensions.get("window").width,
         flexDirection: "row",
       }}
-      //todo: navigate to post
+      onPress={() => handlePress(item.postId)}
     >
       {/* left */}
       <View style={{ flexDirection: "row", flex: 1 }}>
@@ -174,8 +140,6 @@ const Notifications = ({ navigation }) => {
               ? "mentioned you in a comment"
               : item.type === "repost"
               ? "reposted your post"
-              : item.type === "tip"
-              ? `sent you a tip of ${item.tipAmount} coins`
               : item.type === "follow"
               ? "followed you"
               : ""}
@@ -215,7 +179,7 @@ const Notifications = ({ navigation }) => {
           />
         )}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -250,6 +214,15 @@ const Notifications = ({ navigation }) => {
           data={notifications}
           renderItem={renderItem}
           estimatedItemSize={100}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+          ListFooterComponent={
+            <ActivityIndicator animating={isLoading && !isRefreshing} />
+          }
         />
       )}
     </View>
