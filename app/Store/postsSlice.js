@@ -2,104 +2,6 @@ import { Alert } from "react-native";
 
 export const createPostsSlice = (set) => ({
   posts: [
-    // {
-    //   postId: Math.random(19).toString(),
-    //   username: "quotes",
-    //   name: "Quotes",
-
-    //   repost: {
-    //     isRepost: true,
-    //     repostedBy: "farhan",
-    //     repostedAt: "2022-11-04T13:54:55+00:00",
-    //   },
-    //   posts: [
-    //     {
-    //       id: Math.random(19).toString(),
-    //       height: 1024,
-    //       width: 576,
-    //       type: "video",
-    //       // url: "https://customer-pswsg66nv24jq2cx.cloudflarestream.com/23aef827b9074268839fc65cc584de0a/manifest/video.m3u8", //!cloudflare
-    //       url: "https://vz-09489f4f-454.b-cdn.net/6f40bbc4-28c6-4eec-813b-39cc07613a17/playlist.m3u8", //!bunny
-    //     },
-    //   ],
-    //   profile_url:
-    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //   caption:
-    //     "It was a #good idea. At least, they all thought it was a good idea at the time. Hindsight would reveal that in reality, it was an unbelievably terrible idea, but it would take another week for them to understand that. Right now, at this very moment.\nthey all agreed that it was the perfect course of action for the current situation.",
-    //   createdAt: Date.now(),
-    //   likes: 300,
-    //   comments: 12,
-    //   reposts: 5,
-    //   lastEdit: null,
-    //   isLiked: false,
-    //   repostedByUser: true, // if the user himself has reposted the post
-
-    //   isDonateable: false,
-    // },
-    // {
-    //   postId: Math.random(19).toString(),
-    //   username: "quotes",
-    //   name: "Insights101",
-    //   // type: "text",
-    //   repost: {
-    //     isRepost: true,
-    //     repostedBy: "farhan",
-    //     repostedAt: "2022-11-04T13:54:55+00:00",
-    //   },
-    //   posts: [], //! can be null too
-    //   posts: [
-    //     {
-    //       id: Math.random(19).toString(),
-    //       width: 1200,
-    //       height: 630,
-    //       type: "photo",
-    //       url: "https://fake10pullzone.b-cdn.net/socialnewui.png", //!bunnyet
-    //     },
-    //   ],
-    //   profile_url:
-    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //   caption: "Love this!",
-    //   createdAt: Date.now(),
-    //   likes: 300,
-    //   comments: 12,
-    //   reposts: 5,
-    //   lastEdit: null,
-    //   isLiked: false,
-    //   repostedByUser: true, // if the user himself has reposted the pos
-    //   isDonateable: false,
-    // },
-    // {
-    //   postId: Math.random(19).toString(),
-    //   username: "quotes",
-    //   name: "Insights101",
-    //   // type: "text",
-    //   repost: {
-    //     isRepost: true,
-    //     repostedBy: "farhan",
-    //     repostedAt: "2022-11-04T13:54:55+00:00",
-    //   },
-    //   posts: [], //! can be null too
-    //   posts: [
-    //     {
-    //       id: Math.random(19).toString(),
-    //       width: 498,
-    //       height: 266,
-    //       type: "photo",
-    //       url: "https://fake10pullzone.b-cdn.net/lol.gif", //!bunnyet
-    //     },
-    //   ],
-    //   profile_url:
-    //     "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //   caption: "Love this!",
-    //   createdAt: Date.now(),
-    //   likes: 300,
-    //   comments: 12,
-    //   reposts: 5,
-    //   lastEdit: null,
-    //   isLiked: false,
-    //   repostedByUser: true, // if the user himself has reposted the pos
-    //   isDonateable: false,
-    // },
     {
       postId: Math.random(19).toString(),
       username: "gifpedia",
@@ -452,7 +354,6 @@ export const createPostsSlice = (set) => ({
     },
   ],
   likes: [],
-  reposts: [],
   handleLike: async (index, isLiked) => {
     try {
       set((state) => {

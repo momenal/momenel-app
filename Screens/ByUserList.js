@@ -1,34 +1,55 @@
 // Description: This screen will show the list of users who liked the post or reposted the post or tipped the post.
 
 import { Dimensions, StyleSheet, View } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
-import { useBoundStore } from "../app/Store/useBoundStore";
+import React, { useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import UserList from "../app/components/UserList";
 
 import CustomText from "../app/components/customText/CustomText";
 import { scale } from "../app/utils/Scale";
 
+let likes = [
+  {
+    username: "farhan",
+    profile_url:
+      "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
+    isFollowing: true,
+  },
+  {
+    username: "mohammad",
+    profile_url:
+      "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
+    isFollowing: false,
+  },
+];
+let reposts = [
+  {
+    username: "BenIwara",
+    profile_url:
+      "https://images.unsplash.com/photo-1681483476977-322d81693e41?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+    isFollowing: true,
+  },
+  {
+    username: "vale",
+    profile_url:
+      "https://images.unsplash.com/photo-1677103216895-59fb1b6a4fcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=770&q=80",
+    isFollowing: false,
+  },
+];
+
 const ByUserList = ({ route, navigation }) => {
   const { type, Id } = route.params;
-  const Likes = useBoundStore((state) => state.likes);
-  const Reposts = useBoundStore((state) => state.reposts);
   const [data, setData] = useState([]);
-
-  const fetchLikes = useBoundStore((state) => state.fetchLikes);
-  const fetchReposts = useBoundStore((state) => state.fetchReposts);
-
-  const kFormatter = (num) => {
-    return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
 
   useEffect(() => {
     if (type === "likes") {
       navigation.setOptions({ title: "Likes" });
-      fetchLikes(Id);
+      //todo: fetch likes from server
+      console.log("fetching likes: ", Id);
+      setData(likes);
     } else if (type === "reposts") {
       navigation.setOptions({ title: "Reposts" });
-      fetchReposts(Id);
+      setData(reposts);
     } else if (type === "followers") {
       navigation.setOptions({
         title: `Followers`,
@@ -73,6 +94,10 @@ const ByUserList = ({ route, navigation }) => {
       ]);
     }
   }, []);
+
+  const kFormatter = (num) => {
+    return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const handleFollowPress = (username) => {
     console.log("handleFollowPress", username);
@@ -129,15 +154,7 @@ const ByUserList = ({ route, navigation }) => {
     <View style={styles.container}>
       <FlashList
         ListHeaderComponent={renderHeaderComponent}
-        data={
-          type === "likes"
-            ? Likes
-            : type === "reposts"
-            ? Reposts
-            : type === "followers" || type === "following"
-            ? data
-            : []
-        }
+        data={data}
         renderItem={({ item }) =>
           renderItem({
             item,

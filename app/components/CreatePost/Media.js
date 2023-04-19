@@ -52,6 +52,12 @@ const Media = ({ item }) => {
                 height: naturalSize.height,
               });
             }}
+            onFullscreenUpdate={(status) => {
+              if (status.fullscreenUpdate === 3) {
+                setShowPauseIcon(true);
+                console.log("fullscreen exited");
+              }
+            }}
           />
 
           <TouchableOpacity
