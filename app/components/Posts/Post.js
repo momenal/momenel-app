@@ -2,11 +2,10 @@ import {
   Animated,
   Dimensions,
   FlatList,
-  Keyboard,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -187,7 +186,7 @@ const Post = ({
             style={{
               fontFamily: "Nunito_800ExtraBold",
               color: "#999999",
-              marginLeft: "2%",
+              marginLeft: "1%",
               fontSize: FontSize,
             }}
           >
@@ -255,7 +254,8 @@ const Post = ({
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
             width: ScreenWidth,
-            paddingBottom: 16,
+            // paddingBottom: 16,
+            paddingBottom: 5,
           }}
         >
           {/* <TapGestureHandler
@@ -295,21 +295,97 @@ const Post = ({
           paddingLeft: ScreenWidth * 0.05,
           paddingRight: ScreenWidth * 0.06,
           marginBottom: 5,
-          justifyContent: "space-between",
+          // justifyContent: "space-between",
           alignItems: "center",
           height: 30,
         }}
       >
-        <Heart isLiked={isLiked} onPress={handleLikeFunc} size={23} />
-
-        <TouchableOpacity onPress={handleComments}>
-          <CommentsIcon size={21} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleRepostFunc}>
-          <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
-        </TouchableOpacity>
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+            marginRight: "2%",
+          }}
+        >
+          <Heart isLiked={isLiked} onPress={handleLikeFunc} size={23} />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UserList", { type: "likes", Id: postId })
+            }
+            style={{ marginLeft: 5 }}
+          >
+            <CustomText
+              style={{
+                fontFamily: "Nunito_700Bold",
+                fontSize: FontSize - 1,
+                marginRight: 9,
+                color: "#999999",
+              }}
+            >
+              {kFormatter(likes)}
+            </CustomText>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+            marginRight: "2%",
+          }}
+        >
+          <TouchableOpacity onPress={handleComments}>
+            <CommentsIcon size={21} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleComments} style={{ marginLeft: 5 }}>
+            <CustomText
+              style={{
+                fontFamily: "Nunito_700Bold",
+                fontSize: FontSize - 1,
+                marginRight: 9,
+                color: "#999999",
+              }}
+            >
+              {kFormatter(comments)}
+            </CustomText>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={handleRepostFunc}>
+            <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
+          </TouchableOpacity>
+          {reposts > 1 && (
+            <TouchableOpacity
+              style={{ marginLeft: 5 }}
+              onPress={() =>
+                navigation.navigate("UserList", {
+                  type: "reposts",
+                  Id: postId,
+                })
+              }
+            >
+              <CustomText
+                style={{
+                  fontFamily: "Nunito_700Bold",
+                  fontSize: FontSize - 1,
+                  marginRight: 9,
+                  color: "#999999",
+                }}
+              >
+                {kFormatter(reposts)}
+              </CustomText>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-      <View
+      {/* <View
         style={{
           // backgroundColor: "black",
           flexDirection: "row",
@@ -379,7 +455,7 @@ const Post = ({
             </CustomText>
           </TouchableOpacity>
         )}
-      </View>
+      </View> */}
       <DetachedBottomSheetWithScroll
         show={showBottomSheet}
         onSheetClose={() => setShowBottomSheet(false)}

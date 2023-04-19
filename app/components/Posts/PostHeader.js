@@ -12,11 +12,9 @@ import React, { memo, useCallback, useMemo, useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
-import Ellipsis from "../icons/Ellipsis";
 import { useBoundStore } from "../../Store/useBoundStore";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as Haptics from "expo-haptics";
 import { scale } from "../../utils/Scale";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -152,7 +150,7 @@ const PostHeader = ({
           style={{ marginLeft: 6 }}
           onPress={() => setShowBottomSheet(true)}
         >
-          <Ellipsis size={memoizedScale(18)} />
+          <Ionicons name="ellipsis-vertical" size={scale(18)} color="#828282" />
         </TouchableOpacity>
       </View>
       <BottomSheet
