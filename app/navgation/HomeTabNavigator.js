@@ -147,31 +147,6 @@ const HomeNavigator = ({ navigation }) => {
         }}
       />
     </Tab.Navigator>
-
-    // <Stack.Navigator
-    //   screenOptions={{
-    //     // headerShown: false,
-    //     headerShadowVisible: false,
-    //   }}
-    // >
-    //   <Stack.Screen
-    //     name="Feed"
-    //     component={Home}
-    //     options={{
-    //       headerTransparent: false,
-    //     }}
-    //   />
-    //   <Stack.Screen
-    //     name="Comments"
-    //     component={Comments}
-    //     // options={{
-    //     //   title: "Comments",
-    //     //   tabBarStyle: { display: "none" },
-    //     // }}
-    //     options={{ tabBarStyle: { display: "none" } }}
-    //   />
-    //   <Stack.Screen name="CreatePost" component={CreatePost} />
-    // </Stack.Navigator>
   );
 };
 

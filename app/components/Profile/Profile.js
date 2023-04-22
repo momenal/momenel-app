@@ -21,7 +21,6 @@ import { supabase } from "../../lib/supabase";
 import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
 import { useBoundStore } from "../../Store/useBoundStore";
-// import ProfileHeader2 from "./ProfileHeader2";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
@@ -855,12 +854,13 @@ const Profile = ({ navigation }) => {
             padding: "2%",
             width: "100%",
           }}
-          onPress={() =>
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             navigation.navigate("PostsList", {
               scrollToIndex: index,
               posts: data.posts,
-            })
-          }
+            });
+          }}
         >
           <View
             style={{
@@ -891,12 +891,13 @@ const Profile = ({ navigation }) => {
     return (
       <Pressable
         style={{ padding: "2%" }}
-        onPress={() =>
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           navigation.navigate("PostsList", {
             scrollToIndex: index,
             posts: data.posts,
-          })
-        }
+          });
+        }}
       >
         <ImageBackground
           // todo: get thumbnail from bunny if item.posts[0].type is video
