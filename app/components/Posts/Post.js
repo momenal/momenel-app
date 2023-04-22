@@ -258,22 +258,12 @@ const Post = ({
             paddingBottom: 5,
           }}
         >
-          {/* <TapGestureHandler
-            ref={doubleTapRef}
-            onHandlerStateChange={_onDoubleTap}
-            numberOfTaps={2}
-          > */}
           <GestureDetector gesture={_doubleTap}>
             <View>
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
-                // maxCharCount={150}
-                maxCharCount={posts?.length === 0 ? 500 : 150}
-                // numberOfLines={
-                //   numOfLines != null ? numOfLines : type === "text" ? 12 : 3
-                // }
-                // numberOfLines={3}
+                maxCharCount={posts?.length === 0 ? 250 : 150}
                 style={
                   posts?.length === 0
                     ? { fontSize: FontSize + 3 }
@@ -284,7 +274,6 @@ const Post = ({
               </StructuredText>
             </View>
           </GestureDetector>
-          {/* </TapGestureHandler> */}
         </View>
       )}
       {/* buttons */}
