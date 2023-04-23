@@ -32,6 +32,7 @@ const Profile = ({ navigation }) => {
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const loggedUsername = useBoundStore((state) => state.username);
   const userId = useBoundStore((state) => state.userId);
+  const profile_url = useBoundStore((state) => state.profile_url);
 
   const scale12 = useMemo(() => scale(12), []);
 
@@ -300,14 +301,10 @@ const Profile = ({ navigation }) => {
         //todo: fetch user data with session
         setTimeout(() => {
           setData({
-            isBlockedByYou: false, //! if you blocked the other user
-            isBlockedByUser: false, //! if the other user blocked you
             id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            // id: "some-other-id",
             username: "farhanverse",
             name: "Farhan 👋",
-            profile_url:
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
+            profile_url: profile_url,
             cover_url:
               "https://images.unsplash.com/photo-1626761191814-a9dc9efd085c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
             bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,

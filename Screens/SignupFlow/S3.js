@@ -1,11 +1,21 @@
-import { Keyboard, Pressable, StyleSheet, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import {
+  Button,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../../app/lib/supabase";
+import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const S2 = ({ navigation }) => {
+const S3 = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,9 +40,7 @@ const S2 = ({ navigation }) => {
     <View style={{ backgroundColor: "#E8E8E8", flex: 1 }}>
       <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
         <View style={{ marginBottom: "3%" }}>
-          <CustomText style={styles.heading}>
-            What is your display name?
-          </CustomText>
+          <CustomText style={styles.heading}>more</CustomText>
           <CustomText>
             This can be your real name, an alias or anything.
           </CustomText>
@@ -73,7 +81,7 @@ const S2 = ({ navigation }) => {
   );
 };
 
-export default S2;
+export default S3;
 
 const styles = StyleSheet.create({
   container: {

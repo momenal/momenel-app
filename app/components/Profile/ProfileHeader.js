@@ -36,7 +36,6 @@ const ProfileHeader = ({
   username,
   isRefreshing,
 }) => {
-  console.log("ss", profile_url);
   const { name: RouteName } = useRoute();
   const bgColors = [
     "#C7EFCF",
@@ -114,7 +113,6 @@ const ProfileHeader = ({
                 uri: cover_url,
               }
             : null
-          // : require("../../../assets/placeholder.png")
         }
         resizeMode="cover"
         style={{

@@ -2,6 +2,7 @@ import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useBoundStore } from "../Store/useBoundStore";
+import { Ionicons } from "@expo/vector-icons";
 
 const TabBarProfileIcon = ({ size, focused }) => {
   const profile_url = useBoundStore((state) => state.profile_url);
@@ -14,8 +15,7 @@ const TabBarProfileIcon = ({ size, focused }) => {
         width: size,
         height: size,
         borderRadius: 50,
-        padding: focused ? size * 0.66 : 0, // This should be the border width you want to have
-        // padding: focused ? 14 : 0, // This should be the border width you want to have
+        padding: focused ? size * 0.67 : size * 0.6, // This should be the border width you want to have
         overflow: "hidden",
       }}
     >
@@ -29,7 +29,12 @@ const TabBarProfileIcon = ({ size, focused }) => {
         }}
       >
         <Image
-          style={{ width: size, height: size, borderRadius: 500 }}
+          style={{
+            width: !focused ? size + size * 0.6 : size,
+            height: !focused ? size + size * 0.6 : size,
+            borderRadius: 500,
+            backgroundColor: "black",
+          }}
           resizeMode="center"
           source={{
             uri: profile_url,

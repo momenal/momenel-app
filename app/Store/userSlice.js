@@ -2,9 +2,8 @@ import { supabase } from "../lib/supabase";
 
 export const createUserSlice = (set, get) => ({
   userId: null,
-  username: "farhanverse",
-  profile_url:
-    "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  username: null,
+  profile_url: null,
   loading: false,
   hasErrors: false,
 

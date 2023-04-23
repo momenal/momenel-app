@@ -1,6 +1,6 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
-import { Alert, StyleSheet } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import {
   useFonts,
   Nunito_400Regular,
@@ -23,13 +23,27 @@ import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(null);
   const SetUserId = useBoundStore((state) => state.SetUserId);
+  const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);
 
   useEffect(() => {
+    setIsLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+      //todo: get user data from database
+      setTimeout(() => {
+        SetUserData(
+          "user",
+          "https://images.pexels.com/photos/1317712/pexels-photo-1317712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          null
+        );
+        setHasCompletedOnboarding(false);
+        setSession(session);
+        setIsLoading(false);
+      }, 0);
     });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -44,7 +58,6 @@ export default function App() {
         }
         SetUserId(user.id);
       }
-
       setSession(session);
     });
   }, []);
@@ -70,15 +83,20 @@ export default function App() {
 
   if (!fontsLoaded) {
     return null;
+  } else if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator color="#0000ff" />
+      </View>
+    );
   } else {
     return session && session.user ? (
-      !username ? (
+      !username || !hasCompletedOnboarding ? (
         <GestureHandlerRootView style={{ flex: 1 }}>
           <SafeAreaProvider>
             <PortalProvider>
               <NavigationContainer>
                 <SignupStackNavigator />
-                {/* <StackNavigator /> */}
               </NavigationContainer>
             </PortalProvider>
           </SafeAreaProvider>
