@@ -45,7 +45,7 @@ export default function App() {
           "https://images.pexels.com/photos/1317712/pexels-photo-1317712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
           null
         );
-        setHasCompletedOnboarding(false);
+        setHasCompletedOnboarding(true);
         setSession(session);
         setIsLoading(false);
       }, 0);
@@ -63,6 +63,8 @@ export default function App() {
         }
         SetUserId(user.id);
       }
+      //todo: get user data from database and set it in store
+      setHasCompletedOnboarding(true);
       setSession(session);
     });
   }, []);

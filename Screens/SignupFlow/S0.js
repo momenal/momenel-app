@@ -21,18 +21,23 @@ const S0 = ({ navigation }) => {
   const monthRef = useRef();
   const yearRef = useRef();
 
-  const handleDayChange = (text) => {
-    if (text.length === 2) {
-      yearRef.current.focus();
-    }
-    setDay(text);
-  };
-
   const handleMonthChange = (text) => {
     if (text.length === 2) {
       dayRef.current.focus();
     }
     setMonth(text);
+  };
+
+  const handleDayChange = (text) => {
+    if (text > 31) {
+      setDay("MM");
+      return;
+    }
+    if (text.length === 2) {
+      yearRef.current.focus();
+    }
+
+    setDay(text);
   };
 
   const handleYearChange = (text) => {
