@@ -5,13 +5,14 @@ import S1 from "../../Screens/SignupFlow/S1";
 import S2 from "../../Screens/SignupFlow/S2";
 import S3 from "../../Screens/SignupFlow/S3";
 import S0 from "../../Screens/SignupFlow/S0";
+import S4 from "../../Screens/SignupFlow/S4";
 
 const Stack = createNativeStackNavigator();
 
 const SignupStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName={"s0"}
+      initialRouteName={"s3"}
       screenOptions={{
         headerShadowVisible: false,
         headerTitleStyle: { fontFamily: "Nunito_600SemiBold" },
@@ -49,6 +50,15 @@ const SignupStackNavigator = () => {
       <Stack.Screen
         name="s3"
         component={S3}
+        options={{
+          title: "Getting Started",
+          headerBackTitle: "",
+          headerTitleStyle: { fontFamily: "Nunito_600SemiBold" },
+        }}
+      />
+      <Stack.Screen
+        name="s4"
+        component={S4}
         options={{
           title: "Getting Started",
           headerBackTitle: "",

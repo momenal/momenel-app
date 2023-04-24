@@ -20,43 +20,49 @@ import LinearGradientButton from "../../app/components/Buttons/LinearGradientBut
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { scale } from "../../app/utils/Scale";
 import * as ImagePicker from "expo-image-picker";
+import { useRoute } from "@react-navigation/native";
 
-const S3 = ({ navigation }) => {
+const S4 = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [imageUri, setImageUri] = useState();
+  const [coverUrl, setCoverUrl] = useState();
+  const { profile_url } = route.params;
+
+  useEffect(() => {
+    if (profile_url) {
+      setImageUri(profile_url);
+    }
+  }, []);
 
   const handleNext = async () => {
     if (isChanged) {
       setIsLoading(true);
       //todo: send image to be uplaoded to server
       setTimeout(() => {
-        navigation.navigate("s4", { profile_url: imageUri });
+        // navigation.navigate("s4");
         setIsLoading(false);
-      }, 0);
+      }, 2000);
     } else {
-      //   navigation.navigate("s4");
-      navigation.navigate("s4", { profile_url: null });
+      navigation.navigate("s4");
     }
   };
-  const pickProfileImage = async () => {
+  const pickCoverImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0,
-      allowsEditing: true,
       base64: false,
-      aspect: [1, 1],
     });
 
     if (!result.canceled) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setImageUri(result.assets[0].uri);
+      setCoverUrl(result.assets[0].uri);
       setIsChanged(true);
     }
   };
   const removeProfileImage = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setImageUri(null);
+    setCoverUrl(null);
     setIsChanged(false);
   };
 
@@ -72,7 +78,7 @@ const S3 = ({ navigation }) => {
       >
         <ActivityIndicator color="#0000ff" />
         <CustomText style={{ marginTop: "5%" }}>
-          Saving profile image
+          Uploading cover image
         </CustomText>
       </View>
     );
@@ -81,10 +87,8 @@ const S3 = ({ navigation }) => {
   return (
     <View style={{ backgroundColor: "#E8E8E8", flex: 1, padding: 20 }}>
       <View style={{ marginBottom: "3%" }}>
-        <CustomText style={styles.heading}>Add profile photo</CustomText>
-        <CustomText>
-          Add a profile photo so your friends know it’s you.
-        </CustomText>
+        <CustomText style={styles.heading}>Pick a cover image</CustomText>
+        <CustomText>This will be shown on top of your profile</CustomText>
       </View>
       <View
         style={{
@@ -93,86 +97,75 @@ const S3 = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        {!imageUri && (
-          <Pressable
-            onPress={pickProfileImage}
-            style={{
-              height: scale(200),
-              width: scale(200),
-              borderRadius: scale(200) / 2,
-              backgroundColor: "white",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="ios-person-add" size={scale(50)} color="#999999" />
-          </Pressable>
-        )}
-        {imageUri && (
-          <View
-            style={
-              {
-                // width: scale(126),
-              }
-            }
-          >
-            <Image
-              source={
-                imageUri
-                  ? {
-                      uri: imageUri,
-                    }
-                  : null
-              }
-              resizeMode="cover"
-              style={{
-                height: scale(200),
-                width: scale(200),
-                borderRadius: scale(200) / 2,
-                borderColor: "white",
-                borderWidth: 6,
-                backgroundColor: "white",
-                alignItems: "flex-end",
-              }}
-            />
-            <View
+        <View
+          style={{
+            backgroundColor: "white",
+            width: "90%",
+            // height: "55%",
+            borderRadius: 10,
+            overflow: "hidden",
+          }}
+        >
+          {coverUrl ? (
+            <Pressable
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: -scale(200) / 3,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#9E8CFB",
+                width: "100%",
+                aspectRatio: 16 / 9,
               }}
+              onPress={pickCoverImage}
             >
-              <TouchableOpacity
+              <Image
+                source={{ uri: coverUrl }}
+                style={{ flex: 1, width: "100%", aspectRatio: 16 / 9 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#9E8CFB",
+                width: "100%",
+                aspectRatio: 16 / 9,
+              }}
+              onPress={pickCoverImage}
+            >
+              <Ionicons name="image" size={24} color="#2A00FF" />
+              <CustomText
                 style={{
-                  width: scale(35),
-                  height: scale(35),
-                  borderRadius: 80,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
+                  marginLeft: 10,
+                  fontFamily: "Nunito_800ExtraBold",
+                  color: "#2A00FF",
                 }}
-                onPress={removeProfileImage}
               >
-                <Ionicons name="trash" size={scale(18)} color="red" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: scale(35),
-                  height: scale(35),
-                  borderRadius: 80,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={pickProfileImage}
-              >
-                <Ionicons name="camera" size={scale(18)} color="black" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
+                Upload Photo
+              </CustomText>
+            </Pressable>
+          )}
+
+          <Image
+            source={{
+              uri: imageUri,
+            }}
+            style={{
+              width: scale(90),
+              height: scale(90),
+              resizeMode: "cover",
+              backgroundColor: "#E8E8E8",
+              borderRadius: 200,
+              borderColor: "white",
+              borderWidth: 3,
+              marginTop: -scale(50),
+              marginBottom: scale(20),
+              marginLeft: "4%",
+            }}
+          />
+        </View>
       </View>
       <View
         style={{
@@ -180,6 +173,11 @@ const S3 = ({ navigation }) => {
           marginBottom: "10%",
         }}
       >
+        {isChanged && (
+          <TouchableOpacity onPress={removeProfileImage} style={styles.button}>
+            <CustomText style={styles.buttonText}>Remove Image</CustomText>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={handleNext}>
           <LinearGradientButton style={{ width: "100%" }}>
             <CustomText style={{ color: "white" }}>
@@ -194,7 +192,7 @@ const S3 = ({ navigation }) => {
   );
 };
 
-export default S3;
+export default S4;
 
 const styles = StyleSheet.create({
   container: {
@@ -220,5 +218,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     width: "100%",
     fontSize: 16,
+  },
+  button: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#F44336",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: "5%",
+  },
+  buttonText: {
+    color: "#F44336",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
