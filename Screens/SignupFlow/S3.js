@@ -1,18 +1,13 @@
 import {
-  Button,
-  Dimensions,
-  Keyboard,
   LayoutAnimation,
   Pressable,
   StyleSheet,
-  Text,
-  TextInput,
   View,
   Image,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { supabase } from "../../app/lib/supabase";
+import { useState } from "react";
+
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";

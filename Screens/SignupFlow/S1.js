@@ -3,11 +3,10 @@ import {
   Keyboard,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "../../app/lib/supabase";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";

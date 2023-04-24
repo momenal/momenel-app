@@ -25,7 +25,12 @@ import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(null);
+  const hasCompletedOnboarding = useBoundStore(
+    (state) => state.hasCompletedOnboarding
+  );
+  const setHasCompletedOnboarding = useBoundStore(
+    (state) => state.setHasCompletedOnboarding
+  );
   const SetUserId = useBoundStore((state) => state.SetUserId);
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);

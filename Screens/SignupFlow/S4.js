@@ -1,18 +1,12 @@
 import {
-  Button,
-  Dimensions,
-  Keyboard,
   LayoutAnimation,
   Pressable,
   StyleSheet,
-  Text,
-  TextInput,
   View,
   Image,
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { supabase } from "../../app/lib/supabase";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
@@ -20,18 +14,16 @@ import LinearGradientButton from "../../app/components/Buttons/LinearGradientBut
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { scale } from "../../app/utils/Scale";
 import * as ImagePicker from "expo-image-picker";
-import { useRoute } from "@react-navigation/native";
 
 const S4 = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [imageUri, setImageUri] = useState();
   const [coverUrl, setCoverUrl] = useState();
-  const { profile_url } = route.params;
 
   useEffect(() => {
-    if (profile_url) {
-      setImageUri(profile_url);
+    if (route.params?.profile_url) {
+      setImageUri(route.params.profile_url);
     }
   }, []);
 
@@ -40,11 +32,11 @@ const S4 = ({ route, navigation }) => {
       setIsLoading(true);
       //todo: send image to be uplaoded to server
       setTimeout(() => {
-        // navigation.navigate("s4");
+        navigation.navigate("s5");
         setIsLoading(false);
       }, 2000);
     } else {
-      navigation.navigate("s4");
+      navigation.navigate("s5");
     }
   };
   const pickCoverImage = async () => {

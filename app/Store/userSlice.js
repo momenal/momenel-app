@@ -1,12 +1,17 @@
 import { supabase } from "../lib/supabase";
 
 export const createUserSlice = (set, get) => ({
+  hasCompletedOnboarding: null,
   userId: null,
   username: null,
   profile_url: null,
   loading: false,
   hasErrors: false,
-
+  setHasCompletedOnboarding: async (hasCompletedOnboarding) => {
+    set(() => ({
+      hasCompletedOnboarding: hasCompletedOnboarding,
+    }));
+  },
   SetUserId: async (userId) => {
     try {
       set(() => ({
