@@ -15,8 +15,6 @@ import * as WebBrowser from "expo-web-browser";
 import * as Haptics from "expo-haptics";
 
 const CreateAccount = ({ onReportPress, onUserExists }) => {
-  const [username, setUsername] = useState("");
-  const [isunique, setIsunique] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

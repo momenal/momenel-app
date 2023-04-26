@@ -68,7 +68,7 @@ const DetachedBottomSheet = (props) => {
           onChange={handleSheetChanges}
           enablePanDownToClose={true}
           backdropComponent={renderBackdrop}
-          bottomInset={insets.bottom + 10}
+          bottomInset={insets.bottom + 20}
           detached={true}
           style={styles.container}
           keyboardBlurBehavior="restore"

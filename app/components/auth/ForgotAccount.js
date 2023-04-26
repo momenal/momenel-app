@@ -11,43 +11,57 @@ import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
+import * as WebBrowser from "expo-web-browser";
+import * as Haptics from "expo-haptics";
 
-const SignIn = ({
-  setShowForgotPasswordBottomSheet,
-  setShowSigninBottomSheet,
-}) => {
+const ForgotAccount = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function signInWithEmail() {
+  const resetPassword = async () => {
     setLoading(true);
     setError("");
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
+
+    if (email.length < 1) {
+      setError("Please enter your email address");
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://www.momenel.com/update",
     });
 
     if (error) {
-      setError("Incorrect Username or Password");
       setEmail("");
-      setPassword("");
+      console.log(error);
+      setError("oops! something went wrong. Please contact support.");
     }
-    setLoading(false);
-  }
 
-  async function forgetPassword() {
-    setShowForgotPasswordBottomSheet(true);
-    setShowSigninBottomSheet(false);
-  }
+    if (data) {
+      Alert.alert(
+        "Email Sent",
+        "Check your email for the password reset link.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setEmail("");
+              setLoading(false);
+            },
+          },
+        ]
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
       <CustomText
         style={{ fontFamily: "Nunito_700Bold", fontSize: 30, marginBottom: 20 }}
       >
-        Let’s sign you in.
+        Forgot Password?
       </CustomText>
       {error ? (
         <CustomText style={{ marginBottom: 5, marginLeft: 5, color: "red" }}>
@@ -67,18 +81,7 @@ const SignIn = ({
         blurOnSubmit={true}
         returnKeyType="done"
       />
-      <BottomSheetTextInput
-        style={styles.textInput}
-        placeholder="Password"
-        placeholderTextColor={"#9C9C9C"}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        keyboardAppearance={"dark"}
-        secureTextEntry
-        blurOnSubmit={true}
-        returnKeyType="done"
-      />
-      <TouchableOpacity disabled={loading} onPress={() => signInWithEmail()}>
+      <TouchableOpacity disabled={loading} onPress={() => resetPassword()}>
         <LinearGradientButton style={{ width: "100%", borderRadius: 10 }}>
           <CustomText
             style={{
@@ -90,28 +93,15 @@ const SignIn = ({
               paddingVertical: "2%",
             }}
           >
-            Sign in
+            Reset Password
           </CustomText>
         </LinearGradientButton>
       </TouchableOpacity>
-      <CustomText
-        onPress={forgetPassword}
-        style={{
-          fontSize: 14,
-          width: "100%",
-          textAlign: "center",
-          color: "#9C9C9C",
-          paddingVertical: "2%",
-          marginTop: 15,
-        }}
-      >
-        Forgot password?
-      </CustomText>
     </View>
   );
 };
 
-export default SignIn;
+export default ForgotAccount;
 
 const styles = StyleSheet.create({
   container: {

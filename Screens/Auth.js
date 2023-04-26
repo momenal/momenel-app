@@ -23,6 +23,7 @@ import DetachedBottomSheet from "../app/components/BottomFlatSheet/DetachedBotto
 import SignIn from "../app/components/auth/SignIn";
 import CreateAccount from "../app/components/auth/CreateAccount";
 import SignUpConfirmation from "../app/components/auth/SignUpConfirmation";
+import ForgotAccount from "../app/components/auth/ForgotAccount";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
@@ -57,6 +58,8 @@ const Auth = () => {
   const insets = useSafeAreaInsets();
   const [showSigninBottomSheet, setShowSigninBottomSheet] = useState(false);
   const [showSignupBottomSheet, setShowSignupBottomSheet] = useState(false);
+  const [showForgotPasswordBottomSheet, setShowForgotPasswordBottomSheet] =
+    useState(false);
   const [showConfrimationBottomSheet, setConfirmationBottomSheet] =
     useState(false);
 
@@ -255,7 +258,20 @@ const Auth = () => {
         show={showSigninBottomSheet}
         onSheetClose={() => onSignInClose()}
       >
-        <SignIn />
+        <SignIn
+          setShowForgotPasswordBottomSheet={setShowForgotPasswordBottomSheet}
+          setShowSigninBottomSheet={setShowSigninBottomSheet}
+        />
+      </DetachedBottomSheet>
+      {/* forgot password */}
+      <DetachedBottomSheet
+        show={showForgotPasswordBottomSheet}
+        onSheetClose={() => {
+          setShowForgotPasswordBottomSheet(false);
+          Keyboard.dismiss();
+        }}
+      >
+        <ForgotAccount />
       </DetachedBottomSheet>
       <DetachedBottomSheet
         show={showSignupBottomSheet}
@@ -267,6 +283,7 @@ const Auth = () => {
           onUserExists={onUserAlreadyExists}
         />
       </DetachedBottomSheet>
+
       <DetachedBottomSheet
         show={showConfrimationBottomSheet}
         onSheetClose={() => setConfirmationBottomSheet(false)}
