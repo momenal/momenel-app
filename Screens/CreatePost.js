@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMentions, parseValue } from "react-native-controlled-mentions";
 import { Ionicons } from "@expo/vector-icons";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -158,7 +158,7 @@ const CreatePost = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsMultipleSelection: false,
       allowsEditing: true,
-      videoMaxDuration: 120,
+      videoMaxDuration: 120, // todo: chnage this after a meeting with the team
       orderedSelection: true,
       quality: 1,
       base64: false,
@@ -166,6 +166,7 @@ const CreatePost = ({ navigation }) => {
     });
 
     if (!result.canceled) {
+      console.log(result.assets[0]);
       handleContentPick({
         result,
         message: "Looks like you already selected this video.",
@@ -175,6 +176,7 @@ const CreatePost = ({ navigation }) => {
 
   const handleCreatePost = async ({ posts, caption, parts }) => {
     Keyboard.dismiss();
+
     setIsPosting(true);
     const response = await CreatePost({ posts, caption, parts });
     if (response) {
@@ -268,6 +270,18 @@ const CreatePost = ({ navigation }) => {
     }
   }
 
+  const updateVideoDimensions = (width, height, assetId) => {
+    // find the content that has the assetId and update the width and height
+    const newContent = content.map((item) => {
+      if (item.assetId === assetId) {
+        return { ...item, width, height };
+      } else {
+        return { ...item };
+      }
+    });
+    setContent(newContent);
+  };
+
   const sizeProfile = useMemo(() => scale(30), []);
   const fontSize = useMemo(() => scale(15), []);
 
@@ -335,7 +349,11 @@ const CreatePost = ({ navigation }) => {
               {...textInputProps}
             />
             {content.length > 0 && (
-              <CreatePostMedia data={content} onRemove={removeItem} />
+              <CreatePostMedia
+                data={content}
+                onRemove={removeItem}
+                updateVideoDimensions={updateVideoDimensions}
+              />
             )}
           </View>
         </ScrollView>

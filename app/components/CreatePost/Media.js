@@ -4,7 +4,7 @@ import { View, Image, TouchableOpacity } from "react-native";
 import { scale } from "../../utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
 
-const Media = ({ item }) => {
+const Media = ({ item, updateVideoDimensions }) => {
   const [videoSize, setVideoSize] = useState({ width: 0, height: 0 });
   const [showPauseIcon, setShowPauseIcon] = useState(true);
   const video = useRef(null);
@@ -13,6 +13,14 @@ const Media = ({ item }) => {
   const scaledWidth = (width, height) => {
     let newWidth = width * (Iheight / height);
     return newWidth;
+  };
+
+  const readyForDisplay = (naturalSize) => {
+    setVideoSize({
+      width: naturalSize.width,
+      height: naturalSize.height,
+    });
+    updateVideoDimensions(naturalSize.width, naturalSize.height, item.assetId);
   };
   return (
     <View style={{ marginRight: 10 }}>
@@ -47,10 +55,7 @@ const Media = ({ item }) => {
             useNativeControls={false}
             resizeMode="contain"
             onReadyForDisplay={({ naturalSize }) => {
-              setVideoSize({
-                width: naturalSize.width,
-                height: naturalSize.height,
-              });
+              readyForDisplay(naturalSize);
             }}
             onFullscreenUpdate={(status) => {
               if (status.fullscreenUpdate === 3) {

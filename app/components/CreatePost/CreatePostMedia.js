@@ -10,11 +10,11 @@ import Media from "./Media";
 import { Ionicons } from "@expo/vector-icons";
 import { scale } from "../../utils/Scale";
 
-const CreatePostMedia = ({ data, onRemove }) => {
+const CreatePostMedia = ({ data, onRemove, updateVideoDimensions }) => {
   const keyExtractor = useCallback((item) => item.assetId, []);
   const renderItem = ({ item }) => (
     <View>
-      <Media item={item} />
+      <Media item={item} updateVideoDimensions={updateVideoDimensions} />
       <TouchableOpacity
         style={{
           width: "20%",
