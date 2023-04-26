@@ -1,5 +1,4 @@
 import { Alert } from "react-native";
-import { supabase } from "../lib/supabase";
 
 export const createUtilHelperSlice = (set, get) => ({
   handleCreatePost: async ({ posts, caption, parts }) => {

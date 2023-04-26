@@ -47,9 +47,14 @@ export const createNotificationsSlice = (set, get) => ({
   },
   handleNotificationsRead: () => {
     // map notifications and update the follow status
-    set((state) => ({
+    set(() => ({
       //set newNotifications to false
       newNotifications: false,
     }));
+    const unreadNotifications = get().notifications.filter(
+      (notification) => notification.isRead === "false"
+    );
+
+    //todo: send req to server to update isRead status on notifications
   },
 });
