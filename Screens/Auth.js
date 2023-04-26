@@ -71,8 +71,8 @@ const Auth = () => {
     setConfirmationBottomSheet(true);
   };
   const onUserAlreadyExists = () => {
-    setShowSignupBottomSheet(false);
-    setShowSigninBottomSheet(true);
+    // setShowSignupBottomSheet(false);
+    // setShowSigninBottomSheet(true);
   };
 
   const onSignUpClose = () => {

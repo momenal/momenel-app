@@ -22,7 +22,7 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
 
   async function signUpWithEmail() {
     setLoading(true);
-
+    setError({ type: "", message: "" });
     //check if email already exists
     const res = await supabase
       .from("profiles")
@@ -32,15 +32,15 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
     if (res.data.length > 0) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setError({ type: "auth", message: "User Already exists!" });
-
-      // Alert.alert("User Already exists!");
-
       onUserExists();
     } else {
+      // if email does not exist, create user
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-
+        options: {
+          emailRedirectTo: "https://www.momenel.com/confirm-email",
+        },
         data: {
           dob: "12/12/1990",
         },
@@ -110,34 +110,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
       ) : (
         <></>
       )}
-      {/* <View style={styles.textViews}>
-        {error.type === "username" ? (
-          <CustomText
-            style={{
-              marginBottom: 5,
-            }}
-          >
-            {error.message}
-          </CustomText>
-        ) : (
-          <></>
-        )}
-        <BottomSheetTextInput
-          style={styles.textInput}
-          placeholder="Username"
-          placeholderTextColor={"#9C9C9C"}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          keyboardAppearance={"dark"}
-          blurOnSubmit={true}
-          returnKeyType="done"
-        />
-        {isunique === false && (
-          <CustomText style={styles.errorText}>
-            Username already exists!
-          </CustomText>
-        )}
-      </View> */}
       <View style={styles.textViews}>
         {error.type === "email" ? (
           <CustomText

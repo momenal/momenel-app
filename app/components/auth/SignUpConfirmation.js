@@ -1,4 +1,4 @@
-import { Animated, Easing, Image, StyleSheet, Text, View } from "react-native";
+import { Animated, Easing, Image, StyleSheet, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import CustomText from "../customText/CustomText";
 
@@ -43,8 +43,7 @@ const SignUpConfirmation = () => {
           marginBottom: 20,
         }}
       >
-        A confirmation link have been sent to the email address you provided.
-        Please check your email and simply click the activation link.
+        A confirmation email has been sent to your email address.
       </CustomText>
     </View>
   );
