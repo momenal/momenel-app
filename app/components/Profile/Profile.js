@@ -30,8 +30,6 @@ const Profile = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const [isFollowing, setisFollowing] = useState();
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
-  const loggedUsername = useBoundStore((state) => state.username);
-  const userId = useBoundStore((state) => state.userId);
   const profile_url = useBoundStore((state) => state.profile_url);
 
   const scale12 = useMemo(() => scale(12), []);
@@ -302,7 +300,7 @@ const Profile = ({ navigation }) => {
         setTimeout(() => {
           setData({
             id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            username: "farhanverse",
+            username: "username_from_gloabl_state",
             name: "Farhan 👋",
             profile_url: profile_url,
             cover_url:
@@ -314,16 +312,7 @@ const Profile = ({ navigation }) => {
             postsAmount: 100,
             followers: 900000,
             following: 100,
-            // contactOptions: [
-            //   {
-            //     platform: "sessions",
-            //     contact: "sessionid",
-            //   },
-            //   {
-            //     platform: "telegram",
-            //     contact: "@sessionid",
-            //   },
-            // ],
+            //
             posts: [
               {
                 postId: "askjdlkasjdmasdi",
@@ -1117,7 +1106,7 @@ const Profile = ({ navigation }) => {
           ListHeaderComponent={
             <ProfileHeader
               isRefreshing={isRefreshing}
-              username={data?.id === userId ? loggedUsername : data?.username}
+              username={data?.username}
               handleFollow={handleFollow}
               navigation={navigation}
               profile_url={data?.profile_url}

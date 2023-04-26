@@ -12,7 +12,6 @@ import React, { memo, useCallback, useMemo, useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
-import { useBoundStore } from "../../Store/useBoundStore";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
@@ -26,19 +25,23 @@ const PostHeader = ({
   createdAt,
   index,
   navigation,
+  onReportPress,
 }) => {
-  const postsData = useBoundStore((state) => state.posts);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   const insets = useSafeAreaInsets();
 
-  const onReportPress = () => {
+  // const onReportPress = () => {
+  //   setShowBottomSheet(false);
+  //   navigation.navigate("Report", {
+  //     contentId: postsData[index].postId,
+  //     username: postsData[index].username,
+  //     contentType: "post",
+  //   });
+  // };
+  const onReportPressWrapper = () => {
     setShowBottomSheet(false);
-    navigation.navigate("Report", {
-      contentId: postsData[index].postId,
-      username: postsData[index].username,
-      contentType: "post",
-    });
+    onReportPress();
   };
 
   const Time = useMemo(
@@ -178,7 +181,7 @@ const PostHeader = ({
               // marginBottom: 10,
               borderRadius: 12,
             }}
-            onPress={() => onReportPress()}
+            onPress={() => onReportPressWrapper()}
           >
             <Ionicons name="ios-flag" size={20} color="red" />
             <CustomText

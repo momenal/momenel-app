@@ -58,17 +58,4 @@ export const createUtilHelperSlice = (set, get) => ({
       return false;
     }
   },
-  handleReport: async (id, contentId, contentType, comments) => {
-    try {
-      console.log("slice: report post");
-      console.log("id: ", id);
-      console.log("comments: ", comments);
-      console.log("contentId: ", contentId);
-      console.log("contentType ", contentType);
-      //todo send req to report post
-      //todo if error then show alert
-
-      return true;
-    } catch (err) {}
-  },
 });

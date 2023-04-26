@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -44,8 +43,6 @@ const Post = ({
   handleLike,
   handleRepost,
 }) => {
-  // const handleRepost = useBoundStore((state) => state.handleRepost);
-
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(13), []);
 
@@ -158,6 +155,14 @@ const Post = ({
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
 
+  const onReportPress = () => {
+    navigation.navigate("Report", {
+      contentId: postId,
+      username: username,
+      contentType: "post",
+    });
+  };
+
   return (
     <View
       style={{
@@ -202,6 +207,7 @@ const Post = ({
         name={name}
         createdAt={createdAt}
         index={index}
+        onReportPress={onReportPress}
       />
       {/* media */}
 

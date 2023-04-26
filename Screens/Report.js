@@ -26,7 +26,6 @@ const Report = ({ route, navigation }) => {
   const [activeIndex, setactiveIndex] = useState(null);
   const [text, onChangeText] = useState("");
   // const handleReport = useBoundStore((state) => state.reportPost);
-  const handleReport = useBoundStore((state) => state.handleReport);
   const [data, setData] = useState([]);
   const insets = useSafeAreaInsets();
 

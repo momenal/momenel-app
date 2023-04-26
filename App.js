@@ -31,7 +31,7 @@ export default function App() {
   const setHasCompletedOnboarding = useBoundStore(
     (state) => state.setHasCompletedOnboarding
   );
-  const SetUserId = useBoundStore((state) => state.SetUserId);
+
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);
 
@@ -41,8 +41,8 @@ export default function App() {
       //todo: get user data from database
       setTimeout(() => {
         SetUserData(
-          "user",
-          "https://images.pexels.com/photos/1317712/pexels-photo-1317712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "username_from_gloabl_state",
+          "https://images.pexels.com/users/avatars/78973777/iurii-laimin-961.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
           null
         );
         setHasCompletedOnboarding(true);
@@ -61,7 +61,6 @@ export default function App() {
         if (!user.id) {
           Alert.alert("Error", "Please try again");
         }
-        SetUserId(user.id);
       }
       //todo: get user data from database and set it in store
       setHasCompletedOnboarding(true);

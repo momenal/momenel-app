@@ -51,7 +51,7 @@ const ProfileHeader = ({
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
   const [showBottomContactSheet, setShowBottomContactSheet] = useState(false);
-  const userId = useBoundStore((state) => state.userId);
+  const loggedUsername = useBoundStore((state) => state.username);
   const scale12 = useMemo(() => scale(12), []);
   const mentionHashtagClick = async (text) => {
     const _handlePressButtonAsync = async (url) => {
@@ -308,7 +308,7 @@ const ProfileHeader = ({
           <AmntTag
             value={following}
             txt={"Following"}
-            disabled={id !== userId}
+            disabled={username !== loggedUsername}
             onPress={() =>
               navigation.navigate("UserList", {
                 type: "following",

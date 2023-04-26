@@ -13,7 +13,6 @@ import * as Haptics from "expo-haptics";
 
 const Heart = ({ isLiked, onPress, size }) => {
   const liked = useSharedValue(isLiked ? 1 : 0);
-  // const handleLike = useBoundStore((state) => state.handleLike);
 
   const [isFirst, setisFirst] = useState(true);
   useEffect(() => {
