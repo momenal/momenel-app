@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Keyboard,
@@ -57,6 +58,7 @@ const CreatePost = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const [textValue, setTextValue] = useState("");
   const [content, setContent] = useState([]);
+  const [confrimationMessage, setConfrimationMessage] = useState("");
   const MAX_CONTENT_LENGTH = 10;
 
   const filteredArray = (arrayA, arrayB) => {
@@ -176,13 +178,20 @@ const CreatePost = ({ navigation }) => {
 
   const handleCreatePost = async ({ posts, caption, parts }) => {
     Keyboard.dismiss();
-
     setIsPosting(true);
     const response = await CreatePost({ posts, caption, parts });
+    console.log(response);
     if (response) {
       setIsPosting(false);
       setIsPostingSuccessful(true);
-      // navigation.navigate("Home");
+      // if posts have video then setConfrimationMessage to "Your video is being processed. It will be available shortly."
+      if (posts.some((item) => item.type === "video")) {
+        setConfrimationMessage(
+          `Your video is being processed. It will be available shortly.\nYou will be notified when the post is created.`
+        );
+      } else {
+        setConfrimationMessage("Your post has been created successfully.");
+      }
     } else {
       setIsPosting(false);
       setIsPostingSuccessful(false);
@@ -400,15 +409,20 @@ const CreatePost = ({ navigation }) => {
       {isPosting && (
         <StatusOverlay
           headerHeight={headerHeight}
-          status={"Posting your post..."}
-          message={"Please wait"}
+          status={"Submitting your post..."}
+          message={"This may take a few seconds..."}
         />
       )}
       {isPostingSuccessful && (
         <StatusOverlay
           headerHeight={headerHeight}
           status={"Post submitted successfully"}
-          message={"It may take up to 20 minutes to appear on your profile"}
+          // message={"It may take a few minutes to appear on your profile"}
+          message={
+            confrimationMessage
+              ? confrimationMessage
+              : "Post submitted successfully"
+          }
         />
       )}
     </KeyboardAvoidingView>
