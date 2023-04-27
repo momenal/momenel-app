@@ -7,9 +7,9 @@ import {
   Image,
   Keyboard,
   LayoutAnimation,
+  ActivityIndicator,
 } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
-import Loader from "../app/components/Loader";
 import { useHeaderHeight } from "@react-navigation/elements";
 import GradientText from "../app/components/customText/GradientText";
 import { scale } from "../app/utils/Scale";
@@ -30,6 +30,7 @@ const Comments = ({ route, navigation }) => {
   const [text, onChangeText] = useState("");
   const flatListRef = useRef(null);
   const username = useBoundStore((state) => state.username);
+  const profile_url = useBoundStore((state) => state.profile_url);
 
   const headerHeight = useHeaderHeight();
   const userProfileUrl = useBoundStore((state) => state.profile_url);
@@ -84,13 +85,16 @@ const Comments = ({ route, navigation }) => {
         isLiked: false,
       },
     ];
-    setComments(data);
+    setTimeout(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setComments(data);
+    }, 1000);
   }
 
   function postComment(txt) {
     let comment = {
       _id: Math.random().toString(),
-      profile_url: "https://picsum.photos/200",
+      profile_url: profile_url,
       username: username,
       comment: txt,
       time: Date.now(),
@@ -170,9 +174,10 @@ const Comments = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       {comments === null ? (
-        <Loader />
-      ) : // : // <ActivityIndicator color={"black"} />
-      comments.length === 0 ? (
+        <View style={{ height: "90%", justifyContent: "center" }}>
+          <ActivityIndicator color={"black"} />
+        </View>
+      ) : comments.length === 0 ? (
         <ScrollView
           keyboardDismissMode="interactive"
           contentContainerStyle={{
