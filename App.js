@@ -1,15 +1,7 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
-import {
-  useFonts,
-  Nunito_400Regular,
-  Nunito_500Medium,
-  Nunito_600SemiBold,
-  Nunito_700Bold,
-  Nunito_800ExtraBold,
-  Nunito_900Black,
-} from "@expo-google-fonts/nunito";
+import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./app/navgation/StackNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -78,13 +70,13 @@ export default function App() {
     });
   }, []);
 
-  let [fontsLoaded] = useFonts({
-    Nunito_400Regular,
-    Nunito_500Medium,
-    Nunito_600SemiBold,
-    Nunito_700Bold,
-    Nunito_800ExtraBold,
-    Nunito_900Black,
+  const [fontsLoaded] = useFonts({
+    Nunito_400Regular: require("./assets/fonts/Nunito-Regular.ttf"),
+    Nunito_500Medium: require("./assets/fonts/Nunito-Medium.ttf"),
+    Nunito_600SemiBold: require("./assets/fonts/Nunito-SemiBold.ttf"),
+    Nunito_700Bold: require("./assets/fonts/Nunito-Bold.ttf"),
+    Nunito_800ExtraBold: require("./assets/fonts/Nunito-ExtraBold.ttf"),
+    Nunito_900Black: require("./assets/fonts/Nunito-Black.ttf"),
   });
 
   if (!fontsLoaded) {
