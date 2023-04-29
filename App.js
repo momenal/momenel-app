@@ -13,8 +13,18 @@ import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
+import { log } from "react-native-reanimated";
 
 export default function App() {
+  // async function getHashtags() {
+  //   let { data: hashtags, error } = await supabase.from("hashtags").select("*");
+
+  //   console.log(hashtags);
+  //   console.log(error);
+  // }
+
+  // getHashtags();
+
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
   const hasCompletedOnboarding = useBoundStore(
@@ -116,7 +126,7 @@ export default function App() {
         <PortalProvider>
           <SafeAreaProvider>
             <Auth />
-            <StatusBar style="dark" animated={true} hidden />
+            <StatusBar style="dark" animated={true} />
           </SafeAreaProvider>
         </PortalProvider>
       </GestureHandlerRootView>

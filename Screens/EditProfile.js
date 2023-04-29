@@ -126,7 +126,7 @@ const EditProfile = ({ navigation }) => {
           quality: 1.0,
           allowsEditing: true,
           base64: false,
-          aspect: [9, 16],
+          aspect: [16, 9],
         }));
 
     if (!result.canceled) {

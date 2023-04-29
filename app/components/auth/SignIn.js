@@ -30,7 +30,7 @@ const SignIn = ({
     });
 
     if (error) {
-      setError("Incorrect Username or Password");
+      setError("Incorrect Email or Password");
       setEmail("");
       setPassword("");
     }

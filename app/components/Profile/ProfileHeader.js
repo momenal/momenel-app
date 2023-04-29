@@ -1,10 +1,14 @@
-import { View, ImageBackground, Dimensions, Image } from "react-native";
+import {
+  View,
+  ImageBackground,
+  Dimensions,
+  Image,
+  Platform,
+} from "react-native";
 import * as WebBrowser from "expo-web-browser";
-
 import { useBoundStore } from "../../Store/useBoundStore";
-import React, { memo, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -103,7 +107,9 @@ const ProfileHeader = ({
     <View
       style={[
         { backgroundColor: "white" },
-        isRefreshing === true ? { marginTop: topInset + 5 } : {},
+        isRefreshing === true && Platform.OS === "ios"
+          ? { marginTop: topInset + 5 }
+          : {},
       ]}
     >
       <ImageBackground
@@ -202,9 +208,7 @@ const ProfileHeader = ({
                 <TouchableOpacity
                   onPress={() => navigation.navigate("EditProfile")}
                 >
-                  <LinearGradientButton
-                    style={{ width: scale(80), height: 34 }}
-                  >
+                  <LinearGradientButton style={{ height: 34, padding: "7%" }}>
                     <CustomText style={{ color: "white" }}>
                       Edit Profile
                     </CustomText>

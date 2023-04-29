@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
+import CustomText from "../customText/CustomText";
 
 const SupportScreen = () => {
   const handleCopyEmail = () => {
@@ -14,13 +15,13 @@ const SupportScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Contact Us</Text>
-      <Text style={styles.text}>
-        If you have any questions or issues, please send an email to{" "}
-        <TouchableOpacity onPress={handleCopyEmail}>
-          <Text style={styles.email}>hello@momenel.com</Text>
-        </TouchableOpacity>
-      </Text>
+      <CustomText style={styles.title}>Contact Us</CustomText>
+      <CustomText style={styles.text}>
+        If you have any questions or issues, please send an email to:
+      </CustomText>
+      <TouchableOpacity onPress={handleCopyEmail}>
+        <CustomText style={styles.email}>hello@momenel.com</CustomText>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   RefreshControl,
+  Platform,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useMemo, useState, useEffect, memo } from "react";
@@ -16,7 +17,7 @@ import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { supabase } from "../../lib/supabase";
 import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
@@ -1132,12 +1133,12 @@ const Profile = ({ navigation }) => {
           progressViewOffset={500}
           refreshControl={
             <RefreshControl
-              colors={"black"}
-              tintColor={"black"}
+              title="Refreshing"
+              titleColor={"#000000"}
+              tintColor={"#000000"}
               refreshing={isRefreshing}
               onRefresh={onRefresh}
               progressViewOffset={topInset}
-              size={6}
             />
           }
           renderItem={({ item, index }) =>

@@ -8,6 +8,7 @@ import { scale } from "../app/utils/Scale";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
+import { StatusBar } from "expo-status-bar";
 let fakeData = [
   {
     postId: "99",
@@ -738,6 +739,7 @@ const Discover = ({ navigation }) => {
           });
         }}
       />
+      <StatusBar style="dark" />
     </View>
   );
 };
