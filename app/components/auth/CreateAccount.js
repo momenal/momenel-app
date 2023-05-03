@@ -1,18 +1,12 @@
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
+import { LogBox, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
 import * as WebBrowser from "expo-web-browser";
 import * as Haptics from "expo-haptics";
+import { baseUrl } from "@env";
 
 const CreateAccount = ({ onReportPress, onUserExists }) => {
   const [email, setEmail] = useState("");
@@ -23,13 +17,16 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
   async function signUpWithEmail() {
     setLoading(true);
     setError({ type: "", message: "" });
-    //check if email already exists
-    const res = await supabase
-      .from("profiles")
-      .select("email")
-      .eq("email", email.toLowerCase());
+    //check if email already exists with fetch
+    let response = await fetch(
+      `${baseUrl}/auth/verify?email=${email.toLowerCase()}`,
+      {
+        method: "GET",
+      }
+    );
+    let res = await response.json();
 
-    if (res.data.length > 0) {
+    if (res.exists) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setError({ type: "auth", message: "User Already exists!" });
       onUserExists();
