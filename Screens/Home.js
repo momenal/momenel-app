@@ -32,9 +32,23 @@ let fakeData = [
     lastEdit: null,
     isLiked: false,
     repostedByUser: false,
-    isDonateable: true,
   },
-
+  {
+    postId: "kkalmmiiso7799912",
+    username: "Quotes229",
+    name: "Quotes Daily",
+    repost: {
+      isRepost: false,
+    },
+    caption: "#quote Do not give up",
+    createdAt: "2023-05-02 20:19:25.056789+00",
+    likes: 9928828,
+    comments: 12,
+    reposts: 5,
+    lastEdit: null,
+    isLiked: false,
+    repostedByUser: false,
+  },
   {
     postId: "klannsad",
     username: "3dpediaimagessssssssssssssssssssssssssss",
@@ -278,7 +292,6 @@ let fakeData = [
     postId: "sakdaskjdlk",
     username: "catsofmomenel",
     name: "Cats lol",
-
     repost: {
       isRepost: false,
     },

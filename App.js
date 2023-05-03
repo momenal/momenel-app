@@ -13,7 +13,6 @@ import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
-import { log } from "react-native-reanimated";
 
 export default function App() {
   // async function getHashtags() {
