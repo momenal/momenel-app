@@ -32,6 +32,7 @@ const Profile = ({ navigation }) => {
   const [isFollowing, setisFollowing] = useState();
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const profile_url = useBoundStore((state) => state.profile_url);
+  const username = useBoundStore((state) => state.username);
 
   const scale12 = useMemo(() => scale(12), []);
 
@@ -301,7 +302,7 @@ const Profile = ({ navigation }) => {
         setTimeout(() => {
           setData({
             id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            username: "username_from_gloabl_state",
+            username: username,
             name: "Farhan 👋",
             profile_url: profile_url,
             cover_url:

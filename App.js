@@ -13,6 +13,7 @@ import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
+import { baseUrl } from "@env";
 
 export default function App() {
   // async function getHashtags() {
@@ -39,17 +40,9 @@ export default function App() {
   useEffect(() => {
     setIsLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
-      //todo: get user data from database
-      setTimeout(() => {
-        SetUserData(
-          "username_from_gloabl_state",
-          "https://images.pexels.com/users/avatars/78973777/iurii-laimin-961.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
-          null
-        );
-        setHasCompletedOnboarding(true);
-        setSession(session);
-        setIsLoading(false);
-      }, 0);
+      console.log("session", session.access_token);
+      getIntialData(session.access_token);
+      setSession(session);
     });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -63,11 +56,29 @@ export default function App() {
           Alert.alert("Error", "Please try again");
         }
       }
-      //todo: get user data from database and set it in store
-      setHasCompletedOnboarding(true);
+      // //todo: get user data from database and set it in store
+      // setHasCompletedOnboarding(true);
       setSession(session);
     });
   }, []);
+
+  const getIntialData = async (access_token) => {
+    let headersList = {
+      Authorization: `Bearer ${access_token}`,
+    };
+    let response = await fetch(`${baseUrl}/user/intial`, {
+      method: "GET",
+      headers: headersList,
+    });
+    let data = await response.json();
+    if (data.error) {
+      Alert.alert("Error", "Please try again");
+    } else {
+      SetUserData(data.username, data.profile_url);
+      setHasCompletedOnboarding(data.has_onboarded);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     Audio.setAudioModeAsync({

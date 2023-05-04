@@ -10,13 +10,13 @@ export const createUserSlice = (set, get) => ({
     }));
   },
 
-  SetUserData: async (username, profile_url, preview_url) => {
+  SetUserData: async (username, profile_url) => {
     set(() => ({ loading: true }));
     try {
       set(() => ({
         username: username,
         profile_url: profile_url,
-        preview_url: preview_url,
+
         loading: false,
         hasErrors: false,
       }));
