@@ -14,17 +14,9 @@ import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 import { baseUrl } from "@env";
+import { log } from "react-native-reanimated";
 
 export default function App() {
-  // async function getHashtags() {
-  //   let { data: hashtags, error } = await supabase.from("hashtags").select("*");
-
-  //   console.log(hashtags);
-  //   console.log(error);
-  // }
-
-  // getHashtags();
-
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
   const hasCompletedOnboarding = useBoundStore(
@@ -40,13 +32,17 @@ export default function App() {
   useEffect(() => {
     setIsLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("session", session.access_token);
-      getIntialData(session.access_token);
+      if (session) {
+        getIntialData(session.access_token);
+      } else {
+        setIsLoading(false);
+      }
       setSession(session);
     });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (_event === "SIGNED_IN") {
+        console.log("signed in");
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -55,10 +51,12 @@ export default function App() {
         if (!user.id) {
           Alert.alert("Error", "Please try again");
         }
+        setSession(session);
+        console.log("session sign in", session);
+      } else if (_event === "SIGNED_OUT") {
+        console.log("signed out");
+        setSession(null);
       }
-      // //todo: get user data from database and set it in store
-      // setHasCompletedOnboarding(true);
-      setSession(session);
     });
   }, []);
 
