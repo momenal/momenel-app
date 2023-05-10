@@ -14,7 +14,6 @@ import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 import { baseUrl } from "@env";
-import { log } from "react-native-reanimated";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +32,7 @@ export default function App() {
     setIsLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
+        console.log("session", session.access_token);
         getIntialData(session.access_token);
       } else {
         setIsLoading(false);
@@ -71,7 +71,9 @@ export default function App() {
     let data = await response.json();
     if (data.error) {
       Alert.alert("Error", "Please try again");
+      console.log("error", data.error);
     } else {
+      console.log("data", data);
       SetUserData(data.username, data.profile_url);
       setHasCompletedOnboarding(data.has_onboarded);
       setIsLoading(false);

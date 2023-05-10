@@ -12,6 +12,8 @@ import BlockedAccounts from "../components/Settings/BlockedAccounts";
 import SupportScreen from "../components/Settings/SupportScreen";
 import InviteScreen from "../components/Settings/InviteScreen";
 import { scale } from "../utils/Scale";
+import ChangeEmail from "../components/Settings/ChangeEmail";
+import ChangeBirthday from "../components/Settings/ChangeBirthday";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,24 @@ const SettingsStackNavigator = ({ navigation }) => {
       <Stack.Screen
         name="Account"
         component={AccountScreen}
+        options={{
+          headerShadowVisible: false,
+          headerBackTitle: "",
+          headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="Email"
+        component={ChangeEmail}
+        options={{
+          headerShadowVisible: false,
+          headerBackTitle: "",
+          headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="Birthday"
+        component={ChangeBirthday}
         options={{
           headerShadowVisible: false,
           headerBackTitle: "",
