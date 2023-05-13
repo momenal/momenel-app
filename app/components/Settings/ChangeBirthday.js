@@ -14,64 +14,47 @@ import LinearGradientButton from "../Buttons/LinearGradientButton";
 import CustomText from "../customText/CustomText";
 import { supabase } from "../../lib/supabase";
 import { baseUrl } from "@env";
-import SettingsTab from "./SettingsTab";
 
 const ChangeBirthday = () => {
   const [oldData, setOldData] = useState({});
-  const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUpdate = async () => {
-    if (oldData.email !== email) {
-      const { data, error } = await supabase.auth.updateUser({ email: email });
-      if (error) {
-        console.log(error);
-        Alert.alert("Error", "Please try again");
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    if (error) {
+      console.log(error);
+      Alert.alert("Error", "Please try again");
+    } else {
+      let headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
+      };
+
+      let bodyContent = JSON.stringify({
+        birthday: oldData.date_of_birth === birthday ? null : birthday,
+      });
+      let response = await fetch(`${baseUrl}/user/updatePersonalInfo`, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+      let data = await response.json();
+      if (data.error) {
+        console.log("error");
+        Alert.alert("Error", data.error);
       } else {
+        console.log(data.date_of_birth);
         Alert.alert(
-          "Email Verification sent.",
-          "Please Verify your email address to change your email."
+          "Updated",
+          data.message ? data.message : "Your information has been updated"
         );
       }
     }
-
-    // const {
-    //   data: { session },
-    //   error,
-    // } = await supabase.auth.getSession();
-    // if (error) {
-    //   console.log(error);
-    //   Alert.alert("Error", "Please try again");
-    // } else {
-    //   let headersList = {
-    //     Accept: "*/*",
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${session.access_token}`,
-    //   };
-
-    //   let bodyContent = JSON.stringify({
-    //     email: oldData.email === email ? null : email,
-    //     birthday: oldData.date_of_birth === birthday ? null : birthday,
-    //   });
-    //   let response = await fetch(`${baseUrl}/user/updatePersonalInfo`, {
-    //     method: "POST",
-    //     body: bodyContent,
-    //     headers: headersList,
-    //   });
-    //   let data = await response.json();
-    //   if (data.error) {
-    //     console.log("error");
-    //     Alert.alert("Error", data.error);
-    //   } else {
-    //
-    //     console.log(data.date_of_birth);
-    //     Alert.alert(
-    //       "Updated",
-    //       data.message ? data.message : "Your information has been updated"
-    //     );
-    //   }
-    // }
   };
 
   useEffect(() => {
@@ -88,7 +71,7 @@ const ChangeBirthday = () => {
     let headersList = {
       Authorization: `Bearer ${data.session.access_token}`,
     };
-    let response = await fetch(`${baseUrl}/user/personalInfo`, {
+    let response = await fetch(`${baseUrl}/user/dob`, {
       method: "GET",
       headers: headersList,
     });
@@ -99,13 +82,11 @@ const ChangeBirthday = () => {
     } else {
       console.log("dataResponse", dataResponse);
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setOldData(dataResponse);
-      setEmail(dataResponse.email);
 
       const [year, month, day] = dataResponse.date_of_birth.split("-");
       const outputDate = `${month}/${day}/${year}`;
 
-      setOldData((oldData) => ({ ...oldData, date_of_birth: outputDate }));
+      setOldData({ date_of_birth: outputDate });
       setBirthday(outputDate);
     }
 
@@ -153,14 +134,10 @@ const ChangeBirthday = () => {
                 marginBottom: "5%",
               }}
               onPress={handleUpdate}
-              disabled={
-                oldData.email === email && oldData.date_of_birth === birthday
-              }
+              disabled={oldData.date_of_birth === birthday}
             >
               <LinearGradientButton
-                disabled={
-                  oldData.email === email && oldData.date_of_birth === birthday
-                }
+                disabled={oldData.date_of_birth === birthday}
                 style={{
                   width: "100%",
                   marginTop: "5%",

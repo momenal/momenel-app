@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "momenel",
-    "slug": "momenel",
+    "slug": "privacy-first-social-network",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,7 +31,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow Momenel to access your photos."
+          "photosPermission": "Allow Momenel to access your photos. This is required to upload photos to your posts."
         }
       ]
     ]
