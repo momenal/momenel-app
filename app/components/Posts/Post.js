@@ -351,12 +351,13 @@ const Post = ({
             justifyContent: "center",
             flexDirection: "row",
             alignItems: "center",
+            marginRight: "2%",
           }}
         >
           <TouchableOpacity onPress={handleRepostFunc}>
             <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
           </TouchableOpacity>
-          {reposts > 1 && (
+          {reposts >= 1 && (
             <TouchableOpacity
               style={{ marginLeft: 5 }}
               onPress={() =>

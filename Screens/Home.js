@@ -1,11 +1,13 @@
-import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 import { supabase } from "../app/lib/supabase";
 import { FlashList } from "@shopify/flash-list";
 import { CalcHeight } from "../app/utils/CalcHeight";
 import CustomText from "../app/components/customText/CustomText";
+import { baseUrl } from "@env";
+import * as Haptics from "expo-haptics";
 
 let fakeData = [
   {
@@ -26,9 +28,9 @@ let fakeData = [
     ],
     caption: "#cat",
     createdAt: Date.now(),
-    likes: 300,
-    comments: 12,
-    reposts: 5,
+    likes: 3,
+    comments: 0,
+    reposts: 1,
     lastEdit: null,
     isLiked: false,
     repostedByUser: false,
@@ -44,7 +46,7 @@ let fakeData = [
     createdAt: "2023-05-02 20:19:25.056789+00",
     likes: 9928828,
     comments: 12,
-    reposts: 5,
+    reposts: 2,
     lastEdit: null,
     isLiked: false,
     repostedByUser: false,
@@ -389,8 +391,13 @@ const Home = ({ navigation }) => {
     setIsInitialRender(false);
   };
 
-  const handleLike = (index, isLiked, postId) => {
-    console.log(postId);
+  const handleLike = async (index, isLiked, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    // handle like confirmation before sending to the backend
     const updatedPosts = postsData.map((post) => {
       if (post.postId === postId) {
         if (post.isLiked) {
@@ -403,6 +410,43 @@ const Home = ({ navigation }) => {
       return post;
     });
     setPostsData(updatedPosts);
+
+    // send like to the backend
+    //todo: change url id to postId
+    let response = await fetch(`${baseUrl}/posts/like/8`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      let { likes } = await response.json();
+
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.likes = likes;
+          post.isLiked = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.isLiked = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
 
   const handleRepost = (index, isReposted, postId) => {
