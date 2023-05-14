@@ -6,8 +6,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { CalcHeight } from "../app/utils/CalcHeight";
 import Post from "../app/components/Posts/Post";
+import { supabase } from "../app/lib/supabase";
+import { baseUrl } from "@env";
+import * as Haptics from "expo-haptics";
+
 // todo: remove this
-let fakeRes = [
+let fakeData = [
   {
     postId: Math.random(19).toString(),
     username: "gifpedia",
@@ -26,7 +30,7 @@ let fakeRes = [
     ],
     caption: "#cat",
     createdAt: Date.now(),
-    likes: 300,
+    likes: 4,
     comments: 12,
     reposts: 5,
     lastEdit: null,
@@ -38,11 +42,12 @@ let fakeRes = [
 const PostsList = ({ navigation }) => {
   const flashListRef = useRef(null);
   const { params } = useRoute();
-  const [data, setData] = useState([]);
+  // const [data, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState();
 
   useEffect(() => {
     if (params.posts) {
-      setData(params.posts);
+      setPostsData(params.posts);
       setTimeout(() => {
         flashListRef?.current?.scrollToIndex({
           animated: true,
@@ -53,42 +58,68 @@ const PostsList = ({ navigation }) => {
     } else {
       // todo: get post from db then set data
       console.log("fetching posts from id: ", params.id);
-      setData(fakeRes);
+      setPostsData(fakeData);
     }
   }, []);
 
-  // const handleLike = useCallback(
-  //   async (index, isLiked, postId) => {
-  //     let newData = [...params.posts];
-  //     let post = newData[index];
-  //     if (post.isLiked) {
-  //       post.likes -= 1;
-  //       post.isLiked = false;
-  //     } else {
-  //       post.likes += 1;
-  //       post.isLiked = true;
-  //     }
-  //     setData(newData);
-
-  //     //todo: send like to db with postId
-  //   },
-  //   [data]
-  // );
-  const handleLike = (index, isLiked, postId) => {
-    // update data by liking the post
-    let newData = [...data];
-    let post = newData[index];
-    console.log(post.isLiked);
-    if (post.isLiked === true) {
-      post.likes -= 1;
-      post.isLiked = false;
-    } else {
-      post.likes += 1;
-      post.isLiked = true;
+  const handleLike = async (index, isLiked, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
     }
-    console.log(post.isLiked);
-    setData(newData);
+
+    // handle like confirmation before sending to the backend
+    const updatedPosts = postsData.map((post) => {
+      if (post.postId === postId) {
+        if (post.isLiked) {
+          post.likes -= 1;
+        } else {
+          post.likes += 1;
+        }
+        post.isLiked = !post.isLiked;
+      }
+      return post;
+    });
+    setPostsData(updatedPosts);
+
+    // send like to the backend
+    //todo: change url id to postId
+    let response = await fetch(`${baseUrl}/posts/like/8`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      let { likes } = await response.json();
+
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.likes = likes;
+          post.isLiked = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.isLiked = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
+
   const renderItem = ({ item, index, isLiked, isReposted, height, width }) => {
     let scaledHeight = CalcHeight(width, height);
     return (
@@ -118,7 +149,7 @@ const PostsList = ({ navigation }) => {
   };
   const handleRepost = (index, isReposted, postId) => {
     // update data by reposting the post
-    let newData = [...data];
+    let newData = [...postsData];
     let post = newData[index];
     if (post.repostedByUser === true) {
       post.reposts -= 1;
@@ -127,45 +158,15 @@ const PostsList = ({ navigation }) => {
       post.reposts += 1;
       post.repostedByUser = true;
     }
-    setData(newData);
+    setPostsData(newData);
   };
-
-  // const renderItem = useCallback(
-  //   ({ item, index, isLiked, isReposted, height, width }) => {
-  //     let scaledHeight = CalcHeight(width, height);
-  //     return (
-  //       <Post
-  //         navigation={navigation}
-  //         postId={item.postId}
-  //         index={index}
-  //         likes={item.likes}
-  //         comments={item.comments}
-  //         reposts={item.reposts}
-  //         isLiked={isLiked}
-  //         isReposted={isReposted}
-  //         type={item.type}
-  //         isDonateable={item.isDonateable}
-  //         repost={item.repost}
-  //         profileUrl={item.profile_url}
-  //         username={item.username}
-  //         name={item.name}
-  //         createdAt={item.createdAt}
-  //         posts={item.posts ? item.posts : []}
-  //         caption={item.caption}
-  //         height={scaledHeight}
-  //         handleLike={handleLike}
-  //       />
-  //     );
-  //   },
-  //   []
-  // );
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <FlatList
         keyExtractor={(item, index) => index}
         ref={flashListRef}
-        data={data}
+        data={postsData}
         renderItem={({ item, index }) =>
           renderItem({
             item,

@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { scale } from "../app/utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +17,8 @@ import LinearGradientButton from "../app/components/Buttons/LinearGradientButton
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
 import { CalcHeight } from "../app/utils/CalcHeight";
+import { baseUrl } from "@env";
+import { supabase } from "../app/lib/supabase";
 
 const fakeRes = {
   id: "1jklasd9",
@@ -65,7 +67,7 @@ const fakeRes = {
           url: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         },
       ],
-      caption: "#cat",
+      caption: "#abudhabi",
       createdAt: Date.now(),
       likes: 300,
       comments: 12,
@@ -84,16 +86,16 @@ const Search = ({ navigation, route }) => {
   const [text, onChangeText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [queryResults, setQueryResults] = useState(null);
+  const [postsData, setPostsData] = useState();
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    // console.log("type", type);
-    // console.log("otherParam", query);
     if (query) {
       onChangeText(query);
       //todo: search for query and replace it with fakeRes
       setQueryResults({ ...fakeRes, title: query });
+      setPostsData(fakeRes.posts);
     }
   }, []);
 
@@ -123,6 +125,7 @@ const Search = ({ navigation, route }) => {
     } else {
       // setQueryResults(suggestion);
       setQueryResults({ ...fakeRes, title: suggestion.title });
+      setPostsData(fakeRes.posts);
       //todo: get posts from backend
       // setQueryResults(fakeRes); //! remove this
     }
@@ -134,55 +137,89 @@ const Search = ({ navigation, route }) => {
     );
   };
 
-  const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width }) => {
-      let scaledHeight = CalcHeight(width, height);
-      return (
-        <Post
-          navigation={navigation}
-          postId={item.postId}
-          index={index}
-          likes={item.likes}
-          comments={item.comments}
-          reposts={item.reposts}
-          isReposted={isReposted}
-          type={item.type}
-          isDonateable={item.isDonateable}
-          repost={item.repost}
-          profileUrl={item.profile_url}
-          username={item.username}
-          name={item.name}
-          createdAt={item.createdAt}
-          posts={item.posts ? item.posts : []}
-          caption={item.caption}
-          height={scaledHeight}
-          handleLike={handleLike}
-          handleRepost={handleRepost}
-          isLiked={isLiked}
-        />
-      );
-    },
-    []
-  );
+  const renderItem = ({ item, index, isLiked, isReposted, height, width }) => {
+    let scaledHeight = CalcHeight(width, height);
+    return (
+      <Post
+        navigation={navigation}
+        postId={item.postId}
+        index={index}
+        likes={item.likes}
+        comments={item.comments}
+        reposts={item.reposts}
+        isLiked={isLiked}
+        isReposted={isReposted}
+        type={item.type}
+        isDonateable={item.isDonateable}
+        repost={item.repost}
+        profileUrl={item.profile_url}
+        username={item.username}
+        name={item.name}
+        createdAt={item.createdAt}
+        posts={item.posts ? item.posts : []}
+        caption={item.caption}
+        height={scaledHeight}
+        handleLike={handleLike}
+        handleRepost={handleRepost}
+      />
+    );
+  };
+  const handleLike = async (index, isLiked, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
 
-  const handleLike = (index, isLiked, postId) => {
-    console.log(postId);
-    //todo: make API call to backend to like/unlike post
-    setQueryResults((prevState) => {
-      return {
-        ...prevState,
-        posts: prevState.posts.map((post) => {
-          if (post.postId === postId) {
-            return {
-              ...post,
-              isLiked: !isLiked,
-              likes: isLiked ? post.likes - 1 : post.likes + 1,
-            };
-          }
-          return post;
-        }),
-      };
+    // handle like confirmation before sending to the backend
+    const updatedPosts = postsData.map((post) => {
+      if (post.postId === postId) {
+        if (post.isLiked) {
+          post.likes -= 1;
+        } else {
+          post.likes += 1;
+        }
+        post.isLiked = !post.isLiked;
+      }
+      return post;
     });
+    setPostsData(updatedPosts);
+
+    // send like to the backend
+    //todo: change url id to postId
+    let response = await fetch(`${baseUrl}/posts/like/8`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      let { likes } = await response.json();
+
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.likes = likes;
+          post.isLiked = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.isLiked = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
 
   const handleRepost = (index, repostedByUser, postId) => {
@@ -446,7 +483,7 @@ const Search = ({ navigation, route }) => {
       </View>
       {/* posts from hashtag */}
       <FlashList
-        data={queryResults?.posts || []}
+        data={postsData}
         estimatedItemSize={450}
         keyExtractor={(item) => {
           return item.postId;

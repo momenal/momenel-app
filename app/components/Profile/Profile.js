@@ -343,7 +343,7 @@ const Profile = ({ navigation }) => {
                 ],
                 caption: "#cat",
                 createdAt: Date.now(),
-                likes: 300,
+                likes: 4,
                 comments: 12,
                 reposts: 5,
                 lastEdit: null,

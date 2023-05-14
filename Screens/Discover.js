@@ -9,6 +9,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
+import { baseUrl } from "@env";
+import * as Haptics from "expo-haptics";
+import { supabase } from "../app/lib/supabase";
+
 let fakeData = [
   {
     postId: "99",
@@ -30,9 +34,9 @@ let fakeData = [
     ],
     caption: "Follow @midjourney for more",
     createdAt: Date.now(),
-    likes: 88991,
-    comments: 9232,
-    reposts: 9001,
+    likes: 3,
+    comments: 9,
+    reposts: 100,
     lastEdit: null,
     isLiked: false,
     repostedByUser: false,
@@ -422,8 +426,13 @@ const Discover = ({ navigation }) => {
     });
   }, []);
 
-  const handleLike = (index, isLiked, postId) => {
-    console.log(postId);
+  const handleLike = async (index, isLiked, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    // handle like confirmation before sending to the backend
     const updatedPosts = postsData.map((post) => {
       if (post.postId === postId) {
         if (post.isLiked) {
@@ -436,7 +445,45 @@ const Discover = ({ navigation }) => {
       return post;
     });
     setPostsData(updatedPosts);
+
+    // send like to the backend
+    //todo: change url id to postId
+    let response = await fetch(`${baseUrl}/posts/like/8`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      let { likes } = await response.json();
+
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.likes = likes;
+          post.isLiked = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.isLiked = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
+
   const handleRepost = (index, isReposted, postId) => {
     console.log(postId);
     const updatedPosts = postsData.map((post) => {
