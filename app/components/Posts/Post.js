@@ -19,6 +19,7 @@ import Heart from "../icons/Heart";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { scale } from "../../utils/Scale";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
+import { useRoute } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -45,6 +46,7 @@ const Post = ({
 }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(13), []);
+  const route = useRoute();
 
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -127,10 +129,17 @@ const Post = ({
       // });
       // console.log("@", text);
     } else if (text.startsWith("#")) {
-      navigation.navigate("Search", {
-        type: "hashtag",
-        query: text,
-      });
+      if (route.name === "Search") {
+        navigation.replace("Search", {
+          type: "hashtag",
+          query: text,
+        });
+      } else {
+        navigation.navigate("Search", {
+          type: "hashtag",
+          query: text,
+        });
+      }
     } else if (text.startsWith("more")) {
       setShowBottomSheet(true);
     } else {
