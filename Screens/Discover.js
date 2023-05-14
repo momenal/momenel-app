@@ -484,8 +484,13 @@ const Discover = ({ navigation }) => {
     }
   };
 
-  const handleRepost = (index, isReposted, postId) => {
-    console.log(postId);
+  const handleRepost = async (index, isReposted, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    // handle repost confirmation before sending to the backend
     const updatedPosts = postsData.map((post) => {
       if (post.postId === postId) {
         if (post.repostedByUser) {
@@ -498,7 +503,41 @@ const Discover = ({ navigation }) => {
       return post;
     });
     setPostsData(updatedPosts);
+
+    // send repost to the backend
+    let response = await fetch(`${baseUrl}/posts/repost/10`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.repostedByUser = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.repostedByUser = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
+
   const fetchMorePosts = () => {
     let morePosts = [
       {

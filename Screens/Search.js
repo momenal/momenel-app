@@ -222,24 +222,60 @@ const Search = ({ navigation, route }) => {
     }
   };
 
-  const handleRepost = (index, repostedByUser, postId) => {
-    //todo: make API call to backend to repost/unrepost post
-    setQueryResults((prevState) => {
-      return {
-        ...prevState,
-        posts: prevState.posts.map((post) => {
-          if (post.postId === postId) {
-            return {
-              ...post,
-              repostedByUser: !repostedByUser,
-              reposts: repostedByUser ? post.reposts - 1 : post.reposts + 1,
-            };
-          }
-          return post;
-        }),
-      };
+  const handleRepost = async (index, isReposted, postId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    // handle repost confirmation before sending to the backend
+    const updatedPosts = postsData.map((post) => {
+      if (post.postId === postId) {
+        if (post.repostedByUser) {
+          post.reposts -= 1;
+        } else {
+          post.reposts += 1;
+        }
+        post.repostedByUser = !post.repostedByUser;
+      }
+      return post;
     });
+    setPostsData(updatedPosts);
+
+    // send repost to the backend
+    let response = await fetch(`${baseUrl}/posts/repost/10`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 200) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.repostedByUser = true;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = postsData.map((post) => {
+        if (post.postId === postId) {
+          post.repostedByUser = false;
+        }
+        return post;
+      });
+      setPostsData(updatedPosts);
+    }
   };
+
   const renderHeader = () => {
     return (
       <>
