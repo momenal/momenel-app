@@ -7,6 +7,8 @@ import UserList from "../app/components/UserList";
 import CustomText from "../app/components/customText/CustomText";
 import { scale } from "../app/utils/Scale";
 import { baseUrl } from "@env";
+import { supabase } from "../app/lib/supabase";
+import * as Haptics from "expo-haptics";
 
 let likes = [
   {
@@ -99,12 +101,15 @@ const ByUserList = ({ route, navigation }) => {
     return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleFollowPress = (username) => {
+  const handleFollowPress = async (username) => {
     console.log("handleFollowPress", username);
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return;
+    }
 
-    //todo: send request to server to update the follow status
-
-    // update the state
+    // update the follow state imeediately
     const newData = data.map((item) => {
       if (item.username === username) {
         return {
@@ -114,7 +119,55 @@ const ByUserList = ({ route, navigation }) => {
       }
       return item;
     });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setData(newData);
+
+    // send follow to the backend
+    // //todo: change userID to the actual user id
+    let response = await fetch(
+      `${baseUrl}/user/follow/c985593e-5883-4c97-b09a-6be6bd0cdeff`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      }
+    );
+
+    // if error
+    if (!response.ok) {
+      Alert.alert(
+        "Error 😔",
+        "Something went wrong while trying to follow/unfollow user"
+      );
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+
+    if (response.status === 201) {
+      const newData = data.map((item) => {
+        if (item.username === username) {
+          return {
+            ...item,
+            isFollowing: true,
+          };
+        }
+        return item;
+      });
+      setData(newData);
+    } else if (response.status === 204) {
+      const newData = data.map((item) => {
+        if (item.username === username) {
+          return {
+            ...item,
+            isFollowing: false,
+          };
+        }
+        return item;
+      });
+      setData(newData);
+    }
   };
 
   const renderItem = ({ item, isFollowing }) => {
