@@ -4,9 +4,9 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import UserList from "../app/components/UserList";
-
 import CustomText from "../app/components/customText/CustomText";
 import { scale } from "../app/utils/Scale";
+import { baseUrl } from "@env";
 
 let likes = [
   {

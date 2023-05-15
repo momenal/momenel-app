@@ -46,16 +46,19 @@ export default function App() {
         const {
           data: { user },
         } = await supabase.auth.getUser();
-        console.log("signed in");
-        console.log("user", user.id);
+        // getIntialData(session.access_token);
+        // console.log("signed in");
+        // console.log("user", user.id);
         if (!user.id) {
           Alert.alert("Error", "Please try again");
         }
         setSession(session);
         console.log("session sign in", session);
       } else if (_event === "SIGNED_OUT") {
-        console.log("signed out");
         setSession(null);
+        SetUserData(null, null);
+        setHasCompletedOnboarding(null);
+        setIsLoading(false);
       }
     });
   }, []);
