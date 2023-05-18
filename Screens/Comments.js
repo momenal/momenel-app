@@ -21,9 +21,13 @@ import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
 import StatusOverlay from "../app/components/StatusOverlay";
+import { baseUrl } from "@env";
+import { supabase } from "../app/lib/supabase";
+import CustomText from "../app/components/customText/CustomText";
 
 const Comments = ({ route, navigation }) => {
   const { type, postId } = route.params;
+
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
   const [deletingComment, setDeletingComment] = useState(false);
@@ -36,84 +40,75 @@ const Comments = ({ route, navigation }) => {
   const userProfileUrl = useBoundStore((state) => state.profile_url);
   const insets = useSafeAreaInsets();
 
-  function fetchComments() {
+  async function fetchComments() {
     //todo fetch comments from api using postId
     // let data = [];
-    let data = [
-      {
-        _id: "1asddvasfgrs",
-        // profile_url:
-        //   "https://images.unsplash.com/photo-1610276198568-eb6d0ff53e48?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
-        username: "farhanverse",
-        comment:
-          "Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉 Speak to me often. Even if I don't understand your @words, I feel #your voice speaking to me. 👉",
-        time: Date.now() - 100000,
-        likes: 210,
-        isLiked: true, //? is liked by user themselves
-        gifUrl: "https://media.tenor.com/GVhHT5O4lMcAAAAd/ferrari-car.gif",
+    // let data = [
+    //   {
+    //     created_at: "2023-05-18T15:30:12.506844+00:00",
+    //     id: 15,
+    //     post_id: 8,
+    //     text: "This is also from the app! @farhanverse",
+    //     user: {
+    //       id: "0cee4054-e83f-42ae-a079-75b81c0766fb",
+    //       profile_url:
+    //         "https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //       username: "farhanversehere",
+    //     },
+    //     user_id: "0cee4054-e83f-42ae-a079-75b81c0766fb",
+    //   },
+    // ];
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
+    // fetch comments from api
+    let response = await fetch(`${baseUrl}/comment/1`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
       },
-      {
-        _id: "1",
-        profile_url:
-          "https://images.unsplash.com/photo-1610276198568-eb6d0ff53e48?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
-        username: "username_from_gloabl_state",
-        comment:
-          "Speak to me often. Even if I don't understand your words, I feel your voice speaking to me. 👉",
-        time: Date.now() - 100000,
-        likes: 210,
-        isLiked: true, //? is liked by user themselves
-        gifUrl: "https://media.tenor.com/GVhHT5O4lMcAAAAd/ferrari-car.gif",
-      },
-      {
-        _id: "2",
-        profile_url:
-          "https://images.unsplash.com/photo-1618151313441-bc79b11e5090?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-        username: "2farhanverse",
-        comment: "Admirable atmosphere mate. 🔥",
-        time: "2021-05-01T12:00:00.000Z",
-        likes: 102,
-        isLiked: false,
-        gifUrl: null,
-      },
-      {
-        _id: Math.random().toString(),
-        profile_url: "https://picsum.photos/200",
-        username: "2farhanverse",
-        comment: "take a look at this @betzi",
-        time: "2021-05-01T12:00:00.000Z",
-        likes: 1090000,
-        isLiked: false,
-      },
-    ];
-    setTimeout(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setComments(data);
-    }, 1000);
+    });
+
+    if (response.status !== 200) {
+      return alert("Something went wrong");
+    }
+    let comments = await response.json();
+
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setComments(comments);
   }
 
-  function postComment(txt) {
-    let comment = {
-      _id: Math.random().toString(),
-      profile_url: profile_url,
-      username: username,
-      comment: txt,
-      time: Date.now(),
-      likes: 10,
-      isLiked: false,
-    };
+  async function postComment(txt) {
     Keyboard.dismiss();
     onChangeText("");
 
     //todo: use params and send a req to server to post comment
     setPostingComment(true);
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+    let bodyContent = JSON.stringify({
+      text: txt,
+    });
+    let response = await fetch(`${baseUrl}/comment/8`, {
+      method: "POST",
+      body: bodyContent,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
 
-    // treating this as fake api delay -->change as needed
-    setTimeout(() => {
-      setPostingComment(false);
-    }, 1200);
-    setTimeout(() => {
-      addComment(comment);
-    }, 300);
+    if (response.status !== 201) {
+      return alert("Something went wrong");
+    }
+    let postedComment = await response.json();
+    setPostingComment(false);
+    addComment(postedComment);
   }
 
   function addComment(comment) {
@@ -149,21 +144,20 @@ const Comments = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      fetchComments();
-    }, 0);
+    fetchComments();
   }, []);
 
   const renderItem = useCallback(({ item, username }) => {
+    console.log(item);
     return (
       <Comment
         navigation={navigation}
-        commentId={item._id}
+        commentId={item.id}
         username={username}
-        profile_url={item.profile_url}
+        profile_url={item.user.profile_url}
         likes={item.likes}
-        time={item.time}
-        comment={item.comment}
+        time={item.created_at}
+        comment={item.text}
         isLiked={item.isLiked}
         gifUrl={item.gifUrl}
         handleDelete={handleDelete}
@@ -181,15 +175,14 @@ const Comments = ({ route, navigation }) => {
         <ScrollView
           keyboardDismissMode="interactive"
           contentContainerStyle={{
-            // flex: 2,
-            height: "90%",
+            height: "100%",
             justifyContent: "center",
             alignItems: "center",
             paddingBottom: headerHeight,
           }}
         >
           <GradientText
-            style={{ fontSize: scale(16), fontFamily: "Nunito_700Bold" }}
+            style={{ fontSize: scale(16), fontFamily: "Nunito_600SemiBold" }}
             adjustsFontSizeToFit={true}
             numberOfLines={1}
           >
@@ -200,11 +193,11 @@ const Comments = ({ route, navigation }) => {
         <FlashList
           ref={flatListRef}
           data={comments}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) =>
             renderItem({
               item,
-              username: item.username,
+              username: item.user.username,
             })
           }
           estimatedItemSize={120}
