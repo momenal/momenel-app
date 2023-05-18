@@ -24,21 +24,27 @@ import StatusOverlay from "../app/components/StatusOverlay";
 import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
 import CustomText from "../app/components/customText/CustomText";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const Comments = ({ route, navigation }) => {
   const { type, postId } = route.params;
-
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
   const [deletingComment, setDeletingComment] = useState(false);
   const [text, onChangeText] = useState("");
   const flatListRef = useRef(null);
-  const username = useBoundStore((state) => state.username);
-  const profile_url = useBoundStore((state) => state.profile_url);
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { top: topInset } = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
   const userProfileUrl = useBoundStore((state) => state.profile_url);
   const insets = useSafeAreaInsets();
+
+  const onRefresh = () => {
+    //set isRefreshing to true
+    setIsRefreshing(true);
+    //fetch comments
+    fetchComments();
+  };
 
   async function fetchComments() {
     //todo fetch comments from api using postId
@@ -64,7 +70,7 @@ const Comments = ({ route, navigation }) => {
     }
 
     // fetch comments from api
-    let response = await fetch(`${baseUrl}/comment/1`, {
+    let response = await fetch(`${baseUrl}/comment/8`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -75,8 +81,8 @@ const Comments = ({ route, navigation }) => {
     if (response.status !== 200) {
       return alert("Something went wrong");
     }
+    setIsRefreshing(false);
     let comments = await response.json();
-
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setComments(comments);
   }
@@ -126,44 +132,61 @@ const Comments = ({ route, navigation }) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   }
 
-  const handleDelete = (commentId) => {
-    setDeletingComment(true);
-    console.log("delete", commentId);
-    //todo: delete comment from api
-    // treating this as fake api delay -->change as needed
-    //find and remove comment from comments array
-    setTimeout(() => {
-      let newArr = comments.filter((item) => item._id !== commentId);
-      setComments(newArr);
-      setDeletingComment(false);
-    }, 1000);
-    //todo: show alert if delete failed
+  const handleDelete = async (commentId) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
 
+    setDeletingComment(true);
+
+    //todo: delete comment from api
+    // fetch comments from api
+    let response = await fetch(`${baseUrl}/comment/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+
+    if (response.status !== 204) {
+      return alert("Something went wrong");
+    }
+
+    let newArr = comments.filter((item) => item.id !== commentId);
+    console.log(newArr);
+    setDeletingComment(false);
     flatListRef.current?.prepareForLayoutAnimationRender();
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setComments(newArr);
+
+    //todo: show alert if delete failed
   };
 
   useEffect(() => {
     fetchComments();
   }, []);
 
-  const renderItem = useCallback(({ item, username }) => {
-    console.log(item);
-    return (
-      <Comment
-        navigation={navigation}
-        commentId={item.id}
-        username={username}
-        profile_url={item.user.profile_url}
-        likes={item.likes}
-        time={item.created_at}
-        comment={item.text}
-        isLiked={item.isLiked}
-        gifUrl={item.gifUrl}
-        handleDelete={handleDelete}
-      />
-    );
-  });
+  const renderItem = useCallback(
+    ({ item, username }) => {
+      return (
+        <Comment
+          navigation={navigation}
+          commentId={item.id}
+          username={username}
+          profile_url={item.user.profile_url}
+          likes={item.likes}
+          time={item.created_at}
+          comment={item.text}
+          isLiked={item.isLiked}
+          gifUrl={item.gifUrl}
+          handleDelete={handleDelete}
+        />
+      );
+    },
+    [comments]
+  );
 
   return (
     <View style={styles.container}>
@@ -209,6 +232,17 @@ const Comments = ({ route, navigation }) => {
           onEndReachedThreshold={2}
           decelerationRate={"normal"}
           initialNumToRender={30}
+          refreshControl={
+            <RefreshControl
+              title=""
+              titleColor={"#000000"}
+              tintColor={"#000000"}
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              progressViewOffset={0}
+              size={"default"}
+            />
+          }
           //! -10 equals height of item seperator
           // snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 20)}
           ListFooterComponent={() => {
@@ -254,15 +288,17 @@ const Comments = ({ route, navigation }) => {
                   marginTop: "2%",
                 }}
               >
-                <Image
-                  source={{ uri: userProfileUrl }}
-                  style={{
-                    height: scale(32),
-                    width: scale(32),
-                    borderRadius: 40,
-                  }}
-                  resizeMode={"cover"}
-                />
+                {!isKeyboardVisible && (
+                  <Image
+                    source={{ uri: userProfileUrl }}
+                    style={{
+                      height: scale(32),
+                      width: scale(32),
+                      borderRadius: 40,
+                    }}
+                    resizeMode={"cover"}
+                  />
+                )}
                 <View
                   style={{
                     flexDirection: "row",
