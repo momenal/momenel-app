@@ -448,7 +448,7 @@ const Discover = ({ navigation }) => {
 
     // send like to the backend
     //todo: change url id to postId
-    let response = await fetch(`${baseUrl}/posts/like/8`, {
+    let response = await fetch(`${baseUrl}/like/8`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
