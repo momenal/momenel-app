@@ -1,17 +1,8 @@
-import {
-  Button,
-  Dimensions,
-  Keyboard,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetScrollView,
-  BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -20,7 +11,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const DetachedBottomSheetWithScroll = (props) => {
   let { show, onSheetClose } = props;
   const insets = useSafeAreaInsets();
-  // ref
   const bottomSheetRef = useRef(null);
 
   useEffect(() => {
@@ -90,6 +80,6 @@ export default DetachedBottomSheetWithScroll;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: "5%",
+    marginHorizontal: "3%",
   },
 });
