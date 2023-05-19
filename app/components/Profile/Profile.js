@@ -41,6 +41,7 @@ const Profile = ({ navigation }) => {
     //todo: fetch user data with session
 
     if (RouteParams?.id !== null && RouteParams?.id !== undefined) {
+      console.log("fetching user data with id", RouteParams?.id);
       supabase.auth.getSession().then(({ data: { session } }) => {
         //todo: fetch user data with session
         setTimeout(() => {
@@ -48,7 +49,7 @@ const Profile = ({ navigation }) => {
             isBlockedByYou: false, //! if you blocked the other user
             isBlockedByUser: false, //! if the other user blocked you
             id: "some-other-id",
-            username: "someotheruser",
+            username: RouteParams?.id,
             name: "someoneelse 👋",
             profile_url: "https://source.unsplash.com/random/1200x1200",
             cover_url: "https://source.unsplash.com/random/1200x1200",

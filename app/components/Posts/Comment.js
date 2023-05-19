@@ -21,6 +21,7 @@ import { useBoundStore } from "../../Store/useBoundStore";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 import { baseUrl } from "@env";
 import { supabase } from "../../lib/supabase";
+import { useRoute } from "@react-navigation/native";
 
 const AnimatedIconComponent = Animated.createAnimatedComponent(Ionicons);
 
@@ -119,6 +120,7 @@ const Comment = ({
   commentId,
   handleDelete,
 }) => {
+  const route = useRoute();
   const [isLikedS, setisLikedS] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
   const LoggedInUsername = useBoundStore((state) => state.username);
@@ -187,6 +189,7 @@ const Comment = ({
     });
 
   const mentionHashtagClick = async (text) => {
+    setShowBottomSheet(false);
     if (text.startsWith("http")) {
       try {
         _handlePressButtonAsync(text);
@@ -201,8 +204,19 @@ const Comment = ({
       }
     } else if (text.startsWith("@")) {
       console.log("@", text);
+      navigation.navigate("UserProfile", { id: text });
     } else if (text.startsWith("#")) {
-      console.log("#", text);
+      if (route.name === "Search") {
+        navigation.replace("Search", {
+          type: "hashtag",
+          query: text,
+        });
+      } else {
+        navigation.navigate("Search", {
+          type: "hashtag",
+          query: text,
+        });
+      }
     } else if (text.startsWith("more")) {
       setShowBottomSheet(true);
     } else {

@@ -413,7 +413,7 @@ const Home = ({ navigation }) => {
 
     // send like to the backend
     //todo: change url id to postId
-    let response = await fetch(`${baseUrl}/posts/like/8`, {
+    let response = await fetch(`${baseUrl}/like/8`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -470,7 +470,7 @@ const Home = ({ navigation }) => {
     setPostsData(updatedPosts);
 
     // send repost to the backend
-    let response = await fetch(`${baseUrl}/posts/repost/10`, {
+    let response = await fetch(`${baseUrl}/repost/8`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -480,6 +480,7 @@ const Home = ({ navigation }) => {
     // if error
     if (!response.ok) {
       Alert.alert("Error", "Something went wrong");
+      console.log(response.statusText);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       return;
     }

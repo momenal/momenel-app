@@ -122,12 +122,7 @@ const Post = ({
         console.log(error);
       }
     } else if (text.startsWith("@")) {
-      //todo: navigate to user profile
-      // navigation.navigate("Search", {
-      //   type: "mention",
-      //   query: text,
-      // });
-      // console.log("@", text);
+      navigation.navigate("UserProfile", { id: text });
     } else if (text.startsWith("#")) {
       if (route.name === "Search") {
         navigation.replace("Search", {
