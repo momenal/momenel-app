@@ -1,8 +1,8 @@
 import {
+  Alert,
   Animated,
   Dimensions,
   Image,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -19,6 +19,8 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../Store/useBoundStore";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
+import { baseUrl } from "@env";
+import { supabase } from "../../lib/supabase";
 
 const AnimatedIconComponent = Animated.createAnimatedComponent(Ionicons);
 
@@ -124,6 +126,7 @@ const Comment = ({
   const FontSize = useMemo(() => scale(14), []);
 
   function kFormatter(num) {
+    console.log(num);
     return Math.abs(num) <= 999999
       ? // ? num.toLocaleString()
         num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -132,13 +135,47 @@ const Comment = ({
       : Math.sign(num) * Math.abs(num);
   }
 
-  function handleLike() {
-    //todo: send like to api using commentId
-    //todo: if like send successfully then update isLikedS and likeCount like below else show error
+  async function handleLike() {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
     setisLikedS(!isLikedS);
-    setLikeCount(isLikedS ? likeCount - 1 : likeCount + 1);
+    if (isLikedS) {
+      if (likeCount <= 0) {
+        setLikeCount(0);
+      } else {
+        setLikeCount(likeCount - 1);
+      }
+    } else {
+      if (likeCount <= 0) {
+        setLikeCount(1);
+      } else {
+        setLikeCount(likeCount + 1);
+      }
+    }
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    //  Alert.alert("Oops", "Something went wrong!");
+
+    // post like to api
+    let response = await fetch(`${baseUrl}/likeComment/${commentId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      Alert.alert("Oops", "Something went wrong!");
+      return;
+    }
+
+    if (response.status === 201) {
+      setisLikedS(true);
+    } else {
+      setisLikedS(false);
+    }
   }
 
   const _doubleTap = Gesture.Tap()
@@ -267,17 +304,6 @@ const Comment = ({
                 {comment}
               </StructuredText>
             </View>
-            {/* {gifUrl && (
-            <Image
-              source={{ uri: gifUrl }}
-              style={{
-                height: 200, //todo: change based on gif height
-                width: "90%",
-                borderRadius: 4,
-                marginVertical: "1%",
-              }}
-            />
-          )} */}
             <View>
               <CustomText style={{ color: "#ADADAD", fontSize: 12 }}>
                 {RelativeTime(time)}
@@ -314,5 +340,3 @@ const Comment = ({
 };
 
 export default Comment;
-
-const styles = StyleSheet.create({});
