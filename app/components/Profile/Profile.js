@@ -25,7 +25,7 @@ import { useBoundStore } from "../../Store/useBoundStore";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
-  console.log(RouteParams);
+  // console.log(RouteParams);
   const [data, setData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setisLoading] = useState(false);

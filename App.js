@@ -18,12 +18,13 @@ import { baseUrl } from "@env";
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
-  const hasCompletedOnboarding = useBoundStore(
-    (state) => state.hasCompletedOnboarding
-  );
-  const setHasCompletedOnboarding = useBoundStore(
-    (state) => state.setHasCompletedOnboarding
-  );
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(null);
+  // const hasCompletedOnboarding = useBoundStore(
+  //   (state) => state.hasCompletedOnboarding
+  // );
+  // const setHasCompletedOnboarding = useBoundStore(
+  //   (state) => state.setHasCompletedOnboarding
+  // );
 
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);
@@ -33,11 +34,11 @@ export default function App() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         console.log("session", session.access_token);
-        getIntialData(session.access_token);
+        // getIntialData(session.access_token);
       } else {
         setIsLoading(false);
       }
-      setSession(session);
+      // setSession(session);
     });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -46,6 +47,7 @@ export default function App() {
         const {
           data: { user },
         } = await supabase.auth.getUser();
+        getIntialData(session.access_token);
         console.log("signed in");
         console.log("user", user.id);
         if (!user.id) {
@@ -56,9 +58,11 @@ export default function App() {
       } else if (_event === "SIGNED_OUT") {
         console.log("signed out");
         setSession(null);
+        SetUserData(null, null);
+        setHasCompletedOnboarding(null);
       }
     });
-  }, []);
+  }, [session]);
 
   const getIntialData = async (access_token) => {
     let headersList = {
@@ -73,7 +77,6 @@ export default function App() {
       Alert.alert("Error", "Please try again");
       console.log("error", data.error);
     } else {
-      console.log("data", data);
       SetUserData(data.username, data.profile_url);
       setHasCompletedOnboarding(data.has_onboarded);
       setIsLoading(false);
