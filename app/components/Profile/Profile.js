@@ -51,8 +51,10 @@ const Profile = ({ navigation }) => {
             id: "some-other-id",
             username: RouteParams?.id,
             name: "someoneelse 👋",
-            profile_url: "https://source.unsplash.com/random/1200x1200",
-            cover_url: "https://source.unsplash.com/random/1200x1200",
+            profile_url:
+              "https://images.pexels.com/users/avatars/37865/ni-san-713.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
+            cover_url:
+              "https://images.pexels.com/photos/135033/pexels-photo-135033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
             location: "from Mars 🌌",
             link: "https://www.momenel.com",
@@ -317,6 +319,15 @@ const Profile = ({ navigation }) => {
             following: 100,
             //
             posts: [
+              {
+                postId: "pendingID",
+                username: "farhanverse",
+                name: "farhan",
+                posts: null,
+                createdAt: Date.now(),
+                published: false,
+                caption: "This is a pending post",
+              },
               {
                 postId: "askjdlkasjdmasdi",
                 username: "farhanverse",
@@ -827,6 +838,47 @@ const Profile = ({ navigation }) => {
   };
 
   const renderItem = ({ item, index, postId, height }) => {
+    // -> if not publised
+
+    if (item?.published === false) {
+      return (
+        <Pressable
+          style={{
+            padding: "2%",
+            width: "100%",
+          }}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            navigation.navigate("PostsList", {
+              scrollToIndex: index,
+              posts: data.posts,
+            });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              borderRadius: 6,
+              backgroundColor: "#f6b93b",
+              borderWidth: 2,
+              borderColor: "#e58e26",
+            }}
+          >
+            <CustomText
+              numberOfLines={9}
+              style={{
+                color: "white",
+                margin: scale12,
+                fontFamily: "Nunito_600SemiBold",
+              }}
+            >
+              Processing this post...
+            </CustomText>
+          </View>
+        </Pressable>
+      );
+    }
     // -> if text post
     if (!item.posts || item.posts.length === 0 || !item.posts[0]) {
       const bgColors = [
@@ -894,7 +946,7 @@ const Profile = ({ navigation }) => {
             item.posts[0]?.type === "video"
               ? {
                   //todo: get thumbnail from bunny
-                  uri: "https://images.unsplash.com/photo-1674849437950-9f636aefd740?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+                  uri: "https://images.pexels.com/photos/135033/pexels-photo-135033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 }
               : { uri: item.posts[0].url }
           }

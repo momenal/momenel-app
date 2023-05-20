@@ -144,6 +144,7 @@ const PostsList = ({ navigation }) => {
         height={scaledHeight}
         handleLike={handleLike}
         handleRepost={handleRepost}
+        published={item.published !== false ? true : false}
       />
     );
   };

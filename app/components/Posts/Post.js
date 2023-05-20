@@ -39,7 +39,7 @@ const Post = ({
   posts,
   caption,
   isReposted,
-  isDonateable,
+  published,
   height,
   handleLike,
   handleRepost,
@@ -166,7 +166,7 @@ const Post = ({
       contentType: "post",
     });
   };
-
+  if (!published) return null;
   return (
     <View
       style={{
