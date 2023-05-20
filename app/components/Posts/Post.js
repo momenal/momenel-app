@@ -166,7 +166,7 @@ const Post = ({
       contentType: "post",
     });
   };
-  if (!published) return null;
+  if (published && !published) return null;
   return (
     <View
       style={{
