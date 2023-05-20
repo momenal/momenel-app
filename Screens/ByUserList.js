@@ -4,9 +4,11 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import UserList from "../app/components/UserList";
-
+import * as Haptics from "expo-haptics";
 import CustomText from "../app/components/customText/CustomText";
 import { scale } from "../app/utils/Scale";
+import { supabase } from "../app/lib/supabase";
+import { baseUrl } from "@env";
 
 let likes = [
   {
@@ -99,12 +101,14 @@ const ByUserList = ({ route, navigation }) => {
     return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleFollowPress = (username) => {
-    console.log("handleFollowPress", username);
-
-    //todo: send request to server to update the follow status
-
+  const handleFollowPress = async (username) => {
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
     // update the state
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const newData = data.map((item) => {
       if (item.username === username) {
         return {
@@ -115,6 +119,41 @@ const ByUserList = ({ route, navigation }) => {
       return item;
     });
     setData(newData);
+
+    let response = await fetch(
+      `${baseUrl}/followuser/b64ebff6-f29d-46f0-a0df-8cf6885a34f9`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      }
+    );
+
+    if (response.status === 201) {
+      const newData = data.map((item) => {
+        if (item.username === username) {
+          return {
+            ...item,
+            isFollowing: true,
+          };
+        }
+        return item;
+      });
+      setData(newData);
+    } else {
+      const newData = data.map((item) => {
+        if (item.username === username) {
+          return {
+            ...item,
+            isFollowing: false,
+          };
+        }
+        return item;
+      });
+      setData(newData);
+    }
   };
 
   const renderItem = ({ item, isFollowing }) => {

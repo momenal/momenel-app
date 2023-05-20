@@ -31,7 +31,6 @@ const ProfileHeader = ({
   isFollowing,
   name,
   bio,
-  location,
   link,
   postsAmount,
   followers,
@@ -366,29 +365,6 @@ const ProfileHeader = ({
           >
             {bio}
           </StructuredText>
-        </View>
-      )}
-      {location && (
-        <View
-          style={{
-            marginTop: "1%",
-            marginHorizontal: "2.5%",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Ionicons name="ios-location" size={scale12 + 5} color="#7C7C7C" />
-          <CustomText
-            style={{
-              fontFamily: "Nunito_700Bold",
-              fontSize: scale12,
-              marginLeft: "1%",
-              color: "#7C7C7C",
-            }}
-            numberOfLines={1}
-          >
-            {location}
-          </CustomText>
         </View>
       )}
       {link && (

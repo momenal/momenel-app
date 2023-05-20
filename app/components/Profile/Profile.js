@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   RefreshControl,
-  Platform,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useMemo, useState, useEffect, memo } from "react";
@@ -22,6 +21,7 @@ import { supabase } from "../../lib/supabase";
 import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
 import { useBoundStore } from "../../Store/useBoundStore";
+import { baseUrl } from "@env";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
@@ -56,7 +56,6 @@ const Profile = ({ navigation }) => {
             cover_url:
               "https://images.pexels.com/photos/135033/pexels-photo-135033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
-            location: "from Mars 🌌",
             link: "https://www.momenel.com",
             isFollowing: true,
             postsAmount: 100,
@@ -311,7 +310,7 @@ const Profile = ({ navigation }) => {
             cover_url:
               "https://images.unsplash.com/photo-1626761191814-a9dc9efd085c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
             bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-            location: "from Mars 🌌",
+
             link: "momenel.com",
             // isFollowing: true,
             postsAmount: 100,
@@ -555,11 +554,33 @@ const Profile = ({ navigation }) => {
     }
   }, []);
 
-  function handleFollow() {
-    //todo: send request to follow
+  async function handleFollow() {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setisFollowing(!isFollowing);
+
+    //todo: add user id to the URL
+    let response = await fetch(
+      `${baseUrl}/followuser/b64ebff6-f29d-46f0-a0df-8cf6885a34f9`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      }
+    );
+
+    if (response.status === 201) {
+      setisFollowing(true);
+    } else {
+      setisFollowing(false);
+    }
   }
 
   function handleBlock() {
@@ -588,7 +609,7 @@ const Profile = ({ navigation }) => {
         "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
       // bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional`,
       bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-      location: "from Mars 🌌",
+
       link: "https://www.momenel.com",
       isFollowing: true,
       postsAmount: 100,
@@ -1170,7 +1191,6 @@ const Profile = ({ navigation }) => {
               isFollowing={isFollowing}
               name={data?.name}
               bio={data?.bio}
-              location={data?.location}
               link={data?.link}
               postsAmount={data?.postsAmount}
               followers={data?.followers}
