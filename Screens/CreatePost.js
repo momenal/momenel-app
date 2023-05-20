@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Alert,
+  Button,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -25,6 +26,8 @@ import Suggestions from "../app/components/Inputs/Suggestions";
 import * as ImagePicker from "expo-image-picker";
 import CreatePostMedia from "../app/components/CreatePost/CreatePostMedia";
 import StatusOverlay from "../app/components/StatusOverlay";
+import { baseUrl } from "@env";
+import { supabase } from "../app/lib/supabase";
 
 const triggersConfig = {
   mention: {
@@ -53,7 +56,6 @@ const CreatePost = ({ navigation }) => {
   const [isPostingSuccessful, setIsPostingSuccessful] = useState(false);
   const profile_url = useBoundStore((state) => state.profile_url);
   const username = useBoundStore((state) => state.username);
-  const CreatePost = useBoundStore((state) => state.handleCreatePost);
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const [textValue, setTextValue] = useState("");
@@ -176,20 +178,58 @@ const CreatePost = ({ navigation }) => {
     }
   };
 
-  const handleCreatePost = async ({ posts, caption, parts }) => {
+  const handleCreatePost = async ({ posts, caption }) => {
     Keyboard.dismiss();
     setIsPosting(true);
-    const response = await CreatePost({ posts, caption, parts });
-    console.log(response);
-    if (response) {
-      setIsPosting(false);
-      setIsPostingSuccessful(true);
-      // if posts have video then setConfrimationMessage to "Your video is being processed. It will be available shortly."
-      if (posts.some((item) => item.type === "video")) {
+
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+
+    console.log("posts: ", posts);
+    console.log("caption: ", caption);
+
+    // post to backend
+
+    let formData = new FormData();
+
+    formData.append("caption", caption);
+
+    let dimensions = [];
+    posts.map((post) => {
+      dimensions.push({
+        width: post.width,
+        height: post.height,
+      });
+      formData.append("content", {
+        uri: post.uri,
+        name: post.fileName,
+      });
+    });
+    formData.append("dimensions", JSON.stringify(dimensions));
+    let response = await fetch(`${baseUrl}/posts`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+    let resData = await response.json();
+    console.log(response.status);
+    console.log("res", resData);
+    if (response.status === 201) {
+      if (resData[0].published === false) {
+        setIsPosting(false);
+        setIsPostingSuccessful(true);
         setConfrimationMessage(
-          `Your video is being processed. It will be available shortly.\nYou will be notified when the post is created.`
+          `Your post is processing. It will be available shortly.\n\nYou can view the status of your post on your profile.`
         );
       } else {
+        setIsPosting(false);
+        setIsPostingSuccessful(true);
         setConfrimationMessage("Your post has been created successfully.");
       }
     } else {
@@ -204,7 +244,7 @@ const CreatePost = ({ navigation }) => {
       headerRight: () => (
         <PostHeaderButton
           onPress={() =>
-            handleCreatePost({ posts: content, caption: plainText, parts })
+            handleCreatePost({ posts: content, caption: plainText })
           }
           disabled={
             isPosting === true || isPostingSuccessful === true
@@ -260,7 +300,7 @@ const CreatePost = ({ navigation }) => {
   }, []);
 
   const [isSuggestionsVisible, setisSuggestionsVisible] = useState(false);
-  const { parts, plainText } = parseValue(textValue, [
+  const { plainText } = parseValue(textValue, [
     triggersConfig.mention,
     triggersConfig.hashtag,
   ]);
@@ -280,6 +320,7 @@ const CreatePost = ({ navigation }) => {
   }
 
   const updateVideoDimensions = (width, height, assetId) => {
+    console.log(width, height, assetId);
     // find the content that has the assetId and update the width and height
     const newContent = content.map((item) => {
       if (item.assetId === assetId) {
@@ -411,6 +452,8 @@ const CreatePost = ({ navigation }) => {
           headerHeight={headerHeight}
           status={"Submitting your post..."}
           message={"This may take a few seconds..."}
+          showProfileButton={false}
+          navigation={navigation}
         />
       )}
       {isPostingSuccessful && (
@@ -423,6 +466,8 @@ const CreatePost = ({ navigation }) => {
               ? confrimationMessage
               : "Post submitted successfully"
           }
+          showProfileButton={confrimationMessage ? true : false}
+          navigation={navigation}
         />
       )}
     </KeyboardAvoidingView>

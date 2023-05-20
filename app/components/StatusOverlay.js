@@ -1,8 +1,14 @@
-import { View } from "react-native";
+import { Button, View } from "react-native";
 import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
 
-const StatusOverlay = ({ headerHeight = 0, status = "pending", message }) => {
+const StatusOverlay = ({
+  headerHeight = 0,
+  status = "pending",
+  message,
+  showProfileButton,
+  navigation,
+}) => {
   return (
     <View
       style={{
@@ -30,6 +36,16 @@ const StatusOverlay = ({ headerHeight = 0, status = "pending", message }) => {
         >
           {message}
         </CustomText>
+      )}
+      {showProfileButton && (
+        <View style={{ marginTop: "5%" }}>
+          <Button
+            title="Visit Profile"
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          />
+        </View>
       )}
     </View>
   );
