@@ -109,6 +109,7 @@ const Post = ({
   };
 
   const mentionHashtagClick = async (text) => {
+    setShowBottomSheet(false);
     if (text.startsWith("http")) {
       try {
         _handlePressButtonAsync(text);

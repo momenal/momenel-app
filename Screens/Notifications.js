@@ -1,16 +1,13 @@
 import {
   ActivityIndicator,
-  Button,
   Dimensions,
   Image,
-  LayoutAnimation,
   Pressable,
-  StyleSheet,
-  Text,
   View,
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { scale } from "../app/utils/Scale";
@@ -93,94 +90,98 @@ const Notifications = ({ navigation }) => {
   };
 
   const scaledHeight = useMemo(() => scale(30), []);
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={{
-        marginHorizontal: "2%",
-        marginVertical: "3%",
-        justifyContent: "space-between",
-        // width: "100%",
-        maxWidth: Dimensions.get("window").width,
-        flexDirection: "row",
-      }}
-      onPress={() => handlePress(item.postId)}
-    >
-      {/* left */}
-      <View style={{ flexDirection: "row", flex: 1 }}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("UserProfile", { id: item.username })
-          }
-        >
-          <Image
-            style={{
-              width: scaledHeight,
-              height: scaledHeight,
-              borderRadius: scaledHeight / 2,
-            }}
-            source={{ uri: item.profileImage }}
-          />
-        </Pressable>
-
-        <View style={{ marginLeft: "2%" }}>
-          <CustomText style={{ flexWrap: "wrap" }}>
-            <CustomText
-              style={{ fontFamily: "Nunito_700Bold" }}
-              onPress={() =>
-                navigation.navigate("UserProfile", { id: item.username })
-              }
-            >
-              {item.username + ` `}
+  const renderItem = ({ item }) => {
+    console.log(item.user.username);
+    return (
+      <TouchableOpacity
+        style={{
+          marginHorizontal: "2%",
+          marginVertical: "3%",
+          justifyContent: "space-between",
+          // width: "100%",
+          maxWidth: Dimensions.get("window").width,
+          flexDirection: "row",
+        }}
+        onPress={() => handlePress(item.postId)}
+      >
+        {/* left */}
+        <View style={{ flexDirection: "row", maxWidth: "70%" }}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("UserProfile", { id: item.user.id })
+            }
+          >
+            {item.user.profile_url ? (
+              <Image
+                style={{
+                  width: scaledHeight,
+                  height: scaledHeight,
+                  borderRadius: scaledHeight / 2,
+                }}
+                source={{ uri: item.user.profile_url }}
+              />
+            ) : (
+              <Ionicons
+                name="person-circle-sharp"
+                size={scaledHeight}
+                color="#999999"
+                style={{ marginRight: "2%" }}
+              />
+            )}
+          </Pressable>
+          <View style={{ marginLeft: "2%" }}>
+            <CustomText style={{ flexWrap: "wrap" }}>
+              <CustomText style={{ fontFamily: "Nunito_700Bold" }}>
+                {item.user.username + ` `}
+              </CustomText>
+              {item.type === "like"
+                ? `liked your post`
+                : item.type === "comment"
+                ? "commented on your post"
+                : item.type === "mentionComment"
+                ? "mentioned you in a comment"
+                : item.type === "repost"
+                ? "reposted your post"
+                : item.type === "follow"
+                ? "followed you"
+                : ""}
             </CustomText>
-            {item.type === "like"
-              ? `liked your post`
-              : item.type === "comment"
-              ? "commented on your post"
-              : item.type === "mention"
-              ? "mentioned you in a comment"
-              : item.type === "repost"
-              ? "reposted your post"
-              : item.type === "follow"
-              ? "followed you"
-              : ""}
-          </CustomText>
-          <CustomText style={{ color: "gray", fontSize: 14 }}>
-            {RelativeTime(item.timestamp)}
-          </CustomText>
+            <CustomText style={{ color: "gray", fontSize: 14 }}>
+              {RelativeTime(item.created_at)}
+            </CustomText>
+          </View>
         </View>
-      </View>
-      {/* right */}
-      <View style={{ alignItems: "flex-end" }}>
-        {item.type === "follow" ? (
-          <Pressable onPress={() => handleFollow(item.username)}>
-            <LinearGradientButton disabled={item.isFollowing}>
+        {/* right */}
+        <View
+          style={{
+            alignItems: "flex-end",
+            width: "20%",
+          }}
+        >
+          <Pressable
+            style={{ width: "100%" }}
+            onPress={() => handleFollow(item.user.id, item.isFollowed)}
+          >
+            <LinearGradientButton
+              style={{ width: "100%" }}
+              disabled={item.isFollowed}
+            >
               <CustomText
                 style={{
                   color: "white",
-                  paddingHorizontal: "5%",
+                  paddingHorizontal: "4%",
                   paddingVertical: "1%",
                   fontFamily: "Nunito_600SemiBold",
                 }}
               >
-                {item.isFollowing ? "Following" : "Follow"}
+                {item.isFollowed ? "Following" : "Follow"}
               </CustomText>
             </LinearGradientButton>
           </Pressable>
-        ) : (
-          <Image
-            style={{
-              width: scaledHeight + 10,
-              maxWidth: 100,
-              height: scaledHeight + 10,
-              maxHeight: 100,
-              borderRadius: 5,
-            }}
-            source={{ uri: item.postImage }}
-          />
-        )}
-      </View>
-    </TouchableOpacity>
-  );
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {isLoading ? (
@@ -230,5 +231,3 @@ const Notifications = ({ navigation }) => {
 };
 
 export default Notifications;
-
-const styles = StyleSheet.create({});
