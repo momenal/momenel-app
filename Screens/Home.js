@@ -330,20 +330,22 @@ const Home = ({ navigation }) => {
     // todo: fetch posts from db || change below url
     fetch("https://api.coinstats.app/public/v1/coins?skip=0&limit=10")
       .then((response) => response.json())
-      .then((json) =>
-        //set fakeData to postsData
-        setTimeout(() => {
-          setPostsData(fakeData);
-        }, 1000)
+      .then(
+        (json) =>
+          //set fakeData to postsData
+          setPostsData(fakeData)
+        // setTimeout(() => {
+        //   setPostsData(fakeData);
+        // }, 1000) //todo: change to 3 mins
       );
 
     fetchNotifications();
-    //todo: implement this --> fetch notifications every 5 minutes
-    // const intervalId = setInterval(() => {
-    //   fetchNotifications();
-    // }, 10000); //todo: set this --> fetch notifications every 5 minutes
+    //fetch notifications every 5 minutes
+    const intervalId = setInterval(() => {
+      fetchNotifications();
+    }, 300000); // fetch notifications every 5 minutes
 
-    // return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, []);
 
   // fetch posts from the backend and add them to the postsData

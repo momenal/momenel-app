@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { scale } from "../app/utils/Scale";
 import GradientText from "../app/components/customText/GradientText";
@@ -32,7 +32,7 @@ const Notifications = ({ navigation }) => {
   useEffect(() => {
     if (notifications.length === 0) fetchNotificationsWrapper();
     else handleNotificationsRead();
-  }, []);
+  }, [notifications]);
 
   const fetchNotificationsWrapper = async () => {
     setisLoading(true);

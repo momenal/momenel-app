@@ -5,14 +5,18 @@ import { supabase } from "../lib/supabase";
 export const createNotificationsSlice = (set, get) => ({
   notifications: [],
   newNotifications: false,
+
   fetchNotifications: async () => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (error) {
         return navigation.navigate("Login");
       }
+      let from =
+        get().notifications.length < 1 ? 0 : get().notifications.length;
+      let to = from + 20;
 
-      let response = await fetch(`${baseUrl}/notifications`, {
+      let response = await fetch(`${baseUrl}/notifications/${from}/${to}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,24 +30,23 @@ export const createNotificationsSlice = (set, get) => ({
       }
 
       let { notifications } = await response.json();
-
+      if (notifications.length < 1) {
+        return;
+      }
       notifications.forEach((notification) => {
-        if (notification.isRead === false) {
+        if (notification.isRead != true) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
           set(() => ({
             newNotifications: true,
           }));
         }
       });
-
-      // if newNotifications is true, give user a haptic feedback like a notification
-      if (get().newNotifications) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      }
+      notifications = notifications.reverse();
       set((state) => ({
         notifications: [...notifications, ...state.notifications],
       }));
     } catch (err) {
-      console.log(err, "error fetching notifications");
+      console.log(err.message);
     }
   },
   handleFollow: async (id, isFollowed) => {
