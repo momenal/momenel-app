@@ -46,7 +46,7 @@ const Notifications = ({ navigation }) => {
     setIsRefreshing(false);
   };
 
-  const handlePress = (id) => {
+  const handlePress = (index) => {
     const fakeRes = [
       {
         postId: Math.random(19).toString(),
@@ -84,14 +84,25 @@ const Notifications = ({ navigation }) => {
     //       posts: fakeRes,
     //     });
     //   });
-    navigation.navigate("PostsList", {
-      id: "jsakd",
-    });
+
+    // navigation.navigate("PostsList", {
+    //   id: "jsakd",
+    // });
+
+    if (
+      notifications[index].type === "comment" ||
+      notifications[index].type === "mentionComment"
+    ) {
+      navigation.navigate("Comments", {
+        postId: notifications[index].comment.post_id,
+        comment_id: notifications[index].comment.id,
+      });
+    }
   };
 
   const scaledHeight = useMemo(() => scale(30), []);
-  const renderItem = ({ item }) => {
-    console.log(item.user.username);
+  const renderItem = ({ item, index }) => {
+    console.log(index);
     return (
       <TouchableOpacity
         style={{
@@ -102,7 +113,7 @@ const Notifications = ({ navigation }) => {
           maxWidth: Dimensions.get("window").width,
           flexDirection: "row",
         }}
-        onPress={() => handlePress(item.postId)}
+        onPress={() => handlePress(index)}
       >
         {/* left */}
         <View style={{ flexDirection: "row", maxWidth: "70%" }}>

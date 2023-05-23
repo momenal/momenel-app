@@ -128,7 +128,6 @@ const Comment = ({
   const FontSize = useMemo(() => scale(14), []);
 
   function kFormatter(num) {
-    console.log(num);
     return Math.abs(num) <= 999999
       ? // ? num.toLocaleString()
         num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")

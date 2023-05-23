@@ -23,11 +23,11 @@ import Comment from "../app/components/Posts/Comment";
 import StatusOverlay from "../app/components/StatusOverlay";
 import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
-import CustomText from "../app/components/customText/CustomText";
 import { RefreshControl } from "react-native-gesture-handler";
 
 const Comments = ({ route, navigation }) => {
-  const { type, postId } = route.params;
+  const { postId, comment_id } = route.params;
+  console.log(comment_id);
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
   const [deletingComment, setDeletingComment] = useState(false);
@@ -46,31 +46,18 @@ const Comments = ({ route, navigation }) => {
     fetchComments();
   };
 
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
   async function fetchComments() {
-    //todo fetch comments from api using postId
-    // let data = [];
-    // let data = [
-    //   {
-    //     created_at: "2023-05-18T15:30:12.506844+00:00",
-    //     id: 15,
-    //     post_id: 8,
-    //     text: "This is also from the app! @farhanverse",
-    //     user: {
-    //       id: "0cee4054-e83f-42ae-a079-75b81c0766fb",
-    //       profile_url:
-    //         "https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //       username: "farhanversehere",
-    //     },
-    //     user_id: "0cee4054-e83f-42ae-a079-75b81c0766fb",
-    //   },
-    // ];
     const { data, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
 
     // fetch comments from api
-    let response = await fetch(`${baseUrl}/comment/8`, {
+    let response = await fetch(`${baseUrl}/comment/${postId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -81,8 +68,17 @@ const Comments = ({ route, navigation }) => {
     if (response.status !== 200) {
       return alert("Something went wrong");
     }
+
     setIsRefreshing(false);
     let comments = await response.json();
+    if (comment_id) {
+      // scroll to comment after finding index of comment from response with comment_id
+      let index = comments.findIndex((comment) => comment.id === comment_id);
+      console.log("scroll to: ", index);
+      setInterval(() => {
+        flatListRef.current?.scrollToIndex({ index: 10, animated: true });
+      }, 500);
+    }
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setComments(comments);
   }
@@ -155,7 +151,7 @@ const Comments = ({ route, navigation }) => {
     }
 
     let newArr = comments.filter((item) => item.id !== commentId);
-    console.log(newArr);
+
     setDeletingComment(false);
     flatListRef.current?.prepareForLayoutAnimationRender();
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -163,10 +159,6 @@ const Comments = ({ route, navigation }) => {
 
     //todo: show alert if delete failed
   };
-
-  useEffect(() => {
-    fetchComments();
-  }, []);
 
   const renderItem = useCallback(
     ({ item, username }) => {
