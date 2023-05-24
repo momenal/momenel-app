@@ -61,16 +61,7 @@ const Profile = ({ navigation }) => {
             postsAmount: 100,
             followers: 900000,
             following: 100,
-            contactOptions: [
-              {
-                platform: "sessions",
-                contact: "sessionid",
-              },
-              {
-                platform: "telegram",
-                contact: "@sessionid",
-              },
-            ],
+
             posts: [
               {
                 postId: "askjdlkasjdmasdi",
@@ -615,16 +606,6 @@ const Profile = ({ navigation }) => {
       postsAmount: 100,
       followers: 900000,
       following: 100,
-      contactOptions: [
-        {
-          platform: "sessions",
-          contact: "sessionid",
-        },
-        {
-          platform: "telegram",
-          contact: "@sessionid",
-        },
-      ],
       posts: [
         {
           postId: "askjdlkasjdmasdi",
@@ -1195,7 +1176,6 @@ const Profile = ({ navigation }) => {
               postsAmount={data?.postsAmount}
               followers={data?.followers}
               following={data?.following}
-              contactOptions={data?.contactOptions}
               handleBlock={handleBlock}
             />
           }

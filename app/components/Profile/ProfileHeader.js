@@ -35,7 +35,6 @@ const ProfileHeader = ({
   postsAmount,
   followers,
   following,
-  contactOptions,
   username,
   isRefreshing,
 }) => {
@@ -53,7 +52,6 @@ const ProfileHeader = ({
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
-  const [showBottomContactSheet, setShowBottomContactSheet] = useState(false);
   const loggedUsername = useBoundStore((state) => state.username);
   const scale12 = useMemo(() => scale(12), []);
   const mentionHashtagClick = async (text) => {
@@ -225,26 +223,6 @@ const ProfileHeader = ({
                     </CustomText>
                   </LinearGradientButton>
                 </TouchableOpacity>
-                {contactOptions && (
-                  <TouchableOpacity
-                    onPress={() => setShowBottomContactSheet(true)}
-                    style={{
-                      backgroundColor: "#EEEEEE",
-                      borderRadius: 40,
-                      opacity: 0.8,
-                      marginLeft: 15,
-                      padding: 8,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Ionicons
-                      name="md-paper-plane"
-                      size={scale(15)}
-                      color="black"
-                    />
-                  </TouchableOpacity>
-                )}
               </View>
             )}
           </View>
@@ -490,46 +468,6 @@ const ProfileHeader = ({
           </TouchableOpacity>
         </View>
       </BottomSheet>
-      {/* contant options */}
-      {contactOptions && (
-        <BottomSheet
-          show={showBottomContactSheet}
-          onSheetClose={() => setShowBottomContactSheet(false)}
-        >
-          <View style={{ marginBottom: BottomInsets, marginTop: 2 }}>
-            <CustomText
-              selectable={true}
-              style={{
-                fontSize: scale(20),
-                fontFamily: "Nunito_600SemiBold",
-                marginHorizontal: "5%",
-              }}
-              numberOfLines={1}
-            >
-              Contact options
-            </CustomText>
-            <CustomText
-              selectable={true}
-              style={{
-                fontSize: 13,
-                // fontFamily: "Nunito_600SemiBold",
-                marginHorizontal: "6%",
-                fontStyle: "italic",
-              }}
-              numberOfLines={1}
-            >
-              Long Press to copy
-            </CustomText>
-            {contactOptions.map((item, index) => (
-              <ContactOption
-                key={index}
-                platform={item.platform}
-                contact={item.contact}
-              />
-            ))}
-          </View>
-        </BottomSheet>
-      )}
     </View>
   );
 };

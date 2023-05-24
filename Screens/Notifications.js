@@ -116,7 +116,7 @@ const Notifications = ({ navigation }) => {
         onPress={() => handlePress(index)}
       >
         {/* left */}
-        <View style={{ flexDirection: "row", maxWidth: "70%" }}>
+        <View style={{ flexDirection: "row", maxWidth: "65%" }}>
           <Pressable
             onPress={() =>
               navigation.navigate("UserProfile", { id: item.user.id })
