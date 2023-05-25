@@ -67,7 +67,7 @@ const ByUserList = ({ route, navigation }) => {
         },
         {
           id: "sad77900217nhuuasjd",
-          username: "betzy",
+          username: "moe",
           profile_url:
             "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
           isFollowing: false,

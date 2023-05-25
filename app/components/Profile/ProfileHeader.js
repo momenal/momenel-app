@@ -18,7 +18,6 @@ import AmntTag from "./AmntTag";
 import StructuredText from "../Posts/StructuredText";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
-import ContactOption from "./ContactOption";
 import { useRoute } from "@react-navigation/native";
 
 const ProfileHeader = ({
@@ -450,7 +449,8 @@ const ProfileHeader = ({
             onPress={() => {
               setShowBottomSheetModal(false);
               navigation.navigate("Report", {
-                contentId: id,
+                // contentId: id,
+                contentId: "0cee4054-e83f-42ae-a079-75b81c0766fb",
                 username: username,
                 contentType: "profile",
               });
