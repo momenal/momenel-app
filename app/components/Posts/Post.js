@@ -164,7 +164,8 @@ const Post = ({
 
   const onReportPress = () => {
     navigation.navigate("Report", {
-      contentId: postId,
+      // contentId: postId,
+      contentId: 8,
       username: username,
       contentType: "post",
     });

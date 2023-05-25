@@ -1,14 +1,13 @@
 import {
   Dimensions,
   Image,
-  Keyboard,
   Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
@@ -31,14 +30,6 @@ const PostHeader = ({
 
   const insets = useSafeAreaInsets();
 
-  // const onReportPress = () => {
-  //   setShowBottomSheet(false);
-  //   navigation.navigate("Report", {
-  //     contentId: postsData[index].postId,
-  //     username: postsData[index].username,
-  //     contentType: "post",
-  //   });
-  // };
   const onReportPressWrapper = () => {
     setShowBottomSheet(false);
     onReportPress();

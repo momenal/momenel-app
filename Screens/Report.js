@@ -246,8 +246,6 @@ const Report = ({ route, navigation }) => {
           value={text}
           placeholder="Optional"
           keyboardAppearance={"dark"}
-          // multiline={true}
-          // returnKeyType="done"
           keyboardType="default"
           returnKeyType="done"
           multiline={true}
@@ -302,7 +300,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    color: "#818181",
+    fontSize: 15,
+    fontFamily: "Nunito_500Medium",
     minHeight: Dimensions.get("window").height / 8,
   },
 });
