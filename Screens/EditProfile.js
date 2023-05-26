@@ -29,13 +29,11 @@ const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
   const [isLoading, setIsLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
-  const [cover_url, setCover_url] = useState(null);
+  const [imageUriChanged, setimageUriChanged] = useState(false);
   const [name, setName] = useState(null);
   const [bio, setBio] = useState(null);
   const [website, setWebsite] = useState(null);
   const [username, setUsername] = useState("");
-  const [backgroundColor, setbackgroundColor] = useState();
-
   const [isChanged, setIsChanged] = useState(false);
   const [Errors, setErrors] = useState([
     // {
@@ -55,15 +53,6 @@ const EditProfile = ({ navigation }) => {
     //   message: "Invalid URL",
     // },
   ]);
-  const bgColors = [
-    "#C7EFCF",
-    "#FEC7C7",
-    "#C7DFFD",
-    "#363946",
-    "#EDA2C0",
-    "#f5bfd7",
-    "#f0eafc",
-  ];
 
   //get session
   const gS = async () => {
@@ -75,19 +64,14 @@ const EditProfile = ({ navigation }) => {
     setIsLoading(true);
     //todo: get user data
     gS(); // gets session token
-    setbackgroundColor(bgColors[Math.floor(Math.random() * bgColors.length)]);
+
     //todo: then set the user info
     setUsername("farhanverse");
     setName("Farhan");
     setBio(`Developer | Designer | Writer | Photographer | Gamer | Foodie`);
     setImageUri(null);
-    setCover_url(null);
     setImageUri(
       "https://pbs.twimg.com/profile_images/1548735070030204929/SE6zZzFV_400x400.jpg"
-    );
-
-    setCover_url(
-      "https://i.tribune.com.pk/media/images/image-(10)1653885131-0/image-(10)1653885131-0.png"
     );
 
     setTimeout(() => {
@@ -111,37 +95,10 @@ const EditProfile = ({ navigation }) => {
       setIsChanged(true);
     }
   };
-  const pickCoverImage = async () => {
-    let result;
-    Platform.OS === "ios"
-      ? (result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          quality: 1.0,
-          base64: false,
-        }))
-      : (result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          quality: 1.0,
-          allowsEditing: true,
-          base64: false,
-          aspect: [16, 9],
-        }));
-
-    if (!result.canceled) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setCover_url(result.assets[0].uri);
-      setIsChanged(true);
-    }
-  };
 
   const removeProfileImage = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setImageUri(null);
-    setIsChanged(true);
-  };
-  const removeCoverImage = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setCover_url(null);
     setIsChanged(true);
   };
 
@@ -204,7 +161,7 @@ const EditProfile = ({ navigation }) => {
   };
 
   // memoize scale
-  const scaledSize = useMemo(() => scale(110), []);
+  const scaledSize = useMemo(() => scale(155), []);
 
   return (
     <KeyboardAvoidingView
@@ -233,84 +190,6 @@ const EditProfile = ({ navigation }) => {
           style={{ height: "100%", backgroundColor: "white" }}
           keyboardDismissMode={"on-drag"}
         >
-          {!cover_url && (
-            <Pressable
-              style={{
-                height: (Dimensions.get("window").width * 9) / 16,
-                maxHeight: (Dimensions.get("window").width * 9) / 16,
-                backgroundColor: "white",
-                alignItems: "flex-end",
-                justifyContent: "flex-end",
-                backgroundColor: backgroundColor,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  padding: "2%",
-                  borderRadius: 20,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={pickCoverImage}
-              >
-                <Ionicons name="camera" size={scale(18)} color="black" />
-              </TouchableOpacity>
-            </Pressable>
-          )}
-          {cover_url && (
-            <ImageBackground
-              source={
-                cover_url
-                  ? {
-                      uri: cover_url,
-                    }
-                  : null
-              }
-              resizeMode="cover"
-              style={{
-                height: (Dimensions.get("window").width * 9) / 16,
-                maxHeight: (Dimensions.get("window").width * 9) / 16,
-                backgroundColor: "white",
-                alignItems: "flex-end",
-                justifyContent: "flex-end",
-                backgroundColor:
-                  bgColors[Math.floor(Math.random() * bgColors.length)],
-              }}
-              imageStyle={{
-                height: (Dimensions.get("window").width * 9) / 16,
-                maxHeight: (Dimensions.get("window").width * 9) / 16,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  padding: "2%",
-                  borderRadius: 20,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={pickCoverImage}
-              >
-                <Ionicons name="camera" size={scale(18)} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  padding: "2%",
-                  borderRadius: 20,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={removeCoverImage}
-              >
-                <Ionicons name="trash" size={scale(15)} color="red" />
-              </TouchableOpacity>
-            </ImageBackground>
-          )}
           {/* profile image */}
           {!imageUri && (
             <Pressable
@@ -320,10 +199,11 @@ const EditProfile = ({ navigation }) => {
                 height: scaledSize,
                 width: scaledSize,
                 borderRadius: scaledSize / 2,
-                marginTop: (-Dimensions.get("window").width * 9) / 50,
                 backgroundColor: "white",
                 alignItems: "center",
                 justifyContent: "center",
+                alignSelf: "center",
+                marginTop: "4%",
               }}
             >
               <Ionicons
@@ -337,8 +217,10 @@ const EditProfile = ({ navigation }) => {
             <View
               style={{
                 marginLeft: "3%",
-                marginTop: (-Dimensions.get("window").width * 9) / 50,
                 width: scaledSize,
+                height: scaledSize,
+                alignSelf: "center",
+                marginTop: "4%",
               }}
             >
               <Image

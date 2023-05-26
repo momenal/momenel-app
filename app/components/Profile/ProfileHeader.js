@@ -1,10 +1,4 @@
-import {
-  View,
-  ImageBackground,
-  Dimensions,
-  Image,
-  Platform,
-} from "react-native";
+import { View, Dimensions, Image, Platform, Pressable } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { useBoundStore } from "../../Store/useBoundStore";
 import { useMemo, useState } from "react";
@@ -13,7 +7,6 @@ import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
-import LinearGradientButton from "../Buttons/LinearGradientButton";
 import AmntTag from "./AmntTag";
 import StructuredText from "../Posts/StructuredText";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
@@ -26,12 +19,11 @@ const ProfileHeader = ({
   handleFollow,
   handleBlock,
   profile_url,
-  cover_url,
   isFollowing,
   name,
   bio,
   link,
-  postsAmount,
+  likes_count,
   followers,
   following,
   username,
@@ -100,284 +92,285 @@ const ProfileHeader = ({
     }
   };
 
-  const scaledSize = useMemo(() => scale(110), []);
+  const scaledSize = useMemo(() => scale(95), []);
   return (
     <View
       style={[
-        { backgroundColor: "white" },
+        {
+          backgroundColor: "white",
+          marginTop: topInset,
+          width: Dimensions.get("window").width,
+          overflow: "hidden",
+        },
         isRefreshing === true && Platform.OS === "ios"
           ? { marginTop: topInset + 5 }
           : {},
       ]}
     >
-      <ImageBackground
-        source={
-          cover_url
-            ? {
-                uri: cover_url,
-              }
-            : null
-        }
-        resizeMode="cover"
-        style={{
-          maxHeight: (Dimensions.get("window").width * 9) / 16,
-          height: (Dimensions.get("window").width * 9) / 16,
-          backgroundColor: "white",
-          alignItems: "flex-end",
-          backgroundColor:
-            bgColors[Math.floor(Math.random() * bgColors.length)],
-        }}
-        imageStyle={{
-          //   height: Dimensions.get("window").width,
-          height: (Dimensions.get("window").width * 9) / 16,
-          //   maxHeight: (Dimensions.get("window").width * 9) / 16,
-        }}
-      >
-        <View
-          style={[
-            {
-              height: "100%",
-              width: "100%",
-              paddingHorizontal: "4%",
-              paddingTop: topInset + 5,
-              paddingBottom: "4%",
-              flexDirection: "row",
-            },
-            RouteName === "UserProfile"
-              ? { justifyContent: "space-between" }
-              : { justifyContent: "flex-end" },
-          ]}
-        >
-          {RouteName === "UserProfile" && (
-            // back button
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{
-                backgroundColor: "#EEEEEE",
-                borderRadius: 40,
-                opacity: 0.8,
-                padding: 8,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons name="md-chevron-back" size={scale(16)} color="black" />
-            </TouchableOpacity>
-          )}
-          <View
-            style={{
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                RouteName === "Profile"
-                  ? navigation.navigate("Setting")
-                  : setShowBottomSheetModal(true);
-              }}
-              style={{
-                backgroundColor: "#EEEEEE",
-                borderRadius: 40,
-                opacity: 0.8,
-                marginLeft: 15,
-                padding: 8,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {RouteName === "Profile" ? (
-                <Ionicons
-                  name="settings-sharp"
-                  size={scale(16)}
-                  color="black"
-                />
-              ) : (
-                <Ionicons
-                  name="ellipsis-vertical"
-                  size={scale(16)}
-                  color="black"
-                />
-              )}
-            </TouchableOpacity>
-            {RouteName === "Profile" ? (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("EditProfile")}
-                >
-                  <LinearGradientButton style={{ height: 34, padding: "7%" }}>
-                    <CustomText style={{ color: "white" }}>
-                      Edit Profile
-                    </CustomText>
-                  </LinearGradientButton>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={handleFollow}>
-                  <LinearGradientButton
-                    style={{ width: scale(80), height: 34 }}
-                  >
-                    <CustomText style={{ color: "white" }}>
-                      {isFollowing ? "Following" : "Follow"}
-                    </CustomText>
-                  </LinearGradientButton>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </View>
-      </ImageBackground>
-      {/* profile image and username */}
       <View
-        style={{
-          marginTop: "3%",
-          flexDirection: "row",
-        }}
+        style={[
+          {
+            flexDirection: "row",
+            marginRight: "4%",
+            marginVertical: "2%",
+            justifyContent: "space-between",
+          },
+          RouteName === "UserProfile"
+            ? { paddingHorizontal: "2%" }
+            : { marginLeft: "4%" },
+        ]}
       >
-        <View
+        <Pressable
           style={{
-            marginLeft: "3%",
-            marginTop: (-Dimensions.get("window").width * 9) / 50,
+            flexDirection: "row",
+            alignItems: "center",
+            maxWidth: "85%",
+          }}
+          onPress={() => {
+            navigation.goBack();
           }}
         >
-          {/* profile image */}
-          <Image
-            source={
-              profile_url
-                ? {
-                    uri: profile_url,
-                  }
-                : null
-            }
-            resizeMode="cover"
+          {RouteName === "UserProfile" && (
+            <Ionicons
+              name="md-chevron-back"
+              size={scale(17)}
+              color="black"
+              style={{ marginTop: 2 }}
+            />
+          )}
+          <CustomText
             style={{
-              height: scaledSize,
-              width: scaledSize,
-              borderRadius: scaledSize / 2,
-              borderColor: "white",
-              borderWidth: scale12 - 10,
-              backgroundColor: "white",
-              alignItems: "flex-end",
-              backgroundColor:
-                bgColors[Math.floor(Math.random() * bgColors.length)],
+              justifyContent: "center",
+              alignItems: "center",
+              fontFamily: "Nunito_700Bold",
+              fontSize: scale(21.5),
             }}
-          />
-        </View>
-        {/* info tags */}
+            numberOfLines={2}
+            adjustsFontSizeToFit={true}
+          >
+            {username}
+          </CustomText>
+        </Pressable>
+        {RouteName === "UserProfile" ? (
+          <Pressable
+            onPress={() => {
+              setShowBottomSheetModal(true);
+            }}
+            style={{ marginTop: "2%" }}
+          >
+            <Ionicons name="ellipsis-vertical" size={scale(16)} color="black" />
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Setting");
+            }}
+            style={{ marginTop: "2%" }}
+          >
+            <Ionicons name="settings-sharp" size={scale(16)} color="black" />
+          </Pressable>
+        )}
+      </View>
+      <View
+        style={[
+          {
+            flexDirection: "row",
+            justifyContent: "space-between",
+          },
+          RouteName === "UserProfile"
+            ? { paddingHorizontal: "5%" }
+            : { paddingHorizontal: "4%" },
+        ]}
+      >
+        {/* left */}
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            marginHorizontal: "3%",
+            marginRight: "3%",
           }}
         >
-          <AmntTag value={postsAmount} txt={"Posts"} disabled={true} />
-          <AmntTag
-            value={followers}
-            txt={"Followers"}
-            onPress={() =>
-              navigation.navigate("UserList", {
-                type: "followers",
-                id: id,
-                totalAmount: followers,
-              })
-            }
-          />
-          <AmntTag
-            value={following}
-            txt={"Following"}
-            disabled={username !== loggedUsername}
-            onPress={() =>
-              navigation.navigate("UserList", {
-                type: "following",
-                id: id,
-                totalAmount: followers,
-              })
-            }
-          />
+          {name && (
+            <CustomText
+              style={{
+                fontFamily: "Nunito_500Medium",
+                fontSize: scale(14),
+                color: "#7E7E7E",
+              }}
+              numberOfLines={4}
+            >
+              {name}
+            </CustomText>
+          )}
+          {bio && (
+            <View
+              style={{
+                marginTop: "2%",
+                // marginVertical: 5,
+              }}
+            >
+              <StructuredText
+                mentionHashtagPress={mentionHashtagClick}
+                mentionHashtagColor={"#8759F2"}
+                maxCharCount={117}
+                style={{ fontFamily: "Nunito_400Regular", fontSize: scale12 }}
+              >
+                {bio}
+              </StructuredText>
+            </View>
+          )}
+          {link && (
+            <TouchableOpacity
+              onPress={() => handleLinkPressAsync(link)}
+              style={{
+                marginTop: "2%",
+                marginBottom: "2%",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons
+                name="ios-link"
+                size={scale12 + 3}
+                color="#6E31E2"
+                style={{ transform: [{ rotate: "-45deg" }] }}
+              />
+              <CustomText
+                numberOfLines={1}
+                style={{
+                  fontFamily: "Nunito_700Bold",
+                  fontSize: scale12,
+                  marginLeft: "1%",
+                  color: "#7C7C7C",
+                }}
+              >
+                {link}
+              </CustomText>
+            </TouchableOpacity>
+          )}
         </View>
-      </View>
-      <View style={{ marginHorizontal: "3%", marginTop: "2%" }}>
-        {name && (
-          <CustomText
-            style={{ fontFamily: "Nunito_800ExtraBold", fontSize: scale(19) }}
-            numberOfLines={1}
-          >
-            {name}
-          </CustomText>
-        )}
-        <CustomText
-          style={[
-            {
-              fontFamily: "Nunito_600SemiBold",
-              fontSize: scale12,
-              marginTop: -4,
-            },
-            !name && {
-              marginTop: 0,
-              fontFamily: "Nunito_800ExtraBold",
-              fontSize: scale(20),
-            },
-          ]}
-          numberOfLines={1}
-        >
-          @{username}
-        </CustomText>
-      </View>
-      {bio && (
+        {/* right */}
         <View
           style={{
-            marginTop: "1%",
-            marginHorizontal: "3%",
-            marginVertical: 5,
-          }}
-        >
-          <StructuredText
-            mentionHashtagPress={mentionHashtagClick}
-            mentionHashtagColor={"#8759F2"}
-            maxCharCount={200}
-            style={{ fontFamily: "Nunito_400Regular", fontSize: scale12 }}
-          >
-            {bio}
-          </StructuredText>
-        </View>
-      )}
-      {link && (
-        <TouchableOpacity
-          onPress={() => handleLinkPressAsync(link)}
-          style={{
-            marginTop: "1%",
-            marginBottom: "2%",
-            marginHorizontal: "2.5%",
-            flexDirection: "row",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Ionicons
-            name="ios-link"
-            size={scale12 + 5}
-            color="#6E31E2"
-            style={{ transform: [{ rotate: "-45deg" }] }}
-          />
-          <CustomText
-            numberOfLines={1}
-            style={{
-              fontFamily: "Nunito_700Bold",
-              fontSize: scale12,
-              marginLeft: "1%",
-              color: "#7C7C7C",
-            }}
+          <Pressable
+            onPress={() =>
+              navigation?.navigate("Zoom", { url: profile_url, username })
+            }
           >
-            {link}
-          </CustomText>
-        </TouchableOpacity>
-      )}
-
+            <Image
+              source={
+                profile_url
+                  ? {
+                      uri: profile_url,
+                    }
+                  : null
+              }
+              resizeMode="cover"
+              style={{
+                height: scaledSize,
+                width: scaledSize,
+                borderRadius: scaledSize / 2,
+                backgroundColor:
+                  bgColors[Math.floor(Math.random() * bgColors.length)],
+              }}
+            />
+          </Pressable>
+        </View>
+      </View>
+      {/* stats */}
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "flex-start",
+          marginTop: "4%",
+          marginBottom: "4%",
+        }}
+      >
+        <AmntTag
+          value={followers}
+          txt={"Followers"}
+          onPress={() =>
+            navigation.navigate("UserList", {
+              type: "followers",
+              id: id,
+              totalAmount: followers,
+            })
+          }
+        />
+        <AmntTag
+          value={following}
+          txt={"Following"}
+          disabled={RouteName === "UserProfile"}
+          onPress={() =>
+            navigation.navigate("UserList", {
+              type: "following",
+              id: id,
+              totalAmount: followers,
+            })
+          }
+        />
+        <AmntTag value={likes_count} txt={"Likes"} disabled={true} />
+      </View>
+      {/* buttons */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "flex-start",
+          marginBottom: "3%",
+          minWidth: "100%",
+        }}
+      >
+        {RouteName === "Profile" ? (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("EditProfile")}
+            style={[
+              {
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+                paddingVertical: 10,
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "#BDBDBD",
+                width: Dimensions.get("window").width * 0.9,
+              },
+            ]}
+          >
+            <CustomText style={{ color: "black" }}>Edit Profile</CustomText>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={handleFollow}
+            style={[
+              {
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+                paddingVertical: 10,
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "#BDBDBD",
+                width: Dimensions.get("window").width * 0.9,
+              },
+              isFollowing
+                ? { borderColor: "black" }
+                : { backgroundColor: "#E0E0E0", borderColor: "#E0E0E0" },
+            ]}
+          >
+            <CustomText style={{ color: "black" }}>
+              {isFollowing ? "Following" : "Follow"}
+            </CustomText>
+          </TouchableOpacity>
+        )}
+      </View>
       {/* sheets */}
       {/* sheet to read full bio if it exceeds allowed lenght */}
       <DetachedBottomSheetWithScroll
@@ -402,7 +395,7 @@ const ProfileHeader = ({
           </StructuredText>
         </View>
       </DetachedBottomSheetWithScroll>
-      {/* profile menu */}
+      {/* profile menu --> block & report options*/}
       <BottomSheet
         show={showBottomSheeModal}
         onSheetClose={() => setShowBottomSheetModal(false)}
