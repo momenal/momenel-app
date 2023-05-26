@@ -74,12 +74,12 @@ const Post = ({
   };
 
   const handleRepostFunc = async () => {
-    await handleRepost(index, isReposted, postId);
     if (isReposted === false) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     } else {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
+    await handleRepost(index, isReposted, postId);
   };
 
   const renderItem = ({ item, index }) => (
