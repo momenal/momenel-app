@@ -55,7 +55,7 @@ const Profile = ({ navigation }) => {
             profile_url:
               "https://images.pexels.com/users/avatars/37865/ni-san-713.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
             cover_url:
-              "https://images.pexels.com/photos/135033/pexels-photo-135033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              "https://i.brecorder.com/primary/2022/10/633e2b889a1e0.png",
             bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
             link: "https://www.momenel.com",
             isFollowing: true,
@@ -299,7 +299,7 @@ const Profile = ({ navigation }) => {
             name: "Farhan 👋",
             profile_url: profile_url,
             cover_url:
-              "https://images.unsplash.com/photo-1626761191814-a9dc9efd085c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
+              "https://static.independent.co.uk/2022/04/08/20/Pakistan_Politics_37211.jpg?quality=75&width=640&height=614&fit=bounds&format=pjpg&crop=16%3A9%2Coffset-y0.5&auto=webp",
             bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
 
             link: "momenel.com",
