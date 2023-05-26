@@ -29,7 +29,7 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
     >
       <CustomText
         style={{
-          fontFamily: "Nunito_800ExtraBold",
+          fontFamily: "Nunito_700Bold",
           fontSize: scale12 + 6,
         }}
       >
@@ -37,9 +37,10 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
       </CustomText>
       <CustomText
         style={{
-          fontFamily: "Nunito_400Regular",
-          fontSize: scale12,
+          fontFamily: "Nunito_500Medium",
+          fontSize: scale12 - 1,
           paddingLeft: "1%",
+          color: "#757575",
         }}
       >
         {txt}

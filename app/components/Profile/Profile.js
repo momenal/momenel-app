@@ -51,7 +51,7 @@ const Profile = ({ navigation }) => {
             isBlockedByUser: false, //! if the other user blocked you
             id: "some-other-id",
             username: RouteParams?.id,
-            name: "someoneelse 👋",
+            name: "Funny Cat Videos 🐈",
             profile_url:
               "https://images.pexels.com/users/avatars/37865/ni-san-713.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
             cover_url:
@@ -62,6 +62,7 @@ const Profile = ({ navigation }) => {
             postsAmount: 100,
             followers: 900000,
             following: 100,
+            likes_count: 2,
             posts: [
               {
                 postId: "askjdlkasjdmasdi",
@@ -295,13 +296,14 @@ const Profile = ({ navigation }) => {
         setTimeout(() => {
           setData({
             id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            username: username,
-            name: "Farhan 👋",
+            username: "justingordon212",
+            name: "Farhan ✌️",
             profile_url: profile_url,
+            likes_count: 1200,
             cover_url:
               "https://static.independent.co.uk/2022/04/08/20/Pakistan_Politics_37211.jpg?quality=75&width=640&height=614&fit=bounds&format=pjpg&crop=16%3A9%2Coffset-y0.5&auto=webp",
+            // bio: `Privacy is a fundamental right we can't ignore.`,
             bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-
             link: "momenel.com",
             // isFollowing: true,
             postsAmount: 100,
@@ -677,7 +679,8 @@ const Profile = ({ navigation }) => {
         isFollowing: true,
         postsAmount: 100,
         followers: 900000,
-        following: 100,
+        likes_count: 100,
+        following: 90298,
         posts: [
           {
             postId: "askjdlkasjdmasdi",
@@ -1251,7 +1254,7 @@ const Profile = ({ navigation }) => {
               name={data?.name}
               bio={data?.bio}
               link={data?.link}
-              postsAmount={data?.postsAmount}
+              likes_count={data?.likes_count}
               followers={data?.followers}
               following={data?.following}
               handleBlock={handleBlock}

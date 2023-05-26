@@ -12,7 +12,7 @@ import * as Haptics from "expo-haptics";
 let fakeData = [
   {
     postId: "lkjaskdjsadjk",
-    username: "gifpedia",
+    username: "gifpediabutofficialandofficialbutnotofficial",
     name: "Gifs official",
     repost: {
       isRepost: false,
