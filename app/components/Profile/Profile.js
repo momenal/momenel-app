@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   RefreshControl,
+  Alert,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useMemo, useState, useEffect, memo } from "react";
@@ -61,7 +62,6 @@ const Profile = ({ navigation }) => {
             postsAmount: 100,
             followers: 900000,
             following: 100,
-
             posts: [
               {
                 postId: "askjdlkasjdmasdi",
@@ -574,258 +574,331 @@ const Profile = ({ navigation }) => {
     }
   }
 
-  function handleBlock() {
+  async function handleBlock() {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setData({
       ...data,
-      posts: [],
       isBlockedByYou: true,
     });
+
+    // post like to api
+    //todo: replace with id below
+    let response = await fetch(
+      `${baseUrl}/blockuser/${"b64ebff6-f29d-46f0-a0df-8cf6885a34f9"}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      Alert.alert("Oops", "Something went wrong!");
+      return;
+    }
+
+    //todo: handle this after correct profile is fetched
+    if (response.status === 201) {
+      setData({
+        ...data,
+        posts: [],
+        isBlockedByYou: true,
+      });
+    } else {
+      setData({
+        ...data,
+        isBlockedByYou: false,
+      });
+    }
   }
   async function handleUnBlock() {
+    setisLoading(true);
+    // setData({
+    //   ...data,
+    //   posts: [],
+    //   isBlockedByYou: false,
+    // });
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
     setData({
       ...data,
-      posts: [],
       isBlockedByYou: false,
     });
-    setisLoading(true);
-    //todo: get the data from the server
-    setData({
-      isBlockedByYou: false, // if you blocked the other user
-      isBlockedByUser: false, // if the other user blocked you
-      // id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-      id: "some-other-id",
-      username: "farhanverse",
-      name: "Farhan 👋 sadjaskdlkjaskdjlkjsadkjaskjdlkjasjkjdakljsakdjjajkdslajdklsajk",
-      profile_url:
-        "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
-      // bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional`,
-      bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
 
-      link: "https://www.momenel.com",
-      isFollowing: true,
-      postsAmount: 100,
-      followers: 900000,
-      following: 100,
-      posts: [
-        {
-          postId: "askjdlkasjdmasdi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
-          },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 3333,
-              height: 5000,
-              type: "video",
-              url: "https://images.pexels.com/photos/13290878/pexels-photo-13290878.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    // post like to api
+    //todo: replace with id below
+    let response = await fetch(
+      `${baseUrl}/blockuser/${"b64ebff6-f29d-46f0-a0df-8cf6885a34f9"}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      Alert.alert("Oops", "Something went wrong!");
+      return;
+    }
+
+    //todo: handle this after correct profile is fetched
+    if (response.status === 201) {
+      setData({
+        ...data,
+        posts: [],
+        isBlockedByYou: true,
+      });
+    } else {
+      setData({
+        isBlockedByYou: false, // if you blocked the other user
+        isBlockedByUser: false, // if the other user blocked you
+        // id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
+        id: "some-other-id",
+        username: "farhanverse",
+        name: "Farhan 👋 sadjaskdlkjaskdjlkjsadkjaskjdlkjasjkjdakljsakdjjajkdslajdklsajk",
+        profile_url:
+          "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&dpr=2",
+        // bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional`,
+        bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+
+        link: "https://www.momenel.com",
+        isFollowing: true,
+        postsAmount: 100,
+        followers: 900000,
+        following: 100,
+        posts: [
+          {
+            postId: "askjdlkasjdmasdi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-            {
-              id: Math.random(19).toString(),
-              width: 6000,
-              height: 4000,
-              type: "photo",
-              url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 3333,
+                height: 5000,
+                type: "video",
+                url: "https://images.pexels.com/photos/13290878/pexels-photo-13290878.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+              },
+              {
+                id: Math.random(19).toString(),
+                width: 6000,
+                height: 4000,
+                type: "photo",
+                url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "another pso",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: true, // if the user himself has reposted the post
+            isDonateable: true,
+          },
+          {
+            postId: "askjdlkasjdmasdi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "another pso",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: true, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmasdi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: null,
+            caption:
+              "We believe that we can change the things around us in accordance with our desires—we believe it because otherwise we can see no favourable outcome. We do not think of the outcome which generally comes to pass and is also favourable: we do not succeed in changing things in accordance with our desires, but gradually our desires change. The situation that we hoped to change because it was intolerable becomes unimportant to us. We have failed to surmount the obstacle, as we were absolutely determined to do, but life has taken us round it, led us beyond it, and then if we turn round to gaze into the distance of the past, we can barely see it, so imperceptible has it become.” – Marcel Proust, In Search of Lost Time",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: true, // if the user himself has reposted the post
+            isDonateable: true,
           },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: null,
-          caption:
-            "We believe that we can change the things around us in accordance with our desires—we believe it because otherwise we can see no favourable outcome. We do not think of the outcome which generally comes to pass and is also favourable: we do not succeed in changing things in accordance with our desires, but gradually our desires change. The situation that we hoped to change because it was intolerable becomes unimportant to us. We have failed to surmount the obstacle, as we were absolutely determined to do, but life has taken us round it, led us beyond it, and then if we turn round to gaze into the distance of the past, we can barely see it, so imperceptible has it become.” – Marcel Proust, In Search of Lost Time",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: true, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmasdi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
-          },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 6000,
-              height: 4000,
-              type: "video",
-              url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          {
+            postId: "askjdlkasjdmasdi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "#cat",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: false, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmasdi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 6000,
+                height: 4000,
+                type: "video",
+                url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "#cat",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: false, // if the user himself has reposted the post
+            isDonateable: true,
           },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 4000,
-              height: 5000,
-              type: "photo",
-              url: "https://images.pexels.com/photos/14489260/pexels-photo-14489260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          {
+            postId: "askjdlkasjdmasdi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "#cat",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: false, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmasdi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 4000,
+                height: 5000,
+                type: "photo",
+                url: "https://images.pexels.com/photos/14489260/pexels-photo-14489260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "#cat",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: false, // if the user himself has reposted the post
+            isDonateable: true,
           },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: null,
-          caption:
-            "new video is out on my youtube channel. go check it out. link in bio",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: true, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmaslldi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
-          },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 3206,
-              height: 4275,
-              type: "photo",
-              url: "https://images.pexels.com/photos/15358911/pexels-photo-15358911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          {
+            postId: "askjdlkasjdmasdi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "#cat",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: false, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmaslldi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: null,
+            caption:
+              "new video is out on my youtube channel. go check it out. link in bio",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: true, // if the user himself has reposted the post
+            isDonateable: true,
           },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 4000,
-              height: 6000,
-              type: "photo",
-              url: "https://images.pexels.com/photos/15355492/pexels-photo-15355492.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          {
+            postId: "askjdlkasjdmaslldi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "#cat",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: false, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-        {
-          postId: "askjdlkasjdmaslldi",
-          username: "farhanverse",
-          name: "farhan",
-          repost: {
-            isRepost: false,
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 3206,
+                height: 4275,
+                type: "photo",
+                url: "https://images.pexels.com/photos/15358911/pexels-photo-15358911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "#cat",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: false, // if the user himself has reposted the post
+            isDonateable: true,
           },
-          profile_url:
-            "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-          posts: [
-            {
-              id: Math.random(19).toString(),
-              width: 3706,
-              height: 2470,
-              type: "photo",
-              url: "https://images.pexels.com/photos/2300672/pexels-photo-2300672.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          {
+            postId: "askjdlkasjdmaslldi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
             },
-          ],
-          caption: "#cat",
-          createdAt: Date.now(),
-          likes: 300,
-          comments: 12,
-          reposts: 5,
-          lastEdit: null,
-          isLiked: false,
-          repostedByUser: false, // if the user himself has reposted the post
-          isDonateable: true,
-        },
-      ],
-    });
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 4000,
+                height: 6000,
+                type: "photo",
+                url: "https://images.pexels.com/photos/15355492/pexels-photo-15355492.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "#cat",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: false, // if the user himself has reposted the post
+            isDonateable: true,
+          },
+          {
+            postId: "askjdlkasjdmaslldi",
+            username: "farhanverse",
+            name: "farhan",
+            repost: {
+              isRepost: false,
+            },
+            profile_url:
+              "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+            posts: [
+              {
+                id: Math.random(19).toString(),
+                width: 3706,
+                height: 2470,
+                type: "photo",
+                url: "https://images.pexels.com/photos/2300672/pexels-photo-2300672.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              },
+            ],
+            caption: "#cat",
+            createdAt: Date.now(),
+            likes: 300,
+            comments: 12,
+            reposts: 5,
+            lastEdit: null,
+            isLiked: false,
+            repostedByUser: false, // if the user himself has reposted the post
+            isDonateable: true,
+          },
+        ],
+      });
+    }
 
     setisLoading(false);
   }
@@ -841,7 +914,6 @@ const Profile = ({ navigation }) => {
 
   const renderItem = ({ item, index, postId, height }) => {
     // -> if not publised
-
     if (item?.published === false) {
       return (
         <Pressable
@@ -1140,7 +1212,13 @@ const Profile = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <View>
+            <View
+              style={{
+                flex: 2,
+                alignItems: "center",
+                paddingHorizontal: "4%",
+              }}
+            >
               <CustomText
                 style={{
                   fontSize: 40,
@@ -1148,12 +1226,12 @@ const Profile = ({ navigation }) => {
                   textAlign: "center",
                 }}
               >
-                oops!
+                Blocked
               </CustomText>
               <CustomText
                 style={{ fontSize: 20, textAlign: "center", marginTop: 15 }}
               >
-                You can't view this profile 😞
+                You can't view this profile because you have been blocked!
               </CustomText>
             </View>
           )}
