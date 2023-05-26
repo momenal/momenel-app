@@ -99,6 +99,8 @@ const ProfileHeader = ({
       await WebBrowser.openBrowserAsync("https://www." + url);
     }
   };
+
+  const scaledSize = useMemo(() => scale(110), []);
   return (
     <View
       style={[
@@ -119,6 +121,7 @@ const ProfileHeader = ({
         resizeMode="cover"
         style={{
           maxHeight: (Dimensions.get("window").width * 9) / 16,
+          height: (Dimensions.get("window").width * 9) / 16,
           backgroundColor: "white",
           alignItems: "flex-end",
           backgroundColor:
@@ -237,7 +240,7 @@ const ProfileHeader = ({
         <View
           style={{
             marginLeft: "3%",
-            marginTop: (-Dimensions.get("window").width * 9) / 44,
+            marginTop: (-Dimensions.get("window").width * 9) / 50,
           }}
         >
           {/* profile image */}
@@ -251,9 +254,9 @@ const ProfileHeader = ({
             }
             resizeMode="cover"
             style={{
-              height: scale(126),
-              width: scale(126),
-              borderRadius: scale(126) / 2,
+              height: scaledSize,
+              width: scaledSize,
+              borderRadius: scaledSize / 2,
               borderColor: "white",
               borderWidth: scale12 - 10,
               backgroundColor: "white",

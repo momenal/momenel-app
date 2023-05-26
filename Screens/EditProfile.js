@@ -82,12 +82,12 @@ const EditProfile = ({ navigation }) => {
     setBio(`Developer | Designer | Writer | Photographer | Gamer | Foodie`);
     setImageUri(null);
     setCover_url(null);
-    // setImageUri(
-    //   "https://images.unsplash.com/photo-1677264547603-d67614ae255b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-    // );
+    setImageUri(
+      "https://pbs.twimg.com/profile_images/1548735070030204929/SE6zZzFV_400x400.jpg"
+    );
 
     setCover_url(
-      "https://media.tenor.com/L1EZ8-ftKKAAAAAC/elf-will-ferrell.gif"
+      "https://i.tribune.com.pk/media/images/image-(10)1653885131-0/image-(10)1653885131-0.png"
     );
 
     setTimeout(() => {
@@ -95,8 +95,6 @@ const EditProfile = ({ navigation }) => {
       setIsLoading(false);
     }, 0);
   }, []);
-
-  // const getInput
 
   const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -205,6 +203,9 @@ const EditProfile = ({ navigation }) => {
     }
   };
 
+  // memoize scale
+  const scaledSize = useMemo(() => scale(110), []);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "position" : "height"}
@@ -278,9 +279,8 @@ const EditProfile = ({ navigation }) => {
                   bgColors[Math.floor(Math.random() * bgColors.length)],
               }}
               imageStyle={{
-                //   height: Dimensions.get("window").width,
                 height: (Dimensions.get("window").width * 9) / 16,
-                //   maxHeight: (Dimensions.get("window").width * 9) / 16,
+                maxHeight: (Dimensions.get("window").width * 9) / 16,
               }}
             >
               <TouchableOpacity
@@ -317,10 +317,10 @@ const EditProfile = ({ navigation }) => {
               onPress={pickProfileImage}
               style={{
                 marginLeft: "3%",
-                height: scale(126),
-                width: scale(126),
-                borderRadius: scale(126) / 2,
-                marginTop: (-Dimensions.get("window").width * 9) / 44,
+                height: scaledSize,
+                width: scaledSize,
+                borderRadius: scaledSize / 2,
+                marginTop: (-Dimensions.get("window").width * 9) / 50,
                 backgroundColor: "white",
                 alignItems: "center",
                 justifyContent: "center",
@@ -337,8 +337,8 @@ const EditProfile = ({ navigation }) => {
             <View
               style={{
                 marginLeft: "3%",
-                marginTop: (-Dimensions.get("window").width * 9) / 44,
-                width: scale(126),
+                marginTop: (-Dimensions.get("window").width * 9) / 50,
+                width: scaledSize,
               }}
             >
               <Image
@@ -351,9 +351,9 @@ const EditProfile = ({ navigation }) => {
                 }
                 resizeMode="cover"
                 style={{
-                  height: scale(126),
-                  width: scale(126),
-                  borderRadius: scale(126) / 2,
+                  height: scaledSize,
+                  width: scaledSize,
+                  borderRadius: scaledSize / 2,
                   borderColor: "white",
                   borderWidth: 6,
                   backgroundColor: "white",
@@ -364,9 +364,8 @@ const EditProfile = ({ navigation }) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  marginTop: -scale(126) / 3,
+                  marginTop: -scaledSize / 3,
                   // width: scale(25),
-                  // backgroundColor: "red",
                 }}
               >
                 <TouchableOpacity
