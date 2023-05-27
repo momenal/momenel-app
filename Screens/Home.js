@@ -167,14 +167,13 @@ let fakeData = [
   },
   {
     postId: "o0saidsad",
-    username: "photooos",
-    name: "photooos",
-
+    username: "ChrisEvans",
+    name: "Chris Evans",
     repost: {
       isRepost: false,
     },
     profile_url:
-      "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
+      "https://images.pexels.com/photos/2269872/pexels-photo-2269872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     posts: [
       {
         id: Math.random(19).toString(),

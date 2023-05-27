@@ -51,11 +51,9 @@ const Profile = ({ navigation }) => {
             isBlockedByUser: false, //! if the other user blocked you
             id: "some-other-id",
             username: RouteParams?.id,
-            name: "Funny Cat Videos 🐈",
+            name: "Chris Evans",
             profile_url:
-              "https://images.pexels.com/users/avatars/37865/ni-san-713.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=2",
-            cover_url:
-              "https://i.brecorder.com/primary/2022/10/633e2b889a1e0.png",
+              "https://media.npr.org/assets/img/2022/11/08/ap22312071681283-0d9c328f69a7c7f15320e8750d6ea447532dff66.jpg",
             bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
             link: "https://www.momenel.com",
             isFollowing: true,

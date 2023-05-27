@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
@@ -53,12 +53,11 @@ const PostHeader = ({
   return (
     <View
       style={{
-        // backgroundColor: "pink",
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        // paddingHorizontal: 18,
+
         paddingHorizontal: ScreenWidth * 0.04,
         paddingBottom: 11,
       }}
@@ -91,12 +90,11 @@ const PostHeader = ({
 
         <Pressable
           onPress={() => navigation.navigate("UserProfile", { id: username })}
+          style={{ marginLeft: "1%" }}
         >
           <CustomText
             style={{
               color: "#262628",
-              // fontSize: 16,
-              // fontSize: memoizedScale(13.5),
               fontSize: memoizedScale(13.5),
               paddingBottom: 2,
               fontFamily: "Nunito_600SemiBold",
@@ -158,7 +156,6 @@ const PostHeader = ({
             paddingTop: 10,
             paddingBottom: insets.bottom + 15,
             paddingHorizontal: 20,
-            // backgroundColor: "pink",
           }}
         >
           <TouchableOpacity
@@ -169,7 +166,7 @@ const PostHeader = ({
               backgroundColor: "#EAEAEA",
               paddingVertical: 15,
               paddingHorizontal: 18,
-              // marginBottom: 10,
+
               borderRadius: 12,
             }}
             onPress={() => onReportPressWrapper()}
@@ -177,7 +174,6 @@ const PostHeader = ({
             <Ionicons name="ios-flag" size={20} color="red" />
             <CustomText
               style={{
-                // fontFamily: "Nunito_600SemiBold",
                 fontSize: 16,
                 marginLeft: 10,
                 color: "red",
@@ -196,7 +192,6 @@ export default memo(PostHeader);
 
 const styles = StyleSheet.create({
   textMedium: {
-    // fontFamily: "Nunito_500Medium",
     color: "#999999",
     fontSize: 13,
     marginRight: 4,
