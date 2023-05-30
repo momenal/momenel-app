@@ -9,6 +9,7 @@ const CustomTextInput = ({
   onChangeText,
   multiLine = false,
   errors,
+  keyboardType,
 }) => {
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -61,6 +62,7 @@ const CustomTextInput = ({
         onChangeText={OnChangeTextWrapper}
         value={value}
         autoCapitalize="none"
+        keyboardType={keyboardType ? keyboardType : "default"}
       />
     </View>
   );

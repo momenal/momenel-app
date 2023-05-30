@@ -499,6 +499,7 @@ const EditProfile = ({ navigation }) => {
               title="Link"
               placeholder="https://..."
               value={website}
+              keyboardType="url"
               onChangeText={(text) => {
                 setWebsite(text);
               }}
