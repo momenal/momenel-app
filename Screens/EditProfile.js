@@ -1,17 +1,12 @@
 import {
   ActivityIndicator,
   Alert,
-  Button,
-  Dimensions,
   Image,
-  ImageBackground,
   KeyboardAvoidingView,
   LayoutAnimation,
   Platform,
   Pressable,
   ScrollView,
-  Text,
-  TextInput,
   View,
 } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -24,10 +19,14 @@ import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../app/lib/supabase";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
+import { baseUrl } from "@env";
+import { useBoundStore } from "../app/Store/useBoundStore";
 
 const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
+  const SetUserData = useBoundStore((state) => state.SetUserData);
   const [isLoading, setIsLoading] = useState(false);
+  const [oldData, setOldData] = useState({});
   const [imageUri, setImageUri] = useState(null);
   const [imageUriChanged, setimageUriChanged] = useState(false);
   const [name, setName] = useState(null);
@@ -35,50 +34,93 @@ const EditProfile = ({ navigation }) => {
   const [website, setWebsite] = useState(null);
   const [username, setUsername] = useState("");
   const [isChanged, setIsChanged] = useState(false);
-  const [Errors, setErrors] = useState([
-    // {
-    //   message: "Username already taken",
-    //   type: "username",
-    // },
-    // {
-    //   type: "name",
-    //   message: "MAX 30 characters",
-    // },
-    // {
-    //   type: "bio",
-    //   message: "MAX 150 characters",
-    // },
-    // {
-    //   type: "link",
-    //   message: "Invalid URL",
-    // },
-  ]);
+  const [Errors, setErrors] = useState([]);
 
   //get session
-  const gS = async () => {
-    let data = (await supabase.auth.getSession()).data.session.access_token;
-    // console.log(data);
+  const getData = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+    setIsLoading(true);
+    setIsChanged(false);
+    setimageUriChanged(false);
+    let response = await fetch(`${baseUrl}/user/editprofile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      Alert.alert("Oops", "Something went wrong!");
+      return;
+    }
+    let { username, name, bio, website, profile_url } = await response.json();
+    setErrors([]);
+    setOldData({ username, name, bio, website, profile_url });
+    setUsername(username);
+    setName(name);
+    setBio(bio);
+    setWebsite(website);
+    setImageUri(profile_url);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    //todo: get user data
-    gS(); // gets session token
-
-    //todo: then set the user info
-    setUsername("farhanverse");
-    setName("Farhan");
-    setBio(`Developer | Designer | Writer | Photographer | Gamer | Foodie`);
-    setImageUri(null);
-    setImageUri(
-      "https://pbs.twimg.com/profile_images/1548735070030204929/SE6zZzFV_400x400.jpg"
-    );
-
-    setTimeout(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setIsLoading(false);
-    }, 0);
+    getData();
   }, []);
+
+  useEffect(() => {
+    if (
+      oldData.username !== username ||
+      oldData.name !== name ||
+      oldData.bio !== bio ||
+      oldData.website !== website ||
+      oldData.profile_url !== imageUri ||
+      imageUriChanged
+    ) {
+      setIsChanged(true);
+    } else {
+      setIsChanged(false);
+    }
+    setErrors([]);
+    // handle errors
+    if (name?.length > 60) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Name cannot be more than 60 characters",
+          type: "name",
+        },
+      ]);
+    }
+
+    if (bio?.length > 300) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Bio cannot be more than 300 characters",
+          type: "bio",
+        },
+      ]);
+    }
+
+    if (website && !isValidURL(website)) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Invalid URL",
+          type: "link",
+        },
+      ]);
+    }
+  }, [username, name, bio, website, imageUri]);
 
   const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -92,14 +134,14 @@ const EditProfile = ({ navigation }) => {
     if (!result.canceled) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setImageUri(result.assets[0].uri);
-      setIsChanged(true);
+      setimageUriChanged(true);
     }
   };
 
   const removeProfileImage = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setImageUri(null);
-    setIsChanged(true);
+    setimageUriChanged(true);
   };
 
   function isValidURL(url) {
@@ -115,10 +157,93 @@ const EditProfile = ({ navigation }) => {
     return !!pattern.test(url);
   }
 
-  //handle submit
-  const handleSubmit = () => {
-    setErrors([]);
+  const handleUsernameChange = async (text) => {
+    // remove errors of type username
+    setErrors(Errors.filter((error) => error.type !== "username"));
+    setUsername(text);
 
+    // handle and show errors
+    if (text.trim() === "") {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Username cannot be empty",
+          type: "username",
+        },
+      ]);
+      return;
+    } else if (text.length > 38) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Username cannot be more than 38 characters",
+          type: "username",
+        },
+      ]);
+      return;
+    } else if (text.includes(" ")) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Username cannot contain spaces",
+          type: "username",
+        },
+      ]);
+      return;
+    } else if (!text.match(/^[a-zA-Z0-9_]+$/)) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: "Username can only contain letters, numbers and underscores",
+          type: "username",
+        },
+      ]);
+      return;
+    }
+
+    if (text === oldData.username) return;
+
+    // check if username is available
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
+    try {
+      let response = await fetch(`${baseUrl}/user/checkUsername/${text}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+      if (!response.ok) {
+        response = await response.json();
+        throw new Error(response.error);
+      }
+      response = await response.json();
+    } catch (error) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setErrors([
+        ...Errors,
+        {
+          message: error.message,
+          type: "username",
+        },
+      ]);
+    }
+  };
+
+  //handle submit
+  const handleSubmit = async () => {
+    if (!isChanged || username === "" || Errors.length > 0) {
+      return;
+    }
+    setErrors([]);
     if (username?.length < 1) {
       setErrors([
         ...Errors,
@@ -130,7 +255,7 @@ const EditProfile = ({ navigation }) => {
       setIsChanged(false);
       return;
     }
-    if (website?.length >= 1 && !isValidURL(website)) {
+    if (website?.length < 1 && !isValidURL(website)) {
       setErrors([
         ...Errors,
         {
@@ -142,18 +267,74 @@ const EditProfile = ({ navigation }) => {
       return;
     }
 
-    //todo: send data to server
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        return navigation.navigate("Login");
+      }
 
-    // if errors show errors else show success
+      let bodyContent = new FormData();
+      bodyContent.append("username", username);
+      bodyContent.append("name", name);
+      bodyContent.append("bio", bio);
+      bodyContent.append("website", website);
 
-    setIsChanged(false);
+      if (imageUriChanged && imageUri) {
+        bodyContent.append("profile", {
+          uri: imageUri,
+          name: "profile.jpg",
+        });
+      } else if (imageUriChanged && imageUri === null) {
+        bodyContent.append("profile_url", null);
+      } else {
+        bodyContent.append("profile_url", oldData.profile_url);
+      }
 
-    if (Errors.length === 0) {
-      Alert.alert("Success", "Profile updated successfully", [
+      setIsLoading(true);
+      let response = await fetch(`${baseUrl}/user/editprofile`, {
+        method: "POST",
+        body: bodyContent,
+        headers: {
+          Accept: "multipart/form-data",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        response = await response.json();
+        console.log(response.error);
+        throw new Error(response.error);
+      }
+
+      let newData = await response.json();
+      SetUserData(newData.username, newData.profile_url);
+      setOldData(
+        newData.username,
+        newData.name,
+        newData.bio,
+        newData.website,
+        newData.profile_url
+      );
+      setUsername(newData.username);
+      setName(newData.name);
+      setBio(newData.bio);
+      setWebsite(newData.website);
+      setImageUri(newData.profile_url);
+      console.log(newData.profile_url);
+
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsLoading(false);
+      setIsChanged(false);
+      setimageUriChanged(false);
+    } catch (error) {
+      setIsLoading(false);
+      setIsChanged(false);
+      setimageUriChanged(false);
+      Alert.alert("oops", `${error.message}`, [
         {
           text: "OK",
           onPress: () => {
-            navigation.goBack();
+            // navigation.goBack();
           },
         },
       ]);
@@ -204,6 +385,8 @@ const EditProfile = ({ navigation }) => {
                 justifyContent: "center",
                 alignSelf: "center",
                 marginTop: "4%",
+                borderWidth: 2,
+                borderColor: "#999999",
               }}
             >
               <Ionicons
@@ -289,7 +472,6 @@ const EditProfile = ({ navigation }) => {
               placeholder="Optional"
               value={name}
               onChangeText={(text) => {
-                setIsChanged(true);
                 setName(text);
               }}
               errors={Errors}
@@ -299,8 +481,7 @@ const EditProfile = ({ navigation }) => {
               placeholder="This is unique to you"
               value={username}
               onChangeText={(text) => {
-                setIsChanged(true);
-                setUsername(text);
+                handleUsernameChange(text);
               }}
               errors={Errors}
             />
@@ -309,7 +490,6 @@ const EditProfile = ({ navigation }) => {
               placeholder="Introduce yourself to the world 👋"
               value={bio}
               onChangeText={(text) => {
-                setIsChanged(true);
                 setBio(text);
               }}
               multiLine={true}
@@ -320,7 +500,6 @@ const EditProfile = ({ navigation }) => {
               placeholder="https://..."
               value={website}
               onChangeText={(text) => {
-                setIsChanged(true);
                 setWebsite(text);
               }}
               errors={Errors}
@@ -328,10 +507,12 @@ const EditProfile = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{ width: "100%", paddingHorizontal: "10%", marginTop: "6%" }}
-            disabled={!isChanged || username === ""}
+            disabled={!isChanged || username === "" || Errors.length > 0}
             onPress={handleSubmit}
           >
-            <LinearGradientButton disabled={!isChanged || username === ""}>
+            <LinearGradientButton
+              disabled={!isChanged || username === "" || Errors.length > 0}
+            >
               <CustomText style={{ color: "white" }}>Save</CustomText>
             </LinearGradientButton>
           </TouchableOpacity>

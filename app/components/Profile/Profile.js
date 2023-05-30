@@ -294,14 +294,14 @@ const Profile = ({ navigation }) => {
         setTimeout(() => {
           setData({
             id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            username: "justingordon212",
-            name: "Farhan ✌️",
+            username: "justingordon212HELLOOLMOLLAKSJDMORE3QA",
+            name: "This is a very long name and i don’t care how long it is. yo",
             profile_url: profile_url,
             likes_count: 1200,
             cover_url:
               "https://static.independent.co.uk/2022/04/08/20/Pakistan_Politics_37211.jpg?quality=75&width=640&height=614&fit=bounds&format=pjpg&crop=16%3A9%2Coffset-y0.5&auto=webp",
             // bio: `Privacy is a fundamental right we can't ignore.`,
-            bio: `Privacy is a fundamental right we can't ignore.\nwww.momenel.com \n#PrivacyMatters #AlwaysBeAware #PrivacyIsNotOptional\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+            bio: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. , Lorem Ipsum is simply dummy text of the printing and typesetting indu`,
             link: "momenel.com",
             // isFollowing: true,
             postsAmount: 100,

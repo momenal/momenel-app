@@ -211,7 +211,7 @@ const ProfileHeader = ({
               <StructuredText
                 mentionHashtagPress={mentionHashtagClick}
                 mentionHashtagColor={"#8759F2"}
-                maxCharCount={117}
+                maxCharCount={160}
                 style={{ fontFamily: "Nunito_400Regular", fontSize: scale12 }}
               >
                 {bio}
