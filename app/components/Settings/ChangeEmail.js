@@ -23,7 +23,6 @@ const ChangeEmail = ({ navigation }) => {
     if (oldEmail !== email) {
       const { data, error } = await supabase.auth.updateUser({ email: email });
       if (error) {
-        console.log(error);
         Alert.alert("Error", error.message);
       } else {
         Alert.alert(

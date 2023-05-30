@@ -15,7 +15,7 @@ import CustomText from "../customText/CustomText";
 import { supabase } from "../../lib/supabase";
 import { baseUrl } from "@env";
 
-const ChangeBirthday = () => {
+const ChangeBirthday = ({ navigation }) => {
   const [oldData, setOldData] = useState({});
   const [birthday, setBirthday] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,8 @@ const ChangeBirthday = () => {
         console.log(data.date_of_birth);
         Alert.alert(
           "Updated",
-          data.message ? data.message : "Your information has been updated"
+          data.message ? data.message : "Your information has been updated",
+          [{ text: "OK", onPress: () => navigation.navigate("PersonalInfo") }]
         );
       }
     }
