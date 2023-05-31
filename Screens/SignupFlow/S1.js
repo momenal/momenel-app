@@ -1,47 +1,106 @@
 import {
-  Button,
   Keyboard,
+  LayoutAnimation,
   Pressable,
   StyleSheet,
   TextInput,
   View,
 } from "react-native";
-import { useState } from "react";
-import { supabase } from "../../app/lib/supabase";
+import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { baseUrl } from "@env";
+import { supabase } from "../../app/lib/supabase";
 
 const S1 = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
+  const [isError, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleUsernameChange = (text) => {
-    //todo: check if username is available
-
-    if (text.length > 0) {
-      setIsUsernameAvailable(true);
+  useEffect(() => {
+    if (!username.match(/^[a-zA-Z0-9_]+$/) && username.length > 0) {
+      setError("Username can only contain letters, numbers and underscores.");
+      setIsUsernameAvailable(null);
+    } else if (username.length > 38) {
+      setError("Username can only be 38 characters long.");
+      setIsUsernameAvailable(null);
+    } else if (username.length < 1) {
+      setIsUsernameAvailable(null);
+      setError("");
     } else {
+      isUsernameAvailableFunc(username);
+    }
+  }, [username]);
+
+  const isUsernameAvailableFunc = async (username) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+    try {
+      let response = await fetch(`${baseUrl}/user/checkUsername/${username}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+      if (!response.ok) {
+        response = await response.json();
+        throw new Error(response.error);
+      }
+      if (username.length > 0) {
+        setIsUsernameAvailable(true);
+      }
+    } catch (error) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      console.log(error);
+      setError(error.message);
       setIsUsernameAvailable(null);
     }
+  };
+
+  const handleUsernameChange = async (text) => {
     setUsername(text.replace(/\s/g, ""));
+    setError("");
   };
 
   const handleNext = async () => {
     setIsLoading(true);
-    //todo: check if username is available and update database with username and navigate to next screen
-    setTimeout(() => {
+
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
+    try {
+      let response = await fetch(`${baseUrl}/user/username/${username}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+      if (!response.ok) {
+        response = await response.json();
+        throw new Error(response.error);
+      }
+      response = await response.json();
+      console.log(response);
       navigation.navigate("s2");
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
       setIsLoading(false);
-    }, 2000);
+    }
   };
   return (
     <View style={{ backgroundColor: "#E8E8E8", flex: 1 }}>
       <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
-        <Button onPress={() => supabase.auth.signOut()} title="our" />
         <View style={{ marginBottom: "3%" }}>
           <CustomText style={styles.heading}>
             What should we call you?
@@ -72,30 +131,54 @@ const S1 = ({ navigation }) => {
           onChangeText={handleUsernameChange}
           numberOfLines={1}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: "3%",
-          }}
-        >
-          <CustomText style={[styles.subtitle, {}]}>
-            {isUsernameAvailable === true ? (
-              <Ionicons name="checkmark-circle" size={24} color="green" />
-            ) : isUsernameAvailable === false ? (
-              <Ionicons name="close-circle" size={24} color="red" />
-            ) : (
-              ""
-            )}
-          </CustomText>
-          <CustomText style={[styles.subtitle]}>
-            {isUsernameAvailable === true
-              ? " Username is available"
-              : isUsernameAvailable === false
-              ? " Username is not available"
-              : ""}
-          </CustomText>
-        </View>
+        {/* errors */}
+        {isError.length > 0 ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: "3%",
+            }}
+          >
+            <CustomText style={[styles.subtitle, {}]}>
+              {isError.length > 0 === true ? (
+                <Ionicons name="warning" size={24} color="red" />
+              ) : (
+                ""
+              )}
+            </CustomText>
+            <CustomText style={[styles.subtitle]}>
+              {isError.length > 0 === true ? isError : ""}
+            </CustomText>
+          </View>
+        ) : null}
+        {/* is available */}
+        {username.length > 0 && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: "3%",
+            }}
+          >
+            <CustomText style={[styles.subtitle, {}]}>
+              {isUsernameAvailable === true ? (
+                <Ionicons name="checkmark-circle" size={24} color="green" />
+              ) : isUsernameAvailable === false ? (
+                <Ionicons name="close-circle" size={24} color="red" />
+              ) : (
+                ""
+              )}
+            </CustomText>
+            <CustomText style={[styles.subtitle]}>
+              {isUsernameAvailable === true
+                ? " Username is available"
+                : isUsernameAvailable === false
+                ? " Username is not available"
+                : ""}
+            </CustomText>
+          </View>
+        )}
         <View
           style={{
             flex: 1,
@@ -149,6 +232,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   input: {
+    fontFamily: "Nunito_500Medium",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 13,
+    padding: 10,
+    paddingHorizontal: 15,
+    width: "100%",
+    fontSize: 16,
+  },
+  error: {
     fontFamily: "Nunito_500Medium",
     borderWidth: 1,
     borderColor: "#ccc",
