@@ -1,189 +1,180 @@
 import {
-  LayoutAnimation,
   Pressable,
   StyleSheet,
   View,
   Image,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
-
-import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { useEffect, useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { scale } from "../../app/utils/Scale";
-import * as ImagePicker from "expo-image-picker";
+import { FlashList } from "@shopify/flash-list";
+import { useBoundStore } from "../../app/Store/useBoundStore";
 
-const S3 = ({ navigation }) => {
+const S3 = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  const [imageUri, setImageUri] = useState();
-
+  const [data, setData] = useState([]);
+  const setHasCompletedOnboarding = useBoundStore(
+    (state) => state.setHasCompletedOnboarding
+  );
+  let profileImageSizeScale = scale(45);
+  useEffect(() => {
+    setIsLoading(true);
+    //todo: fetch accounts to follow from server with url
+    setTimeout(() => {
+      fetch("https://run.mocky.io/v3/9ae92caa-2819-4e39-befc-03872038c630")
+        .then((response) => response.json())
+        .then((json) =>
+          setData([
+            {
+              username: "a really long username toos",
+              name: "a really long name kasjdkjakldjkljsak",
+              bio: "Cat meme lord here to make you laugh and cry at the same time 😼 #love #cats #memes #funny #catsofinstagram by the way this is a really long bio to test the ui of the app and see if it can handle long bios and long usernames",
+              isFollowed: false,
+              profile_image_url:
+                "https://source.unsplash.com/random/300x300/?dubai",
+            },
+            ...json.profiles,
+          ])
+        );
+      setIsLoading(false);
+      // json.profiles
+    }, 2000);
+  }, []);
   const handleNext = async () => {
-    if (isChanged) {
-      setIsLoading(true);
-      //todo: send image to be uplaoded to server
-      setTimeout(() => {
-        navigation.navigate("s4", { profile_url: imageUri });
-        setIsLoading(false);
-      }, 0);
-    } else {
-      //   navigation.navigate("s4");
-      navigation.navigate("s4", { profile_url: null });
-    }
+    setHasCompletedOnboarding(true);
   };
-  const pickProfileImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0,
-      allowsEditing: true,
-      base64: false,
-      aspect: [1, 1],
+  const getNumberOfFollowed = () => {
+    let count = 0;
+    data.forEach((item) => {
+      if (item.isFollowed) {
+        count++;
+      }
     });
-
-    if (!result.canceled) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setImageUri(result.assets[0].uri);
-      setIsChanged(true);
-    }
+    return count;
   };
-  const removeProfileImage = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setImageUri(null);
-    setIsChanged(false);
+  const handleFollow = (username) => {
+    //todo: send follow request to server
+    //update follow status in data
+    let newData = data.map((item) => {
+      if (item.username === username) {
+        item.isFollowed = !item.isFollowed;
+      }
+      return item;
+    });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setData(newData);
   };
-
-  if (isLoading) {
+  const renderProfile = ({ item }) => {
     return (
       <View
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#E8E8E8",
+          flexDirection: "row",
+          borderBottomColor: "#9C9C9C",
+          borderBottomWidth: 1,
+          marginVertical: 10,
+          paddingBottom: 10,
         }}
       >
-        <ActivityIndicator color="#0000ff" />
-        <CustomText style={{ marginTop: "5%" }}>
-          Saving profile image
-        </CustomText>
-      </View>
-    );
-  }
-
-  return (
-    <View style={{ backgroundColor: "#E8E8E8", flex: 1, padding: 20 }}>
-      <View style={{ marginBottom: "3%" }}>
-        <CustomText style={styles.heading}>Add profile photo</CustomText>
-        <CustomText>
-          Add a profile photo so your friends know it’s you.
-        </CustomText>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {!imageUri && (
-          <Pressable
-            onPress={pickProfileImage}
+        <Image
+          source={{ uri: item.profile_image_url }}
+          style={{
+            width: profileImageSizeScale,
+            height: profileImageSizeScale,
+            borderRadius: profileImageSizeScale / 2,
+            marginRight: "2%",
+            backgroundColor: "#9E8CFB",
+          }}
+        />
+        <View style={{ flex: 1 }}>
+          <View
             style={{
-              height: scale(200),
-              width: scale(200),
-              borderRadius: scale(200) / 2,
-              backgroundColor: "white",
-              alignItems: "center",
-              justifyContent: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginRight: "2%",
             }}
           >
-            <Ionicons name="ios-person-add" size={scale(50)} color="#999999" />
-          </Pressable>
-        )}
-        {imageUri && (
-          <View
-            style={
-              {
-                // width: scale(126),
-              }
-            }
-          >
-            <Image
-              source={
-                imageUri
-                  ? {
-                      uri: imageUri,
-                    }
-                  : null
-              }
-              resizeMode="cover"
-              style={{
-                height: scale(200),
-                width: scale(200),
-                borderRadius: scale(200) / 2,
-                borderColor: "white",
-                borderWidth: 6,
-                backgroundColor: "white",
-                alignItems: "flex-end",
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: -scale(200) / 3,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  width: scale(35),
-                  height: scale(35),
-                  borderRadius: 80,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={removeProfileImage}
+            <View style={{ width: "60%" }}>
+              {item.name && (
+                <CustomText style={styles.name} numberOfLines={1}>
+                  {item.name}
+                </CustomText>
+              )}
+              <CustomText
+                style={
+                  item.name
+                    ? styles.username
+                    : [styles.name, { color: "black" }]
+                }
+                numberOfLines={1}
               >
-                <Ionicons name="trash" size={scale(18)} color="red" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: scale(35),
-                  height: scale(35),
-                  borderRadius: 80,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: 10,
-                }}
-                onPress={pickProfileImage}
-              >
-                <Ionicons name="camera" size={scale(18)} color="black" />
-              </TouchableOpacity>
+                @{item.username}
+              </CustomText>
             </View>
+            <Pressable
+              onPress={() => handleFollow(item.username)}
+              style={item.isFollowed ? styles.following : styles.follow}
+            >
+              <CustomText style={{ color: "white" }}>
+                {item.isFollowed ? "Following" : "Follow"}
+              </CustomText>
+            </Pressable>
           </View>
-        )}
+          {item.bio && (
+            <CustomText numberOfLines={4} style={{ marginTop: "2%" }}>
+              {item.bio}
+            </CustomText>
+          )}
+        </View>
       </View>
+    );
+  };
+  return (
+    <View style={{ backgroundColor: "#E8E8E8", flex: 1, padding: 20 }}>
+      <View style={{ marginBottom: "7%" }}>
+        <CustomText style={styles.heading}>Suggested Profiles</CustomText>
+        <CustomText>Here are some suggested accounts to follow.</CustomText>
+      </View>
+      {/* flashlist of profiles */}
+      {isLoading ? (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator color="black" />
+        </View>
+      ) : (
+        <FlashList
+          data={data}
+          renderItem={renderProfile}
+          keyExtractor={(item) => item.username}
+          estimatedItemSize={68}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      )}
       <View
         style={{
           justifyContent: "flex-end",
-          marginBottom: "10%",
+          marginBottom: "5%",
         }}
       >
-        <TouchableOpacity onPress={handleNext}>
-          <LinearGradientButton style={{ width: "100%" }}>
-            <CustomText style={{ color: "white" }}>
-              {isChanged ? "Save" : "Skip"}
-            </CustomText>
+        <TouchableOpacity
+          onPress={handleNext}
+          style={{ alignItems: "center" }}
+          disabled={getNumberOfFollowed() < 2}
+        >
+          <LinearGradientButton
+            style={{ width: "100%", marginTop: "3%", marginBottom: "2%" }}
+            disabled={getNumberOfFollowed() < 2}
+          >
+            <CustomText style={{ color: "white" }}>Done</CustomText>
           </LinearGradientButton>
+          <CustomText>Follow at least 2 profiles to continue</CustomText>
         </TouchableOpacity>
       </View>
-
       <StatusBar style="dark" animated={true} />
     </View>
   );
@@ -192,28 +183,30 @@ const S3 = ({ navigation }) => {
 export default S3;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
   heading: {
     fontFamily: "Nunito_600SemiBold",
     fontSize: 25,
     fontWeight: "bold",
   },
-  subtitle: {
-    fontSize: 15,
-    marginBottom: 10,
+  name: {
+    fontFamily: "Nunito_600SemiBold",
+    fontSize: scale(14),
   },
-  input: {
-    fontFamily: "Nunito_500Medium",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 13,
-    padding: 10,
-    paddingHorizontal: 15,
-    width: "100%",
-    fontSize: 16,
+  username: { fontSize: scale(13), color: "#767676" },
+  follow: {
+    backgroundColor: "#F4448E",
+    width: scale(80),
+    height: scale(30),
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  following: {
+    backgroundColor: "#7E7E7E",
+    width: scale(80),
+    height: scale(30),
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
