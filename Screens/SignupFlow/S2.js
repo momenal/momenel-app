@@ -1,16 +1,25 @@
-import { Keyboard, Pressable, StyleSheet, TextInput, View } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { baseUrl } from "@env";
+import { supabase } from "../../app/lib/supabase";
 
 const S2 = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUsernameChange = (text) => {
-    setUsername(text.replace(/\s/g, ""));
+    setUsername(text);
   };
 
   const handleNext = async () => {
@@ -19,11 +28,30 @@ const S2 = ({ navigation }) => {
       return;
     } else {
       setIsLoading(true);
-      //todo: check if username is available and update database with username and navigate to next screen
-      setTimeout(() => {
+
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        return navigation.navigate("Login");
+      }
+
+      try {
+        let response = await fetch(`${baseUrl}/user/name/${username}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.session.access_token}`,
+          },
+        });
+        if (!response.ok) {
+          response = await response.json();
+          throw new Error(response.error);
+        }
         navigation.navigate("s3");
         setIsLoading(false);
-      }, 2000);
+      } catch (error) {
+        Alert.alert("Error", error.message);
+        setIsLoading(false);
+      }
     }
   };
   return (
