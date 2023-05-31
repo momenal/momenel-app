@@ -4,6 +4,7 @@ import {
   View,
   Image,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useEffect, useState } from "react";
@@ -14,6 +15,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { scale } from "../../app/utils/Scale";
 import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../../app/Store/useBoundStore";
+import { baseUrl } from "@env";
+import { supabase } from "../../app/lib/supabase";
 
 const S3 = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,52 +27,118 @@ const S3 = ({}) => {
   let profileImageSizeScale = scale(45);
   useEffect(() => {
     setIsLoading(true);
-    //todo: fetch accounts to follow from server with url
-    setTimeout(() => {
-      fetch("https://run.mocky.io/v3/9ae92caa-2819-4e39-befc-03872038c630")
-        .then((response) => response.json())
-        .then((json) =>
-          setData([
-            {
-              username: "a really long username toos",
-              name: "a really long name kasjdkjakldjkljsak",
-              bio: "Cat meme lord here to make you laugh and cry at the same time 😼 #love #cats #memes #funny #catsofinstagram by the way this is a really long bio to test the ui of the app and see if it can handle long bios and long usernames",
-              isFollowed: false,
-              profile_image_url:
-                "https://source.unsplash.com/random/300x300/?dubai",
-            },
-            ...json.profiles,
-          ])
-        );
-      setIsLoading(false);
-      // json.profiles
-    }, 2000);
+    fetchProfiles();
   }, []);
-  const handleNext = async () => {
-    setHasCompletedOnboarding(true);
+
+  const fetchProfiles = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
+    }
+
+    fetch(`${baseUrl}/suggestedprofiles`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        setData(json);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        Alert.alert("Error", "Something went wrong, please try again later");
+      });
   };
+
+  const handleNext = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+
+    fetch(`${baseUrl}/user/hasOnboarded`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.has_onboarded) {
+          setHasCompletedOnboarding(true);
+        } else {
+          setHasCompletedOnboarding(false);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => {
+        Alert.alert("Error", "Something went wrong, please try again later");
+      });
+  };
+
   const getNumberOfFollowed = () => {
     let count = 0;
-    data.forEach((item) => {
-      if (item.isFollowed) {
+    data.forEach(({ profile }) => {
+      if (profile.isFollowed) {
         count++;
       }
     });
     return count;
   };
-  const handleFollow = (username) => {
+  const handleFollow = async (id) => {
+    console.log(id);
     //todo: send follow request to server
     //update follow status in data
     let newData = data.map((item) => {
-      if (item.username === username) {
-        item.isFollowed = !item.isFollowed;
+      if (item.profile.id === id) {
+        item.profile.isFollowed = !item.profile.isFollowed;
       }
       return item;
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setData(newData);
+
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+
+    let response = await fetch(`${baseUrl}/followuser/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+
+    if (response.status === 201) {
+      let newData = data.map((item) => {
+        if (item.profile.id === id) {
+          item.profile.isFollowed = true;
+        }
+        return item;
+      });
+      setData(newData);
+    } else {
+      let newData = data.map((item) => {
+        if (item.profile.id === id) {
+          item.profile.isFollowed = false;
+        }
+        return item;
+      });
+      setData(newData);
+    }
   };
   const renderProfile = ({ item }) => {
+    let profile = item.profile;
+
     return (
       <View
         style={{
@@ -82,7 +151,7 @@ const S3 = ({}) => {
         }}
       >
         <Image
-          source={{ uri: item.profile_image_url }}
+          source={{ uri: profile.profile_url }}
           style={{
             width: profileImageSizeScale,
             height: profileImageSizeScale,
@@ -100,34 +169,34 @@ const S3 = ({}) => {
             }}
           >
             <View style={{ width: "60%" }}>
-              {item.name && (
+              {profile.name && (
                 <CustomText style={styles.name} numberOfLines={1}>
-                  {item.name}
+                  {profile.name}
                 </CustomText>
               )}
               <CustomText
                 style={
-                  item.name
+                  profile.name
                     ? styles.username
                     : [styles.name, { color: "black" }]
                 }
                 numberOfLines={1}
               >
-                @{item.username}
+                @{profile.username}
               </CustomText>
             </View>
             <Pressable
-              onPress={() => handleFollow(item.username)}
-              style={item.isFollowed ? styles.following : styles.follow}
+              onPress={() => handleFollow(profile.id)}
+              style={profile.isFollowed ? styles.following : styles.follow}
             >
               <CustomText style={{ color: "white" }}>
-                {item.isFollowed ? "Following" : "Follow"}
+                {profile.isFollowed ? "Following" : "Follow"}
               </CustomText>
             </Pressable>
           </View>
-          {item.bio && (
+          {profile.bio && (
             <CustomText numberOfLines={4} style={{ marginTop: "2%" }}>
-              {item.bio}
+              {profile.bio}
             </CustomText>
           )}
         </View>
@@ -149,7 +218,7 @@ const S3 = ({}) => {
         <FlashList
           data={data}
           renderItem={renderProfile}
-          keyExtractor={(item) => item.username}
+          keyExtractor={(item) => item.profile.id}
           estimatedItemSize={68}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}

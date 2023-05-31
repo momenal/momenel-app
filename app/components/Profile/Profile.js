@@ -1042,14 +1042,6 @@ const Profile = ({ navigation }) => {
                   backgroundColor: "white",
                 }
           }
-          // style={{
-          //   flexDirection: "row",
-          //   width: "100%",
-          //   height: CalcHeight(width, height),
-          //   borderRadius: 4,
-          //   backgroundColor: "black",
-          //   //   marginHorizontal: 10,
-          // }}
           imageStyle={{ borderRadius: 6 }}
           resizeMode="contain"
         >

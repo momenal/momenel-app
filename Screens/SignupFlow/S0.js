@@ -111,12 +111,7 @@ const S0 = ({ navigation }) => {
         setIsSubmitting(false);
       } else {
         setIsSubmitting(false);
-        Alert.alert("Success", "Your birthday has been saved.", [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("s1"),
-          },
-        ]);
+        navigation.navigate("s1");
       }
     }
   };

@@ -18,13 +18,12 @@ import { baseUrl } from "@env";
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(null);
-  // const hasCompletedOnboarding = useBoundStore(
-  //   (state) => state.hasCompletedOnboarding
-  // );
-  // const setHasCompletedOnboarding = useBoundStore(
-  //   (state) => state.setHasCompletedOnboarding
-  // );
+  const hasCompletedOnboarding = useBoundStore(
+    (state) => state.hasCompletedOnboarding
+  );
+  const setHasCompletedOnboarding = useBoundStore(
+    (state) => state.setHasCompletedOnboarding
+  );
 
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);
