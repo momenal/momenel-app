@@ -8,11 +8,15 @@ import {
   StyleSheet,
   Pressable,
   Keyboard,
+  Alert,
 } from "react-native";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import CustomText from "../../app/components/customText/CustomText";
+import { supabase } from "../../app/lib/supabase";
+import { baseUrl } from "@env";
 
 const S0 = ({ navigation }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -70,14 +74,51 @@ const S0 = ({ navigation }) => {
     return age;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let age = getAge(`${year}/${month}/${day}`);
     console.log("Age:", age);
     if (age < 18 || isNaN(age)) {
       alert("You must be at least 18 years old to use this app.");
       return;
     }
-    navigation.navigate("s1");
+
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    if (error) {
+      console.log(error);
+      Alert.alert("Error", "Please try again");
+    } else {
+      setIsSubmitting(true);
+      let headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
+      };
+      let bodyContent = JSON.stringify({
+        birthday: `${year}/${month}/${day}`,
+      });
+      let response = await fetch(`${baseUrl}/user/updatePersonalInfo`, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+      let data = await response.json();
+      if (data.error) {
+        console.log("error");
+        Alert.alert("Error", data.error);
+        setIsSubmitting(false);
+      } else {
+        setIsSubmitting(false);
+        Alert.alert("Success", "Your birthday has been saved.", [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("s1"),
+          },
+        ]);
+      }
+    }
   };
 
   return (
@@ -134,21 +175,21 @@ const S0 = ({ navigation }) => {
         <TouchableOpacity
           onPress={handleSave}
           disabled={
-            getAge(`${year}/${month}/${day}`) >= 18 &&
+            (getAge(`${year}/${month}/${day}`) >= 18 &&
             getAge(`${year}/${month}/${day}`) < 110 &&
             year.length === 4
               ? false
-              : true
+              : true) || isSubmitting
           }
         >
           <LinearGradientButton
             style={{ width: "100%" }}
             disabled={
-              getAge(`${year}/${month}/${day}`) >= 18 &&
+              (getAge(`${year}/${month}/${day}`) >= 18 &&
               getAge(`${year}/${month}/${day}`) < 110 &&
               year.length === 4
                 ? false
-                : true
+                : true) || isSubmitting
             }
           >
             <CustomText style={{ color: "white" }}>Continue</CustomText>
