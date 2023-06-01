@@ -1,6 +1,12 @@
 // Description: This screen will show the list of users who liked the post or reposted the post or tipped the post.
 
-import { Dimensions, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  StyleSheet,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import UserList from "../app/components/UserList";
@@ -10,98 +16,84 @@ import { scale } from "../app/utils/Scale";
 import { supabase } from "../app/lib/supabase";
 import { baseUrl } from "@env";
 
-let likes = [
-  {
-    username: "farhan",
-    profile_url:
-      "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
-    isFollowing: true,
-  },
-  {
-    username: "mohammad",
-    profile_url:
-      "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
-    isFollowing: false,
-  },
-];
-let reposts = [
-  {
-    username: "BenIwara",
-    profile_url:
-      "https://images.unsplash.com/photo-1681483476977-322d81693e41?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-    isFollowing: true,
-  },
-  {
-    username: "vale",
-    profile_url:
-      "https://images.unsplash.com/photo-1677103216895-59fb1b6a4fcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=770&q=80",
-    isFollowing: false,
-  },
-];
-
 const ByUserList = ({ route, navigation }) => {
   const { type, Id } = route.params;
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    setIsLoading(true);
+    let response;
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+    // fetch data
     if (type === "likes") {
       navigation.setOptions({ title: "Likes" });
-      //todo: fetch likes from server
-      console.log("fetching likes: ", Id);
-      setData(likes);
+      response = await fetch(`${baseUrl}/like/8`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      });
     } else if (type === "reposts") {
       navigation.setOptions({ title: "Reposts" });
-      setData(reposts);
+      //todo: change id
+      response = await fetch(`${baseUrl}/repost/8`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      });
     } else if (type === "followers") {
       navigation.setOptions({
         title: `Followers`,
       });
-      // fetch followers
-      setData([
+      //todo: change id
+      response = await fetch(
+        `${baseUrl}/followuser/followers/0cee4054-e83f-42ae-a079-75b81c0766fb`,
         {
-          id: "iuwqijlksajdk",
-          username: "farhan",
-          profile_url:
-            "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
-          isFollowing: true,
-        },
-        {
-          id: "sad77900217nhuuasjd",
-          username: "moe",
-          profile_url:
-            "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
-          isFollowing: false,
-        },
-      ]);
+          method: "GET",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${session.session.access_token}`,
+          },
+        }
+      );
     } else if (type === "following") {
       navigation.setOptions({
         title: `Following`,
       });
-      // fetch followers
-      setData([
-        {
-          id: "iuwqijlksajdk",
-          username: "farhanverse",
-          profile_url:
-            "https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
-          isFollowing: true,
+      //todo: change id
+      response = await fetch(`${baseUrl}/followuser/following`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
         },
-        {
-          id: "sad77900217nhuuasjd",
-          username: "kkkas",
-          profile_url:
-            "https://images.unsplash.com/profile-fb-1490247534-1fb0b1c8ecca.jpg?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff",
-          isFollowing: false,
-        },
-      ]);
+      });
     }
-  }, []);
+    response = await response.json();
+    if (response.error) {
+      Alert.alert("Error", response.error);
+    }
+    setData(response);
+    setIsLoading(false);
+  };
 
   const kFormatter = (num) => {
     return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleFollowPress = async (username) => {
+  const handleFollowPress = async (id) => {
     const { data: session, error } = await supabase.auth.getSession();
     if (error) {
       navigation.navigate("Login");
@@ -110,33 +102,30 @@ const ByUserList = ({ route, navigation }) => {
     // update the state
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const newData = data.map((item) => {
-      if (item.username === username) {
+      if (item.user.id === id) {
         return {
           ...item,
-          isFollowing: !item.isFollowing,
+          isFollowed: !item.isFollowed,
         };
       }
       return item;
     });
     setData(newData);
 
-    let response = await fetch(
-      `${baseUrl}/followuser/b64ebff6-f29d-46f0-a0df-8cf6885a34f9`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${session.session.access_token}`,
-        },
-      }
-    );
+    let response = await fetch(`${baseUrl}/followuser/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
 
     if (response.status === 201) {
       const newData = data.map((item) => {
-        if (item.username === username) {
+        if (item.user.id === id) {
           return {
             ...item,
-            isFollowing: true,
+            isFollowed: true,
           };
         }
         return item;
@@ -144,10 +133,10 @@ const ByUserList = ({ route, navigation }) => {
       setData(newData);
     } else {
       const newData = data.map((item) => {
-        if (item.username === username) {
+        if (item.user.id === id) {
           return {
             ...item,
-            isFollowing: false,
+            isFollowed: false,
           };
         }
         return item;
@@ -160,33 +149,48 @@ const ByUserList = ({ route, navigation }) => {
     return (
       <UserList
         type={type}
-        username={item.username}
-        profile_url={item.profile_url}
+        id={item.user.id}
+        username={item.user.username}
+        profile_url={item.user.profile_url}
         isFollowing={isFollowing}
         onPress={handleFollowPress}
+        navigation={navigation}
       />
     );
   };
 
   const renderHeaderComponent = () => {
-    if (type === "followers") {
+    if (type === "followers" || type === "following") {
       return (
         <View style={{ marginHorizontal: "5%", marginVertical: "2%" }}>
           <CustomText
             style={{ fontFamily: "Nunito_800ExtraBold", fontSize: scale(25) }}
           >
-            {kFormatter(route.params.totalAmount)}
+            {kFormatter(data.length)}
           </CustomText>
           <CustomText
             style={{ fontFamily: "Nunito_500Medium", fontSize: scale(15) }}
           >
-            Followers
+            {type === "followers" ? "Followers" : "Following"}
           </CustomText>
         </View>
       );
     } else {
       return null;
     }
+  };
+
+  // return of isLoading
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <ActivityIndicator color="black" style={{ marginTop: "2%" }} />
+      </View>
+    );
+  }
+
+  const handleRefresh = () => {
+    getData();
   };
 
   return (
@@ -197,10 +201,12 @@ const ByUserList = ({ route, navigation }) => {
         renderItem={({ item }) =>
           renderItem({
             item,
-            isFollowing: item.isFollowing,
+            isFollowing: item.isFollowed,
           })
         }
         estimatedItemSize={69}
+        onRefresh={handleRefresh}
+        refreshing={isLoading}
       />
     </View>
   );

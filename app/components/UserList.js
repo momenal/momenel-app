@@ -1,18 +1,26 @@
 import { useMemo } from "react";
-import { useBoundStore } from "../Store/useBoundStore";
 import { scale } from "../utils/Scale";
 import {
   View,
-  Text,
   Image,
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
+import { Ionicons } from "@expo/vector-icons";
 
-const UserList = ({ type, username, profile_url, isFollowing, onPress }) => {
+const UserList = ({
+  id,
+  type,
+  username,
+  profile_url,
+  isFollowing,
+  onPress,
+  navigation,
+}) => {
   const size = useMemo(() => scale(25), []);
   const fontSize = useMemo(() => scale(13), []);
 
@@ -27,19 +35,32 @@ const UserList = ({ type, username, profile_url, isFollowing, onPress }) => {
         paddingHorizontal: 20,
       }}
     >
-      <View
+      <Pressable
         style={{
+          flex: 1,
           flexDirection: "row",
           alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+        onPress={() => {
+          navigation.navigate("UserProfile", { id: id });
         }}
       >
-        <Image
-          style={{ width: size, height: size, borderRadius: 500 }}
-          resizeMode="cover"
-          source={{
-            uri: profile_url,
-          }}
-        />
+        {profile_url ? (
+          <Image
+            style={{ width: size, height: size, borderRadius: 500 }}
+            resizeMode="cover"
+            source={{
+              uri: profile_url,
+            }}
+          />
+        ) : (
+          <Ionicons
+            name="person-circle-sharp"
+            size={size + 4}
+            color="#999999"
+          />
+        )}
         <View style={{ marginLeft: "5%" }}>
           <CustomText
             style={{
@@ -52,25 +73,27 @@ const UserList = ({ type, username, profile_url, isFollowing, onPress }) => {
             {username}
           </CustomText>
         </View>
-      </View>
-      <TouchableOpacity
-        style={!isFollowing ? styles.not_following : styles.following}
-        onPress={() => onPress(username)}
-      >
-        {!isFollowing ? (
-          <GradientText style={{ fontSize: fontSize }}>Follow</GradientText>
-        ) : (
-          <CustomText
-            style={{
-              fontSize: fontSize,
-              color: "#8A8A8A",
-              fontFamily: "Nunito_500Medium",
-            }}
-          >
-            Following
-          </CustomText>
-        )}
-      </TouchableOpacity>
+      </Pressable>
+      {isFollowing !== null && (
+        <TouchableOpacity
+          style={!isFollowing ? styles.not_following : styles.following}
+          onPress={() => onPress(id)}
+        >
+          {!isFollowing ? (
+            <GradientText style={{ fontSize: fontSize }}>Follow</GradientText>
+          ) : (
+            <CustomText
+              style={{
+                fontSize: fontSize,
+                color: "#8A8A8A",
+                fontFamily: "Nunito_500Medium",
+              }}
+            >
+              Following
+            </CustomText>
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
