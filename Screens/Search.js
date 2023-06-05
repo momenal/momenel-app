@@ -5,6 +5,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  Keyboard,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { memo, useCallback, useEffect, useState } from "react";
@@ -19,11 +20,10 @@ import Post from "../app/components/Posts/Post";
 import { CalcHeight } from "../app/utils/CalcHeight";
 import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
+import { LayoutAnimation } from "react-native";
+import { Alert } from "react-native";
 
 const fakeRes = {
-  id: "1jklasd9",
-  type: "hashtag",
-  isFollowing: false,
   posts: [
     {
       postId: Math.random(19).toString(),
@@ -100,13 +100,27 @@ const Search = ({ navigation, route }) => {
   }, []);
 
   const getSearchSuggestions = async (query) => {
-    // make API call to backend to get search suggestions based on query
-    // const response = await fetch(`https://example.com/api/search?q=${query}`);
-    const response = await fetch(
-      `https://run.mocky.io/v3/9fad5460-5d7e-4cfb-9c97-cb6fc7a66e78`
-    );
-    const data = await response.json();
-    setSuggestions(data);
+    if (!query) return setSuggestions([]);
+
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+    let response = await fetch(`${baseUrl}/search/${query}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+    response = await response.json();
+    if (response.error) {
+      Alert.alert("Error", response.error);
+      setSuggestions([]);
+    }
+    console.log(response);
+    setSuggestions(response);
   };
 
   const handleSearchChange = (text) => {
@@ -116,18 +130,22 @@ const Search = ({ navigation, route }) => {
   };
 
   const handleSuggestionPress = (suggestion) => {
-    onChangeText(suggestion.title);
-    setSuggestions([]);
-    // handle press
-    // todo: it should be profile instead of mention
-    if (suggestion.type === "mention") {
-      navigation.navigate("Profile", { id: suggestion.id });
+    console.log(suggestion);
+    if (suggestion.username) {
+      navigation.navigate("UserProfile", { id: suggestion.id });
     } else {
-      // setQueryResults(suggestion);
-      setQueryResults({ ...fakeRes, title: suggestion.title });
-      setPostsData(fakeRes.posts);
+      Keyboard.dismiss();
+      onChangeText(suggestion.hashtag);
+      setSuggestions([]);
       //todo: get posts from backend
-      // setQueryResults(fakeRes); //! remove this
+      // todo: get isfollowing from backend
+
+      setQueryResults({
+        title: suggestion.hashtag,
+        isFollowing: true,
+        id: suggestion.id,
+      });
+      setPostsData(fakeRes.posts);
     }
   };
 
@@ -276,6 +294,45 @@ const Search = ({ navigation, route }) => {
     }
   };
 
+  const handleHashtagFollow = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setQueryResults({
+      ...queryResults,
+      isFollowing: !queryResults.isFollowing,
+    });
+    console.log(queryResults.id);
+    // handle follow on backend
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+    let response = await fetch(`${baseUrl}/hashtag/follow/${queryResults.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+    if (response.status === 201) {
+      setQueryResults({
+        ...queryResults,
+        isFollowing: true,
+      });
+    } else {
+      setQueryResults({
+        ...queryResults,
+        isFollowing: false,
+      });
+    }
+  };
+
   const renderHeader = () => {
     return (
       <>
@@ -289,16 +346,10 @@ const Search = ({ navigation, route }) => {
                 marginBottom: "2%",
               }}
             >
-              {queryResults.title}
+              #{queryResults.title}
             </CustomText>
             <TouchableOpacity
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                setQueryResults({
-                  ...queryResults,
-                  isFollowing: !queryResults.isFollowing,
-                });
-              }}
+              onPress={handleHashtagFollow}
               style={
                 queryResults.isFollowing
                   ? {
@@ -447,6 +498,7 @@ const Search = ({ navigation, route }) => {
     //   setRefreshing(false);
     // });
   }, []);
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <SafeAreaView
@@ -508,71 +560,80 @@ const Search = ({ navigation, route }) => {
           </CustomText>
         </TouchableOpacity>
       </SafeAreaView>
-      <View>
-        {suggestions.length > 0 && (
-          <FlatList
-            data={suggestions}
-            renderItem={renderSuggestion}
-            keyExtractor={(item) => item.id}
-          />
-        )}
-      </View>
+      {suggestions.length > 0 ? (
+        <View
+          style={{
+            backgroundColor: "white",
+            height: "100%",
+          }}
+        >
+          {suggestions.length > 0 && (
+            <FlatList
+              data={suggestions}
+              renderItem={renderSuggestion}
+              keyExtractor={(item) => item.id}
+              keyboardShouldPersistTaps="always"
+            />
+          )}
+        </View>
+      ) : (
+        <FlashList
+          data={postsData}
+          estimatedItemSize={450}
+          keyExtractor={(item) => {
+            return item.postId;
+          }}
+          renderItem={({ item, index }) =>
+            renderItem({
+              item,
+              index,
+              isLiked: item.isLiked,
+              isReposted: item.repostedByUser,
+              postId: item.postId,
+              width: item.posts?.length > 0 ? item.posts[0].width : 0,
+              height: item.posts?.length > 0 ? item.posts[0].height : 0,
+            })
+          }
+          ListHeaderComponent={renderHeader}
+          ListHeaderComponentStyle={{
+            paddingTop: 5,
+          }}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          showsVerticalScrollIndicator={false}
+          keyboardDismissMode="on-drag"
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+            minimumViewTime: 500,
+          }}
+          // todo: implement viewability below
+          onViewableItemsChanged={({ viewableItems, changed }) => {
+            // loop through viewable items and update the store
+            viewableItems.forEach((item) => {
+              // console.log("Visible items are", item.index);
+            });
+          }}
+          onEndReached={fetchMoreData}
+          onEndReachedThreshold={2}
+          ListFooterComponent={() =>
+            isLoadingMore ? (
+              <View style={{ marginBottom: scale(30) }}>
+                <ActivityIndicator />
+              </View>
+            ) : null
+          }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
+        />
+      )}
       {/* posts from hashtag */}
-      <FlashList
-        data={postsData}
-        estimatedItemSize={450}
-        keyExtractor={(item) => {
-          return item.postId;
-        }}
-        renderItem={({ item, index }) =>
-          renderItem({
-            item,
-            index,
-            isLiked: item.isLiked,
-            isReposted: item.repostedByUser,
-            postId: item.postId,
-            width: item.posts?.length > 0 ? item.posts[0].width : 0,
-            height: item.posts?.length > 0 ? item.posts[0].height : 0,
-          })
-        }
-        ListHeaderComponent={renderHeader}
-        ListHeaderComponentStyle={{
-          paddingTop: 5,
-        }}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        showsVerticalScrollIndicator={false}
-        keyboardDismissMode="on-drag"
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
-          minimumViewTime: 500,
-        }}
-        // todo: implement viewability below
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // loop through viewable items and update the store
-          viewableItems.forEach((item) => {
-            // console.log("Visible items are", item.index);
-          });
-        }}
-        onEndReached={fetchMoreData}
-        onEndReachedThreshold={2}
-        ListFooterComponent={() =>
-          isLoadingMore ? (
-            <View style={{ marginBottom: scale(30) }}>
-              <ActivityIndicator />
-            </View>
-          ) : null
-        }
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
     </View>
   );
 };
 
 const Suggestion = ({ item, handleSuggestionPress }) => {
-  console.log(item);
+  console.log(item.hashtag);
   return (
     <TouchableOpacity
       style={{
@@ -583,7 +644,7 @@ const Suggestion = ({ item, handleSuggestionPress }) => {
       }}
       onPress={() => handleSuggestionPress(item)}
     >
-      {item.type === "mention" ? (
+      {item.username ? (
         <View
           style={{
             display: "flex",
@@ -591,15 +652,25 @@ const Suggestion = ({ item, handleSuggestionPress }) => {
             alignItems: "center",
           }}
         >
-          <Image
-            source={{ uri: item.profile_url }}
-            style={{
-              width: scale(30),
-              height: scale(30),
-              borderRadius: scale(15),
-              marginRight: scale(10),
-            }}
-          />
+          {item.profile_url ? (
+            <Image
+              source={{ uri: item.profile_url }}
+              style={{
+                width: scale(30),
+                height: scale(30),
+                borderRadius: scale(15),
+                marginRight: "1%",
+              }}
+            />
+          ) : (
+            <Ionicons
+              name="person-circle-sharp"
+              size={scale(30)}
+              color="#999999"
+              style={{ marginRight: "1%" }}
+            />
+          )}
+
           <CustomText
             style={{
               fontFamily: "Nunito_600SemiBold",
@@ -607,7 +678,7 @@ const Suggestion = ({ item, handleSuggestionPress }) => {
               color: "black",
             }}
           >
-            {item.title}
+            {item.username}
           </CustomText>
         </View>
       ) : (
@@ -618,7 +689,7 @@ const Suggestion = ({ item, handleSuggestionPress }) => {
             color: "black",
           }}
         >
-          {item.title}
+          #{item.hashtag}
         </CustomText>
       )}
     </TouchableOpacity>

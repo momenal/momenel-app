@@ -27,7 +27,6 @@ const UserList = ({
   return (
     <View
       style={{
-        // backgroundColor: "red",
         flexDirection: "row",
         marginBottom: 4,
         justifyContent: "space-between",

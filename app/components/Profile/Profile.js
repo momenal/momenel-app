@@ -298,8 +298,7 @@ const Profile = ({ navigation }) => {
             name: "This is a very long name and i don’t care how long it is. yo",
             profile_url: profile_url,
             likes_count: 1200,
-            cover_url:
-              "https://static.independent.co.uk/2022/04/08/20/Pakistan_Politics_37211.jpg?quality=75&width=640&height=614&fit=bounds&format=pjpg&crop=16%3A9%2Coffset-y0.5&auto=webp",
+
             // bio: `Privacy is a fundamental right we can't ignore.`,
             bio: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. , Lorem Ipsum is simply dummy text of the printing and typesetting indu`,
             link: "momenel.com",
@@ -1238,7 +1237,6 @@ const Profile = ({ navigation }) => {
               handleFollow={handleFollow}
               navigation={navigation}
               profile_url={data?.profile_url}
-              cover_url={data?.cover_url}
               id={data?.id}
               isFollowing={isFollowing}
               name={data?.name}
