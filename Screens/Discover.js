@@ -1,10 +1,9 @@
-import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
 import { CalcHeight } from "../app/utils/CalcHeight";
-import { Ionicons } from "@expo/vector-icons";
-import { scale } from "../app/utils/Scale";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
@@ -12,6 +11,8 @@ import { StatusBar } from "expo-status-bar";
 import { baseUrl } from "@env";
 import * as Haptics from "expo-haptics";
 import { supabase } from "../app/lib/supabase";
+import SearchBar from "../app/components/SearchBar";
+import { scale } from "../app/utils/Scale";
 
 let fakeData = [
   {
@@ -719,69 +720,7 @@ const Discover = ({ navigation }) => {
           paddingBottom: scale(-20),
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            flex: 1,
-            backgroundColor: "#F1F1F2",
-            marginRight: "2%",
-            height: "100%",
-            minHeight: scale(32),
-            borderRadius: 13,
-            fontFamily: "Nunito_600SemiBold",
-            fontSize: 14,
-            paddingHorizontal: "3%",
-            alignItems: "center",
-            marginLeft: "3%",
-            marginRight: "3%",
-          }}
-        >
-          <Ionicons
-            name="ios-search"
-            size={scale(16)}
-            color="#727477"
-            onPress={() =>
-              navigation.navigate("Search", {
-                type: null,
-                query: null,
-              })
-            }
-          />
-          <Pressable
-            onPress={() =>
-              navigation.navigate("Search", {
-                type: null,
-                query: null,
-              })
-            }
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              width: "100%",
-              marginLeft: "3%",
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <CustomText
-                style={{
-                  backgroundColor: "#F1F1F2",
-                  fontFamily: "Nunito_600SemiBold",
-                  fontSize: 14,
-                  color: "#999999",
-                }}
-              >
-                Search for people, posts, tags...
-              </CustomText>
-            </View>
-          </Pressable>
-        </View>
+        <SearchBar navigation={navigation} />
       </SafeAreaView>
       <FlashList
         data={postsData}

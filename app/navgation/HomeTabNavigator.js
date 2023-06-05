@@ -52,7 +52,7 @@ const HomeNavigator = ({ navigation }) => {
         component={Home}
         options={{
           header: () => {
-            return <Header />;
+            return <Header navigation={navigation} />;
           },
           tabBarIcon: ({ size, focused, color }) => {
             {
