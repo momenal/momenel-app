@@ -8,7 +8,7 @@ import {
   Keyboard,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { scale } from "../app/utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
@@ -80,13 +80,13 @@ const fakeRes = {
   ],
 };
 
-// types: "hashtag", "mention", "null"
 const Search = ({ navigation, route }) => {
-  const { type, query } = route.params;
+  const { query } = route.params;
   const [text, onChangeText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [queryResults, setQueryResults] = useState(null);
   const [postsData, setPostsData] = useState();
+  const [isFetching, setIsFetching] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -129,23 +129,46 @@ const Search = ({ navigation, route }) => {
     getSearchSuggestions(text);
   };
 
-  const handleSuggestionPress = (suggestion) => {
+  const handleSuggestionPress = async (suggestion) => {
     console.log(suggestion);
     if (suggestion.username) {
       navigation.navigate("UserProfile", { id: suggestion.id });
     } else {
       Keyboard.dismiss();
-      onChangeText(suggestion.hashtag);
+      setIsFetching(true);
+      onChangeText("#" + suggestion.hashtag);
       setSuggestions([]);
-      //todo: get posts from backend
-      // todo: get isfollowing from backend
 
+      const { data: session, error } = await supabase.auth.getSession();
+      if (error) {
+        navigation.navigate("Login");
+        return false;
+      }
+      let response = await fetch(`${baseUrl}/hashtag/${suggestion.id}/0/10`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      });
+      if (!response.ok) {
+        response = await response.json();
+        console.log(response);
+        Alert.alert("Error", response.error);
+        setSuggestions([]);
+        setIsFetching(false);
+        return;
+      }
+      response = await response.json();
+      console.log(response);
       setQueryResults({
         title: suggestion.hashtag,
-        isFollowing: true,
         id: suggestion.id,
+        isFollowing: response.isFollowing,
       });
+      //todo: setPostsData(response.posts);
       setPostsData(fakeRes.posts);
+      setIsFetching(false);
     }
   };
 
@@ -336,7 +359,7 @@ const Search = ({ navigation, route }) => {
   const renderHeader = () => {
     return (
       <>
-        {queryResults && suggestions.length === 0 && (
+        {queryResults && suggestions.length === 0 && !isFetching && (
           <View style={{ marginHorizontal: "5%", marginTop: "2%" }}>
             <CustomText
               numberOfLines={1}
@@ -425,7 +448,7 @@ const Search = ({ navigation, route }) => {
     }
   };
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = async () => {
     // ! fake
     const fakeResfreshPosts = [
       {
@@ -485,19 +508,36 @@ const Search = ({ navigation, route }) => {
     ];
 
     setRefreshing(true);
-    //todo: search for query and replace it with fakeRes
+    const { data: session, error } = await supabase.auth.getSession();
+
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+    let response = await fetch(`${baseUrl}/hashtag/${queryResults.id}/0/10`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+    if (!response.ok) {
+      response = await response.json();
+      console.log(response);
+      Alert.alert("Error", response.error);
+      setIsFetching(false);
+      return;
+    }
+    response = await response.json();
+    console.log(response);
 
     setQueryResults({
       ...queryResults,
-      title: query,
+      isFollowing: response.isFollowing,
       posts: fakeResfreshPosts,
     });
     setRefreshing(false);
-    //  todo: implement something like this
-    // fetchData().then(() => {
-    //   setRefreshing(false);
-    // });
-  }, []);
+  };
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -576,6 +616,10 @@ const Search = ({ navigation, route }) => {
             />
           )}
         </View>
+      ) : isFetching ? (
+        <View style={{ marginTop: "4%" }}>
+          <ActivityIndicator color="#0000ff" />
+        </View>
       ) : (
         <FlashList
           data={postsData}
@@ -623,7 +667,12 @@ const Search = ({ navigation, route }) => {
             ) : null
           }
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              tintColor={"#0000ff"}
+              size={"small"}
+            />
           }
         />
       )}
