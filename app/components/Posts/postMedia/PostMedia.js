@@ -94,7 +94,7 @@ const PostMediaOne = ({
               borderRadius: index === 0 ? 3 : 0, //! if we dont set index to 0 then image that doesn't cover the while width have lines on the sides
               overflow: "hidden",
             }}
-            resizeMode={"contain"}
+            contentFit={"contain"}
           />
         </GestureDetector>
       ) : (
@@ -121,8 +121,7 @@ const PostMediaOne = ({
                 usePoster
                 positionMillis={0}
                 useNativeControls={false}
-                // resizeMode="cover" //todo: change this to contain if needed
-                resizeMode={"contain"}
+                contentFit={"contain"}
                 isLooping
                 shouldPlay={play && isFocused}
                 onPlaybackStatusUpdate={(status) => {

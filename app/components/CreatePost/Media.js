@@ -53,7 +53,7 @@ const Media = ({ item, updateVideoDimensions }) => {
             }}
             positionMillis={0}
             useNativeControls={false}
-            resizeMode="contain"
+            contentFit="contain"
             onReadyForDisplay={({ naturalSize }) => {
               readyForDisplay(naturalSize);
             }}

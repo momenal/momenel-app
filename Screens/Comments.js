@@ -288,7 +288,7 @@ const Comments = ({ route, navigation }) => {
                       width: scale(32),
                       borderRadius: 40,
                     }}
-                    resizeMode={"cover"}
+                    contentFit={"cover"}
                   />
                 )}
                 <View

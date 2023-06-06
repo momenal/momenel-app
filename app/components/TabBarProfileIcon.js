@@ -35,7 +35,7 @@ const TabBarProfileIcon = ({ size, focused }) => {
             borderRadius: 500,
             backgroundColor: "black",
           }}
-          resizeMode="center"
+          contentFit="center"
           source={{
             uri: profile_url,
           }}

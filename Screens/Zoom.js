@@ -31,8 +31,7 @@ const Zoom = ({ route, navigation }) => {
           style={{
             width: dimensions.width,
             height: dimensions.height - headerHeight - insets.bottom - 10,
-            // height: dimensions.height - headerHeight,
-            resizeMode: "contain",
+            contentFit: "contain",
           }}
         />
       </ZoomImage>

@@ -51,7 +51,7 @@ const UserList = ({
         {profile_url ? (
           <Image
             style={{ width: size, height: size, borderRadius: 500 }}
-            resizeMode="cover"
+            contentFit="cover"
             source={{
               uri: profile_url,
             }}

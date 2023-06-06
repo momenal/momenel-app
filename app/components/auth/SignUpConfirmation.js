@@ -34,7 +34,7 @@ const SignUpConfirmation = () => {
       <Image
         style={{ width: 200, height: 200, marginRight: 20 }}
         source={require("../../../assets/paperPlane.png")}
-        resizeMode="contain"
+        contentFit="contain"
       />
       <CustomText
         style={{

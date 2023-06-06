@@ -414,7 +414,7 @@ const EditProfile = ({ navigation }) => {
                       }
                     : null
                 }
-                resizeMode="cover"
+                contentFit="cover"
                 style={{
                   height: scaledSize,
                   width: scaledSize,

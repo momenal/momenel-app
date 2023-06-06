@@ -1042,7 +1042,7 @@ const Profile = ({ navigation }) => {
                 }
           }
           imageStyle={{ borderRadius: 6 }}
-          resizeMode="contain"
+          contentFit="contain"
         >
           {item.repostedByUser && (
             <View
