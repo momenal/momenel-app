@@ -66,6 +66,8 @@ const SignIn = ({
         keyboardType={"email-address"}
         blurOnSubmit={true}
         returnKeyType="done"
+        autoComplete="email"
+        autoCapitalize="none"
       />
       <BottomSheetTextInput
         style={styles.textInput}

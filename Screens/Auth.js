@@ -354,7 +354,9 @@ const Auth = () => {
           Keyboard.dismiss();
         }}
       >
-        <ForgotAccount />
+        <ForgotAccount
+          setShowForgotPasswordBottomSheet={setShowForgotPasswordBottomSheet}
+        />
       </DetachedBottomSheet>
       <DetachedBottomSheet
         show={showSignupBottomSheet}

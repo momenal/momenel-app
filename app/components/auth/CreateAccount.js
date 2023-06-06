@@ -38,9 +38,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         options: {
           emailRedirectTo: "https://www.momenel.com/confirm-email",
         },
-        data: {
-          dob: "12/12/1990",
-        },
       });
       if (error) {
         //! error messages
@@ -131,6 +128,8 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
           onChangeText={(text) => setEmail(text)}
           keyboardAppearance={"dark"}
           keyboardType={"email-address"}
+          autoComplete="email"
+          autoCapitalize="none"
           blurOnSubmit={true}
           returnKeyType="done"
         />

@@ -1,8 +1,7 @@
 import {
   Alert,
-  Pressable,
+  Keyboard,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,10 +10,8 @@ import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
-import * as WebBrowser from "expo-web-browser";
-import * as Haptics from "expo-haptics";
 
-const ForgotAccount = () => {
+const ForgotAccount = ({ setShowForgotPasswordBottomSheet }) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,6 +37,7 @@ const ForgotAccount = () => {
     }
 
     if (data) {
+      Keyboard.dismiss();
       Alert.alert(
         "Email Sent",
         "Check your email for the password reset link.",
@@ -49,6 +47,7 @@ const ForgotAccount = () => {
             onPress: () => {
               setEmail("");
               setLoading(false);
+              setShowForgotPasswordBottomSheet(false);
             },
           },
         ]
@@ -80,6 +79,8 @@ const ForgotAccount = () => {
         keyboardType={"email-address"}
         blurOnSubmit={true}
         returnKeyType="done"
+        autoComplete="email"
+        autoCapitalize="none"
       />
       <TouchableOpacity disabled={loading} onPress={() => resetPassword()}>
         <LinearGradientButton style={{ width: "100%", borderRadius: 10 }}>
