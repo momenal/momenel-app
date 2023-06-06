@@ -228,7 +228,7 @@ const Auth = () => {
         backgroundColor: "#E8E8E8",
         height: "100%",
         alignItems: "center",
-        paddingTop: insets.top + 10,
+        paddingTop: insets.top + 20,
       }}
     >
       <CustomText
@@ -237,7 +237,7 @@ const Auth = () => {
           fontFamily: "Nunito_900Black",
         }}
       >
-        momenel
+        MOMENEL
       </CustomText>
       <View
         style={{
