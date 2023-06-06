@@ -223,12 +223,8 @@ const PostsList = ({ navigation }) => {
         // maxToRenderPerBatch={params.scrollToIndex}
         showsVerticalScrollIndicator={false}
         onScrollToIndexFailed={(error) => {
-          //   flashListRef.current.scrollToOffset({
-          //     offset: error.averageItemLength * error.index,
-          //     animated: true,
-          //   });
           setTimeout(() => {
-            if (data.length !== 0 && flashListRef !== null) {
+            if (postsData?.length !== 0 && flashListRef !== null) {
               flashListRef.current.scrollToIndex({
                 index: error.index,
                 animated: true,

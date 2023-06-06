@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   Alert,
   Animated,
@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../app/components/customText/CustomText";
 import { supabase } from "../app/lib/supabase";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -24,6 +26,10 @@ import SignIn from "../app/components/auth/SignIn";
 import CreateAccount from "../app/components/auth/CreateAccount";
 import SignUpConfirmation from "../app/components/auth/SignUpConfirmation";
 import ForgotAccount from "../app/components/auth/ForgotAccount";
+import { scale } from "../app/utils/Scale";
+import { RelativeTime } from "../app/utils/RelativeTime";
+import { FlashList } from "@shopify/flash-list";
+import { Image } from "expo-image";
 
 const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
@@ -31,10 +37,11 @@ const data = [
   {
     postId: "first1",
     userName: "farhan",
-    name: "farhan haider",
+    name: "farhan",
     profile_url:
-      "https://images.unsplash.com/photo-1669290888631-e60c60fed46d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
-    caption: "No more data collection",
+      "https://images.pexels.com/photos/13568258/pexels-photo-13568258.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    caption: "No data collection!\nWe respect your privacy.",
+    createdAt: Date.now() + 50000,
   },
   {
     postId: "second2",
@@ -42,15 +49,16 @@ const data = [
     name: "betzy",
     profile_url:
       "https://images.unsplash.com/photo-1669290888631-e60c60fed46d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
-    caption: "No Ads",
+    caption: "No Tracking!\nLike, literally.",
+    createdAt: Date.now() + 100000,
   },
   {
     postId: "third3",
     userName: "MO",
-    // name: "betzy",
     profile_url:
-      "https://images.unsplash.com/photo-1669290888631-e60c60fed46d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
-    caption: "Simple Chronological feeds!",
+      "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&dpr=2",
+    caption: "Open Source!\nSo you can trust us.",
+    createdAt: Date.now() + 800000,
   },
 ];
 
@@ -62,7 +70,10 @@ const Auth = () => {
     useState(false);
   const [showConfrimationBottomSheet, setConfirmationBottomSheet] =
     useState(false);
-
+  const size = useMemo(() => scale(26), []);
+  const memoizedScale = useCallback((size) => {
+    return scale(size);
+  }, []);
   //? for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -85,19 +96,12 @@ const Auth = () => {
     Keyboard.dismiss();
   };
 
-  // todo: show privacy policy and terms and conditions
-  const _handlePressButtonAsync = async (url) => {
-    await WebBrowser.openBrowserAsync(url);
-  };
-
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <View
         style={{
           paddingHorizontal: ScreenWidth * 0.05, //! using 0.05 because we want 0.04% originally and then add 0.1 of image width to it
           width: ScreenWidth,
-          //   paddingBottom: 11.4,
-          //   backgroundColor: "pink",
         }}
       >
         <View
@@ -107,13 +111,96 @@ const Auth = () => {
             paddingTop: 15,
           }}
         >
-          <PostHeader
-            profileUrl={item.profile_url}
-            username={item.userName}
-            name={item.name}
-            createdAt={Date.now() + 5000}
-            index={index}
-          />
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+
+              paddingHorizontal: ScreenWidth * 0.04,
+              paddingBottom: 11,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              {item.profile_url ? (
+                <Image
+                  style={{
+                    width: size,
+                    height: size,
+                    borderRadius: 500,
+                    marginRight: "2%",
+                  }}
+                  source={{
+                    uri: item.profile_url,
+                  }}
+                />
+              ) : (
+                <Ionicons
+                  name="person-circle-sharp"
+                  size={size + 4}
+                  color="#999999"
+                  style={{ marginRight: "2%" }}
+                />
+              )}
+
+              <View style={{ marginLeft: "1%" }}>
+                <CustomText
+                  style={{
+                    color: "#262628",
+                    fontSize: memoizedScale(13.5),
+                    paddingBottom: 2,
+                    fontFamily: "Nunito_600SemiBold",
+                    maxWidth: memoizedScale(210),
+                  }}
+                  numberOfLines={1}
+                >
+                  {item.name ? item.name : `@${item.userName}`}
+                </CustomText>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: -2,
+                  }}
+                >
+                  {item.name ? (
+                    <CustomText
+                      numberOfLines={1}
+                      style={[
+                        styles.textMedium,
+                        { maxWidth: memoizedScale(170) },
+                      ]}
+                    >
+                      @{item.userName}
+                    </CustomText>
+                  ) : null}
+                  {item.name ? (
+                    <CustomText style={[styles.textMedium, { fontSize: 4 }]}>
+                      {"\u2B24"}
+                    </CustomText>
+                  ) : null}
+                  <CustomText style={styles.textMedium}>
+                    {RelativeTime(item.createdAt)}
+                  </CustomText>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ marginLeft: 6 }}>
+                <Ionicons
+                  name="ellipsis-vertical"
+                  size={scale(18)}
+                  color="#828282"
+                />
+              </View>
+            </View>
+          </View>
           <View
             style={{
               borderRadius: 3,
@@ -123,7 +210,7 @@ const Auth = () => {
           >
             <StructuredText
               // mentionHashtagPress={mentionHashtagClick}
-              mentionHashtagColor={"#8759F2"}
+              mentionHashtagColor={"red"}
               numberOfLines={4}
               style={{ color: "#535353", fontSize: 20 }}
             >
@@ -177,7 +264,7 @@ const Auth = () => {
         </View>
         {/* cards */}
         <View>
-          <FlatList
+          <FlashList
             data={data}
             renderItem={renderItem}
             keyExtractor={(item) => item.postId}
@@ -193,11 +280,7 @@ const Auth = () => {
                 useNativeDriver: false,
               }
             )}
-            // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-            // viewabilityConfig={{
-            //   waitForInteraction: false,
-            //   viewAreaCoveragePercentThreshold: 95,
-            // }}
+            estimatedItemSize={373}
           />
           <View
             style={{
@@ -321,5 +404,10 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  textMedium: {
+    color: "#999999",
+    fontSize: 13,
+    marginRight: 4,
   },
 });
