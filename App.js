@@ -71,8 +71,12 @@ export default function App() {
       method: "GET",
       headers: headersList,
     });
+    if (!response.ok) {
+      Alert.alert("Error", "Please try again");
+      console.log("error", response);
+    }
     let data = await response.json();
-    if (data.error) {
+    if (data?.error) {
       Alert.alert("Error", "Please try again");
       console.log("error", data.error);
     } else {

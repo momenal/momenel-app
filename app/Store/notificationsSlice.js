@@ -1,6 +1,7 @@
 import * as Haptics from "expo-haptics";
 import { baseUrl } from "@env";
 import { supabase } from "../lib/supabase";
+import { Alert } from "react-native";
 
 export const createNotificationsSlice = (set, get) => ({
   notifications: [],

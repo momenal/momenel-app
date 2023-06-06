@@ -14,15 +14,21 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.momenel.privacyfirstsocialnetwork"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +40,11 @@
           "photosPermission": "Allow Momenel to access your photos. This is required to upload photos to your posts."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "45a1b78d-b958-4078-9413-4e1dfd455925"
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
-import { View, Dimensions, Image, Platform, Pressable } from "react-native";
+import { View, Dimensions, Platform, Pressable } from "react-native";
+import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { useBoundStore } from "../../Store/useBoundStore";
 import { useMemo, useState } from "react";
@@ -13,6 +14,8 @@ import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomShee
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useRoute } from "@react-navigation/native";
 
+const blurhash =
+  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 const ProfileHeader = ({
   navigation,
   id,
@@ -268,7 +271,8 @@ const ProfileHeader = ({
                     }
                   : null
               }
-              resizeMode="cover"
+              contentFit="cover"
+              placeholder={blurhash}
               style={{
                 height: scaledSize,
                 width: scaledSize,
@@ -276,6 +280,7 @@ const ProfileHeader = ({
                 backgroundColor:
                   bgColors[Math.floor(Math.random() * bgColors.length)],
               }}
+              transition={1000}
             />
           </Pressable>
         </View>

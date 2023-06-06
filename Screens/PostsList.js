@@ -1,7 +1,7 @@
 // list of posts
 // example usage: when press on a post in mansory list
 
-import { View, FlatList } from "react-native";
+import { View, FlatList, Alert } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { CalcHeight } from "../app/utils/CalcHeight";

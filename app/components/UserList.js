@@ -2,15 +2,18 @@ import { useMemo } from "react";
 import { scale } from "../utils/Scale";
 import {
   View,
-  Image,
   Dimensions,
   TouchableOpacity,
   StyleSheet,
   Pressable,
 } from "react-native";
+import { Image } from "expo-image";
 import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
 import { Ionicons } from "@expo/vector-icons";
+
+const blurhash =
+  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
 const UserList = ({
   id,
@@ -52,6 +55,7 @@ const UserList = ({
             source={{
               uri: profile_url,
             }}
+            placeholder={blurhash}
           />
         ) : (
           <Ionicons
