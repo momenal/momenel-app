@@ -2,10 +2,10 @@ import {
   Alert,
   Animated,
   Dimensions,
-  Image,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import React, { useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import GradientText from "../customText/GradientText";

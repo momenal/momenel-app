@@ -1,6 +1,5 @@
 import {
   Alert,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   LayoutAnimation,
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import { useEffect, useMemo, useState } from "react";
 import { useMentions, parseValue } from "react-native-controlled-mentions";
 import { Ionicons } from "@expo/vector-icons";

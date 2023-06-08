@@ -1,6 +1,7 @@
 import { Video } from "expo-av";
 import { useRef, useState } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
+import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
 

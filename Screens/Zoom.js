@@ -1,4 +1,5 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Image } from "expo-image";
 import React, { useEffect } from "react";
 import { ZoomImage } from "../app/components/Zoom.js/ZoomImage";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -16,7 +17,6 @@ const Zoom = ({ route, navigation }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <Text>Zoom</Text>
       <ZoomImage
         style={{
           position: "absolute",

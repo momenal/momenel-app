@@ -1,12 +1,12 @@
 import {
   ActivityIndicator,
   Dimensions,
-  Image,
   Pressable,
   View,
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
+import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useMemo, useState } from "react";
 import { FlashList } from "@shopify/flash-list";

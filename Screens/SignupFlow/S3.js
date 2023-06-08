@@ -2,10 +2,10 @@ import {
   Pressable,
   StyleSheet,
   View,
-  Image,
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { useEffect, useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
@@ -24,7 +24,6 @@ const S3 = ({}) => {
   const setHasCompletedOnboarding = useBoundStore(
     (state) => state.setHasCompletedOnboarding
   );
-  const username = useBoundStore((state) => state.username);
   const SetUserData = useBoundStore((state) => state.SetUserData);
 
   let profileImageSizeScale = scale(45);

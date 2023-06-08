@@ -4,11 +4,11 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
-  Image,
   Keyboard,
   LayoutAnimation,
   ActivityIndicator,
 } from "react-native";
+import { Image } from "expo-image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeaderHeight } from "@react-navigation/elements";
 import GradientText from "../app/components/customText/GradientText";

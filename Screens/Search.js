@@ -2,11 +2,11 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  Image,
   ActivityIndicator,
   RefreshControl,
   Keyboard,
 } from "react-native";
+import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { memo, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";

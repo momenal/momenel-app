@@ -1,4 +1,5 @@
-import { Animated, Easing, Image, StyleSheet, View } from "react-native";
+import { Animated, Easing, StyleSheet, View } from "react-native";
+import { Image } from "expo-image";
 import React, { useEffect, useRef } from "react";
 import CustomText from "../customText/CustomText";
 

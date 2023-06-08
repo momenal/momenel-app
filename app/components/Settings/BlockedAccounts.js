@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";
 import CustomText from "../customText/CustomText";
 import { baseUrl } from "@env";

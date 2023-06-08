@@ -1,9 +1,7 @@
 import React from "react";
 import HomeTabNavigator from "./HomeTabNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import Report from "../../Screens/Report";
-
 import Zoom from "../../Screens/Zoom";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -13,7 +11,6 @@ import Comments from "../../Screens/Comments";
 import CreatePost from "../../Screens/CreatePost";
 import PostHeaderButton from "../components/Buttons/PostHeaderButton";
 import Search from "../../Screens/Search";
-import Settings from "../../Screens/Settings";
 import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
@@ -83,7 +80,6 @@ const StackNavigator = ({}) => {
           ),
           headerRight: () => (
             <View style={{ flexDirection: "row" }}>
-              {/* <Ionicons name="images" size={16} color="black" /> */}
               <PostHeaderButton />
             </View>
           ),

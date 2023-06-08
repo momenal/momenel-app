@@ -4,10 +4,10 @@ import {
   View,
   Text,
   ActivityIndicator,
-  Image,
   Dimensions,
   Pressable,
 } from "react-native";
+import { Image } from "expo-image";
 import { MasonryFlashList } from "@shopify/flash-list";
 
 const LikedPosts = ({ navigation }) => {

@@ -1,8 +1,8 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Image } from "expo-image";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useBoundStore } from "../Store/useBoundStore";
-import { Ionicons } from "@expo/vector-icons";
 
 const TabBarProfileIcon = ({ size, focused }) => {
   const profile_url = useBoundStore((state) => state.profile_url);

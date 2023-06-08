@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Alert,
-  Image,
   KeyboardAvoidingView,
   LayoutAnimation,
   Platform,
@@ -9,6 +8,7 @@ import {
   ScrollView,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { scale } from "../app/utils/Scale";
 import { useHeaderHeight } from "@react-navigation/elements";
