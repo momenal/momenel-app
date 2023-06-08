@@ -130,6 +130,8 @@ const S1 = ({ navigation }) => {
           value={username}
           onChangeText={handleUsernameChange}
           numberOfLines={1}
+          autoCapitalize="none"
+          maxLength={38}
         />
         {/* errors */}
         {isError.length > 0 ? (

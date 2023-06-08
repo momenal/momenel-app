@@ -24,6 +24,9 @@ const S3 = ({}) => {
   const setHasCompletedOnboarding = useBoundStore(
     (state) => state.setHasCompletedOnboarding
   );
+  const username = useBoundStore((state) => state.username);
+  const SetUserData = useBoundStore((state) => state.SetUserData);
+
   let profileImageSizeScale = scale(45);
   useEffect(() => {
     setIsLoading(true);
@@ -72,6 +75,7 @@ const S3 = ({}) => {
       .then((json) => {
         if (json.has_onboarded) {
           setHasCompletedOnboarding(true);
+          SetUserData(json.username, json.profile_url);
         } else {
           setHasCompletedOnboarding(false);
         }

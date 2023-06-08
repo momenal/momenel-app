@@ -1,7 +1,5 @@
 import {
-  ActivityIndicator,
   Alert,
-  Button,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -357,7 +355,6 @@ const CreatePost = ({ navigation }) => {
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardDismissMode="interactive"
-          // style={{ marginBottom: 40 }} //! change this to match keyboard accessory height
           style={{ marginBottom: isSuggestionsVisible ? 0 : 41 }} //! change this to match keyboard accessory height
         >
           {/* header */}
@@ -376,6 +373,7 @@ const CreatePost = ({ navigation }) => {
                 borderRadius: sizeProfile / 2,
                 marginRight: "2%",
               }}
+              backgroundColor="#E1E1E1"
             />
             <CustomText style={{ fontSize: scale(15) }}>@{username}</CustomText>
           </View>
