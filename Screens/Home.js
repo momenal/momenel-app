@@ -11,6 +11,31 @@ import * as Haptics from "expo-haptics";
 
 let fakeData = [
   {
+    postId: "uaslllasooas",
+    username: "dailyquotes",
+    name: "A daily quote",
+    repost: {
+      isRepost: false,
+    },
+    posts: [
+      {
+        id: Math.random(19).toString(),
+        width: 2400,
+        height: 1527,
+        type: "photo",
+        url: "https://images.unsplash.com/photo-1592496431160-00dee11029cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1512&q=80",
+      },
+    ],
+    caption: "Say this to yourself every morning",
+    createdAt: Date.now(),
+    likes: 3,
+    comments: 0,
+    reposts: 1,
+    lastEdit: null,
+    isLiked: false,
+    repostedByUser: false,
+  },
+  {
     postId: "lkjaskdjsadjk",
     username: "gifpediabutofficialandofficialbutnotofficial",
     name: "Gifs official",
@@ -27,11 +52,10 @@ let fakeData = [
       },
     ],
     caption: "#cat",
-    createdAt: Date.now(),
-    likes: 3,
-    comments: 0,
-    reposts: 1,
-    lastEdit: null,
+    createdAt: Date.now() + 200000,
+    likes: 398,
+    comments: 123,
+    reposts: 10,
     isLiked: false,
     repostedByUser: false,
   },

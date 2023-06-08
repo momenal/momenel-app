@@ -96,6 +96,7 @@ const PostMediaOne = ({
               overflow: "hidden",
             }}
             contentFit={"contain"}
+            enableLiveTextInteraction={true}
           />
         </GestureDetector>
       ) : (
