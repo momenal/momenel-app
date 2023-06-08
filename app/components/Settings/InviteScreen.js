@@ -10,9 +10,11 @@ import {
 import * as Clipboard from "expo-clipboard";
 import CustomText from "../customText/CustomText";
 import LinearGradientButton from "../../components/Buttons/LinearGradientButton";
+import { useBoundStore } from "../../Store/useBoundStore";
 
 const InviteFriendsScreen = () => {
   const [link, setLink] = useState("");
+  const username = useBoundStore((state) => state.username);
 
   useEffect(() => {
     setLink(`https://momenel.com/download`);
@@ -25,15 +27,23 @@ const InviteFriendsScreen = () => {
 
   const handleShare = () => {
     Share.share({
-      message: `Say goodbye to data collection with Momenel - the new privacy-first social media app. Join now and connect with others without compromising your privacy! #Momenel #PrivacyFirst\n${link}`,
-      url: link,
-      title: "Invite your friends",
+      message: `Hey! Join me on Momenel, a privacy-first and open source social media app. My username is @${username}. \nDownload the app here: ${link}`,
+      title: "Join me on Momenel!",
     });
   };
 
   return (
     <View style={styles.container}>
-      <CustomText style={styles.title}>Invite Your Friends</CustomText>
+      <CustomText
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          fontFamily: "Nunito_700Bold",
+          marginBottom: 16,
+        }}
+      >
+        Invite Friends 📧
+      </CustomText>
       <Text style={styles.description}>
         Share this link with your friends to invite them to join:
       </Text>
@@ -42,9 +52,7 @@ const InviteFriendsScreen = () => {
           {link} {`\n(click to copy)`}
         </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.button} onPress={handleShare}>
-        <Text style={styles.buttonText}>Share</Text>
-      </TouchableOpacity> */}
+
       <TouchableOpacity
         style={{
           width: "100%",
