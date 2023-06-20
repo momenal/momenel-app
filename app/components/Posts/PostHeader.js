@@ -57,9 +57,7 @@ const PostHeader = ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-
         paddingHorizontal: ScreenWidth * 0.04,
-        paddingBottom: 11,
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>

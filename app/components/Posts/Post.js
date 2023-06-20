@@ -45,7 +45,7 @@ const Post = ({
   handleRepost,
 }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const FontSize = useMemo(() => scale(13), []);
+  const FontSize = useMemo(() => scale(14), []);
   const route = useRoute();
 
   // for pagination dots
@@ -217,8 +217,34 @@ const Post = ({
         index={index}
         onReportPress={onReportPress}
       />
+      {/* caption */}
+      {caption && (
+        <View
+          style={{
+            paddingHorizontal: ScreenWidth * 0.06,
+            width: ScreenWidth,
+            paddingVertical: 10,
+          }}
+        >
+          <GestureDetector gesture={_doubleTap}>
+            <View>
+              <StructuredText
+                mentionHashtagPress={mentionHashtagClick}
+                mentionHashtagColor={"#8759F2"}
+                maxCharCount={posts?.length === 0 ? 250 : 200}
+                style={
+                  posts?.length === 0
+                    ? { fontSize: FontSize + 2 }
+                    : { fontSize: FontSize }
+                }
+              >
+                {caption}
+              </StructuredText>
+            </View>
+          </GestureDetector>
+        </View>
+      )}
       {/* media */}
-
       {posts && posts.length >= 2 ? (
         <FlatList
           data={posts}
@@ -262,34 +288,7 @@ const Post = ({
           <PaginationDot data={posts} scrollX={scrollX} />
         </View>
       )}
-      {/* caption */}
-      {caption && (
-        <View
-          style={{
-            paddingHorizontal: ScreenWidth * 0.06,
-            width: ScreenWidth,
-            // paddingBottom: 16,
-            paddingBottom: 5,
-          }}
-        >
-          <GestureDetector gesture={_doubleTap}>
-            <View>
-              <StructuredText
-                mentionHashtagPress={mentionHashtagClick}
-                mentionHashtagColor={"#8759F2"}
-                maxCharCount={posts?.length === 0 ? 250 : 150}
-                style={
-                  posts?.length === 0
-                    ? { fontSize: FontSize + 3 }
-                    : { fontSize: FontSize }
-                }
-              >
-                {caption}
-              </StructuredText>
-            </View>
-          </GestureDetector>
-        </View>
-      )}
+
       {/* buttons */}
       <View
         style={{
