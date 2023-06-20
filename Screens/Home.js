@@ -66,6 +66,33 @@ let fakeData = [
     repostedByUser: false,
   },
   {
+    postId: "00202ssss120881212",
+    username: "sammy",
+    profile_url:
+      "https://www.adobe.com/content/dam/cc/us/en/creativecloud/design/discover/mascot-logo-design/mascot-logo-design_fb-img_1200x800.jpg",
+    repost: {
+      isRepost: false,
+    },
+    posts: [
+      {
+        id: Math.random(19).toString(),
+        width: 381,
+        height: 498,
+        type: "photo",
+        url: "https://momenel.b-cdn.net/posts/88fc2b37-e4c5-42ee-857e-bf6f36817220.gif",
+        // url: "https://vz-a01f66e8-ba0.b-cdn.net/60205f8f-8102-494c-a960-23bd5cfc2712/playlist.m3u8",
+      },
+    ],
+    caption: "New office opening soon",
+    createdAt: Date.now(),
+    likes: 3,
+    comments: 0,
+    reposts: 1,
+    lastEdit: null,
+    isLiked: false,
+    repostedByUser: false,
+  },
+  {
     postId: "uaslllasooas",
     username: "dailyquotes",
     name: "A daily quote",

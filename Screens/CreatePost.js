@@ -138,7 +138,7 @@ const CreatePost = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       orderedSelection: true,
-      quality: 1.0,
+      quality: 0.85,
       allowsEditing: false,
       base64: false,
       selectionLimit: 5,
@@ -186,9 +186,6 @@ const CreatePost = ({ navigation }) => {
       return false;
     }
 
-    console.log("posts: ", posts);
-    console.log("caption: ", caption);
-
     // post to backend
 
     let formData = new FormData();
@@ -201,23 +198,30 @@ const CreatePost = ({ navigation }) => {
         width: post.width,
         height: post.height,
       });
+
       formData.append("content", {
         uri: post.uri,
-        name: post.fileName,
+        name: post.fileName || post.uri.split("/").pop() || "nullname",
       });
     });
+
     formData.append("dimensions", JSON.stringify(dimensions));
     let response = await fetch(`${baseUrl}/posts`, {
       method: "POST",
       body: formData,
       headers: {
         "Content-Type": "multipart/form-data",
+        enctype: "multipart/form-data",
         Authorization: `Bearer ${data.session.access_token}`,
       },
     });
+    if (!response.ok) {
+      // log the error
+      response.json().then((res) => Alert.alert("Oops!", res.error));
+      setIsPosting(false);
+      return;
+    }
     let resData = await response.json();
-    console.log(response.status);
-    console.log("res", resData);
     if (response.status === 201) {
       if (resData[0].published === false) {
         setIsPosting(false);
