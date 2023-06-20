@@ -309,7 +309,6 @@ const CreatePost = ({ navigation }) => {
     triggersConfig,
   });
   function lay(params) {
-    console.log("lay");
     if (params > 0) {
       setisSuggestionsVisible(true);
     } else {

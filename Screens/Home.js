@@ -10,6 +10,61 @@ import { baseUrl } from "@env";
 import * as Haptics from "expo-haptics";
 
 let fakeData = [
+  // {
+  //   postId: "sonnasdsa",
+  //   username: "tseries",
+  //   name: "T-Series Official",
+  //   profile_url:
+  //     "https://pixelz.cc/wp-content/uploads/2018/11/t-series-logo-uhd-4k-wallpaper.jpg",
+  //   repost: {
+  //     isRepost: false,
+  //   },
+  //   posts: [
+  //     {
+  //       id: Math.random(19).toString(),
+  //       width: 1280,
+  //       height: 720,
+  //       type: "video",
+  //       url: "https://vz-a01f66e8-ba0.b-cdn.net/a61112ad-c71e-41fb-a39b-5c301d2baf2f/playlist.m3u8",
+  //       // url: "https://vz-a01f66e8-ba0.b-cdn.net/60205f8f-8102-494c-a960-23bd5cfc2712/playlist.m3u8",
+  //     },
+  //   ],
+  //   caption: "Kahaani Suno @ankit",
+  //   createdAt: Date.now(),
+  //   likes: 3,
+  //   comments: 0,
+  //   reposts: 1,
+  //   lastEdit: null,
+  //   isLiked: false,
+  //   repostedByUser: false,
+  // },
+  {
+    postId: "002020881212",
+    username: "office_designs",
+    // profile_url:
+    //   "https://pixelz.cc/wp-content/uploads/2018/11/t-series-logo-uhd-4k-wallpaper.jpg",
+    repost: {
+      isRepost: false,
+    },
+    posts: [
+      {
+        id: Math.random(19).toString(),
+        width: 1280,
+        height: 720,
+        type: "photo",
+        url: "https://momenel.b-cdn.net/posts/c98b28b9-7a2d-4768-af10-4469b31c76e2.jpeg",
+        // url: "https://vz-a01f66e8-ba0.b-cdn.net/60205f8f-8102-494c-a960-23bd5cfc2712/playlist.m3u8",
+      },
+    ],
+    caption: "New office opening soon",
+    createdAt: Date.now(),
+    likes: 3,
+    comments: 0,
+    reposts: 1,
+    lastEdit: null,
+    isLiked: false,
+    repostedByUser: false,
+  },
   {
     postId: "uaslllasooas",
     username: "dailyquotes",

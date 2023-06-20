@@ -107,19 +107,30 @@ const Search = ({ navigation, route }) => {
       navigation.navigate("Login");
       return false;
     }
-    let response = await fetch(`${baseUrl}/search/${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${session.session.access_token}`,
-      },
-    });
-    response = await response.json();
-    if (response.error) {
+    console.log(
+      `${baseUrl}/search/${query[0] === "#" ? `%23${query}` : query}`
+    );
+
+    let response = await fetch(
+      `${baseUrl}/search/${
+        query[0] === "#" ? `%23${query.substring(1)}` : query
+      }`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
       Alert.alert("Error", response.error);
       setSuggestions([]);
+      return;
     }
-    console.log(response);
+    response = await response.json();
+    // console.log(response);
     setSuggestions(response);
   };
 
