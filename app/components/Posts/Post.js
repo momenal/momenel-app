@@ -184,7 +184,7 @@ const Post = ({
       }}
     >
       {/* reposts */}
-      {repost?.isRepost && (
+      {repost && (
         <View
           style={{
             paddingHorizontal: ScreenWidth * 0.05,
@@ -223,7 +223,7 @@ const Post = ({
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
             width: ScreenWidth,
-            paddingVertical: 10,
+            paddingVertical: 6,
           }}
         >
           <GestureDetector gesture={_doubleTap}>
