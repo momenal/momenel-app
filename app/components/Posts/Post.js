@@ -86,7 +86,7 @@ const Post = ({
     <PostMedia
       navigation={navigation}
       username={username}
-      url={item.url}
+      url={`https://momenel.b-cdn.net/posts/${item.id}.${item.format}`}
       type={item.type}
       doubleTap={doubleTap}
       height={height}
@@ -266,7 +266,7 @@ const Post = ({
         <PostMedia
           navigation={navigation}
           username={username}
-          url={posts[0].url}
+          url={`https://momenel.b-cdn.net/posts/${posts[0].id}.${posts[0].format}`}
           type={posts[0].type}
           doubleTap={doubleTap}
           height={height}

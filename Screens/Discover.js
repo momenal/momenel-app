@@ -52,6 +52,9 @@ const Discover = ({ navigation }) => {
     setPostsData(response.posts);
     setFollowingHashtags(response.followingHashtags);
     setIsLoading(false);
+    if (response.posts.length < 5) {
+      setShowFooter(false);
+    }
   };
 
   const handleLike = async (index, isLiked, postId) => {
@@ -267,6 +270,7 @@ const Discover = ({ navigation }) => {
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width }) => {
       let scaledHeight = CalcHeight(width, height);
+
       return (
         <Post
           navigation={navigation}
@@ -276,11 +280,11 @@ const Discover = ({ navigation }) => {
           comments={item.post.comments[0].count}
           reposts={item.post.reposts[0].count}
           repost={false} // discover page does not have reposted posts
-          profileUrl={item.post.user.profile_url}
-          username={item.post.user.username}
-          name={item.post.user.name}
+          profileUrl={item.post.user?.profile_url}
+          username={item.post.user?.username}
+          name={item.post.user?.name}
           createdAt={item.post.created_at}
-          posts={item.posts ? item.posts : []}
+          posts={item.post.content ? item.post.content : []}
           caption={item.post.caption}
           height={scaledHeight}
           handleLike={handleLike}
@@ -345,49 +349,70 @@ const Discover = ({ navigation }) => {
       >
         <SearchBar navigation={navigation} />
       </SafeAreaView>
-      <FlashList
-        data={postsData}
-        estimatedItemSize={450}
-        keyExtractor={(item) => {
-          return item.post.id;
-        }}
-        renderItem={({ item, index }) =>
-          renderItem({
-            item,
-            index,
-            isLiked: item.isLiked,
-            isReposted: item.isReposted,
-            postId: item.post.id,
-            width:
-              item.post.content?.length > 0 ? item.post.content[0].width : 0,
-            height:
-              item.post.content?.length > 0 ? item.post.content[0].height : 0,
-          })
-        }
-        ListHeaderComponent={renderHeader}
-        ListHeaderComponentStyle={{
-          paddingTop: 5,
-        }}
-        ListFooterComponent={renderListFooter}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        showsVerticalScrollIndicator={false}
-        // onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
-        onEndReachedThreshold={2}
-        keyboardDismissMode="on-drag"
-        // ListFooterComponent={renderListFooter}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
-          minimumViewTime: 500,
-        }}
-        // todo: implement viewability below
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // loop through viewable items and update the store
-          viewableItems.forEach((item) => {
-            // console.log("Visible items are", item.index);
-          });
-        }}
-      />
+      {postsData.length === 0 && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: "5%",
+          }}
+        >
+          <CustomText
+            style={{
+              fontFamily: "Nunito_700Bold",
+              fontSize: 20,
+              textAlign: "center",
+            }}
+          >
+            No posts to show
+          </CustomText>
+        </View>
+      )}
+      {postsData.length > 0 && (
+        <FlashList
+          data={postsData}
+          estimatedItemSize={450}
+          keyExtractor={(item) => {
+            return item.post.id;
+          }}
+          renderItem={({ item, index }) =>
+            renderItem({
+              item,
+              index,
+              isLiked: item.isLiked,
+              isReposted: item.isReposted,
+              postId: item.post.id,
+              width:
+                item.post.content?.length > 0 ? item.post.content[0].width : 0,
+              height:
+                item.post.content?.length > 0 ? item.post.content[0].height : 0,
+            })
+          }
+          ListHeaderComponent={renderHeader}
+          ListHeaderComponentStyle={{
+            paddingTop: 5,
+          }}
+          ListFooterComponent={renderListFooter}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          showsVerticalScrollIndicator={false}
+          // onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
+          onEndReachedThreshold={2}
+          keyboardDismissMode="on-drag"
+          // ListFooterComponent={renderListFooter}
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+            minimumViewTime: 500,
+          }}
+          // todo: implement viewability below
+          onViewableItemsChanged={({ viewableItems, changed }) => {
+            // loop through viewable items and update the store
+            viewableItems.forEach((item) => {
+              // console.log("Visible items are", item.index);
+            });
+          }}
+        />
+      )}
       <StatusBar style="dark" />
     </View>
   );

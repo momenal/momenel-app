@@ -34,7 +34,8 @@ const HomeNavigator = ({ navigation }) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      // initialRouteName="Feed"
+      initialRouteName="Discover"
       screenOptions={({}) => ({
         tabBarShowLabel: false,
         headerShadowVisible: false,

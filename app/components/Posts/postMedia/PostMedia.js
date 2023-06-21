@@ -25,7 +25,7 @@ const PostMediaOne = ({
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;
   const [play, setPlay] = useState(false);
   const [showPauseIcon, setShowPauseIcon] = useState(true);
-
+  console.log(url, username);
   const handleVisibility = (visible) => {
     // handle visibility change
     if (visible === true) {
@@ -83,7 +83,7 @@ const PostMediaOne = ({
         paddingBottom: 11.4,
       }}
     >
-      {type === "photo" ? (
+      {type === "image" ? (
         <GestureDetector
           gesture={Gesture.Exclusive(_doubleTap, _singleTapPhoto)}
         >
