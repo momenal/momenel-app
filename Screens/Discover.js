@@ -59,24 +59,24 @@ const Discover = ({ navigation }) => {
     if (error) {
       navigation.navigate("Login");
     }
-
     // handle like confirmation before sending to the backend
-    const updatedPosts = postsData.map((post) => {
-      if (post.postId === postId) {
-        if (post.isLiked) {
-          post.likes -= 1;
+    const updatedPosts = postsData.map((p) => {
+      if (p.post.id === postId) {
+        if (p.isLiked) {
+          p.post.likes[0].count -= 1;
         } else {
-          post.likes += 1;
+          p.post.likes[0].count += 1;
         }
-        post.isLiked = !post.isLiked;
+        p.isLiked = !p.isLiked;
       }
-      return post;
+      return p;
     });
+
     setPostsData(updatedPosts);
 
     // send like to the backend
     //todo: change url id to postId
-    let response = await fetch(`${baseUrl}/like/8`, {
+    let response = await fetch(`${baseUrl}/like/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,24 +89,22 @@ const Discover = ({ navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       return;
     }
-
     if (response.status === 200) {
       let { likes } = await response.json();
-
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.likes = likes;
-          post.isLiked = true;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.postId === postId) {
+          p.post.likes = likes;
+          p.isLiked = true;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     } else if (response.status === 204) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.isLiked = false;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.postId === postId) {
+          p.isLiked = false;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     }
@@ -196,16 +194,16 @@ const Discover = ({ navigation }) => {
     if (showFooter) {
       console.log("fetching more posts");
 
-      fetch("https://api.coinstats.app/public/v1/coins?skip=0&limit=10")
-        .then((response) => response.json())
-        .then((json) => {
-          //todo: set res to postsData
-          //todo: setShowFooter to false if empty response
-          //todo: if res is not empty then set json to setPostsData
-          // setPostsData((prev) => [...prev, ...morePosts]);
-          //todo: do the below if the response is empty only
-          setShowFooter(false);
-        });
+      // fetch("https://api.coinstats.app/public/v1/coins?skip=0&limit=10")
+      //   .then((response) => response.json())
+      //   .then((json) => {
+      //     //todo: set res to postsData
+      //     //todo: setShowFooter to false if empty response
+      //     //todo: if res is not empty then set json to setPostsData
+      //     // setPostsData((prev) => [...prev, ...morePosts]);
+      //     //todo: do the below if the response is empty only
+      //     setShowFooter(false);
+      //   });
     }
   };
 
@@ -272,25 +270,23 @@ const Discover = ({ navigation }) => {
       return (
         <Post
           navigation={navigation}
-          postId={item.postId}
+          postId={item.post.id}
           index={index}
-          likes={item.likes}
-          comments={item.comments}
-          reposts={item.reposts}
-          isReposted={isReposted}
-          type={item.type}
-          isDonateable={item.isDonateable}
-          repost={item.repost}
-          profileUrl={item.profile_url}
-          username={item.username}
-          name={item.name}
-          createdAt={item.createdAt}
+          likes={item.post.likes[0].count}
+          comments={item.post.comments[0].count}
+          reposts={item.post.reposts[0].count}
+          repost={false} // discover page does not have reposted posts
+          profileUrl={item.post.user.profile_url}
+          username={item.post.user.username}
+          name={item.post.user.name}
+          createdAt={item.post.created_at}
           posts={item.posts ? item.posts : []}
-          caption={item.caption}
+          caption={item.post.caption}
           height={scaledHeight}
           handleLike={handleLike}
           handleRepost={handleRepost}
           isLiked={isLiked}
+          isReposted={isReposted}
         />
       );
     },
@@ -353,18 +349,19 @@ const Discover = ({ navigation }) => {
         data={postsData}
         estimatedItemSize={450}
         keyExtractor={(item) => {
-          return item.postId;
+          return item.post.id;
         }}
         renderItem={({ item, index }) =>
           renderItem({
             item,
             index,
             isLiked: item.isLiked,
-            isReposted: item.repostedByUser,
-            postId: item.postId,
-            width: item.posts?.length > 0 ? item.posts[0].width : 0,
-            height: item.posts?.length > 0 ? item.posts[0].height : 0,
-            // height: calcHeight(item.posts[0]?.width, item.posts[0]?.height),
+            isReposted: item.isReposted,
+            postId: item.post.id,
+            width:
+              item.post.content?.length > 0 ? item.post.content[0].width : 0,
+            height:
+              item.post.content?.length > 0 ? item.post.content[0].height : 0,
           })
         }
         ListHeaderComponent={renderHeader}
@@ -375,7 +372,7 @@ const Discover = ({ navigation }) => {
         maxToRenderPerBatch={5}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}
-        onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
+        // onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
         onEndReachedThreshold={2}
         keyboardDismissMode="on-drag"
         // ListFooterComponent={renderListFooter}
