@@ -41,7 +41,7 @@ const PostHeader = ({
         {RelativeTime(createdAt)}
       </CustomText>
     ),
-    []
+    [createdAt]
   );
 
   const memoizedScale = useCallback((size) => {
@@ -186,7 +186,7 @@ const PostHeader = ({
   );
 };
 
-export default memo(PostHeader);
+export default PostHeader;
 
 const styles = StyleSheet.create({
   textMedium: {

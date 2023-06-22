@@ -19,8 +19,8 @@ const Discover = ({ navigation }) => {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   const [followingHashtags, setFollowingHashtags] = useState([]);
   const [postsData, setPostsData] = useState();
-  const [to, setTo] = useState(0);
-  const [from, setFrom] = useState(10);
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(10);
 
   useEffect(() => {
     fetchPosts();
@@ -33,7 +33,7 @@ const Discover = ({ navigation }) => {
     }
 
     // post like to api
-    let response = await fetch(`${baseUrl}/feed/discover/${to}/${from}`, {
+    let response = await fetch(`${baseUrl}/feed/discover/${from}/${to}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -268,9 +268,9 @@ const Discover = ({ navigation }) => {
   );
 
   const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width }) => {
+    ({ item, index, isLiked, isReposted, height, width, createdAt }) => {
       let scaledHeight = CalcHeight(width, height);
-
+      console.log(createdAt);
       return (
         <Post
           navigation={navigation}
@@ -283,7 +283,7 @@ const Discover = ({ navigation }) => {
           profileUrl={item.post.user?.profile_url}
           username={item.post.user?.username}
           name={item.post.user?.name}
-          createdAt={item.post.created_at}
+          createdAt={createdAt}
           posts={item.post.content ? item.post.content : []}
           caption={item.post.caption}
           height={scaledHeight}
@@ -386,6 +386,7 @@ const Discover = ({ navigation }) => {
                 item.post.content?.length > 0 ? item.post.content[0].width : 0,
               height:
                 item.post.content?.length > 0 ? item.post.content[0].height : 0,
+              createdAt: item.post.created_at,
             })
           }
           ListHeaderComponent={renderHeader}
