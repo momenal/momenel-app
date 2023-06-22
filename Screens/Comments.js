@@ -96,7 +96,7 @@ const Comments = ({ route, navigation }) => {
     let bodyContent = JSON.stringify({
       text: txt,
     });
-    let response = await fetch(`${baseUrl}/comment/8`, {
+    let response = await fetch(`${baseUrl}/comment/${postId}`, {
       method: "POST",
       body: bodyContent,
       headers: {

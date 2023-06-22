@@ -1,4 +1,11 @@
-import { View, Text, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Alert,
+  RefreshControl,
+  Button,
+} from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
@@ -15,31 +22,47 @@ import { scale } from "../app/utils/Scale";
 
 const Discover = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   const [followingHashtags, setFollowingHashtags] = useState([]);
-  const [postsData, setPostsData] = useState();
+  const [postsData, setPostsData] = useState([]);
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(10);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [from, to, isRefreshing]);
 
   const fetchPosts = async () => {
+    console.log("fetching posts");
+    if (!showFooter && from !== 0) {
+      console.log("no more posts");
+      return;
+    }
     const { data, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
 
+    //get posts ids in format ids=1,2,3,4,5
+    let ids = postsData.map((p) => p.post.id).join(",");
+    // only keep last 10 ids
+    ids = ids.split(",").slice(-10).join(",");
+    //to string
+    ids = ids.toString();
+    console.log(ids);
     // post like to api
-    let response = await fetch(`${baseUrl}/feed/discover/${from}/${to}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${data.session.access_token}`,
-      },
-    });
+    let response = await fetch(
+      `${baseUrl}/feed/discover/${from === 0 ? null : ids}/${from}/${to}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       Alert.alert("Oops", "Something went wrong!");
@@ -47,14 +70,39 @@ const Discover = ({ navigation }) => {
     }
 
     response = await response.json();
-    console.log(response.followingHashtags);
     setTrendingHashtags(response.trendingHashtags);
-    setPostsData(response.posts);
     setFollowingHashtags(response.followingHashtags);
+
+    console.log(to, from);
+    console.log(response.posts.length);
+    if (from === 0) {
+      setPostsData([...response.posts]);
+    } else if (response.posts.length === 0) {
+      setShowFooter(false);
+    } else {
+      setPostsData([...postsData, ...response.posts]);
+    }
+
     setIsLoading(false);
-    if (response.posts.length < 5) {
+    setIsRefreshing(false);
+    if (response.posts.length === 0) {
       setShowFooter(false);
     }
+  };
+
+  const fetchMorePosts = () => {
+    let newFrom = from + 11;
+    let newTo = to + 10;
+
+    setFrom(newFrom);
+    setTo(newTo);
+  };
+
+  const handleRefresh = () => {
+    setFrom(0);
+    setTo(10);
+    setIsRefreshing(true);
+    setShowFooter(true);
   };
 
   const handleLike = async (index, isLiked, postId) => {
@@ -78,7 +126,6 @@ const Discover = ({ navigation }) => {
     setPostsData(updatedPosts);
 
     // send like to the backend
-    //todo: change url id to postId
     let response = await fetch(`${baseUrl}/like/${postId}`, {
       method: "POST",
       headers: {
@@ -119,22 +166,23 @@ const Discover = ({ navigation }) => {
       navigation.navigate("Login");
     }
 
-    // handle repost confirmation before sending to the backend
-    const updatedPosts = postsData.map((post) => {
-      if (post.postId === postId) {
-        if (post.repostedByUser) {
-          post.reposts -= 1;
+    const updatedPosts = postsData.map((p) => {
+      if (p.post.id === postId) {
+        console.log(p.post.id);
+        console.log(p.post.reposts[0].count);
+        if (p.isReposted) {
+          p.post.reposts[0].count -= 1;
         } else {
-          post.reposts += 1;
+          p.post.reposts[0].count += 1;
         }
-        post.repostedByUser = !post.repostedByUser;
+        p.isReposted = !p.isReposted;
       }
-      return post;
+      return p;
     });
     setPostsData(updatedPosts);
 
     // send repost to the backend
-    let response = await fetch(`${baseUrl}/repost/8`, {
+    let response = await fetch(`${baseUrl}/repost/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,65 +196,22 @@ const Discover = ({ navigation }) => {
       return;
     }
 
-    if (response.status === 200) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.repostedByUser = true;
+    if (response.status === 201) {
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.id === postId) {
+          p.isReposted = true;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     } else if (response.status === 204) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.repostedByUser = false;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.id === postId) {
+          p.isReposted = false;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
-    }
-  };
-
-  const fetchMorePosts = () => {
-    let morePosts = [
-      {
-        postId: Math.random(19).toString(),
-        username: "moreData",
-        name: "Data",
-        type: "text",
-        repost: {
-          isRepost: true,
-          repostedBy: "Mohammad",
-          repostedAt: "2022-11-04T13:54:55+00:00",
-        },
-        // posts: [],
-        profile_url:
-          "https://images.unsplash.com/photo-1677103216895-59fb1b6a4fcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=770&q=80",
-        caption:
-          "In a world where technology is advancing rapidly, our personal data is more vulnerable than ever before. From social media platforms to online shopping sites, we are constantly sharing our personal information without a second thought. While the convenience of these services is undeniable, it's essential to consider the consequences of exposing our data.",
-        createdAt: Date.now(),
-        likes: 90090,
-        comments: 2231,
-        reposts: 92,
-        lastEdit: null,
-        isLiked: false,
-        repostedByUser: true, // if the user himself has reposted the pos
-        isDonateable: false,
-      },
-    ];
-    if (showFooter) {
-      console.log("fetching more posts");
-
-      // fetch("https://api.coinstats.app/public/v1/coins?skip=0&limit=10")
-      //   .then((response) => response.json())
-      //   .then((json) => {
-      //     //todo: set res to postsData
-      //     //todo: setShowFooter to false if empty response
-      //     //todo: if res is not empty then set json to setPostsData
-      //     // setPostsData((prev) => [...prev, ...morePosts]);
-      //     //todo: do the below if the response is empty only
-      //     setShowFooter(false);
-      //   });
     }
   };
 
@@ -270,7 +275,7 @@ const Discover = ({ navigation }) => {
   const renderItem = useCallback(
     ({ item, index, isLiked, isReposted, height, width, createdAt }) => {
       let scaledHeight = CalcHeight(width, height);
-      console.log(createdAt);
+
       return (
         <Post
           navigation={navigation}
@@ -366,6 +371,7 @@ const Discover = ({ navigation }) => {
           >
             No posts to show
           </CustomText>
+          <Button title="Refresh" onPress={handleRefresh} />
         </View>
       )}
       {postsData.length > 0 && (
@@ -393,14 +399,20 @@ const Discover = ({ navigation }) => {
           ListHeaderComponentStyle={{
             paddingTop: 5,
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              tintColor={"black"}
+            />
+          }
           ListFooterComponent={renderListFooter}
           maxToRenderPerBatch={5}
           initialNumToRender={5}
           showsVerticalScrollIndicator={false}
-          // onEndReached={() => setTimeout(fetchMorePosts, 2000)} //! fake 2 sec delay
+          onEndReached={fetchMorePosts}
           onEndReachedThreshold={2}
           keyboardDismissMode="on-drag"
-          // ListFooterComponent={renderListFooter}
           viewabilityConfig={{
             itemVisiblePercentThreshold: 50,
             minimumViewTime: 500,

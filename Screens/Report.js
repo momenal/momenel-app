@@ -33,7 +33,7 @@ const Report = ({ route, navigation }) => {
   useEffect(() => {
     fetchOptions();
   }, []);
-
+  console.log(contentId, username, contentType);
   const fetchOptions = async () => {
     setIsLoading(true);
     const { data, error } = await supabase.auth.getSession();

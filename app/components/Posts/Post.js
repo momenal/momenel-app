@@ -156,16 +156,13 @@ const Post = ({
   }
 
   function handleComments() {
-    navigation.navigate("Comments", { type: "post", postId: 8 });
-    //todo: remove top and add below
-    // navigation.navigate("Comments", { type: "post", postId: postId });
+    navigation.navigate("Comments", { type: "post", postId: postId });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
 
   const onReportPress = () => {
     navigation.navigate("Report", {
-      // contentId: postId,
-      contentId: 8,
+      contentId: postId,
       username: username,
       contentType: "post",
     });

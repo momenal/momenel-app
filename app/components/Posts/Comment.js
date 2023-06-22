@@ -33,7 +33,6 @@ const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {
   });
   return (
     <>
-      {/* todo: handle delete */}
       <TouchableOpacity onPress={() => handleDelete(commentId)}>
         <View
           style={{
@@ -84,7 +83,6 @@ const RightActions = (progress, dragX, navigation, commentId, username) => {
 
   return (
     <>
-      {/* todo: handle delete */}
       <TouchableOpacity onPress={handleReport}>
         <View
           style={{
