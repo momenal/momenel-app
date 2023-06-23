@@ -82,17 +82,24 @@ const Post = ({
     await handleRepost(index, isReposted, postId);
   };
 
-  const renderItem = ({ item, index }) => (
-    <PostMedia
-      navigation={navigation}
-      username={username}
-      url={`https://momenel.b-cdn.net/posts/${item.id}.${item.format}`}
-      type={item.type}
-      doubleTap={doubleTap}
-      height={height}
-      index={index}
-    />
-  );
+  // if more than 1 post
+  const renderItem = ({ item, index }) => {
+    return (
+      <PostMedia
+        navigation={navigation}
+        username={username}
+        url={
+          item.type === "image"
+            ? `https://momenel.b-cdn.net/posts/${item.id}.${item.format}`
+            : `https://vz-a01f66e8-ba0.b-cdn.net/${item.id}/playlist.m3u8`
+        }
+        type={item.type}
+        doubleTap={doubleTap}
+        height={height}
+        index={index}
+      />
+    );
+  };
 
   const _doubleTap = Gesture.Tap()
     .runOnJS(true)
@@ -263,7 +270,11 @@ const Post = ({
         <PostMedia
           navigation={navigation}
           username={username}
-          url={`https://momenel.b-cdn.net/posts/${posts[0].id}.${posts[0].format}`}
+          url={
+            posts[0].type === "image"
+              ? `https://momenel.b-cdn.net/posts/${posts[0].id}.${posts[0].format}`
+              : `https://vz-a01f66e8-ba0.b-cdn.net/${posts[0].id}/playlist.m3u8`
+          }
           type={posts[0].type}
           doubleTap={doubleTap}
           height={height}
