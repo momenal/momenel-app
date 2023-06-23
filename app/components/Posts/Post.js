@@ -189,7 +189,10 @@ const Post = ({
     >
       {/* reposts */}
       {repost && (
-        <View
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("UserProfile", { id: repost.username })
+          }
           style={{
             paddingHorizontal: ScreenWidth * 0.05,
             paddingBottom: 6,
@@ -207,9 +210,9 @@ const Post = ({
               fontSize: FontSize,
             }}
           >
-            {repost.repostedBy} reposted
+            {repost.username} reposted
           </CustomText>
-        </View>
+        </TouchableOpacity>
       )}
 
       <PostHeader
