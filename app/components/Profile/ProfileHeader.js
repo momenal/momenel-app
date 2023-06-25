@@ -1,4 +1,10 @@
-import { View, Dimensions, Platform, Pressable } from "react-native";
+import {
+  View,
+  Dimensions,
+  Platform,
+  Pressable,
+  LayoutAnimation,
+} from "react-native";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { useBoundStore } from "../../Store/useBoundStore";
@@ -31,6 +37,8 @@ const ProfileHeader = ({
   following,
   username,
   isRefreshing,
+  type,
+  setType,
 }) => {
   const { name: RouteName } = useRoute();
   const bgColors = [
@@ -46,7 +54,6 @@ const ProfileHeader = ({
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
-  const loggedUsername = useBoundStore((state) => state.username);
   const scale12 = useMemo(() => scale(12), []);
   const mentionHashtagClick = async (text) => {
     const _handlePressButtonAsync = async (url) => {
@@ -196,7 +203,7 @@ const ProfileHeader = ({
             <CustomText
               style={{
                 fontFamily: "Nunito_500Medium",
-                fontSize: scale(14),
+                fontSize: scale(13),
                 color: "#7E7E7E",
               }}
               numberOfLines={4}
@@ -375,6 +382,50 @@ const ProfileHeader = ({
             </CustomText>
           </TouchableOpacity>
         )}
+      </View>
+      {/* view type buttons */}
+      <View
+        style={{
+          flexDirection: "row",
+          marginBottom: "2%",
+          width: "100%",
+          height: 50,
+          backgroundColor: "black",
+          justifyContent: "center",
+        }}
+      >
+        <Pressable
+          onPress={() => setType("posts")}
+          style={[
+            {
+              flex: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            },
+            type === "posts"
+              ? { backgroundColor: "lightgray" }
+              : { backgroundColor: "white" },
+          ]}
+        >
+          <CustomText>Posts</CustomText>
+        </Pressable>
+        <Pressable
+          onPress={() => setType("reposts")}
+          style={[
+            {
+              flex: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            },
+            type === "reposts"
+              ? { backgroundColor: "lightgray" }
+              : { backgroundColor: "white" },
+          ]}
+        >
+          <CustomText>Reposts</CustomText>
+        </Pressable>
       </View>
       {/* sheets */}
       {/* sheet to read full bio if it exceeds allowed lenght */}

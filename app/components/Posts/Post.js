@@ -65,7 +65,6 @@ const Post = ({
       handleLike(index, isLiked, postId);
 
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
   };
 

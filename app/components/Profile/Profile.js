@@ -10,8 +10,8 @@ import {
   Alert,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { useMemo, useState, useEffect, memo } from "react";
-import { MasonryFlashList } from "@shopify/flash-list";
+import { useMemo, useState, useEffect, memo, useCallback } from "react";
+import { FlashList, MasonryFlashList } from "@shopify/flash-list";
 import { StatusBar } from "expo-status-bar";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,526 +23,85 @@ import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
 import { useBoundStore } from "../../Store/useBoundStore";
 import { baseUrl } from "@env";
+import Post from "../Posts/Post";
+import { CalcHeight } from "../../utils/CalcHeight";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
   // console.log(RouteParams);
-  const [data, setData] = useState(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [profile, setProfile] = useState({});
+  const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [isFollowing, setisFollowing] = useState();
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
-  const profile_url = useBoundStore((state) => state.profile_url);
-  const username = useBoundStore((state) => state.username);
-
   const scale12 = useMemo(() => scale(12), []);
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(10);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showFooter, setShowFooter] = useState(true);
+  const [type, setType] = useState("posts"); // posts or reposts
 
   useEffect(() => {
+    setShowFooter(true);
     setisLoading(true);
-    //todo: fetch user data with session
-
-    if (RouteParams?.id !== null && RouteParams?.id !== undefined) {
-      console.log("fetching user data with id", RouteParams?.id);
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        //todo: fetch user data with session
-        setTimeout(() => {
-          setData({
-            isBlockedByYou: false, //! if you blocked the other user
-            isBlockedByUser: false, //! if the other user blocked you
-            id: "some-other-id",
-            username: RouteParams?.id,
-            name: "Chris Evans",
-            profile_url:
-              "https://media.npr.org/assets/img/2022/11/08/ap22312071681283-0d9c328f69a7c7f15320e8750d6ea447532dff66.jpg",
-            bio: `Sometimes I feel like I'm not doing enough, but then I remember that I'm doing the best I can. \n#PrivacyMatters`,
-            link: "https://www.momenel.com",
-            isFollowing: true,
-            postsAmount: 100,
-            followers: 900000,
-            following: 100,
-            likes_count: 2,
-            posts: [
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "should",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3333,
-                    height: 5000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/13290878/pexels-photo-13290878.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                  },
-                  {
-                    id: Math.random(19).toString(),
-                    width: 6000,
-                    height: 4000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#firstpost",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: true,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: null,
-                caption:
-                  "We believe that we can change the things around us in accordance with our desires—we believe it because otherwise we can see no favourable outcome. We do not think of the outcome which generally comes to pass and is also favourable: we do not succeed in changing things in accordance with our desires, but gradually our desires change. The situation that we hoped to change because it was intolerable becomes unimportant to us. We have failed to surmount the obstacle, as we were absolutely determined to do, but life has taken us round it, led us beyond it, and then if we turn round to gaze into the distance of the past, we can barely see it, so imperceptible has it become.” – Marcel Proust, In Search of Lost Time",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "oadks;fksda;kf;lk",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 1080,
-                    height: 1920,
-                    type: "video",
-                    url: "https://assets.mixkit.co/videos/preview/mixkit-palm-frond-lifeguard-station-1194-large.mp4",
-                  },
-                ],
-                caption: "#video",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 4000,
-                    height: 5000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/14489260/pexels-photo-14489260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: null,
-                caption:
-                  "new video is out on my youtube channel. go check it out. link in bio",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3206,
-                    height: 4275,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15358911/pexels-photo-15358911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 4000,
-                    height: 6000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15355492/pexels-photo-15355492.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3706,
-                    height: 2470,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/2300672/pexels-photo-2300672.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-            ],
-          });
-          setisFollowing(true); //todo: get this from the server
-        }, 0);
-        setTimeout(() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-          setisLoading(false);
-        }, 0);
-      });
-    } else {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        //todo: fetch user data with session
-        setTimeout(() => {
-          setData({
-            id: "e1b6073e-ec35-4904-b91a-b6ef7606068f",
-            username: "justingordon212HELLOOLMOLLAKSJDMORE3QA",
-            name: "This is a very long name and i don’t care how long it is. yo",
-            profile_url: profile_url,
-            likes_count: 1200,
-
-            // bio: `Privacy is a fundamental right we can't ignore.`,
-            bio: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. , Lorem Ipsum is simply dummy text of the printing and typesetting indu`,
-            link: "momenel.com",
-            // isFollowing: true,
-            postsAmount: 100,
-            followers: 900000,
-            following: 100,
-            //
-            posts: [
-              {
-                postId: "pendingID",
-                username: "farhanverse",
-                name: "farhan",
-                posts: null,
-                createdAt: Date.now(),
-                published: false,
-                caption: "This is a pending post",
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan here",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3333,
-                    height: 5000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/13290878/pexels-photo-13290878.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                  },
-                  {
-                    id: Math.random(19).toString(),
-                    width: 6000,
-                    height: 4000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15355977/pexels-photo-15355977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 4,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: null,
-                caption:
-                  "We believe that we can change the things around us in accordance with our desires—we believe it because otherwise we can see no favourable outcome. We do not think of the outcome which generally comes to pass and is also favourable: we do not succeed in changing things in accordance with our desires, but gradually our desires change. The situation that we hoped to change because it was intolerable becomes unimportant to us. We have failed to surmount the obstacle, as we were absolutely determined to do, but life has taken us round it, led us beyond it, and then if we turn round to gaze into the distance of the past, we can barely see it, so imperceptible has it become.” – Marcel Proust, In Search of Lost Time",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 1080,
-                    height: 1920,
-                    type: "video",
-                    url: "https://assets.mixkit.co/videos/preview/mixkit-palm-frond-lifeguard-station-1194-large.mp4",
-                  },
-                ],
-                caption: "#video",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 4000,
-                    height: 5000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/14489260/pexels-photo-14489260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmasdi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: null,
-                caption:
-                  "new video is out on my youtube channel. go check it out. link in bio",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: true, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3206,
-                    height: 4275,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15358911/pexels-photo-15358911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 4000,
-                    height: 6000,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/15355492/pexels-photo-15355492.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-              {
-                postId: "askjdlkasjdmaslldi",
-                username: "farhanverse",
-                name: "farhan",
-                repost: {
-                  isRepost: false,
-                },
-                profile_url:
-                  "https://plus.unsplash.com/premium_photo-1664551734441-6f4726ad0e9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-                posts: [
-                  {
-                    id: Math.random(19).toString(),
-                    width: 3706,
-                    height: 2470,
-                    type: "photo",
-                    url: "https://images.pexels.com/photos/2300672/pexels-photo-2300672.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  },
-                ],
-                caption: "#cat",
-                createdAt: Date.now(),
-                likes: 300,
-                comments: 12,
-                reposts: 5,
-                lastEdit: null,
-                isLiked: false,
-                repostedByUser: false, // if the user himself has reposted the post
-                isDonateable: true,
-              },
-            ],
-          });
-        }, 0);
-        setTimeout(() => {
-          setisLoading(false);
-        }, 0);
-      });
-    }
   }, []);
+
+  useEffect(() => {
+    if (type === "posts") {
+      fetchPosts();
+    } else {
+      //todo: fetchReposts();
+    }
+  }, [from, to, isRefreshing, type]);
+
+  const fetchPosts = async () => {
+    setShowFooter(true);
+    // if passed user id is passed (aka user is viewing another user's profile)
+    if (RouteParams?.id !== null && RouteParams?.id !== undefined) {
+    } else {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        return navigation.navigate("Login");
+      }
+
+      let response = await fetch(`${baseUrl}/user/profile/${from}/${to}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        Alert.alert("Oops", "Something went wrong!");
+        return;
+      }
+      response = await response.json();
+      if (from === 0) {
+        setProfile(response.profile);
+        setData([...response.posts]);
+      } else {
+        setData((prev) => [...prev, ...response.posts]);
+      }
+    }
+    setShowFooter(false);
+    setisLoading(false);
+    setIsRefreshing(false);
+  };
+
+  const handleRefresh = () => {
+    setFrom(0);
+    setTo(10);
+    setIsRefreshing(true);
+  };
+
+  const fetchMorePosts = () => {
+    let newFrom = from + 10;
+    let newTo = to + 10;
+
+    setFrom(newFrom);
+    setTo(newTo);
+  };
 
   async function handleFollow() {
     const { data, error } = await supabase.auth.getSession();
@@ -903,215 +462,62 @@ const Profile = ({ navigation }) => {
     setisLoading(false);
   }
 
-  const CalcHeight = (width, height) => {
-    const ScreenWidth = Dimensions.get("window").width;
-
-    // const Iwidth = ScreenWidth * 0.5;
-    const Iwidth = ScreenWidth * 0.5 - ScreenWidth * 0.02;
-    let newHeight = height * (Iwidth / width);
-    return newHeight;
-  };
-
-  const renderItem = ({ item, index, postId, height }) => {
-    // -> if not publised
-    if (item?.published === false) {
+  const renderItem = useCallback(
+    ({
+      item,
+      index,
+      isLiked,
+      isReposted,
+      height,
+      width,
+      createdAt,
+      postId,
+      type,
+    }) => {
+      let scaledHeight = CalcHeight(width, height);
+      let tempPost = item;
       return (
-        <Pressable
-          style={{
-            padding: "2%",
-            width: "100%",
-          }}
-          onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            navigation.navigate("PostsList", {
-              scrollToIndex: index,
-              posts: data.posts,
-            });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              borderRadius: 6,
-              backgroundColor: "#f6b93b",
-              borderWidth: 2,
-              borderColor: "#e58e26",
-            }}
-          >
-            <CustomText
-              numberOfLines={9}
-              style={{
-                color: "white",
-                margin: scale12,
-                fontFamily: "Nunito_600SemiBold",
-              }}
-            >
-              Processing this post...
-            </CustomText>
-          </View>
-        </Pressable>
+        <Post
+          navigation={navigation}
+          postId={[tempPost.id]}
+          index={index}
+          likes={tempPost.likes[0].count}
+          comments={tempPost.comments[0].count}
+          reposts={tempPost.reposts[0].count}
+          repost={item.repostedBy}
+          profileUrl={tempPost.user?.profile_url}
+          username={tempPost.user?.username}
+          name={tempPost.user?.name}
+          createdAt={createdAt}
+          posts={tempPost.content}
+          caption={tempPost.caption}
+          height={scaledHeight}
+          // handleLike={handleLike}
+          // handleRepost={handleRepost}
+          isLiked={isLiked}
+          isReposted={isReposted}
+        />
       );
-    }
-    // -> if text post
-    if (!item.posts || item.posts.length === 0 || !item.posts[0]) {
-      const bgColors = [
-        "#20063b",
-        "#1f7a8c",
-        "black",
-        "#ff495c",
-        "#FF4E8B",
-        "#048a81",
-      ];
-      return (
-        <Pressable
-          style={{
-            padding: "2%",
-            width: "100%",
-          }}
-          onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            navigation.navigate("PostsList", {
-              scrollToIndex: index,
-              posts: data.posts,
-            });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              borderRadius: 6,
-              backgroundColor:
-                bgColors[Math.floor(Math.random() * bgColors.length)],
-            }}
-          >
-            <CustomText
-              numberOfLines={9}
-              style={{
-                color: "white",
-                margin: scale12,
-                fontFamily: "Nunito_600SemiBold",
-              }}
-            >
-              {item.caption}
-            </CustomText>
-          </View>
-        </Pressable>
-      );
-    }
+    },
+    [data]
+  );
 
-    // -> if not text post
-    let width = item.posts[0]?.width;
-    return (
-      <Pressable
-        style={{ padding: "2%" }}
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          navigation.navigate("PostsList", {
-            scrollToIndex: index,
-            posts: data.posts,
-          });
-        }}
-      >
-        <ImageBackground
-          // todo: get thumbnail from bunny if item.posts[0].type is video
-          source={
-            item.posts[0]?.type === "video"
-              ? {
-                  //todo: get thumbnail from bunny
-                  uri: "https://images.pexels.com/photos/135033/pexels-photo-135033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                }
-              : { uri: item.posts[0].url }
-          }
-          style={
-            item.posts[0]?.type === "video"
-              ? {
-                  flexDirection: "row",
-                  width: "100%",
-                  borderRadius: 4,
-                  backgroundColor: "black",
-                  height: CalcHeight(7680, 4320),
-                }
-              : {
-                  flexDirection: "row",
-                  width: "100%",
-                  height: CalcHeight(width, height),
-                  borderRadius: 5,
-                  backgroundColor: "white",
-                }
-          }
-          imageStyle={{ borderRadius: 6 }}
-          contentFit="contain"
-        >
-          {item.repostedByUser && (
-            <View
-              style={{
-                backgroundColor: "#8456E9",
-                height: scale12 + 15,
-                position: "absolute",
-                left: 0,
-                top: 0,
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 5,
-                borderBottomRightRadius: 5,
-                borderTopLeftRadius: 5,
-              }}
-            >
-              <Repost size={scale12 + 5} color="white" />
-            </View>
-          )}
-          {item.posts.length > 1 ? (
-            <View
-              style={{
-                backgroundColor: "#8456E9",
-                height: scale12 + 15,
-                position: "absolute",
-                right: 0,
-                top: 0,
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 5,
-                borderBottomLeftRadius: 5,
-                borderTopRightRadius: 5,
-              }}
-            >
-              <Ionicons name="md-images" size={scale12 + 5} color="white" />
-            </View>
-          ) : item.posts[0]?.type === "video" ? (
-            <View
-              style={{
-                backgroundColor: "#8456E9",
-                height: scale12 + 15,
-                position: "absolute",
-                right: 0,
-                top: 0,
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 5,
-
-                borderBottomLeftRadius: 5,
-                borderTopRightRadius: 5,
-              }}
-            >
-              <Ionicons name="videocam" size={scale12 + 5} color="white" />
-            </View>
-          ) : null}
-        </ImageBackground>
-      </Pressable>
-    );
-  };
-
-  const onRefresh = () => {
-    //set isRefreshing to true
-    setIsRefreshing(true);
-    // callApiMethod()
-    // and set isRefreshing to false at the end of your callApiMethod()
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
-  };
+  const renderListFooter = useCallback(
+    <View
+      style={[
+        {
+          height: 60,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        !showFooter && { marginTop: -15 },
+      ]}
+    >
+      {showFooter && <ActivityIndicator color="#0000ff" />}
+      {!showFooter && <CustomText>You are all caught up 😀</CustomText>}
+    </View>,
+    [showFooter]
+  );
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -1125,7 +531,7 @@ const Profile = ({ navigation }) => {
         >
           <ActivityIndicator />
         </View>
-      ) : data?.isBlockedByYou || data?.isBlockedByUser ? (
+      ) : profile?.isBlockedByYou || profile?.isBlockedByUser ? (
         <View
           style={{
             height: "100%",
@@ -1229,51 +635,69 @@ const Profile = ({ navigation }) => {
           )}
         </View>
       ) : (
-        <MasonryFlashList
-          ListHeaderComponent={
-            <ProfileHeader
-              isRefreshing={isRefreshing}
-              username={data?.username}
-              handleFollow={handleFollow}
-              navigation={navigation}
-              profile_url={data?.profile_url}
-              id={data?.id}
-              isFollowing={isFollowing}
-              name={data?.name}
-              bio={data?.bio}
-              link={data?.link}
-              likes_count={data?.likes_count}
-              followers={data?.followers}
-              following={data?.following}
-              handleBlock={handleBlock}
-            />
-          }
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          disableAutoLayout={true}
-          data={data?.posts}
-          numColumns={2}
-          progressViewOffset={500}
-          refreshControl={
-            <RefreshControl
-              title="Refreshing"
-              titleColor={"#000000"}
-              tintColor={"#000000"}
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-              progressViewOffset={topInset}
-            />
-          }
+        <FlashList
+          data={data}
+          estimatedItemSize={500}
+          keyExtractor={(item) => {
+            return item.id;
+          }}
           renderItem={({ item, index }) =>
             renderItem({
               item,
-              postId: item.postId,
-              height: item.posts ? item.posts[0]?.height : 0,
-              index: index,
-              posts: item.posts,
+              index,
+              isLiked: item.isLiked,
+              isReposted: item.isReposted,
+              postId: item.id,
+              width: item.content?.length > 0 ? item.content[0].width : 0,
+              height: item.content?.length > 0 ? item.content[0].height : 0,
+              createdAt: item.created_at,
             })
           }
-          estimatedItemSize={400}
+          ListHeaderComponent={
+            <ProfileHeader
+              isRefreshing={isRefreshing}
+              username={profile?.username}
+              handleFollow={handleFollow}
+              navigation={navigation}
+              profile_url={profile?.profile_url}
+              id={profile?.id}
+              isFollowing={isFollowing}
+              name={profile?.name}
+              bio={profile?.bio}
+              link={profile?.link}
+              likes_count={profile?.likes_count}
+              followers={profile?.followers}
+              following={profile?.following}
+              handleBlock={handleBlock}
+              type={type}
+              setType={setType}
+            />
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              tintColor={"black"}
+            />
+          }
+          ListFooterComponent={renderListFooter}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          showsVerticalScrollIndicator={false}
+          onEndReached={fetchMorePosts}
+          onEndReachedThreshold={2}
+          keyboardDismissMode="on-drag"
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+            minimumViewTime: 500,
+          }}
+          // todo: implement viewability below
+          onViewableItemsChanged={({ viewableItems, changed }) => {
+            // loop through viewable items and update the store
+            viewableItems.forEach((item) => {
+              // console.log("Visible items are", item.index);
+            });
+          }}
         />
       )}
 

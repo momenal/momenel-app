@@ -58,7 +58,6 @@ const Home = ({ navigation }) => {
 
     response = await response.json();
 
-    console.log(to, from);
     if (from === 0) {
       setPostsData([...response]);
     } else if (response.length === 0) {
