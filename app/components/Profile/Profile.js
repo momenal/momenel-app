@@ -1,9 +1,7 @@
 import {
   View,
-  ImageBackground,
   Dimensions,
   ActivityIndicator,
-  Pressable,
   TouchableOpacity,
   LayoutAnimation,
   RefreshControl,
@@ -11,7 +9,7 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useMemo, useState, useEffect, memo, useCallback } from "react";
-import { FlashList, MasonryFlashList } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import { StatusBar } from "expo-status-bar";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,9 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
 import { useRoute } from "@react-navigation/native";
 import { supabase } from "../../lib/supabase";
-import Repost from "../icons/Repost";
 import ProfileHeader from "./ProfileHeader";
-import { useBoundStore } from "../../Store/useBoundStore";
 import { baseUrl } from "@env";
 import Post from "../Posts/Post";
 import { CalcHeight } from "../../utils/CalcHeight";
@@ -34,12 +30,10 @@ const Profile = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const [isFollowing, setisFollowing] = useState();
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
-  const scale12 = useMemo(() => scale(12), []);
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(10);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
-  const [type, setType] = useState("posts"); // posts or reposts
 
   useEffect(() => {
     setShowFooter(true);
@@ -47,24 +41,21 @@ const Profile = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (type === "posts") {
-      fetchPosts();
-    } else {
-      //todo: fetchReposts();
-    }
-  }, [from, to, isRefreshing, type]);
+    fetchPosts();
+  }, [from, to, isRefreshing]);
 
   const fetchPosts = async () => {
     setShowFooter(true);
     // if passed user id is passed (aka user is viewing another user's profile)
     if (RouteParams?.id !== null && RouteParams?.id !== undefined) {
+      console.log("fetching another user's profile");
     } else {
       const { data, error } = await supabase.auth.getSession();
       if (error) {
         return navigation.navigate("Login");
       }
 
-      let response = await fetch(`${baseUrl}/user/profile/${from}/${to}`, {
+      let response = await fetch(`${baseUrl}/user/profile/null/${from}/${to}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +87,7 @@ const Profile = ({ navigation }) => {
   };
 
   const fetchMorePosts = () => {
-    let newFrom = from + 10;
+    let newFrom = from + 11;
     let newTo = to + 10;
 
     setFrom(newFrom);
@@ -462,6 +453,131 @@ const Profile = ({ navigation }) => {
     setisLoading(false);
   }
 
+  const handleRepost = async (index, isReposted, postId) => {
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    const updatedPosts = data.map((post) => {
+      let id = post.type === "repost" ? post.post.id : post.id;
+
+      if (id === postId) {
+        if (post.isReposted) {
+          post.type === "repost"
+            ? post.post.reposts[0].count--
+            : post.reposts[0].count--;
+        } else {
+          post.type === "repost"
+            ? post.post.reposts[0].count++
+            : post.reposts[0].count++;
+        }
+        post.isReposted = !post.isReposted;
+      }
+      return post;
+    });
+    setData(updatedPosts);
+
+    // send like to the backend
+    let response = await fetch(`${baseUrl}/repost/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+    if (response.status === 201) {
+      const updatedPosts = data.map((post) => {
+        let id = post.type === "repost" ? post.post.id : post.id;
+        if (id === postId) {
+          post.isReposted = true;
+        }
+        return post;
+      });
+      setData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = data.map((post) => {
+        let id = post.type === "repost" ? post.post.id : post.id;
+        if (id === postId) {
+          post.isReposted = false;
+        }
+        return post;
+      });
+      setData(updatedPosts);
+    }
+  };
+
+  const handleLike = async (index, isLiked, postId) => {
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    // handle like confirmation before sending to the backend
+    const updatedPosts = data.map((post) => {
+      let id = post.type === "repost" ? post.post.id : post.id;
+
+      if (id === postId) {
+        if (post.isLiked) {
+          post.type === "repost"
+            ? post.post.likes[0].count--
+            : post.likes[0].count--;
+        } else {
+          post.type === "repost"
+            ? post.post.likes[0].count++
+            : post.likes[0].count++;
+        }
+        post.isLiked = !post.isLiked;
+      }
+      return post;
+    });
+    setData(updatedPosts);
+
+    // send like to the backend
+    let response = await fetch(`${baseUrl}/like/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+    // if error
+    if (!response.ok) {
+      Alert.alert("Error", "Something went wrong");
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+    if (response.status === 200) {
+      let { likes } = await response.json();
+      const updatedPosts = data.map((post) => {
+        let id = post.type === "repost" ? post.post.id : post.id;
+        if (id === postId) {
+          post.type === "repost"
+            ? (post.post.likes[0].count = likes)
+            : (post.likes[0].count = likes);
+          post.isLiked = true;
+        }
+        return post;
+      });
+      setData(updatedPosts);
+    } else if (response.status === 204) {
+      const updatedPosts = data.map((post) => {
+        let id = post.type === "repost" ? post.post.id : post.id;
+        if (id === postId) {
+          post.isLiked = false;
+        }
+        return post;
+      });
+      setData(updatedPosts);
+    }
+  };
+
   const renderItem = useCallback(
     ({
       item,
@@ -475,11 +591,11 @@ const Profile = ({ navigation }) => {
       type,
     }) => {
       let scaledHeight = CalcHeight(width, height);
-      let tempPost = item;
+      let tempPost = type === "post" ? item : item.post;
       return (
         <Post
           navigation={navigation}
-          postId={[tempPost.id]}
+          postId={tempPost.id}
           index={index}
           likes={tempPost.likes[0].count}
           comments={tempPost.comments[0].count}
@@ -489,11 +605,11 @@ const Profile = ({ navigation }) => {
           username={tempPost.user?.username}
           name={tempPost.user?.name}
           createdAt={createdAt}
-          posts={tempPost.content}
+          posts={tempPost.content ? tempPost.content : []}
           caption={tempPost.caption}
           height={scaledHeight}
-          // handleLike={handleLike}
-          // handleRepost={handleRepost}
+          handleLike={handleLike}
+          handleRepost={handleRepost}
           isLiked={isLiked}
           isReposted={isReposted}
         />
@@ -514,10 +630,12 @@ const Profile = ({ navigation }) => {
       ]}
     >
       {showFooter && <ActivityIndicator color="#0000ff" />}
-      {!showFooter && <CustomText>You are all caught up 😀</CustomText>}
+      {/* {!showFooter && <CustomText>You are all caught up 😀</CustomText>} */}
     </View>,
     [showFooter]
   );
+
+  const keyExtractor = useCallback((item, index) => item.type + item.id, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -637,19 +755,28 @@ const Profile = ({ navigation }) => {
       ) : (
         <FlashList
           data={data}
-          estimatedItemSize={500}
-          keyExtractor={(item) => {
-            return item.id;
-          }}
+          estimatedItemSize={450}
+          keyExtractor={keyExtractor}
           renderItem={({ item, index }) =>
             renderItem({
               item,
               index,
               isLiked: item.isLiked,
               isReposted: item.isReposted,
-              postId: item.id,
-              width: item.content?.length > 0 ? item.content[0].width : 0,
-              height: item.content?.length > 0 ? item.content[0].height : 0,
+              postId: item.type === "repost" ? item.post.id : item.id,
+              type: item.type,
+              width:
+                item.type === "repost" && item.post.content?.length > 0
+                  ? item.post.content[0].width
+                  : item.type === "post" && item.content?.length > 0
+                  ? item.content[0].width
+                  : 0,
+              height:
+                item.type === "repost" && item.post.content?.length > 0
+                  ? item.post.content[0].height
+                  : item.type === "post" && item.content?.length > 0
+                  ? item.content[0].height
+                  : 0,
               createdAt: item.created_at,
             })
           }
@@ -669,10 +796,19 @@ const Profile = ({ navigation }) => {
               followers={profile?.followers}
               following={profile?.following}
               handleBlock={handleBlock}
-              type={type}
-              setType={setType}
             />
           }
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
+          showsVerticalScrollIndicator={false}
+          onEndReached={fetchMorePosts}
+          onEndReachedThreshold={2}
+          keyboardDismissMode="on-drag"
+          ListFooterComponent={renderListFooter}
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+            minimumViewTime: 500,
+          }}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}
@@ -680,18 +816,6 @@ const Profile = ({ navigation }) => {
               tintColor={"black"}
             />
           }
-          ListFooterComponent={renderListFooter}
-          maxToRenderPerBatch={5}
-          initialNumToRender={5}
-          showsVerticalScrollIndicator={false}
-          onEndReached={fetchMorePosts}
-          onEndReachedThreshold={2}
-          keyboardDismissMode="on-drag"
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 50,
-            minimumViewTime: 500,
-          }}
-          // todo: implement viewability below
           onViewableItemsChanged={({ viewableItems, changed }) => {
             // loop through viewable items and update the store
             viewableItems.forEach((item) => {

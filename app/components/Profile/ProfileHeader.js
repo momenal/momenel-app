@@ -37,8 +37,6 @@ const ProfileHeader = ({
   following,
   username,
   isRefreshing,
-  type,
-  setType,
 }) => {
   const { name: RouteName } = useRoute();
   const bgColors = [
@@ -383,50 +381,7 @@ const ProfileHeader = ({
           </TouchableOpacity>
         )}
       </View>
-      {/* view type buttons */}
-      <View
-        style={{
-          flexDirection: "row",
-          marginBottom: "2%",
-          width: "100%",
-          height: 50,
-          backgroundColor: "black",
-          justifyContent: "center",
-        }}
-      >
-        <Pressable
-          onPress={() => setType("posts")}
-          style={[
-            {
-              flex: 1,
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            },
-            type === "posts"
-              ? { backgroundColor: "lightgray" }
-              : { backgroundColor: "white" },
-          ]}
-        >
-          <CustomText>Posts</CustomText>
-        </Pressable>
-        <Pressable
-          onPress={() => setType("reposts")}
-          style={[
-            {
-              flex: 1,
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            },
-            type === "reposts"
-              ? { backgroundColor: "lightgray" }
-              : { backgroundColor: "white" },
-          ]}
-        >
-          <CustomText>Reposts</CustomText>
-        </Pressable>
-      </View>
+
       {/* sheets */}
       {/* sheet to read full bio if it exceeds allowed lenght */}
       <DetachedBottomSheetWithScroll

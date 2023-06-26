@@ -160,7 +160,7 @@ const Home = ({ navigation }) => {
       let id = post.type === "repost" ? post.post.id : post.id;
 
       if (id === postId) {
-        if (post.isLiked) {
+        if (post.isReposted) {
           post.type === "repost"
             ? post.post.reposts[0].count--
             : post.reposts[0].count--;
