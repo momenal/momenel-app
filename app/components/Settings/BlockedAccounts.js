@@ -120,7 +120,9 @@ const BlockedAccounts = ({ navigation }) => {
           renderItem={({ item: account }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("UserProfile", { id: account.blocked_id })
+                navigation.navigate("UserProfile", {
+                  id: account.profile.username,
+                })
               }
             >
               <View

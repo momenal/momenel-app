@@ -143,7 +143,7 @@ const Search = ({ navigation, route }) => {
   const handleSuggestionPress = async (suggestion) => {
     console.log(suggestion);
     if (suggestion.username) {
-      navigation.navigate("UserProfile", { id: suggestion.id });
+      navigation.navigate("UserProfile", { id: suggestion.username });
     } else {
       Keyboard.dismiss();
       setIsFetching(true);

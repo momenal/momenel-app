@@ -85,7 +85,6 @@ const PostHeader = ({
             />
           )}
         </TouchableOpacity>
-
         <Pressable
           onPress={() => navigation.navigate("UserProfile", { id: username })}
           style={{ marginLeft: "1%" }}
