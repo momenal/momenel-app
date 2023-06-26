@@ -66,8 +66,13 @@ const Profile = ({ navigation }) => {
     });
 
     if (!response.ok) {
-      console.log(response);
-      Alert.alert("Oops", "Something went wrong!");
+      response = await response.json();
+      Alert.alert("Oops", response.error, [
+        {
+          text: "OK",
+          onPress: () => navigation.goBack(),
+        },
+      ]);
       return;
     }
     response = await response.json();
