@@ -33,6 +33,7 @@ const Profile = ({ navigation }) => {
   const [to, setTo] = useState(10);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
+  const [refresher, setRefresher] = useState(1); // used to force upadte
 
   useEffect(() => {
     setShowFooter(true);
@@ -41,7 +42,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     fetchPosts();
-  }, [from, to, isRefreshing]);
+  }, [from, to, isRefreshing, refresher]);
 
   const fetchPosts = async () => {
     setShowFooter(true);
@@ -51,7 +52,7 @@ const Profile = ({ navigation }) => {
     if (error) {
       return navigation.navigate("Login");
     }
-
+    console.log(RouteParams?.id);
     let url =
       RouteParams?.id !== null && RouteParams?.id !== undefined
         ? `${baseUrl}/user/profile/${RouteParams?.id}/${from}/${to}`
@@ -168,20 +169,7 @@ const Profile = ({ navigation }) => {
       return;
     }
 
-    if (response.status === 201) {
-      setProfile((prev) => ({
-        ...prev,
-        isBlockedByYou: true,
-      }));
-    } else {
-      setProfile((prev) => ({
-        ...prev,
-        isBlockedByYou: false,
-      }));
-    }
-
-    setFrom(0);
-    setTo(10);
+    setRefresher(refresher + 1);
   }
 
   const handleRepost = async (index, isReposted, postId) => {
