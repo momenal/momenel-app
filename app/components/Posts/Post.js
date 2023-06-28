@@ -129,7 +129,7 @@ const Post = ({
         console.log(error);
       }
     } else if (text.startsWith("@")) {
-      navigation.navigate("UserProfile", { id: text });
+      navigation.navigate("UserProfile", { id: text.slice(1) });
     } else if (text.startsWith("#")) {
       if (route.name === "Search") {
         navigation.replace("Search", {
