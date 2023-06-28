@@ -553,6 +553,7 @@ const Profile = ({ navigation }) => {
               refreshing={isRefreshing}
               onRefresh={handleRefresh}
               tintColor={"black"}
+              progressViewOffset={topInset + 10}
             />
           }
           onViewableItemsChanged={({ viewableItems, changed }) => {
