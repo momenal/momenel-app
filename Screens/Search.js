@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { scale } from "../app/utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,82 +23,41 @@ import { supabase } from "../app/lib/supabase";
 import { LayoutAnimation } from "react-native";
 import { Alert } from "react-native";
 
-const fakeRes = {
-  posts: [
-    {
-      postId: Math.random(19).toString(),
-      username: "gifpedia",
-      name: "Gifs official",
-      repost: {
-        isRepost: false,
-      },
-      posts: [
-        {
-          id: Math.random(19).toString(),
-          width: 4000,
-          height: 2300,
-          type: "photo",
-          url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
-        },
-      ],
-      caption: "#cat",
-      createdAt: Date.now(),
-      likes: 300,
-      comments: 12,
-      reposts: 5,
-      lastEdit: null,
-      isLiked: false,
-      repostedByUser: true,
-      isDonateable: true,
-    },
-    {
-      postId: "jsajsadkkjl",
-      username: "travelpedia",
-      name: "TravelPedia inc.",
-      repost: {
-        isRepost: false,
-      },
-      posts: [
-        {
-          id: Math.random(19).toString(),
-          width: 2400,
-          height: 1600,
-          type: "photo",
-          url: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        },
-      ],
-      caption: "#abudhabi",
-      createdAt: Date.now(),
-      likes: 300,
-      comments: 12,
-      reposts: 59,
-      lastEdit: null,
-      isLiked: true,
-      repostedByUser: false,
-      isDonateable: true,
-    },
-  ],
-};
-
 const Search = ({ navigation, route }) => {
   const { query } = route.params;
   const [text, onChangeText] = useState("");
+  const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [queryResults, setQueryResults] = useState(null);
-  const [postsData, setPostsData] = useState();
   const [isFetching, setIsFetching] = useState(false);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [showFooter, setShowFooter] = useState(false);
+  const [postsData, setPostsData] = useState([]);
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(10);
 
   useEffect(() => {
     if (query) {
       onChangeText(query);
-      //todo: search for query and replace it with fakeRes
-      setQueryResults({ ...fakeRes, title: query });
-      setPostsData(fakeRes.posts);
+      setQueryResults({ title: query });
+      setSearch(query);
     }
   }, []);
 
+  useEffect(() => {
+    // if search is not empty
+    if (search) {
+      getPosts();
+    }
+  }, [search, from, to]);
+
+  const fetchMorePosts = () => {
+    let newFrom = from + 10;
+    let newTo = to + 10;
+
+    setFrom(newFrom);
+    setTo(newTo);
+  };
   const getSearchSuggestions = async (query) => {
     if (!query) return setSuggestions([]);
 
@@ -107,9 +66,6 @@ const Search = ({ navigation, route }) => {
       navigation.navigate("Login");
       return false;
     }
-    console.log(
-      `${baseUrl}/search/${query[0] === "#" ? `%23${query}` : query}`
-    );
 
     let response = await fetch(
       `${baseUrl}/search/${
@@ -140,82 +96,112 @@ const Search = ({ navigation, route }) => {
     getSearchSuggestions(text);
   };
 
-  const handleSuggestionPress = async (suggestion) => {
-    console.log(suggestion);
-    if (suggestion.username) {
-      navigation.navigate("UserProfile", { id: suggestion.username });
-    } else {
-      Keyboard.dismiss();
-      setIsFetching(true);
-      onChangeText("#" + suggestion.hashtag);
-      setSuggestions([]);
+  const getPosts = async () => {
+    if (from === 0) setIsFetching(true);
+    setSuggestions([]);
 
-      const { data: session, error } = await supabase.auth.getSession();
-      if (error) {
-        navigation.navigate("Login");
-        return false;
-      }
-      let response = await fetch(`${baseUrl}/hashtag/${suggestion.id}/0/10`, {
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return false;
+    }
+    let response = await fetch(
+      `${baseUrl}/search/hashtag/${search}/${from}/${to}`,
+      {
         method: "GET",
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${session.session.access_token}`,
         },
-      });
-      if (!response.ok) {
-        response = await response.json();
-        console.log(response);
-        Alert.alert("Error", response.error);
-        setSuggestions([]);
-        setIsFetching(false);
-        return;
       }
+    );
+    if (!response.ok) {
       response = await response.json();
       console.log(response);
-      setQueryResults({
-        title: suggestion.hashtag,
-        id: suggestion.id,
-        isFollowing: response.isFollowing,
-      });
-      //todo: setPostsData(response.posts);
-      setPostsData(fakeRes.posts);
+      Alert.alert("Error", response.error);
+      setSuggestions([]);
       setIsFetching(false);
+      return;
     }
+    response = await response.json();
+    setQueryResults({
+      title: search,
+      id: response.hashtagId,
+      isFollowing: response.isFollowing,
+    });
+    if (from === 0) {
+      setPostsData([...response.posts]);
+    } else if (response.posts.length === 0) {
+      setShowFooter(false);
+    } else {
+      setPostsData([...postsData, ...response.posts]);
+    }
+    setRefreshing(false);
+    setIsFetching(false);
   };
 
   const renderSuggestion = ({ item }) => {
     return (
-      <Suggestion item={item} handleSuggestionPress={handleSuggestionPress} />
-    );
-  };
-
-  const renderItem = ({ item, index, isLiked, isReposted, height, width }) => {
-    let scaledHeight = CalcHeight(width, height);
-    return (
-      <Post
+      <Suggestion
+        item={item}
+        handleSuggestionPress={getPosts}
         navigation={navigation}
-        postId={item.postId}
-        index={index}
-        likes={item.likes}
-        comments={item.comments}
-        reposts={item.reposts}
-        isLiked={isLiked}
-        isReposted={isReposted}
-        type={item.type}
-        isDonateable={item.isDonateable}
-        repost={item.repost}
-        profileUrl={item.profile_url}
-        username={item.username}
-        name={item.name}
-        createdAt={item.createdAt}
-        posts={item.posts ? item.posts : []}
-        caption={item.caption}
-        height={scaledHeight}
-        handleLike={handleLike}
-        handleRepost={handleRepost}
+        onChangeText={onChangeText}
+        setSearch={setSearch}
+        setFrom={setFrom}
+        setTo={setTo}
+        setQueryResults={setQueryResults}
       />
     );
   };
+
+  const renderItem = useCallback(
+    ({ item, index, isLiked, isReposted, height, width, createdAt }) => {
+      let scaledHeight = CalcHeight(width, height);
+
+      return (
+        <Post
+          navigation={navigation}
+          postId={item.post.id}
+          index={index}
+          likes={item.post.likes[0].count}
+          comments={item.post.comments[0].count}
+          reposts={item.post.reposts[0].count}
+          repost={false} // discover page does not have reposted posts
+          profileUrl={item.post.user?.profile_url}
+          username={item.post.user?.username}
+          name={item.post.user?.name}
+          createdAt={createdAt}
+          posts={item.post.content ? item.post.content : []}
+          caption={item.post.caption}
+          height={scaledHeight}
+          handleLike={handleLike}
+          handleRepost={handleRepost}
+          isLiked={isLiked}
+          isReposted={isReposted}
+        />
+      );
+    },
+    [postsData]
+  );
+
+  const renderListFooter = useCallback(
+    <View
+      style={[
+        {
+          height: 60,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        !showFooter && { marginTop: -15 },
+      ]}
+    >
+      {showFooter && <ActivityIndicator color="#0000ff" />}
+      {/* {!showFooter && <CustomText>You are all caught up 😀</CustomText>} */}
+    </View>,
+    [showFooter]
+  );
+
   const handleLike = async (index, isLiked, postId) => {
     const { data, error } = await supabase.auth.getSession();
     if (error) {
@@ -430,124 +416,12 @@ const Search = ({ navigation, route }) => {
       </>
     );
   };
-  const fetchMoreData = async () => {
-    setIsLoadingMore(true);
 
-    try {
-      const response = await fetch(
-        `https://run.mocky.io/v3/145571f7-42ba-4873-be22-d86124d286b2`
-      );
-
-      if (response.status === 200) {
-        const newData = await response.json();
-        setData([...data, ...newData]);
-        pageRef.current += 1;
-      } else if (response.status === 204) {
-        console.log("no more data");
-        // no more data
-      } else {
-        throw new Error("Server Error");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      //todo: remove timeout
-      setTimeout(() => {
-        setIsLoadingMore(false);
-      }, 1000);
-      // setIsLoadingMore(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    // ! fake
-    const fakeResfreshPosts = [
-      {
-        postId: Math.random(19).toString(),
-        username: "rhysjones",
-        name: "Rhys Jones",
-        repost: {
-          isRepost: false,
-        },
-        posts: [
-          {
-            id: Math.random(19).toString(),
-            width: 5000,
-            height: 3285,
-            type: "photo",
-            url: "https://images.unsplash.com/photo-1474540412665-1cdae210ae6b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1783&q=80",
-          },
-        ],
-        caption: "The best way to travel is by train",
-        createdAt: Date.now() + 2000000,
-        likes: 234,
-        comments: 1223,
-        reposts: 50,
-        lastEdit: null,
-        isLiked: false,
-        repostedByUser: true,
-        isDonateable: true,
-      },
-      {
-        postId: "pppsakoooa",
-        username: "natgeo",
-        name: "National Geographic",
-        repost: {
-          isRepost: false,
-        },
-        profile_url:
-          "https://images.unsplash.com/photo-1636614484105-6b199a1fbdca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80",
-        posts: [
-          {
-            id: Math.random(19).toString(),
-            width: 2400,
-            height: 2279,
-            type: "photo",
-            url: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1222&q=80",
-          },
-        ],
-        caption: "The universe is a big place",
-        createdAt: Date.now(),
-        likes: 900000,
-        comments: 12132,
-        reposts: 5922,
-        lastEdit: null,
-        isLiked: true,
-        repostedByUser: false,
-        isDonateable: true,
-      },
-    ];
-
+  const handleRefresh = () => {
+    setFrom(0);
+    setTo(10);
     setRefreshing(true);
-    const { data: session, error } = await supabase.auth.getSession();
-
-    if (error) {
-      navigation.navigate("Login");
-      return false;
-    }
-    let response = await fetch(`${baseUrl}/hashtag/${queryResults.id}/0/10`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${session.session.access_token}`,
-      },
-    });
-    if (!response.ok) {
-      response = await response.json();
-      console.log(response);
-      Alert.alert("Error", response.error);
-      setIsFetching(false);
-      return;
-    }
-    response = await response.json();
-    console.log(response);
-
-    setQueryResults({
-      ...queryResults,
-      isFollowing: response.isFollowing,
-      posts: fakeResfreshPosts,
-    });
-    setRefreshing(false);
+    setShowFooter(true);
   };
 
   return (
@@ -595,8 +469,6 @@ const Search = ({ navigation, route }) => {
             onChangeText={handleSearchChange}
             placeholder="Search for people, posts, tags..."
             placeholderTextColor="#999999"
-            returnKeyType="search"
-            returnKeyLabel="search"
           />
         </View>
         <TouchableOpacity onPress={() => navigation.pop()}>
@@ -636,26 +508,39 @@ const Search = ({ navigation, route }) => {
           data={postsData}
           estimatedItemSize={450}
           keyExtractor={(item) => {
-            return item.postId;
+            return item.id;
           }}
           renderItem={({ item, index }) =>
             renderItem({
               item,
               index,
               isLiked: item.isLiked,
-              isReposted: item.repostedByUser,
-              postId: item.postId,
-              width: item.posts?.length > 0 ? item.posts[0].width : 0,
-              height: item.posts?.length > 0 ? item.posts[0].height : 0,
+              isReposted: item.isReposted,
+              postId: item.post.id,
+              width:
+                item.post.content?.length > 0 ? item.post.content[0].width : 0,
+              height:
+                item.post.content?.length > 0 ? item.post.content[0].height : 0,
+              createdAt: item.post.created_at,
             })
           }
           ListHeaderComponent={renderHeader}
           ListHeaderComponentStyle={{
             paddingTop: 5,
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              tintColor={"black"}
+            />
+          }
+          ListFooterComponent={renderListFooter}
           maxToRenderPerBatch={5}
           initialNumToRender={5}
           showsVerticalScrollIndicator={false}
+          onEndReached={fetchMorePosts}
+          onEndReachedThreshold={2}
           keyboardDismissMode="on-drag"
           viewabilityConfig={{
             itemVisiblePercentThreshold: 50,
@@ -668,23 +553,6 @@ const Search = ({ navigation, route }) => {
               // console.log("Visible items are", item.index);
             });
           }}
-          onEndReached={fetchMoreData}
-          onEndReachedThreshold={2}
-          ListFooterComponent={() =>
-            isLoadingMore ? (
-              <View style={{ marginBottom: scale(30) }}>
-                <ActivityIndicator />
-              </View>
-            ) : null
-          }
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-              tintColor={"#0000ff"}
-              size={"small"}
-            />
-          }
         />
       )}
       {/* posts from hashtag */}
@@ -692,8 +560,15 @@ const Search = ({ navigation, route }) => {
   );
 };
 
-const Suggestion = ({ item, handleSuggestionPress }) => {
-  console.log(item.hashtag);
+const Suggestion = ({
+  navigation,
+  item,
+  onChangeText,
+  setSearch,
+  setTo,
+  setFrom,
+  setQueryResults,
+}) => {
   return (
     <TouchableOpacity
       style={{
@@ -702,7 +577,19 @@ const Suggestion = ({ item, handleSuggestionPress }) => {
         borderBottomWidth: 1,
         borderBottomColor: "#F1F1F2",
       }}
-      onPress={() => handleSuggestionPress(item)}
+      onPress={() => {
+        if (item.username) {
+          navigation.navigate("UserProfile", { id: item.username });
+        } else {
+          setSearch("");
+          Keyboard.dismiss();
+          onChangeText("#" + item.hashtag);
+          setFrom(0);
+          setTo(10);
+          setSearch(item.hashtag);
+          setQueryResults({ title: item.hashtag });
+        }
+      }}
     >
       {item.username ? (
         <View
