@@ -42,7 +42,6 @@ const ProfileHeader = ({
     "#f5bfd7",
     "#f0eafc",
   ];
-  console.log("profile_url", profile_url);
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
@@ -93,7 +92,6 @@ const ProfileHeader = ({
       await WebBrowser.openBrowserAsync("https://www." + url);
     }
   };
-  console.log(blurhash);
   const scaledSize = useMemo(() => scale(95), []);
   return (
     <View
@@ -438,7 +436,6 @@ const ProfileHeader = ({
               Block
             </CustomText>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={{
               flexDirection: "row",

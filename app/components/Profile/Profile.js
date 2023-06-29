@@ -295,6 +295,43 @@ const Profile = ({ navigation }) => {
       setData(updatedPosts);
     }
   };
+  const onDeletePress = async ({ index }) => {
+    let { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+    }
+
+    let headersList = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.session.access_token}`,
+    };
+
+    // remove the post from the list
+    const updatedPosts = data.filter((post, i) => i !== index);
+    setData(updatedPosts);
+
+    let type = data[index].type;
+    let postId = data[index].id;
+
+    let url =
+      type === "post"
+        ? `${baseUrl}/posts/${postId}`
+        : `${baseUrl}/repost/${postId}`;
+
+    let response = await fetch(url, {
+      method: "DELETE",
+      headers: headersList,
+    });
+
+    if (!response.ok) {
+      Alert.alert(
+        `${type === "post" ? "Post" : "Repost"} not deleted`,
+        "Something went wrong with the server"
+      );
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+  };
 
   const renderItem = useCallback(
     ({
@@ -328,6 +365,7 @@ const Profile = ({ navigation }) => {
           height={scaledHeight}
           handleLike={handleLike}
           handleRepost={handleRepost}
+          onDeletePress={onDeletePress}
           isLiked={isLiked}
           isReposted={isReposted}
         />

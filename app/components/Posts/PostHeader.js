@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  LayoutAnimation,
   Pressable,
   StyleSheet,
   Text,
@@ -7,13 +8,14 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import { memo, useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "../../utils/Scale";
+import { useRoute } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -25,14 +27,29 @@ const PostHeader = ({
   index,
   navigation,
   onReportPress,
+  onDeletePress,
 }) => {
+  const { name: RouteName } = useRoute();
+
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+
+  useEffect(() => {
+    setShowBottomSheet(false);
+  }, []);
 
   const insets = useSafeAreaInsets();
 
   const onReportPressWrapper = () => {
     setShowBottomSheet(false);
     onReportPress();
+  };
+
+  const onDeletePressWrapper = () => {
+    setShowBottomSheet(false);
+    setTimeout(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      onDeletePress({ index });
+    }, 100);
   };
 
   const Time = useMemo(
@@ -155,30 +172,57 @@ const PostHeader = ({
             paddingHorizontal: 20,
           }}
         >
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              width: "100%",
-              backgroundColor: "#EAEAEA",
-              paddingVertical: 15,
-              paddingHorizontal: 18,
-
-              borderRadius: 12,
-            }}
-            onPress={() => onReportPressWrapper()}
-          >
-            <Ionicons name="ios-flag" size={20} color="red" />
-            <CustomText
+          {RouteName === "Profile" ? (
+            <TouchableOpacity
               style={{
-                fontSize: 16,
-                marginLeft: 10,
-                color: "red",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                backgroundColor: "#EAEAEA",
+                paddingVertical: 15,
+                paddingHorizontal: 18,
+
+                borderRadius: 12,
               }}
+              onPress={() => onDeletePressWrapper()}
             >
-              Report
-            </CustomText>
-          </TouchableOpacity>
+              <Ionicons name="trash-bin" size={20} color="red" />
+              <CustomText
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  color: "red",
+                }}
+              >
+                Delete
+              </CustomText>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                backgroundColor: "#EAEAEA",
+                paddingVertical: 15,
+                paddingHorizontal: 18,
+                marginTop: 10,
+                borderRadius: 12,
+              }}
+              onPress={() => onReportPressWrapper()}
+            >
+              <Ionicons name="ios-flag" size={20} color="red" />
+              <CustomText
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  color: "red",
+                }}
+              >
+                Report
+              </CustomText>
+            </TouchableOpacity>
+          )}
         </View>
       </BottomSheet>
     </View>

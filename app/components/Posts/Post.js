@@ -43,6 +43,7 @@ const Post = ({
   height,
   handleLike,
   handleRepost,
+  onDeletePress,
 }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(14), []);
@@ -173,6 +174,7 @@ const Post = ({
       contentType: "post",
     });
   };
+
   if (published && !published) return null;
   return (
     <View
@@ -213,7 +215,6 @@ const Post = ({
           </CustomText>
         </TouchableOpacity>
       )}
-
       <PostHeader
         navigation={navigation}
         profileUrl={profileUrl}
@@ -222,6 +223,7 @@ const Post = ({
         createdAt={createdAt}
         index={index}
         onReportPress={onReportPress}
+        onDeletePress={onDeletePress}
       />
       {/* caption */}
       {caption && (
