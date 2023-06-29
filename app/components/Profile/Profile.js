@@ -24,7 +24,6 @@ import { CalcHeight } from "../../utils/CalcHeight";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
-  // console.log(RouteParams);
   const [profile, setProfile] = useState({});
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(false);
@@ -530,10 +529,11 @@ const Profile = ({ navigation }) => {
               isFollowing={profile?.isFollowing}
               name={profile?.name}
               bio={profile?.bio}
-              link={profile?.link}
+              link={profile?.website}
               likes_count={profile?.likes_count}
               followers={profile?.followers}
               following={profile?.following}
+              blurhash={profile?.blurhash}
               handleBlock={handleBlock}
             />
           }

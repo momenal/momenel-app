@@ -1,11 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
-import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useBoundStore } from "../Store/useBoundStore";
 
 const TabBarProfileIcon = ({ size, focused }) => {
   const profile_url = useBoundStore((state) => state.profile_url);
+
   return (
     <LinearGradient
       colors={["#FF4082", "#B01CEC"]}
@@ -37,7 +37,7 @@ const TabBarProfileIcon = ({ size, focused }) => {
           }}
           contentFit="center"
           source={{
-            uri: profile_url,
+            uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
           }}
         />
       </View>

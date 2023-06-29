@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import { Dimensions } from "react-native";
 import Home from "../../Screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
@@ -14,12 +7,8 @@ import PlusIcon from "../components/icons/PlusIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
 import NotificationsIcon from "../components/icons/Notifications";
-
 import PlaceholderScreen from "../components/PlaceholderScreen";
 import Discover from "../../Screens/Discover";
-
-import { useBoundStore } from "../Store/useBoundStore";
-
 import Profile from "../components/Profile/Profile";
 import Notifications from "../../Screens/Notifications";
 
@@ -28,8 +17,6 @@ const Tab = createBottomTabNavigator();
 
 const HomeNavigator = ({ navigation }) => {
   const Height = Dimensions.get("window").height * 0.024;
-  const username = useBoundStore((state) => state.username);
-  // const IconSize = 21;
   const IconSize = Height > 21 ? 21 : Height < 18 ? 18 : Height;
 
   return (
@@ -119,7 +106,6 @@ const HomeNavigator = ({ navigation }) => {
         component={Notifications}
         options={{
           title: "Notifications",
-          // tabBarStyle: { display: "none" },
           tabBarIcon: ({ size, focused }) => {
             {
               return (

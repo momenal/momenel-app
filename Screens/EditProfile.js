@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { scale } from "../app/utils/Scale";
 import { useHeaderHeight } from "@react-navigation/elements";
 import CustomText from "../app/components/customText/CustomText";
@@ -125,7 +125,7 @@ const EditProfile = ({ navigation }) => {
   const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0,
+      quality: 1,
       allowsEditing: true,
       base64: false,
       aspect: [1, 1],
@@ -410,7 +410,9 @@ const EditProfile = ({ navigation }) => {
                 source={
                   imageUri
                     ? {
-                        uri: imageUri,
+                        uri: imageUri.startsWith("file://")
+                          ? imageUri
+                          : `https://momenel.b-cdn.net/profiles/${imageUri}`,
                       }
                     : null
                 }

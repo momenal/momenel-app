@@ -1,13 +1,6 @@
-import {
-  View,
-  Dimensions,
-  Platform,
-  Pressable,
-  LayoutAnimation,
-} from "react-native";
+import { View, Dimensions, Platform, Pressable } from "react-native";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
-import { useBoundStore } from "../../Store/useBoundStore";
 import { useMemo, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CustomText from "../customText/CustomText";
@@ -20,7 +13,7 @@ import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomShee
 import BottomSheet from "../BottomFlatSheet/BottomSheet";
 import { useRoute } from "@react-navigation/native";
 
-const blurhash =
+const blurhashBase =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 const ProfileHeader = ({
   navigation,
@@ -37,6 +30,7 @@ const ProfileHeader = ({
   following,
   username,
   isRefreshing,
+  blurhash = blurhashBase,
 }) => {
   const { name: RouteName } = useRoute();
   const bgColors = [
@@ -48,7 +42,7 @@ const ProfileHeader = ({
     "#f5bfd7",
     "#f0eafc",
   ];
-
+  console.log("profile_url", profile_url);
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
@@ -99,7 +93,7 @@ const ProfileHeader = ({
       await WebBrowser.openBrowserAsync("https://www." + url);
     }
   };
-
+  console.log(blurhash);
   const scaledSize = useMemo(() => scale(95), []);
   return (
     <View
@@ -265,14 +259,17 @@ const ProfileHeader = ({
         >
           <Pressable
             onPress={() =>
-              navigation?.navigate("Zoom", { url: profile_url, username })
+              navigation?.navigate("Zoom", {
+                url: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                username,
+              })
             }
           >
             <Image
               source={
                 profile_url
                   ? {
-                      uri: profile_url,
+                      uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
                     }
                   : null
               }
