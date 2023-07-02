@@ -6,49 +6,52 @@ import { Alert } from "react-native";
 export const createNotificationsSlice = (set, get) => ({
   notifications: [],
   newNotifications: false,
-
-  fetchNotifications: async () => {
-    try {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        return navigation.navigate("Login");
-      }
-      let from =
-        get().notifications.length < 1 ? 0 : get().notifications.length;
-      let to = from + 20;
-
-      let response = await fetch(`${baseUrl}/notifications/${from}/${to}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${data.session.access_token}`,
-        },
-      });
-
-      if (!response.ok) {
-        Alert.alert("Notifications Error", "Something went wrong :(");
-        return;
-      }
-
-      let { notifications } = await response.json();
-      if (notifications.length < 1) {
-        return;
-      }
-      notifications.forEach((notification) => {
-        if (notification.isRead != true) {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-          set(() => ({
-            newNotifications: true,
-          }));
-        }
-      });
-      notifications = notifications.reverse();
-      set((state) => ({
-        notifications: [...notifications, ...state.notifications],
-      }));
-    } catch (err) {
-      console.log(err.message);
+  fetchNotifications: async ({ isRefreshing }) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      return navigation.navigate("Login");
     }
+    let from = get().notifications.length < 1 ? 0 : get().notifications.length;
+    let to = from + 20;
+    let url = isRefreshing
+      ? `${baseUrl}/notifications/0/10`
+      : `${baseUrl}/notifications/${from}/${to}`;
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      Alert.alert("Notifications Error", "Something went wrong :(");
+      return;
+    }
+
+    let { notifications } = await response.json();
+
+    if (notifications.length < 1) {
+      return;
+    }
+    notifications.forEach((notification) => {
+      if (notification.isRead != true) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+        set(() => ({
+          newNotifications: true,
+        }));
+      }
+    });
+    notifications = notifications.reverse();
+    if (isRefreshing) {
+      set(() => ({
+        notifications: [...notifications],
+      }));
+      return;
+    }
+    set((state) => ({
+      notifications: [...notifications, ...state.notifications],
+    }));
   },
   handleFollow: async (id, isFollowed) => {
     const { data, error } = await supabase.auth.getSession();

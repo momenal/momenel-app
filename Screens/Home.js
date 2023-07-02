@@ -27,15 +27,13 @@ const Home = ({ navigation }) => {
     fetchPosts();
   }, [from, to, isRefreshing]);
 
-  // useEffect(() => {
-  //   // fetchNotifications();
-  //   //fetch notifications every 5 minutes
-  //   //todo: uncomment
-  //   // const intervalId = setInterval(() => {
-  //   //   fetchNotifications();
-  //   // }, 300000); // fetch notifications every 5 minutes
-  //   // return () => clearInterval(intervalId);
-  // }, []);
+  useEffect(() => {
+    fetchNotifications({ isRefreshing: false });
+    const intervalId = setInterval(() => {
+      fetchNotifications({ isRefreshing: true });
+    }, 180000); // fetch notifications every 3 minutes
+    return () => clearInterval(intervalId);
+  }, []);
 
   const fetchPosts = async () => {
     const { data, error } = await supabase.auth.getSession();

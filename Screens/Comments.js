@@ -282,7 +282,9 @@ const Comments = ({ route, navigation }) => {
               >
                 {!isKeyboardVisible && (
                   <Image
-                    source={{ uri: userProfileUrl }}
+                    source={{
+                      uri: `https://momenel.b-cdn.net/profiles/${userProfileUrl}`,
+                    }}
                     style={{
                       height: scale(32),
                       width: scale(32),
