@@ -6,13 +6,21 @@ import { Alert } from "react-native";
 export const createNotificationsSlice = (set, get) => ({
   notifications: [],
   newNotifications: false,
+  from: 0,
+  to: 20,
   fetchNotifications: async ({ isRefreshing }) => {
     const { data, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
-    let from = get().notifications.length < 1 ? 0 : get().notifications.length;
-    let to = from + 20;
+    if (isRefreshing) {
+      set(() => ({
+        from: 0,
+        to: 10,
+      }));
+    }
+    let from = get().from;
+    let to = from + 10;
     let url = isRefreshing
       ? `${baseUrl}/notifications/0/10`
       : `${baseUrl}/notifications/${from}/${to}`;
@@ -42,7 +50,7 @@ export const createNotificationsSlice = (set, get) => ({
         }));
       }
     });
-    notifications = notifications.reverse();
+
     if (isRefreshing) {
       set(() => ({
         notifications: [...notifications],
@@ -50,7 +58,11 @@ export const createNotificationsSlice = (set, get) => ({
       return;
     }
     set((state) => ({
-      notifications: [...notifications, ...state.notifications],
+      notifications: [...state.notifications, ...notifications],
+    }));
+    set(() => ({
+      from: to,
+      to: to + 10,
     }));
   },
   handleFollow: async (id, isFollowed) => {

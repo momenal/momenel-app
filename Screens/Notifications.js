@@ -123,8 +123,8 @@ const Notifications = ({ navigation }) => {
               />
             )}
           </Pressable>
-          <View style={{ marginLeft: "2%" }}>
-            <CustomText style={{ flexWrap: "wrap" }}>
+          <View style={{ marginLeft: "2%", width: "100%" }}>
+            <CustomText style={{ flexWrap: "wrap", maxWidth: "70%" }}>
               {type === "system" ? (
                 <CustomText style={{ fontFamily: "Nunito_700Bold" }}>
                   {"your" + ` `}
@@ -180,6 +180,9 @@ const Notifications = ({ navigation }) => {
           renderItem={({ item, index }) =>
             renderItem({ item, index, isRead: item.isRead, type: item.type })
           }
+          onEndReached={() => {
+            fetchNotifications({ isRefreshing: false });
+          }}
           estimatedItemSize={100}
           refreshControl={
             <RefreshControl
