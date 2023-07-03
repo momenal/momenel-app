@@ -20,7 +20,7 @@ const ByUserList = ({ route, navigation }) => {
   const { type, Id } = route.params;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(Id);
   useEffect(() => {
     getData();
   }, []);
@@ -57,22 +57,18 @@ const ByUserList = ({ route, navigation }) => {
         title: `Followers`,
       });
       //todo: change id
-
-      response = await fetch(
-        `${baseUrl}/followuser/followers/0cee4054-e83f-42ae-a079-75b81c0766fb`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${session.session.access_token}`,
-          },
-        }
-      );
+      console.log("id: ", Id);
+      response = await fetch(`${baseUrl}/followuser/followers/${Id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${session.session.access_token}`,
+        },
+      });
     } else if (type === "following") {
       navigation.setOptions({
         title: `Following`,
       });
-      //todo: change id
       response = await fetch(`${baseUrl}/followuser/following`, {
         method: "GET",
         headers: {

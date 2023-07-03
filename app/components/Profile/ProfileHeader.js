@@ -302,7 +302,7 @@ const ProfileHeader = ({
           onPress={() =>
             navigation.navigate("UserList", {
               type: "followers",
-              id: id,
+              Id: id,
               totalAmount: followers,
             })
           }
@@ -314,7 +314,7 @@ const ProfileHeader = ({
           onPress={() =>
             navigation.navigate("UserList", {
               type: "following",
-              id: id,
+              Id: id,
               totalAmount: followers,
             })
           }
