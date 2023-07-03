@@ -80,7 +80,6 @@ const Notifications = ({ navigation }) => {
 
   const scaledHeight = useMemo(() => scale(30), []);
   const renderItem = ({ item, index, isRead, type }) => {
-    console.log(isRead);
     return (
       <TouchableOpacity
         style={[
@@ -118,7 +117,6 @@ const Notifications = ({ navigation }) => {
                 name="person-circle-sharp"
                 size={scaledHeight}
                 color="#999999"
-                style={{ marginRight: "2%" }}
               />
             )}
           </Pressable>

@@ -45,7 +45,7 @@ const UserList = ({
           justifyContent: "flex-start",
         }}
         onPress={() => {
-          navigation.navigate("UserProfile", { id: id });
+          navigation.navigate("UserProfile", { id: username });
         }}
       >
         {profile_url ? (

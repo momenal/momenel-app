@@ -36,7 +36,7 @@ const ByUserList = ({ route, navigation }) => {
     // fetch data
     if (type === "likes") {
       navigation.setOptions({ title: "Likes" });
-      response = await fetch(`${baseUrl}/like/8`, {
+      response = await fetch(`${baseUrl}/like/${Id}`, {
         method: "GET",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -45,8 +45,7 @@ const ByUserList = ({ route, navigation }) => {
       });
     } else if (type === "reposts") {
       navigation.setOptions({ title: "Reposts" });
-      //todo: change id
-      response = await fetch(`${baseUrl}/repost/8`, {
+      response = await fetch(`${baseUrl}/repost/${Id}`, {
         method: "GET",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -58,6 +57,7 @@ const ByUserList = ({ route, navigation }) => {
         title: `Followers`,
       });
       //todo: change id
+
       response = await fetch(
         `${baseUrl}/followuser/followers/0cee4054-e83f-42ae-a079-75b81c0766fb`,
         {
@@ -151,7 +151,7 @@ const ByUserList = ({ route, navigation }) => {
         type={type}
         id={item.user.id}
         username={item.user.username}
-        profile_url={item.user.profile_url}
+        profile_url={`https://momenel.b-cdn.net/profiles/${item.user.profile_url}`}
         isFollowing={isFollowing}
         onPress={handleFollowPress}
         navigation={navigation}
