@@ -1,6 +1,4 @@
 // list of posts
-// example usage: when press on a post in mansory list
-
 import { View, FlatList, Alert } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -10,41 +8,11 @@ import { supabase } from "../app/lib/supabase";
 import { baseUrl } from "@env";
 import * as Haptics from "expo-haptics";
 
-// todo: remove this
-let fakeData = [
-  {
-    postId: Math.random(19).toString(),
-    username: "gifpedia",
-    name: "Gifs official",
-    repost: {
-      isRepost: false,
-    },
-    posts: [
-      {
-        id: Math.random(19).toString(),
-        width: 4000,
-        height: 2300,
-        type: "photo",
-        url: "https://media.tenor.com/dqoSY8JhoEAAAAAC/kitten-cat.gif",
-      },
-    ],
-    caption: "#cat",
-    createdAt: Date.now(),
-    likes: 4,
-    comments: 12,
-    reposts: 5,
-    lastEdit: null,
-    isLiked: false,
-    repostedByUser: true,
-    isDonateable: true,
-  },
-];
 const PostsList = ({ navigation }) => {
   const flashListRef = useRef(null);
   const { params } = useRoute();
-  // const [data, setPostsData] = useState([]);
-  const [postsData, setPostsData] = useState();
-
+  const [postsData, setPostsData] = useState([]);
+  console.log(params.type);
   useEffect(() => {
     if (params.posts) {
       setPostsData(params.posts);
@@ -56,9 +24,7 @@ const PostsList = ({ navigation }) => {
         });
       }, 200);
     } else {
-      // todo: get post from db then set data
-      console.log("fetching posts from id: ", params.id);
-      setPostsData(fakeData);
+      setPostsData(params.posts);
     }
   }, []);
 
@@ -120,34 +86,45 @@ const PostsList = ({ navigation }) => {
     }
   };
 
-  const renderItem = ({ item, index, isLiked, isReposted, height, width }) => {
-    let scaledHeight = CalcHeight(width, height);
-    return (
-      <Post
-        navigation={navigation}
-        postId={item.postId}
-        index={index}
-        likes={item.likes}
-        comments={item.comments}
-        reposts={item.reposts}
-        isLiked={isLiked}
-        isReposted={isReposted}
-        type={item.type}
-        isDonateable={item.isDonateable}
-        repost={item.repost}
-        profileUrl={item.profile_url}
-        username={item.username}
-        name={item.name}
-        createdAt={item.createdAt}
-        posts={item.posts ? item.posts : []}
-        caption={item.caption}
-        height={scaledHeight}
-        handleLike={handleLike}
-        handleRepost={handleRepost}
-        published={item.published !== false ? true : false}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({
+      item,
+      index,
+      isLiked,
+      isReposted,
+      height,
+      width,
+      createdAt,
+      postId,
+      type,
+    }) => {
+      let scaledHeight = CalcHeight(width, height);
+      let tempPost = type === "post" ? item : item.post;
+      return (
+        <Post
+          navigation={navigation}
+          postId={tempPost.id}
+          index={index}
+          likes={tempPost.likes[0].count}
+          comments={tempPost.comments[0].count}
+          reposts={tempPost.reposts[0].count}
+          repost={item.repostedBy}
+          profileUrl={tempPost.user?.profile_url}
+          username={tempPost.user?.username}
+          name={tempPost.user?.name}
+          createdAt={createdAt}
+          posts={tempPost.content ? tempPost.content : []}
+          caption={tempPost.caption}
+          height={scaledHeight}
+          handleLike={handleLike}
+          handleRepost={handleRepost}
+          isLiked={isLiked}
+          isReposted={isReposted}
+        />
+      );
+    },
+    [postsData]
+  );
 
   const handleRepost = async (index, isReposted, postId) => {
     const { data, error } = await supabase.auth.getSession();
@@ -212,12 +189,24 @@ const PostsList = ({ navigation }) => {
         renderItem={({ item, index }) =>
           renderItem({
             item,
-            index: index,
+            index,
             isLiked: item.isLiked,
-            isReposted: item.repostedByUser,
-            postId: item.postId,
-            width: item.posts?.length > 0 ? item.posts[0].width : 0,
-            height: item.posts?.length > 0 ? item.posts[0].height : 0,
+            isReposted: item.isReposted,
+            postId: item.type === "repost" ? item.post.id : item.id,
+            type: params.type,
+            width:
+              item.type === "repost" && item.post.content?.length > 0
+                ? item.post.content[0].width
+                : item.type === "post" && item.content?.length > 0
+                ? item.content[0].width
+                : 0,
+            height:
+              item.type === "repost" && item.post.content?.length > 0
+                ? item.post.content[0].height
+                : item.type === "post" && item.content?.length > 0
+                ? item.content[0].height
+                : 0,
+            createdAt: item.created_at,
           })
         }
         // maxToRenderPerBatch={params.scrollToIndex}

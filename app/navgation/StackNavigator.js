@@ -15,6 +15,7 @@ import Profile from "../components/Profile/Profile";
 import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
 import SettingsStackNavigator from "./SettingsStackNavigator";
+import SinglePost from "../../Screens/SinglePost";
 
 const Stack = createNativeStackNavigator();
 
@@ -128,6 +129,17 @@ const StackNavigator = ({}) => {
           headerTitleStyle: { fontFamily: "Nunito_700Bold" },
           headerBackTitle: "",
           headerTitle: "Posts",
+          headerShadowVisible: false,
+          headerTintColor: "black",
+        }}
+      />
+      <Stack.Screen
+        name="SinglePost"
+        component={SinglePost}
+        options={{
+          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+          headerBackTitle: "",
+          headerTitle: "",
           headerShadowVisible: false,
           headerTintColor: "black",
         }}

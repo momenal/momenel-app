@@ -66,14 +66,14 @@ const Notifications = ({ navigation }) => {
         comment_id: notifications[index].comment.id,
       });
     } else if (type === "post_like") {
-      navigation.navigate("PostsList", {
-        scrollToIndex: 0,
-        posts: [notifications[index].post],
+      navigation.navigate("SinglePost", {
+        type: "post",
+        id: notifications[index].post_id,
       });
     } else if (type === "repost") {
-      navigation.navigate("PostsList", {
-        scrollToIndex: 0,
-        posts: [notifications[index].post],
+      navigation.navigate("SinglePost", {
+        type: "repost",
+        id: notifications[index].repost_id,
       });
     }
   };
@@ -87,7 +87,6 @@ const Notifications = ({ navigation }) => {
           {
             paddingHorizontal: "2%",
             paddingVertical: "3%",
-            marginVertical: "1%",
             justifyContent: "space-between",
             maxWidth: Dimensions.get("window").width,
             flexDirection: "row",
