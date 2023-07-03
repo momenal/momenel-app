@@ -6,8 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import AccountScreen from "../components/Settings/AccountScreen";
 import PersonalInfo from "../components/Settings/PersonalInfo";
 import DeleteAccount from "../components/Settings/DeleteAccount";
-import YourActivity from "../components/Settings/LikedPosts";
-import LikedPosts from "../components/Settings/LikedPosts";
 import BlockedAccounts from "../components/Settings/BlockedAccounts";
 import SupportScreen from "../components/Settings/SupportScreen";
 import InviteScreen from "../components/Settings/InviteScreen";
@@ -67,16 +65,7 @@ const SettingsStackNavigator = ({ navigation }) => {
           headerTintColor: "black",
         }}
       />
-      <Stack.Screen
-        name="Likes"
-        component={LikedPosts}
-        options={{
-          headerShadowVisible: false,
-          headerTitle: "Liked Posts",
-          headerBackTitle: "",
-          headerTintColor: "black",
-        }}
-      />
+
       <Stack.Screen
         name="Blocked"
         component={BlockedAccounts}

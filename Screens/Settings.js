@@ -12,10 +12,7 @@ const Settings = ({ navigation }) => {
         title="Account"
         onPress={() => navigation.navigate("Account")}
       />
-      <SettingsTab
-        title="Liked Posts"
-        onPress={() => navigation.navigate("Likes")}
-      />
+
       <SettingsTab
         title="Blocked Accounts"
         onPress={() => navigation.navigate("Blocked")}
