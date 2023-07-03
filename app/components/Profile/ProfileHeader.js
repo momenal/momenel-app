@@ -249,41 +249,41 @@ const ProfileHeader = ({
           )}
         </View>
         {/* right */}
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Pressable
-            onPress={() =>
-              navigation?.navigate("Zoom", {
-                url: `https://momenel.b-cdn.net/profiles/${profile_url}`,
-                username,
-              })
-            }
+        {profile_url && (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Image
-              source={
-                profile_url
-                  ? {
-                      uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
-                    }
-                  : null
+            <Pressable
+              onPress={() =>
+                navigation?.navigate("Zoom", {
+                  url: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                  username,
+                })
               }
-              contentFit="cover"
-              placeholder={blurhash}
-              style={{
-                height: scaledSize,
-                width: scaledSize,
-                borderRadius: scaledSize / 2,
-                backgroundColor:
-                  bgColors[Math.floor(Math.random() * bgColors.length)],
-              }}
-              transition={1000}
-            />
-          </Pressable>
-        </View>
+            >
+              <Image
+                source={
+                  profile_url
+                    ? {
+                        uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                      }
+                    : null
+                }
+                contentFit="cover"
+                placeholder={blurhash}
+                style={{
+                  height: scaledSize,
+                  width: scaledSize,
+                  borderRadius: scaledSize / 2,
+                }}
+                transition={1000}
+              />
+            </Pressable>
+          </View>
+        )}
       </View>
       {/* stats */}
       <View

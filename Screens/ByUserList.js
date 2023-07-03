@@ -56,8 +56,6 @@ const ByUserList = ({ route, navigation }) => {
       navigation.setOptions({
         title: `Followers`,
       });
-      //todo: change id
-      console.log("id: ", Id);
       response = await fetch(`${baseUrl}/followuser/followers/${Id}`, {
         method: "GET",
         headers: {
