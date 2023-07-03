@@ -75,6 +75,13 @@ const Notifications = ({ navigation }) => {
         type: "repost",
         id: notifications[index].repost_id,
       });
+    } else if (type === "system") {
+      if (notifications[index].post_id) {
+        navigation.navigate("SinglePost", {
+          type: "post",
+          id: notifications[index].post_id,
+        });
+      }
     }
   };
 
