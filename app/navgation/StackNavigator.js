@@ -12,7 +12,6 @@ import CreatePost from "../../Screens/CreatePost";
 import PostHeaderButton from "../components/Buttons/PostHeaderButton";
 import Search from "../../Screens/Search";
 import Profile from "../components/Profile/Profile";
-import PostsList from "../../Screens/PostsList";
 import EditProfile from "../../Screens/EditProfile";
 import SettingsStackNavigator from "./SettingsStackNavigator";
 import SinglePost from "../../Screens/SinglePost";
@@ -122,17 +121,7 @@ const StackNavigator = ({}) => {
           headerTintColor: "black",
         }}
       />
-      <Stack.Screen
-        name="PostsList"
-        component={PostsList}
-        options={{
-          headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-          headerBackTitle: "",
-          headerTitle: "Posts",
-          headerShadowVisible: false,
-          headerTintColor: "black",
-        }}
-      />
+
       <Stack.Screen
         name="SinglePost"
         component={SinglePost}

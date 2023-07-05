@@ -1,22 +1,48 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { supabase } from "../../lib/supabase";
+import { baseUrl } from "@env";
 import CustomText from "../customText/CustomText";
 
-const DeleteAccount = ({}) => {
+const DeleteAccount = ({ navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     setIsDeleting(true);
-    // TODO: Implement delete account logic
-    setTimeout(() => {
-      setIsDeleting(false);
+    const { data: session, error } = await supabase.auth.getSession();
+    if (error) {
+      navigation.navigate("Login");
+      return;
+    }
+
+    // delete user
+    let response = await fetch(`${baseUrl}/user/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.session.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      response = await response.json();
+      console.log(response);
+      Alert.alert(
+        "Oops",
+        "Something went wrong!\nTry again or contact support.",
+        [{ text: "OK" }]
+      );
+      navigation.goBack();
+      return;
+    }
+    setIsDeleting(false);
+    if (response.status === 200) {
       Alert.alert(
         "Account deleted",
         "Your account has been permanently deleted",
         [{ text: "OK", onPress: () => supabase.auth.signOut() }]
       );
-    }, 3000); // Simulate the deletion process with a delay of 3 seconds
+    }
   };
 
   return (

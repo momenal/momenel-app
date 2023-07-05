@@ -19,7 +19,6 @@ const PostMediaOne = ({
   navigation,
   username,
 }) => {
-  //todo: change this to url and add to paramerters
   const video = useRef(null);
   const isFocused = useIsFocused();
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;

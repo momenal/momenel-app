@@ -95,8 +95,6 @@ const S3 = ({}) => {
     return count;
   };
   const handleFollow = async (id) => {
-    console.log(id);
-    //todo: send follow request to server
     //update follow status in data
     let newData = data.map((item) => {
       if (item.profile.id === id) {

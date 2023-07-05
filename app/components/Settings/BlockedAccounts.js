@@ -45,8 +45,6 @@ const BlockedAccounts = ({ navigation }) => {
   };
 
   const handleBlock = async (blocked_id) => {
-    // //todo: implement block/unblock logic
-
     let newBlockedAccounts = blockedAccounts.map((account) => {
       if (account.blocked_id === blocked_id) {
         return {

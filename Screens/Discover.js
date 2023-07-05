@@ -417,13 +417,6 @@ const Discover = ({ navigation }) => {
             itemVisiblePercentThreshold: 50,
             minimumViewTime: 500,
           }}
-          // todo: implement viewability below
-          onViewableItemsChanged={({ viewableItems, changed }) => {
-            // loop through viewable items and update the store
-            viewableItems.forEach((item) => {
-              // console.log("Visible items are", item.index);
-            });
-          }}
         />
       )}
       <StatusBar style="dark" />

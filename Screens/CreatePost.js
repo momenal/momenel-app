@@ -160,7 +160,7 @@ const CreatePost = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsMultipleSelection: false,
       allowsEditing: true,
-      videoMaxDuration: 120, // todo: chnage this after a meeting with the team
+      videoMaxDuration: 120, // 2 minutes
       orderedSelection: true,
       quality: 1,
       base64: false,

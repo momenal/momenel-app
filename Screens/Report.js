@@ -66,8 +66,6 @@ const Report = ({ route, navigation }) => {
   };
 
   const onReport = async () => {
-    //todo: send req to server
-
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     onChangeText("");
     setactiveIndex(null);
@@ -82,7 +80,7 @@ const Report = ({ route, navigation }) => {
     let bodyContent = JSON.stringify({
       reason: text,
     });
-    //todo: change the url to add correct item id /8
+
     let response = await fetch(
       `${baseUrl}/report/${contentId}/${contentType}/${reportId}`,
       {

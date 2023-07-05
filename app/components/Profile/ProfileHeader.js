@@ -63,12 +63,7 @@ const ProfileHeader = ({
         console.log(error);
       }
     } else if (text.startsWith("@")) {
-      //todo: navigate to user profile
-      // navigation.navigate("Search", {
-      //   type: "mention",
-      //   query: text,
-      // });
-      // console.log("@", text);
+      navigation.navigate("UserProfile", { id: text.slice(1) });
     } else if (text.startsWith("#")) {
       navigation.navigate("Search", {
         type: "hashtag",

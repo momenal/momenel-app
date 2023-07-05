@@ -87,7 +87,6 @@ const Comments = ({ route, navigation }) => {
     Keyboard.dismiss();
     onChangeText("");
 
-    //todo: use params and send a req to server to post comment
     setPostingComment(true);
     const { data, error } = await supabase.auth.getSession();
     if (error) {
@@ -136,7 +135,6 @@ const Comments = ({ route, navigation }) => {
 
     setDeletingComment(true);
 
-    //todo: delete comment from api
     // fetch comments from api
     let response = await fetch(`${baseUrl}/comment/${commentId}`, {
       method: "DELETE",
@@ -156,8 +154,6 @@ const Comments = ({ route, navigation }) => {
     flatListRef.current?.prepareForLayoutAnimationRender();
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setComments(newArr);
-
-    //todo: show alert if delete failed
   };
 
   const renderItem = useCallback(
