@@ -284,10 +284,11 @@ const EditProfile = ({ navigation }) => {
           uri: imageUri,
           name: "profile.jpg",
         });
+        bodyContent.append("deleteProfile", false);
       } else if (imageUriChanged && imageUri === null) {
-        bodyContent.append("profile_url", null);
+        bodyContent.append("deleteProfile", true);
       } else {
-        bodyContent.append("profile_url", oldData.profile_url);
+        bodyContent.append("deleteProfile", false);
       }
 
       setIsLoading(true);
