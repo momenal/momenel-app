@@ -80,6 +80,7 @@ const PostHeader = ({
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: ScreenWidth * 0.04,
+        paddingBottom: 6,
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>

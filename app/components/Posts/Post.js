@@ -231,7 +231,7 @@ const Post = ({
           style={{
             paddingHorizontal: ScreenWidth * 0.06,
             width: ScreenWidth,
-            paddingVertical: 6,
+            paddingBottom: 6,
           }}
         >
           <GestureDetector gesture={_doubleTap}>
