@@ -1,6 +1,12 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./app/navgation/StackNavigator";
@@ -14,8 +20,10 @@ import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 import { baseUrl } from "@env";
+import CustomText from "./app/components/customText/CustomText";
 
 export default function App() {
+  const [isError, setisError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
   const hasCompletedOnboarding = useBoundStore(
@@ -32,7 +40,6 @@ export default function App() {
     setIsLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        console.log("session", session.access_token);
         // getIntialData(session.access_token);
       } else {
         setIsLoading(false);
@@ -42,18 +49,14 @@ export default function App() {
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (_event === "SIGNED_IN") {
-        console.log("signed in");
         const {
           data: { user },
         } = await supabase.auth.getUser();
         getIntialData(session.access_token);
-        console.log("signed in");
-        console.log("user", user.id);
         if (!user.id) {
           Alert.alert("Error", "Please try again");
         }
         setSession(session);
-        console.log("session sign in", session);
       } else if (_event === "SIGNED_OUT") {
         console.log("signed out");
         setSession(null);
@@ -64,6 +67,7 @@ export default function App() {
   }, [session]);
 
   const getIntialData = async (access_token) => {
+    setisError(false);
     let headersList = {
       Authorization: `Bearer ${access_token}`,
     };
@@ -73,12 +77,15 @@ export default function App() {
     });
     if (!response.ok) {
       Alert.alert("Error", "Please try again");
-      console.log("error", response);
+      setisError(true);
+      setIsLoading(false);
+      return;
     }
     let data = await response.json();
     if (data?.error) {
       Alert.alert("Error", "Please try again");
-      console.log("error", data.error);
+      setisError(true);
+      setIsLoading(false);
     } else {
       SetUserData(data.username, data.profile_url);
       setHasCompletedOnboarding(data.has_onboarded);
@@ -111,6 +118,16 @@ export default function App() {
     return (
       <View style={styles.container}>
         <ActivityIndicator color="#0000ff" />
+      </View>
+    );
+  } else if (isError) {
+    return (
+      <View style={styles.container}>
+        <CustomText>Something went wrong</CustomText>
+        <Button
+          title="Retry"
+          onPress={() => getIntialData(session.access_token)}
+        />
       </View>
     );
   } else {

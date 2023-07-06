@@ -124,4 +124,5 @@ export const createNotificationsSlice = (set, get) => ({
       return;
     }
   },
+  
 });
