@@ -18,6 +18,7 @@ const PostMediaOne = ({
   index,
   navigation,
   username,
+  blurhash,
 }) => {
   const video = useRef(null);
   const isFocused = useIsFocused();
@@ -96,6 +97,8 @@ const PostMediaOne = ({
             }}
             contentFit={"contain"}
             enableLiveTextInteraction={true}
+            placeholder={blurhash ? blurhash : "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
+            transition={1000}
           />
         </GestureDetector>
       ) : (

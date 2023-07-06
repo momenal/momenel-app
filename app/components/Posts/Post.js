@@ -97,6 +97,7 @@ const Post = ({
         doubleTap={doubleTap}
         height={height}
         index={index}
+        blurhash={item.blurhash}
       />
     );
   };
@@ -174,7 +175,6 @@ const Post = ({
       contentType: "post",
     });
   };
-
   if (published && !published) return null;
   return (
     <View
@@ -283,6 +283,7 @@ const Post = ({
           doubleTap={doubleTap}
           height={height}
           index={0}
+          blurhash={posts[0].blurhash}
         />
       ) : (
         <></>
