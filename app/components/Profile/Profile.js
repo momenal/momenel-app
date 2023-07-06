@@ -584,8 +584,6 @@ const Profile = ({ navigation }) => {
               handleBlock={handleBlock}
             />
           }
-          maxToRenderPerBatch={5}
-          initialNumToRender={5}
           showsVerticalScrollIndicator={false}
           onEndReached={() => {
             fetchMorePosts();

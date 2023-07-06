@@ -217,7 +217,7 @@ const Comments = ({ route, navigation }) => {
           // initialScrollIndex={route.params.snapToIndex}
           snapToAlignment="start"
           // onEndReached={() => setTimeout(fetchComments, 2000)} //! fake 2 sec delay
-          onEndReachedThreshold={2}
+          onEndReachedThreshold={0.5}
           decelerationRate={"normal"}
           initialNumToRender={30}
           refreshControl={

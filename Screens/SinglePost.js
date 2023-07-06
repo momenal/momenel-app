@@ -253,8 +253,6 @@ const SinglePost = ({ navigation }) => {
             createdAt: item.created_at,
           })
         }
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
         showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         onViewableItemsChanged={({ viewableItems, changed }) => {

@@ -302,17 +302,11 @@ const Home = ({ navigation }) => {
             createdAt: item.created_at,
           })
         }
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
         showsVerticalScrollIndicator={false}
         onEndReached={fetchMorePosts}
-        onEndReachedThreshold={2}
+        onEndReachedThreshold={0.5}
         keyboardDismissMode="on-drag"
         ListFooterComponent={renderListFooter}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
-          minimumViewTime: 500,
-        }}
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -320,12 +314,6 @@ const Home = ({ navigation }) => {
             tintColor={"black"}
           />
         }
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // loop through viewable items and update the store
-          viewableItems.forEach((item) => {
-            // console.log("Visible items are", item.index);
-          });
-        }}
       />
     </View>
   );

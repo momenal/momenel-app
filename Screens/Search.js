@@ -536,19 +536,12 @@ const Search = ({ navigation, route }) => {
             />
           }
           ListFooterComponent={renderListFooter}
-          maxToRenderPerBatch={5}
-          initialNumToRender={5}
           showsVerticalScrollIndicator={false}
           onEndReached={fetchMorePosts}
-          onEndReachedThreshold={2}
+          onEndReachedThreshold={0.5}
           keyboardDismissMode="on-drag"
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 50,
-            minimumViewTime: 500,
-          }}
         />
       )}
-      {/* posts from hashtag */}
     </View>
   );
 };

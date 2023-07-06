@@ -67,6 +67,11 @@ const PostHeader = ({
 
   const size = useMemo(() => scale(26), []);
 
+  const handleProfileNavigation = () => {
+    if (RouteName === "Profile") return;
+    navigation.navigate("UserProfile", { id: username });
+  };
+
   return (
     <View
       style={{
@@ -78,9 +83,7 @@ const PostHeader = ({
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("UserProfile", { id: username })}
-        >
+        <TouchableOpacity onPress={handleProfileNavigation}>
           {profileUrl ? (
             <Image
               style={{
