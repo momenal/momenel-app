@@ -377,7 +377,7 @@ const Discover = ({ navigation }) => {
       {postsData.length > 0 && (
         <FlashList
           data={postsData}
-          estimatedItemSize={450}
+          estimatedItemSize={233}
           keyExtractor={(item) => {
             return item.post.id;
           }}

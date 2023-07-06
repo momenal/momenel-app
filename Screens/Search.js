@@ -506,7 +506,7 @@ const Search = ({ navigation, route }) => {
       ) : (
         <FlashList
           data={postsData}
-          estimatedItemSize={450}
+          estimatedItemSize={233}
           keyExtractor={(item) => {
             return item.id;
           }}

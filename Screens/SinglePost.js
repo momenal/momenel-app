@@ -227,7 +227,7 @@ const SinglePost = ({ navigation }) => {
     >
       <FlashList
         data={data}
-        estimatedItemSize={450}
+        estimatedItemSize={233}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) =>
           renderItem({

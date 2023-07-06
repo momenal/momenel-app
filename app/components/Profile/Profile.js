@@ -593,10 +593,6 @@ const Profile = ({ navigation }) => {
           onEndReachedThreshold={0.5}
           keyboardDismissMode="on-drag"
           ListFooterComponent={renderListFooter}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 50,
-            minimumViewTime: 500,
-          }}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}
