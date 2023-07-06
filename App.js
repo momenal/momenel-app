@@ -32,7 +32,9 @@ export default function App() {
   const setHasCompletedOnboarding = useBoundStore(
     (state) => state.setHasCompletedOnboarding
   );
-
+  const setNotificationsNull = useBoundStore(
+    (state) => state.setNotificationsNull
+  );
   const SetUserData = useBoundStore((state) => state.SetUserData);
   const username = useBoundStore((state) => state.username);
 
@@ -58,10 +60,10 @@ export default function App() {
         }
         setSession(session);
       } else if (_event === "SIGNED_OUT") {
-        console.log("signed out");
         setSession(null);
         SetUserData(null, null);
         setHasCompletedOnboarding(null);
+        setNotificationsNull();
       }
     });
   }, [session]);

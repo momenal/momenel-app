@@ -124,5 +124,12 @@ export const createNotificationsSlice = (set, get) => ({
       return;
     }
   },
-  
+  setNotificationsNull: () => {
+    set(() => ({
+      notifications: [],
+      newNotifications: false,
+      from: 0,
+      to: 20,
+    }));
+  },
 });
