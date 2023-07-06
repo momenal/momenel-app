@@ -30,9 +30,10 @@ const Profile = ({ navigation }) => {
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(10);
+  const [deleteCounter, setDeleteCounter] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
-  const [refresher, setRefresher] = useState(1); // used to force upadte
+  const [refresher, setRefresher] = useState(1); //! used to force upadte
 
   useEffect(() => {
     setShowFooter(true);
@@ -47,11 +48,11 @@ const Profile = ({ navigation }) => {
     setShowFooter(true);
     // if passed user id is passed (aka user is viewing another user's profile)
 
-    const { data, error } = await supabase.auth.getSession();
+    const { data: s, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
-    console.log(RouteParams?.id);
+
     let url =
       RouteParams?.id !== null && RouteParams?.id !== undefined
         ? `${baseUrl}/user/profile/${RouteParams?.id}/${from}/${to}`
@@ -61,7 +62,7 @@ const Profile = ({ navigation }) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${data.session.access_token}`,
+        Authorization: `Bearer ${s.session.access_token}`,
       },
     });
 
@@ -80,7 +81,13 @@ const Profile = ({ navigation }) => {
       setProfile(response.profile);
       setData([...response.posts]);
     } else {
-      setData((prev) => [...prev, ...response.posts]);
+      // REMOVE DUPLICATES IF item.type + item.id already exists
+      let filtered = response.posts.filter(
+        (item) =>
+          !data.some((item2) => item.type + item.id === item2.type + item2.id)
+      );
+
+      setData((prev) => [...prev, ...filtered]);
     }
 
     setShowFooter(false);
@@ -89,14 +96,15 @@ const Profile = ({ navigation }) => {
   };
 
   const handleRefresh = () => {
+    setDeleteCounter(0);
     setFrom(0);
     setTo(10);
     setIsRefreshing(true);
   };
 
   const fetchMorePosts = () => {
-    let newFrom = from + 11;
-    let newTo = to + 10;
+    let newFrom = to - deleteCounter;
+    let newTo = to + 10 - deleteCounter;
 
     setFrom(newFrom);
     setTo(newTo);
@@ -331,6 +339,7 @@ const Profile = ({ navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       return;
     }
+    setDeleteCounter(deleteCounter + 1);
   };
 
   const renderItem = useCallback(
@@ -511,7 +520,7 @@ const Profile = ({ navigation }) => {
       ) : (
         <FlashList
           data={data}
-          estimatedItemSize={450}
+          estimatedItemSize={233}
           keyExtractor={keyExtractor}
           ListEmptyComponent={() => (
             <View
@@ -578,8 +587,10 @@ const Profile = ({ navigation }) => {
           maxToRenderPerBatch={5}
           initialNumToRender={5}
           showsVerticalScrollIndicator={false}
-          onEndReached={fetchMorePosts}
-          onEndReachedThreshold={2}
+          onEndReached={() => {
+            fetchMorePosts();
+          }}
+          onEndReachedThreshold={0.5}
           keyboardDismissMode="on-drag"
           ListFooterComponent={renderListFooter}
           viewabilityConfig={{
@@ -594,12 +605,6 @@ const Profile = ({ navigation }) => {
               progressViewOffset={topInset + 10}
             />
           }
-          onViewableItemsChanged={({ viewableItems, changed }) => {
-            // loop through viewable items and update the store
-            viewableItems.forEach((item) => {
-              // console.log("Visible items are", item.index);
-            });
-          }}
         />
       )}
 
