@@ -12,6 +12,7 @@ const ScreenWidth = Dimensions.get("window").width;
 
 const PostMediaOne = ({
   url,
+  posterUrl,
   type,
   height,
   doubleTap,
@@ -73,7 +74,6 @@ const PostMediaOne = ({
         // Alert.alert(`Long pressed for ${e.duration} ms!`);
       }
     });
-
   return (
     <View
       style={{
@@ -112,6 +112,9 @@ const PostMediaOne = ({
           >
             <View>
               <Video
+                posterSource={{
+                  uri: posterUrl,
+                }}
                 ref={video}
                 style={{
                   width: Iwidth,

@@ -279,6 +279,11 @@ const Post = ({
               ? `https://momenel.b-cdn.net/posts/${posts[0].id}.${posts[0].format}`
               : `https://vz-a01f66e8-ba0.b-cdn.net/${posts[0].id}/playlist.m3u8`
           }
+          posterUrl={
+            posts[0].type === "video"
+              ? `https://vz-a01f66e8-ba0.b-cdn.net/${posts[0].id}/thumbnail.jpg`
+              : null
+          }
           type={posts[0].type}
           doubleTap={doubleTap}
           height={height}
