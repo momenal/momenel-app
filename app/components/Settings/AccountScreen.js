@@ -9,10 +9,12 @@ const AccountScreen = ({ navigation }) => {
       contentContainerStyle={{ alignItems: "center", paddingTop: "2%" }}
     >
       <SettingsTab
+        icon={"person-circle-outline"}
         title="Personal info"
         onPress={() => navigation.navigate("PersonalInfo")}
       />
       <SettingsTab
+        icon={"md-alert-circle-outline"}
         title="Delete Account"
         onPress={() => navigation.navigate("DeleteAccount")}
       />
