@@ -207,24 +207,23 @@ const Search = ({ navigation, route }) => {
     if (error) {
       navigation.navigate("Login");
     }
-
     // handle like confirmation before sending to the backend
-    const updatedPosts = postsData.map((post) => {
-      if (post.postId === postId) {
-        if (post.isLiked) {
-          post.likes -= 1;
+    const updatedPosts = postsData.map((p) => {
+      if (p.post.id === postId) {
+        if (p.isLiked) {
+          p.post.likes[0].count -= 1;
         } else {
-          post.likes += 1;
+          p.post.likes[0].count += 1;
         }
-        post.isLiked = !post.isLiked;
+        p.isLiked = !p.isLiked;
       }
-      return post;
+      return p;
     });
+
     setPostsData(updatedPosts);
 
     // send like to the backend
-    //todo: change url id to postId
-    let response = await fetch(`${baseUrl}/like/8`, {
+    let response = await fetch(`${baseUrl}/like/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -237,24 +236,22 @@ const Search = ({ navigation, route }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       return;
     }
-
     if (response.status === 200) {
       let { likes } = await response.json();
-
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.likes = likes;
-          post.isLiked = true;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.postId === postId) {
+          p.post.likes = likes;
+          p.isLiked = true;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     } else if (response.status === 204) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.isLiked = false;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.postId === postId) {
+          p.isLiked = false;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     }
@@ -266,22 +263,23 @@ const Search = ({ navigation, route }) => {
       navigation.navigate("Login");
     }
 
-    // handle repost confirmation before sending to the backend
-    const updatedPosts = postsData.map((post) => {
-      if (post.postId === postId) {
-        if (post.repostedByUser) {
-          post.reposts -= 1;
+    const updatedPosts = postsData.map((p) => {
+      if (p.post.id === postId) {
+        console.log(p.post.id);
+        console.log(p.post.reposts[0].count);
+        if (p.isReposted) {
+          p.post.reposts[0].count -= 1;
         } else {
-          post.reposts += 1;
+          p.post.reposts[0].count += 1;
         }
-        post.repostedByUser = !post.repostedByUser;
+        p.isReposted = !p.isReposted;
       }
-      return post;
+      return p;
     });
     setPostsData(updatedPosts);
 
     // send repost to the backend
-    let response = await fetch(`${baseUrl}/repost/10`, {
+    let response = await fetch(`${baseUrl}/repost/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -295,20 +293,20 @@ const Search = ({ navigation, route }) => {
       return;
     }
 
-    if (response.status === 200) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.repostedByUser = true;
+    if (response.status === 201) {
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.id === postId) {
+          p.isReposted = true;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     } else if (response.status === 204) {
-      const updatedPosts = postsData.map((post) => {
-        if (post.postId === postId) {
-          post.repostedByUser = false;
+      const updatedPosts = postsData.map((p) => {
+        if (p.post.id === postId) {
+          p.isReposted = false;
         }
-        return post;
+        return p;
       });
       setPostsData(updatedPosts);
     }
