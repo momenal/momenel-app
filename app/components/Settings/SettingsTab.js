@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 
-const SettingsTab = ({ title, onPress }) => {
+const SettingsTab = ({ title, onPress, icon, iconSize = 24 }) => {
   return (
     <Pressable
       onPress={onPress}
@@ -15,16 +15,25 @@ const SettingsTab = ({ title, onPress }) => {
         paddingVertical: "3%",
       }}
     >
-      <CustomText
+      <View
         style={{
-          fontSize: 17,
-          fontWeight: "bold",
-          fontFamily: "Nunito_600SemiBold",
+          flexDirection: "row",
+          alignItems: "center",
         }}
       >
-        {title}
-      </CustomText>
-      <Ionicons name="chevron-forward" size={17} color="black" />
+        {icon && <Ionicons name={icon} size={iconSize} color="black" />}
+        <CustomText
+          style={{
+            fontSize: 17,
+            fontWeight: "bold",
+            fontFamily: "Nunito_600SemiBold",
+            marginLeft: icon ? 10 : 0,
+          }}
+        >
+          {title}
+        </CustomText>
+      </View>
+      <Ionicons name="chevron-forward" size={20} color="black" />
     </Pressable>
   );
 };

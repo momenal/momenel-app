@@ -12,12 +12,33 @@ import InviteScreen from "../components/Settings/InviteScreen";
 import { scale } from "../utils/Scale";
 import ChangeEmail from "../components/Settings/ChangeEmail";
 import ChangeBirthday from "../components/Settings/ChangeBirthday";
+import CustomText from "../components/customText/CustomText";
 
 const Stack = createNativeStackNavigator();
 
 const BackButton = ({ onPress }) => (
-  <TouchableOpacity onPress={onPress}>
-    <Ionicons name="chevron-back" size={scale(24)} color="black" />
+  <TouchableOpacity
+    onPress={onPress}
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+  >
+    <Ionicons
+      name="chevron-back"
+      size={scale(28)}
+      color="black"
+      style={{ marginLeft: -scale(10) }}
+    />
+    <CustomText
+      style={{
+        fontSize: scale(24),
+        fontFamily: "Nunito_700Bold",
+      }}
+    >
+      Settings
+    </CustomText>
   </TouchableOpacity>
 );
 
@@ -36,6 +57,7 @@ const SettingsStackNavigator = ({ navigation }) => {
         options={{
           headerShadowVisible: false,
           headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+          title: "",
         }}
       />
       <Stack.Screen
