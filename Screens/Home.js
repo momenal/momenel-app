@@ -28,6 +28,8 @@ const Home = ({ navigation }) => {
   }, [from, to, isRefreshing]);
 
   useEffect(() => {
+    setFrom(0);
+    setTo(10);
     fetchNotifications({ isRefreshing: false });
     const intervalId = setInterval(() => {
       fetchNotifications({ isRefreshing: true });
