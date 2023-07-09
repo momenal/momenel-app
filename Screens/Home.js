@@ -1,10 +1,4 @@
-import {
-  ActivityIndicator,
-  Alert,
-  RefreshControl,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, RefreshControl, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
@@ -323,5 +317,3 @@ const Home = ({ navigation }) => {
 };
 
 export default Home;
-
-const styles = StyleSheet.create({});

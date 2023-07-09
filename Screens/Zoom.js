@@ -31,8 +31,9 @@ const Zoom = ({ route, navigation }) => {
           style={{
             width: dimensions.width,
             height: dimensions.height - headerHeight - insets.bottom - 10,
-            contentFit: "contain",
           }}
+          contentFit="contain"
+          enableLiveTextInteraction={true}
         />
       </ZoomImage>
     </View>

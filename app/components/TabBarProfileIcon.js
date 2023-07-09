@@ -35,7 +35,7 @@ const TabBarProfileIcon = ({ size, focused }) => {
             borderRadius: 500,
             backgroundColor: "black",
           }}
-          contentFit="center"
+          contentFit="cover"
           source={{
             uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
           }}
