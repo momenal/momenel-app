@@ -116,11 +116,13 @@ const PostMediaOne = ({
                   uri: posterUrl,
                 }}
                 ref={video}
+                resizeMode="contain"
                 style={{
                   width: Iwidth,
                   height: height,
                   borderRadius: 3,
                   backgroundColor: "white",
+                  flex: 1,
                 }}
                 source={{
                   uri: url,
@@ -128,7 +130,6 @@ const PostMediaOne = ({
                 usePoster
                 positionMillis={0}
                 useNativeControls={false}
-                contentFit={"contain"}
                 isLooping
                 shouldPlay={play && isFocused}
                 onPlaybackStatusUpdate={(status) => {
