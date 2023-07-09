@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
+import mime from "mime";
 import { useEffect, useMemo, useState } from "react";
 import { useMentions, parseValue } from "react-native-controlled-mentions";
 import { Ionicons } from "@expo/vector-icons";
@@ -187,7 +188,6 @@ const CreatePost = ({ navigation }) => {
     }
 
     // post to backend
-
     let formData = new FormData();
 
     formData.append("caption", caption);
@@ -199,13 +199,17 @@ const CreatePost = ({ navigation }) => {
         height: post.height,
       });
 
+      const newImageUri = "file:///" + post.uri.split("file:/").join("");
+      console.log(newImageUri.split("/").pop());
       formData.append("content", {
-        uri: post.uri,
-        name: post.fileName || post.uri.split("/").pop() || "nullname",
+        uri: newImageUri,
+        type: mime.getType(newImageUri),
+        name: newImageUri.split("/").pop(),
       });
     });
 
     formData.append("dimensions", JSON.stringify(dimensions));
+
     let response = await fetch(`${baseUrl}/posts`, {
       method: "POST",
       body: formData,
