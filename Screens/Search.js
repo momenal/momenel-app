@@ -161,6 +161,7 @@ const Search = ({ navigation, route }) => {
 
       return (
         <Post
+          isPublished={true}
           navigation={navigation}
           postId={item.post.id}
           index={index}

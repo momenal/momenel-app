@@ -44,6 +44,7 @@ const Post = ({
   handleLike,
   handleRepost,
   onDeletePress,
+  isPublished,
 }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(14), []);
@@ -215,6 +216,44 @@ const Post = ({
           </CustomText>
         </TouchableOpacity>
       )}
+
+      {!isPublished && (
+        <View
+          style={{
+            width: "100%",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={[
+              {
+                paddingHorizontal: ScreenWidth * 0.05,
+                paddingVertical: 6,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: "4%",
+                borderRadius: 100,
+              },
+              isPublished === false
+                ? { backgroundColor: "#FFD600" }
+                : { backgroundColor: "#DD2C00" },
+            ]}
+          >
+            <CustomText
+              style={[
+                {
+                  fontSize: 14,
+                },
+                isPublished === false ? { color: "black" } : { color: "white" },
+              ]}
+            >
+              {isPublished === false ? "Processing" : "Processing failed"}
+            </CustomText>
+          </View>
+        </View>
+      )}
       <PostHeader
         navigation={navigation}
         profileUrl={profileUrl}
@@ -270,7 +309,7 @@ const Post = ({
             }
           )}
         />
-      ) : posts && posts.length >= 1 ? (
+      ) : posts && posts.length >= 1 && isPublished ? (
         <PostMedia
           navigation={navigation}
           username={username}

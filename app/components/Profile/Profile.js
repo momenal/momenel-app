@@ -351,8 +351,9 @@ const Profile = ({ navigation }) => {
       height,
       width,
       createdAt,
-      postId,
+
       type,
+      isPublished,
     }) => {
       let scaledHeight = CalcHeight(width, height);
       let tempPost = type === "post" ? item : item.post;
@@ -377,6 +378,7 @@ const Profile = ({ navigation }) => {
           onDeletePress={onDeletePress}
           isLiked={isLiked}
           isReposted={isReposted}
+          isPublished={isPublished}
         />
       );
     },
@@ -563,6 +565,7 @@ const Profile = ({ navigation }) => {
                   ? item.content[0].height
                   : 0,
               createdAt: item.created_at,
+              isPublished: item.type === "post" ? item.published : true,
             })
           }
           ListHeaderComponent={

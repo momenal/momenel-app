@@ -224,6 +224,7 @@ const Home = ({ navigation }) => {
       let tempPost = type === "post" ? item : item.post;
       return (
         <Post
+          isPublished={true}
           navigation={navigation}
           postId={tempPost.id}
           index={index}
