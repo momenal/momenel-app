@@ -20,19 +20,21 @@ import ProfileHeader from "./ProfileHeader";
 import { baseUrl } from "@env";
 import Post from "../Posts/Post";
 import { CalcHeight } from "../../utils/CalcHeight";
+import { useBoundStore } from "../../Store/useBoundStore";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();
   const [profile, setProfile] = useState({});
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(false);
-  const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
+  const { top: topInset } = useSafeAreaInsets();
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(10);
   const [deleteCounter, setDeleteCounter] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
   const [refresher, setRefresher] = useState(1); //! used to force upadte
+  const SetUserData = useBoundStore((state) => state.SetUserData);
 
   useEffect(() => {
     setShowFooter(true);
@@ -75,7 +77,11 @@ const Profile = ({ navigation }) => {
       return;
     }
     response = await response.json();
+
     if (from === 0) {
+      if (RouteParams?.id === null || RouteParams?.id === undefined) {
+        SetUserData(response.profile.username, response.profile.profile_url);
+      }
       setProfile(response.profile);
       setData([...response.posts]);
     } else {

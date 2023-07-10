@@ -21,6 +21,7 @@ import { supabase } from "../app/lib/supabase";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { baseUrl } from "@env";
 import { useBoundStore } from "../app/Store/useBoundStore";
+import mime from "mime";
 
 const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
@@ -280,10 +281,13 @@ const EditProfile = ({ navigation }) => {
       bodyContent.append("website", website);
 
       if (imageUriChanged && imageUri) {
+        const newImageUri = "file:///" + imageUri.split("file:/").join("");
         bodyContent.append("profile", {
-          uri: imageUri,
-          name: "profile.jpg",
+          uri: newImageUri,
+          type: mime.getType(newImageUri),
+          name: newImageUri.split("/").pop(),
         });
+
         bodyContent.append("deleteProfile", false);
       } else if (imageUriChanged && imageUri === null) {
         bodyContent.append("deleteProfile", true);
