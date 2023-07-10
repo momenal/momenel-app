@@ -38,7 +38,12 @@ const Search = ({ navigation, route }) => {
 
   useEffect(() => {
     if (query) {
-      onChangeText(query);
+      if (query[0] === "#") {
+        onChangeText(query);
+      } else {
+        onChangeText(`#${query}`);
+      }
+
       setQueryResults({ title: query });
       setSearch(query);
     }
