@@ -21,6 +21,7 @@ const StatusOverlay = ({
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: headerHeight,
+        paddingHorizontal: "5%",
       }}
     >
       <GradientText

@@ -192,19 +192,19 @@ const Post = ({
           }
           style={{
             paddingHorizontal: ScreenWidth * 0.05,
-            paddingBottom: 6,
+            paddingBottom: 3,
             width: "100%",
             flexDirection: "row",
             alignItems: "center",
           }}
         >
-          <Repost size={FontSize + 8} color={"#8456E9"} />
+          <Repost size={FontSize + 4} color={"#8456E9"} />
           <CustomText
             style={{
-              fontFamily: "Nunito_800ExtraBold",
+              fontFamily: "Nunito_700Bold",
               color: "#999999",
               marginLeft: "1%",
-              fontSize: FontSize,
+              fontSize: FontSize - 2,
             }}
           >
             {repost.username} reposted

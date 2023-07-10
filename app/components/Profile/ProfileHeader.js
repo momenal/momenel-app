@@ -33,15 +33,6 @@ const ProfileHeader = ({
   blurhash = blurhashBase,
 }) => {
   const { name: RouteName } = useRoute();
-  const bgColors = [
-    "#C7EFCF",
-    "#FEC7C7",
-    "#C7DFFD",
-    "#363946",
-    "#EDA2C0",
-    "#f5bfd7",
-    "#f0eafc",
-  ];
   const { top: topInset, bottom: BottomInsets } = useSafeAreaInsets();
   const [showBottomSheeModal, setShowBottomSheetModal] = useState(false);
   const [showBottomMoreSheet, setShowBottomMoreSheet] = useState(false);
@@ -101,7 +92,7 @@ const ProfileHeader = ({
           {
             flexDirection: "row",
             marginRight: "4%",
-            marginVertical: "2%",
+            marginTop: "2%",
             justifyContent: "space-between",
           },
           RouteName === "UserProfile"
@@ -280,8 +271,8 @@ const ProfileHeader = ({
           flexDirection: "row",
           justifyContent: "space-evenly",
           alignItems: "flex-start",
-          marginTop: "4%",
-          marginBottom: "4%",
+          marginTop: "1%",
+          marginBottom: "3%",
         }}
       >
         <AmntTag
