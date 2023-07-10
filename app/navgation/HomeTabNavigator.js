@@ -29,7 +29,6 @@ const HomeNavigator = ({ navigation }) => {
           paddingVertical: 0,
         },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-
         freezeOnBlur: true,
       })}
     >

@@ -28,6 +28,7 @@ const Header = ({ navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: 4,
         }}
       >
         <Logo size={memoScale(28)} />

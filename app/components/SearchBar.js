@@ -27,7 +27,7 @@ const SearchBar = ({ navigation }) => {
     >
       <Ionicons
         name="ios-search"
-        size={scale(16)}
+        size={scale(15)}
         color="#727477"
         onPress={() =>
           navigation.navigate("Search", {
@@ -62,11 +62,11 @@ const SearchBar = ({ navigation }) => {
             style={{
               backgroundColor: "#F1F1F2",
               fontFamily: "Nunito_600SemiBold",
-              fontSize: 14,
+              fontSize: scale(13),
               color: "#999999",
             }}
           >
-            Search for people, posts, tags...
+            Search for users or hashtags
           </CustomText>
         </View>
       </Pressable>

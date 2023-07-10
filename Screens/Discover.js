@@ -343,7 +343,8 @@ const Discover = ({ navigation }) => {
           width: "100%",
           flexDirection: "row",
           alignItems: "center",
-          paddingBottom: scale(-20),
+          paddingBottom: scale(-25),
+          paddingTop: 4,
         }}
       >
         <SearchBar navigation={navigation} />

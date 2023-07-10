@@ -10,7 +10,6 @@ import {
 import * as Haptics from "expo-haptics";
 import { useState, useEffect, memo, useCallback } from "react";
 import { FlashList } from "@shopify/flash-list";
-import { StatusBar } from "expo-status-bar";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -603,8 +602,6 @@ const Profile = ({ navigation }) => {
           }
         />
       )}
-
-      <StatusBar hidden={true} />
     </View>
   );
 };
