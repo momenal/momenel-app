@@ -1,4 +1,3 @@
-import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
 const LinearGradientButton = (props) => {

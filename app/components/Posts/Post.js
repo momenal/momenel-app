@@ -122,15 +122,11 @@ const Post = ({
     if (text.startsWith("http")) {
       try {
         _handlePressButtonAsync(text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("www")) {
       try {
         _handlePressButtonAsync("https://" + text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("@")) {
       navigation.navigate("UserProfile", { id: text.slice(1) });
     } else if (text.startsWith("#")) {
@@ -148,7 +144,6 @@ const Post = ({
     } else if (text.startsWith("more")) {
       setShowBottomSheet(true);
     } else {
-      console.log("else", text);
     }
   };
 
@@ -354,7 +349,6 @@ const Post = ({
           paddingLeft: ScreenWidth * 0.05,
           paddingRight: ScreenWidth * 0.06,
           marginBottom: 5,
-          // justifyContent: "space-between",
           alignItems: "center",
           height: 30,
         }}
@@ -471,5 +465,4 @@ const Post = ({
   );
 };
 
-// export default memo(Post);
 export default Post;

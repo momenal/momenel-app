@@ -61,7 +61,6 @@ const Media = ({ item, updateVideoDimensions }) => {
             onFullscreenUpdate={(status) => {
               if (status.fullscreenUpdate === 3) {
                 setShowPauseIcon(true);
-                console.log("fullscreen exited");
               }
             }}
           />

@@ -128,7 +128,6 @@ export default class extends PureComponent {
             onFocus={this._onFocus}
             onBlur={this._onBlur}
             {...otherProps}
-            // fix missing TextInput missing focus
             keyboardShouldPersistTaps="handled"
           >
             <View
@@ -217,8 +216,6 @@ export default class extends PureComponent {
     Component.props.onSelectionChange = (event) => {
       event.persist();
       if (isIOS) {
-        // 确保处理代码在 onChange 之后执行
-        // release 版本必须使用 requestAnimationFrame
         requestAnimationFrame(() => this._onSelectionChange(event));
       } else {
         setTimeout(() => this._onSelectionChange(event));
@@ -283,8 +280,6 @@ export default class extends PureComponent {
     };
 
     setTimeout(getTopOffset);
-    // 如果屏幕是带动画进入，那么初次获取的位置偏移量并不准确
-    // 这时最好通过 topOffset 属性来手动设定 topBar 的偏移量
   };
 
   _scrollToKeyboardRequest = () => {
@@ -336,8 +331,6 @@ export default class extends PureComponent {
   };
 
   _onKeyboardShow = () => {
-    // 在 react-native v0.57 版本中（也可能更早），键盘弹出时，该回调会连续执行3次
-    // 导致 scrollResponderScrollNativeHandleToKeyboard 工作不正常
     if (this._keyboardShow) return;
     this._keyboardShow = true;
     this._scrollToKeyboardRequest();
@@ -376,15 +369,6 @@ export default class extends PureComponent {
     const target = getTarget(event);
     this._curFocus = target;
 
-    // 当 onStartShouldSetResponderCapture 返回 true 时
-    // 被激活的 TextInput 无法使用 Keyboard.dismiss() 来收起键盘
-    // TextInput.State.currentlyFocusedField() 也无法获取当前焦点ID
-    // 原因可能是系统并未判定 TextInput 获取焦点，这可能是一个 bug
-    // 通常需要在 onStartShouldSetResponderCapture 返回 false 的情况下再点击一次 TextInput 才能恢复正常
-    // 所以这里手动再设置一次焦点
-    // added keyboardShouldPersistTaps='handled' to scroll root instead - shoud fix this issue
-    // focus(target);
-
     const inputInfo = this._getInputInfo(target);
     const multiline = getProps(event._targetInst).multiline;
 
@@ -398,7 +382,6 @@ export default class extends PureComponent {
 
       inputInfo.onFocusRequireScroll = true;
       setTimeout(() => {
-        // 如果 onSelectionChange 没有触发，则在这里执行
         if (
           (this._keyboardShow || this.props.supportHardwareKeyboard) &&
           inputInfo.onFocusRequireScroll
@@ -417,27 +400,13 @@ export default class extends PureComponent {
     if (this._curFocus === target) this._curFocus = null;
   };
 
-  /**
-   * onChange 在 onContentSizeChange 之前触发
-   * onChange 在 onSelectionChange 之后触发
-   */
   _onChange = (event) => {
-    if (!event.nativeEvent) return; // Fixed: https://github.com/baijunjie/react-native-input-scroll-view/issues/44
+    if (!event.nativeEvent) return;
     const target = getTarget(event);
     const inputInfo = this._getInputInfo(target);
     inputInfo.text = event.nativeEvent.text;
   };
 
-  /**
-   * onSelectionChange 在 keyboardDidShow 之前触发
-   * onSelectionChange 在 onContentSizeChange 之前触发
-   * onSelectionChange 在 onFocus 之后触发
-   *
-   * 在 react-native v0.55 版本中（也可能更早），_onSelectionChange 会连续触发
-   * 在多行输入框中，如果选中的是非结尾行，那么多次触发时 event.nativeEvent.selection.end 的值可能会变为文本最后一个字符的 index
-   * 这将导致最终调整位置不正确
-   * 因此，这里需要使用防抖函数来避开回调连续的执行
-   */
   _onSelectionChange = debounce((event) => {
     const target = getTarget(event);
     const inputInfo = this._getInputInfo(target);
@@ -457,7 +426,7 @@ export default class extends PureComponent {
   }, 1);
 
   _onContentSizeChange = (event) => {
-    if (!event.nativeEvent) return; // Fixed: https://github.com/baijunjie/react-native-input-scroll-view/issues/42
+    if (!event.nativeEvent) return;
     const target = getTarget(event);
     const inputInfo = this._getInputInfo(target);
     inputInfo.width = event.nativeEvent.contentSize.width;
@@ -472,7 +441,7 @@ export default class extends PureComponent {
 function focus(targetTag) {
   if (isIOS) {
     UIManager.focus(targetTag);
-    // 在 react-native v0.57 版本中（也可能更早），UIManager.focus 不再有效
+
     TextInput.State && TextInput.State.focusTextInput(targetTag);
   } else {
     const AndroidTextInput =

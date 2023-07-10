@@ -47,11 +47,10 @@ const S3 = ({}) => {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
         setData(json);
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch(() => {
         Alert.alert("Error", "Something went wrong, please try again later");
       });
   };

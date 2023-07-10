@@ -256,12 +256,6 @@ const SinglePost = ({ navigation }) => {
         }
         showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // loop through viewable items and update the store
-          viewableItems.forEach((item) => {
-            // console.log("Visible items are", item.index);
-          });
-        }}
       />
     </View>
   );

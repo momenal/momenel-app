@@ -210,7 +210,7 @@ class KeyboardAccessoryView extends Component {
               [heightProperty]:
                 accessoryHeight +
                 bumperHeight +
-                (applySafeArea ? (!isKeyboardVisible ? 0 : -10) : 0), //!
+                (applySafeArea ? (!isKeyboardVisible ? 0 : -10) : 0),
             },
           ]}
         >

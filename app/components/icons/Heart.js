@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Animated, {
   useSharedValue,
   withSpring,
@@ -6,9 +6,8 @@ import Animated, {
   Extrapolate,
   interpolate,
 } from "react-native-reanimated";
-import { Pressable, View, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Octicons } from "@expo/vector-icons";
-import { useBoundStore } from "../../Store/useBoundStore";
 import * as Haptics from "expo-haptics";
 
 const Heart = ({ isLiked, onPress, size }) => {
@@ -24,7 +23,6 @@ const Heart = ({ isLiked, onPress, size }) => {
   }, [isLiked]);
 
   const handleAnimation = () => {
-    // liked.value = withSpring(liked.value ? 0 : 1);
     if (isLiked === true) {
       liked.value = withSpring(1);
     } else {
@@ -34,13 +32,10 @@ const Heart = ({ isLiked, onPress, size }) => {
   const handleLikeFunc = () => {
     if (isLiked === true) {
       onPress();
-      // handleLike(index, isLiked);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(0);
     } else {
       onPress();
-      // handleLike(index, isLiked);
-      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       liked.value = withSpring(1);
     }
@@ -80,11 +75,3 @@ const Heart = ({ isLiked, onPress, size }) => {
 };
 
 export default Heart;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

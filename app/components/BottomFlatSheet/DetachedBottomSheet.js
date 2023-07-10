@@ -1,13 +1,4 @@
-import {
-  Button,
-  Dimensions,
-  Keyboard,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
@@ -19,7 +10,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const DetachedBottomSheet = (props) => {
   let { show, onSheetClose } = props;
   const insets = useSafeAreaInsets();
-  // ref
   const bottomSheetRef = useRef(null);
 
   useEffect(() => {
@@ -38,14 +28,12 @@ const DetachedBottomSheet = (props) => {
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
-  // callbacks
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
       onSheetClose();
     }
   }, []);
 
-  // renders
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -70,7 +58,9 @@ const DetachedBottomSheet = (props) => {
           backdropComponent={renderBackdrop}
           bottomInset={insets.bottom + 20}
           detached={true}
-          style={styles.container}
+          style={{
+            marginHorizontal: "5%",
+          }}
           keyboardBlurBehavior="restore"
         >
           <BottomSheetView onLayout={handleContentLayout}>
@@ -83,9 +73,3 @@ const DetachedBottomSheet = (props) => {
 };
 
 export default DetachedBottomSheet;
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: "5%",
-  },
-});

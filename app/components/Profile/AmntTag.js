@@ -9,7 +9,7 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
       ? num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       : Math.abs(num) > 9999 && Math.abs(num) <= 999940
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.abs(num) > 999940 //999999
+      : Math.abs(num) > 999940
       ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2) + "M"
       : Math.sign(num) * Math.abs(num);
   }
@@ -20,11 +20,7 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
       disabled={disabled}
       onPress={onPress}
       style={{
-        // flexDirection: "row",
-        // alignItems: "baseline",
         alignItems: "center",
-        // justifyContent: "center",
-        // marginLeft: "2%",
       }}
     >
       <CustomText

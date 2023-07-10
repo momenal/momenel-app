@@ -5,7 +5,6 @@ import {
   LayoutAnimation,
 } from "react-native";
 import { useCallback } from "react";
-
 import Media from "./Media";
 import { Ionicons } from "@expo/vector-icons";
 import { scale } from "../../utils/Scale";

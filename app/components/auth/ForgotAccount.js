@@ -32,7 +32,7 @@ const ForgotAccount = ({ setShowForgotPasswordBottomSheet }) => {
 
     if (error) {
       setEmail("");
-      console.log(error);
+
       setError("oops! something went wrong. Please contact support.");
     }
 

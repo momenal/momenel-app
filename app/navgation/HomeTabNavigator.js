@@ -12,7 +12,6 @@ import Discover from "../../Screens/Discover";
 import Profile from "../components/Profile/Profile";
 import Notifications from "../../Screens/Notifications";
 
-// const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeNavigator = ({ navigation }) => {
@@ -30,7 +29,7 @@ const HomeNavigator = ({ navigation }) => {
           paddingVertical: 0,
         },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-        // unmountOnBlur: true,
+
         freezeOnBlur: true,
       })}
     >
@@ -95,7 +94,6 @@ const HomeNavigator = ({ navigation }) => {
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            // Prevent default action
             e.preventDefault();
             navigation.navigate("CreatePost");
           },

@@ -27,7 +27,6 @@ import { RefreshControl } from "react-native-gesture-handler";
 
 const Comments = ({ route, navigation }) => {
   const { postId, comment_id } = route.params;
-  console.log(comment_id);
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
   const [deletingComment, setDeletingComment] = useState(false);
@@ -74,7 +73,6 @@ const Comments = ({ route, navigation }) => {
     if (comment_id) {
       // scroll to comment after finding index of comment from response with comment_id
       let index = comments.findIndex((comment) => comment.id === comment_id);
-      console.log("scroll to: ", index);
       setInterval(() => {
         flatListRef.current?.scrollToIndex({ index: 10, animated: true });
       }, 500);
@@ -214,9 +212,7 @@ const Comments = ({ route, navigation }) => {
           estimatedItemSize={120}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // initialScrollIndex={route.params.snapToIndex}
           snapToAlignment="start"
-          // onEndReached={() => setTimeout(fetchComments, 2000)} //! fake 2 sec delay
           onEndReachedThreshold={0.5}
           decelerationRate={"normal"}
           initialNumToRender={30}
@@ -232,15 +228,12 @@ const Comments = ({ route, navigation }) => {
             />
           }
           //! -10 equals height of item seperator
-          // snapToInterval={PAGE_HEIGHT - (insets.bottom + insets.top - 20)}
           ListFooterComponent={() => {
             return (
               <View
                 style={{
                   width: Dimensions.get("window").width,
-                  // height: containerHeight,
                   marginRight: 10,
-                  // width: 96,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -253,7 +246,6 @@ const Comments = ({ route, navigation }) => {
       )}
 
       <KeyboardAccessoryView
-        // inSafeAreaView
         alwaysVisible={true}
         androidAdjustResize
         style={{
@@ -268,10 +260,8 @@ const Comments = ({ route, navigation }) => {
               <View
                 style={{
                   flexDirection: "row",
-                  // justifyContent: "space-between",
                   alignItems: "center",
                   paddingHorizontal: "3%",
-                  // marginBottom: insets.bottom + 10,
                   marginBottom: isKeyboardVisible ? 10 : insets.bottom + 10,
                   marginTop: "2%",
                 }}

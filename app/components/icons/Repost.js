@@ -1,8 +1,3 @@
-import * as React from "react";
-/* Importing specific components from the "react-native-svg" library, including Svg, Defs, G, and Path,
-which are used to create and render SVG (Scalable Vector Graphics) images in a React Native
-application. */
-//  import Svg, { Defs, G, Path } from "react-native-svg";
 import Svg, { Path } from "react-native-svg";
 
 const Repost = ({ size, color }) => {

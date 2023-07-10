@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../customText/CustomText";
@@ -10,7 +10,7 @@ const ContactOption = ({ platform, contact }) => {
       style={{
         flexDirection: "row",
         alignItems: "center",
-        // justifyContent: "space-evenly",
+
         marginHorizontal: "5%",
         paddingVertical: "2%",
         borderBottomWidth: 1,

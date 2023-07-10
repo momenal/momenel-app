@@ -86,7 +86,6 @@ const Search = ({ navigation, route }) => {
       return;
     }
     response = await response.json();
-    // console.log(response);
     setSuggestions(response);
   };
 
@@ -117,7 +116,6 @@ const Search = ({ navigation, route }) => {
     );
     if (!response.ok) {
       response = await response.json();
-      console.log(response);
       Alert.alert("Error", response.error);
       setSuggestions([]);
       setIsFetching(false);
@@ -266,8 +264,6 @@ const Search = ({ navigation, route }) => {
 
     const updatedPosts = postsData.map((p) => {
       if (p.post.id === postId) {
-        console.log(p.post.id);
-        console.log(p.post.reposts[0].count);
         if (p.isReposted) {
           p.post.reposts[0].count -= 1;
         } else {
@@ -320,7 +316,6 @@ const Search = ({ navigation, route }) => {
       ...queryResults,
       isFollowing: !queryResults.isFollowing,
     });
-    console.log(queryResults.id);
     // handle follow on backend
     const { data: session, error } = await supabase.auth.getSession();
     if (error) {

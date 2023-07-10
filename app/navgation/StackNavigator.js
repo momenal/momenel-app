@@ -64,7 +64,7 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           gestureEnabled: false,
-          // headerShown: false,
+
           headerLeft: () => (
             <TouchableOpacity
               style={{
@@ -145,7 +145,6 @@ const StackNavigator = ({}) => {
         name="EditProfile"
         component={EditProfile}
         options={{
-          // headerShown: false,
           headerTitleStyle: { fontFamily: "Nunito_700Bold" },
           headerBackTitle: "",
           headerTitle: "Edit Profile",

@@ -1,6 +1,6 @@
 import { Animated, Easing, StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import CustomText from "../customText/CustomText";
 
 const SignUpConfirmation = () => {

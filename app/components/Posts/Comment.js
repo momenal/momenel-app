@@ -190,17 +190,12 @@ const Comment = ({
     if (text.startsWith("http")) {
       try {
         _handlePressButtonAsync(text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("www")) {
       try {
         _handlePressButtonAsync("https://" + text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("@")) {
-      console.log("@", text);
       navigation.navigate("UserProfile", { id: text.slice(1) });
     } else if (text.startsWith("#")) {
       if (route.name === "Search") {
@@ -217,7 +212,6 @@ const Comment = ({
     } else if (text.startsWith("more")) {
       setShowBottomSheet(true);
     } else {
-      console.log("else", text);
     }
   };
 

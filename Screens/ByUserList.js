@@ -20,7 +20,6 @@ const ByUserList = ({ route, navigation }) => {
   const { type, Id } = route.params;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(Id);
   useEffect(() => {
     getData();
   }, []);
@@ -226,7 +225,6 @@ const styles = StyleSheet.create({
   },
   following: {
     width: Dimensions.get("window").width / 4,
-    // backgroundColor: "#F2F2F2",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,

@@ -1,6 +1,6 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -71,7 +71,6 @@ const PostMediaOne = ({
     .onEnd((e, success) => {
       if (success) {
         video?.current.playAsync();
-        // Alert.alert(`Long pressed for ${e.duration} ms!`);
       }
     });
   return (
@@ -150,8 +149,7 @@ const PostMediaOne = ({
                 {showPauseIcon && (
                   <TouchableOpacity
                     onPress={() => {
-                      // video?.current.playAsync();
-                      // video?.current.
+                      video?.current.playAsync();
                     }}
                     style={{
                       backgroundColor: "#8456E9",
@@ -182,6 +180,3 @@ const PostMediaOne = ({
 };
 
 export default PostMediaOne;
-// export default memo(PostMediaOne);
-
-const styles = StyleSheet.create({});

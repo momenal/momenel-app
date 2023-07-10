@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
@@ -61,7 +61,9 @@ const DetachedBottomSheetWithScroll = (props) => {
           backdropComponent={renderBackdrop}
           bottomInset={insets.bottom + 10}
           detached={true}
-          style={styles.container}
+          style={{
+            marginHorizontal: "3%",
+          }}
           keyboardBlurBehavior="restore"
         >
           <BottomSheetScrollView
@@ -77,9 +79,3 @@ const DetachedBottomSheetWithScroll = (props) => {
 };
 
 export default DetachedBottomSheetWithScroll;
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: "3%",
-  },
-});

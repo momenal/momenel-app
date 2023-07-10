@@ -33,7 +33,6 @@ const Report = ({ route, navigation }) => {
   useEffect(() => {
     fetchOptions();
   }, []);
-  console.log(contentId, username, contentType);
   const fetchOptions = async () => {
     setIsLoading(true);
     const { data, error } = await supabase.auth.getSession();
@@ -207,10 +206,8 @@ const Report = ({ route, navigation }) => {
           style={{
             fontFamily: "Nunito_800ExtraBold",
             fontSize: 20,
-            // paddingHorizontal: 20,
             marginVertical: 8,
           }}
-          // numberOfLines={1}
         >
           Report @{username}'s {contentType}
         </CustomText>

@@ -1,5 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import { TouchableOpacity } from "react-native";
 import CustomText from "../customText/CustomText";
 import { scale } from "../../utils/Scale";
 

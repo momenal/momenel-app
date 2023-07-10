@@ -53,15 +53,11 @@ const ProfileHeader = ({
     if (text.startsWith("https")) {
       try {
         _handlePressButtonAsync(text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("www")) {
       try {
         _handlePressButtonAsync("https://" + text);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else if (text.startsWith("@")) {
       navigation.navigate("UserProfile", { id: text.slice(1) });
     } else if (text.startsWith("#")) {
@@ -73,12 +69,10 @@ const ProfileHeader = ({
     } else if (text.startsWith("more")) {
       setShowBottomMoreSheet(true);
     } else {
-      console.log("else", text);
     }
   };
 
   const handleLinkPressAsync = async (url) => {
-    console.log(url);
     if (url.startsWith("https://www.")) {
       await WebBrowser.openBrowserAsync(url);
     } else if (url.startsWith("www.")) {
@@ -200,7 +194,6 @@ const ProfileHeader = ({
             <View
               style={{
                 marginTop: "2%",
-                // marginVertical: 5,
               }}
             >
               <StructuredText
@@ -439,13 +432,12 @@ const ProfileHeader = ({
               backgroundColor: "#EAEAEA",
               paddingVertical: 15,
               paddingHorizontal: 18,
-              // marginBottom: 15,
+
               borderRadius: 12,
             }}
             onPress={() => {
               setShowBottomSheetModal(false);
               navigation.navigate("Report", {
-                // contentId: id,
                 contentId: "0cee4054-e83f-42ae-a079-75b81c0766fb",
                 username: username,
                 contentType: "profile",

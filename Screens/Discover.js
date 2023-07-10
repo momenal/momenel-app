@@ -35,9 +35,7 @@ const Discover = ({ navigation }) => {
   }, [from, to, isRefreshing]);
 
   const fetchPosts = async () => {
-    console.log("fetching posts");
     if (!showFooter && from !== 0) {
-      console.log("no more posts");
       return;
     }
     const { data, error } = await supabase.auth.getSession();
@@ -51,7 +49,6 @@ const Discover = ({ navigation }) => {
     ids = ids.split(",").slice(-10).join(",");
     //to string
     ids = ids.toString();
-    console.log(ids);
     // post like to api
     let response = await fetch(
       `${baseUrl}/feed/discover/${from === 0 ? null : ids}/${from}/${to}`,
@@ -73,8 +70,6 @@ const Discover = ({ navigation }) => {
     setTrendingHashtags(response.trendingHashtags);
     setFollowingHashtags(response.followingHashtags);
 
-    console.log(to, from);
-    console.log(response.posts.length);
     if (from === 0) {
       setPostsData([...response.posts]);
     } else if (response.posts.length === 0) {
@@ -168,8 +163,6 @@ const Discover = ({ navigation }) => {
 
     const updatedPosts = postsData.map((p) => {
       if (p.post.id === postId) {
-        console.log(p.post.id);
-        console.log(p.post.reposts[0].count);
         if (p.isReposted) {
           p.post.reposts[0].count -= 1;
         } else {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 const SheetInputComponent = ({ onUpdate, multiline }) => {
@@ -24,8 +24,6 @@ const SheetInputComponent = ({ onUpdate, multiline }) => {
       multiline={multiline}
       keyboardAppearance={"dark"}
       blurOnSubmit={false}
-      // blurOnSubmit={true}
-      // returnKeyType="done"
     />
   );
 };

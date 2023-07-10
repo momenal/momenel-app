@@ -1,5 +1,3 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 const InputComponent = ({ state, setState }) => {

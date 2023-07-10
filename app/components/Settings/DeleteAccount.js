@@ -26,7 +26,6 @@ const DeleteAccount = ({ navigation }) => {
 
     if (!response.ok) {
       response = await response.json();
-      console.log(response);
       Alert.alert(
         "Oops",
         "Something went wrong!\nTry again or contact support.",

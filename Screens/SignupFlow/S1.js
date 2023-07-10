@@ -58,7 +58,6 @@ const S1 = ({ navigation }) => {
       }
     } catch (error) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      console.log(error);
       setError(error.message);
       setIsUsernameAvailable(null);
     }
@@ -90,10 +89,9 @@ const S1 = ({ navigation }) => {
         throw new Error(response.error);
       }
       response = await response.json();
-      console.log(response);
+
       navigation.navigate("s2");
     } catch (error) {
-      console.log(error);
       setError(error.message);
       setIsLoading(false);
     }

@@ -1,4 +1,4 @@
-import { LogBox, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -32,7 +32,7 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
       onUserExists();
     } else {
       // if email does not exist, create user
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: email,
         password: password,
         options: {
@@ -56,7 +56,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         } else {
           setError({ type: "auth", message: error.message });
         }
-        // Alert.alert(error.message);
       } else {
         onReportPress();
       }
@@ -91,7 +90,6 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
       {error.type === "auth" ? (
         <CustomText
           style={{
-            // marginBottom: 5,
             marginBottom: 20,
             color: "red",
             fontSize: 16,

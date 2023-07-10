@@ -26,7 +26,6 @@ const ChangeBirthday = ({ navigation }) => {
       error,
     } = await supabase.auth.getSession();
     if (error) {
-      console.log(error);
       Alert.alert("Error", "Please try again");
     } else {
       let headersList = {
@@ -45,10 +44,8 @@ const ChangeBirthday = ({ navigation }) => {
       });
       let data = await response.json();
       if (data.error) {
-        console.log("error");
         Alert.alert("Error", data.error);
       } else {
-        console.log(data.date_of_birth);
         Alert.alert(
           "Updated",
           data.message ? data.message : "Your information has been updated",
@@ -66,7 +63,6 @@ const ChangeBirthday = ({ navigation }) => {
     // get access token from supabase
     const { data, error } = await supabase.auth.getSession();
     if (error) {
-      console.log(error);
       Alert.alert("Error", "Please try again");
     }
     let headersList = {
@@ -79,9 +75,7 @@ const ChangeBirthday = ({ navigation }) => {
     let dataResponse = await response.json();
     if (dataResponse.error) {
       Alert.alert("Error", "Please try again");
-      console.log("error", dataResponse.error);
     } else {
-      console.log("dataResponse", dataResponse);
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
       const [year, month, day] = dataResponse.date_of_birth.split("-");

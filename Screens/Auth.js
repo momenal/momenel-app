@@ -1,24 +1,17 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
-  Alert,
   Animated,
-  Button,
   Dimensions,
-  FlatList,
   Keyboard,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../app/components/customText/CustomText";
-import { supabase } from "../app/lib/supabase";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
-import * as WebBrowser from "expo-web-browser";
-import PostHeader from "../app/components/Posts/PostHeader";
 import StructuredText from "../app/components/Posts/StructuredText";
 import PaginationDot from "../app/components/Posts/PaginationDot";
 import DetachedBottomSheet from "../app/components/BottomFlatSheet/DetachedBottomSheet";
@@ -81,10 +74,7 @@ const Auth = () => {
     setShowSignupBottomSheet(false);
     setConfirmationBottomSheet(true);
   };
-  const onUserAlreadyExists = () => {
-    // setShowSignupBottomSheet(false);
-    // setShowSigninBottomSheet(true);
-  };
+  const onUserAlreadyExists = () => {};
 
   const onSignUpClose = () => {
     setShowSignupBottomSheet(false);
@@ -209,7 +199,6 @@ const Auth = () => {
             }}
           >
             <StructuredText
-              // mentionHashtagPress={mentionHashtagClick}
               mentionHashtagColor={"red"}
               numberOfLines={4}
               style={{ color: "#535353", fontSize: 20 }}
@@ -242,12 +231,9 @@ const Auth = () => {
       <View
         style={{
           flex: 1,
-          //   backgroundColor: "pink",
           width: Dimensions.get("window").width,
-          //   marginBottom: insets.bottom,
           marginBottom: insets.bottom + ScreenHeight * 0.03,
           marginTop: "5%",
-          //   paddingHorizontal: "7%",
           justifyContent: "space-between",
         }}
       >
@@ -288,7 +274,6 @@ const Auth = () => {
               width: "100%",
               justifyContent: "center",
               paddingTop: "5%",
-              //   paddingTop: 23,
             }}
           >
             <PaginationDot data={data} scrollX={scrollX} marginHorizontal={5} />
@@ -390,10 +375,8 @@ const styles = StyleSheet.create({
   termsText: {
     fontFamily: "Nunito_500Medium",
     fontSize: 12,
-    // width: "100%",
     textAlign: "center",
     color: "black",
-    // paddingVertical: "4%",
   },
   textUnderline: {
     textDecorationLine: "underline",

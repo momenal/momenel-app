@@ -1,5 +1,3 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { useBoundStore } from "../../Store/useBoundStore";
 
@@ -24,5 +22,3 @@ const Notifications = ({ size, color }) => {
 };
 
 export default Notifications;
-
-const styles = StyleSheet.create({});

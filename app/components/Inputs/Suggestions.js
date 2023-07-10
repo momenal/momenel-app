@@ -39,7 +39,6 @@ const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
           return;
         }
         response = await response.json();
-        console.log(response);
         setSuggestions(response);
       }
     } else {

@@ -169,7 +169,6 @@ const CreatePost = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      console.log(result.assets[0]);
       handleContentPick({
         result,
         message: "Looks like you already selected this video.",
@@ -200,7 +199,6 @@ const CreatePost = ({ navigation }) => {
       });
 
       const newImageUri = "file:///" + post.uri.split("file:/").join("");
-      console.log(newImageUri.split("/").pop());
       formData.append("content", {
         uri: newImageUri,
         type: mime.getType(newImageUri),
@@ -325,7 +323,6 @@ const CreatePost = ({ navigation }) => {
   }
 
   const updateVideoDimensions = (width, height, assetId) => {
-    console.log(width, height, assetId);
     // find the content that has the assetId and update the width and height
     const newContent = content.map((item) => {
       if (item.assetId === assetId) {
@@ -356,7 +353,6 @@ const CreatePost = ({ navigation }) => {
         style={{
           flex: 1,
           justifyContent: "space-between",
-          //   marginBottom: 20,
         }}
       >
         <ScrollView
@@ -467,7 +463,6 @@ const CreatePost = ({ navigation }) => {
         <StatusOverlay
           headerHeight={headerHeight}
           status={"Post submitted successfully"}
-          // message={"It may take a few minutes to appear on your profile"}
           message={
             confrimationMessage
               ? confrimationMessage

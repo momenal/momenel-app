@@ -1,12 +1,5 @@
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import LinearGradientButton from "../Buttons/LinearGradientButton";
@@ -24,7 +17,7 @@ const SignIn = ({
   async function signInWithEmail() {
     setLoading(true);
     setError("");
-    const { error, data } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });

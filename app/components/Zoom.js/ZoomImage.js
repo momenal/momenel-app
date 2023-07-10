@@ -1,5 +1,4 @@
 //! inspired by -> https://github.com/intergalacticspacehighway/react-native-reanimated-zoom
-
 import React, { useCallback, useContext, useMemo } from "react";
 import Animated, {
   useSharedValue,
@@ -195,7 +194,6 @@ export function ZoomImage(props) {
         : Gesture.Simultaneous(pan, pinch)
     );
     // only add prop dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     maximumZoomScale,
     minimumZoomScale,

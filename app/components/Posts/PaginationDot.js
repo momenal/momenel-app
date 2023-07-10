@@ -38,7 +38,6 @@ const PaginationDot = ({
             borderRadius: dotSize / 2,
           },
           styles.slidingIndicatorStyle,
-          // eslint-disable-next-line react-native/no-inline-styles
           {
             position: "absolute",
             marginHorizontal: marginHorizontal,
@@ -72,14 +71,11 @@ export default PaginationDot;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    // position: "absolute",
-    // bottom: 30,
     flexDirection: "row",
     alignSelf: "center",
   },
   dotStyle: {
     backgroundColor: "#727477",
-    // opacity: 0.4,
   },
   slidingIndicatorStyle: {
     backgroundColor: "#FF3F81",

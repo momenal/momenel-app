@@ -47,7 +47,6 @@ const Profile = ({ navigation }) => {
   const fetchPosts = async () => {
     setShowFooter(true);
     // if passed user id is passed (aka user is viewing another user's profile)
-
     const { data: s, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");

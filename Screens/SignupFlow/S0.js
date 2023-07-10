@@ -50,7 +50,7 @@ const S0 = ({ navigation }) => {
       Keyboard.dismiss();
       //check if date is valid and if user is at least 18 years old
       let age = getAge(`${text}/${month}/${day}`);
-      console.log("Age h:", age);
+
       if (age < 18 || isNaN(age)) {
         alert("You must be at least 18 years old to use this app.");
         return;
@@ -76,7 +76,7 @@ const S0 = ({ navigation }) => {
 
   const handleSave = async () => {
     let age = getAge(`${year}/${month}/${day}`);
-    console.log("Age:", age);
+
     if (age < 18 || isNaN(age)) {
       alert("You must be at least 18 years old to use this app.");
       return;
@@ -87,7 +87,6 @@ const S0 = ({ navigation }) => {
       error,
     } = await supabase.auth.getSession();
     if (error) {
-      console.log(error);
       Alert.alert("Error", "Please try again");
     } else {
       setIsSubmitting(true);
@@ -106,7 +105,6 @@ const S0 = ({ navigation }) => {
       });
       let data = await response.json();
       if (data.error) {
-        console.log("error");
         Alert.alert("Error", data.error);
         setIsSubmitting(false);
       } else {

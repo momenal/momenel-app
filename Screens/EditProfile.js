@@ -303,7 +303,6 @@ const EditProfile = ({ navigation }) => {
 
       if (!response.ok) {
         response = await response.json();
-        console.log(response.error);
         throw new Error(response.error);
       }
 
@@ -321,7 +320,6 @@ const EditProfile = ({ navigation }) => {
       setBio(newData.bio);
       setWebsite(newData.website);
       setImageUri(newData.profile_url);
-      console.log(newData.profile_url);
 
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setIsLoading(false);
@@ -335,7 +333,7 @@ const EditProfile = ({ navigation }) => {
         {
           text: "OK",
           onPress: () => {
-            // navigation.goBack();
+            navigation.goBack();
           },
         },
       ]);
@@ -433,7 +431,6 @@ const EditProfile = ({ navigation }) => {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   marginTop: -scaledSize / 3,
-                  // width: scale(25),
                 }}
               >
                 <TouchableOpacity
