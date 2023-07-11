@@ -33,7 +33,7 @@ const Home = ({ navigation }) => {
     fetchNotifications({ isRefreshing: false });
     const intervalId = setInterval(() => {
       fetchNotifications({ isRefreshing: true });
-    }, 180000); // fetch notifications every 3 minutes
+    }, 60000); // fetch notifications every 1 minute
     return () => clearInterval(intervalId);
   }, []);
 
