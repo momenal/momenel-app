@@ -180,4 +180,4 @@ const PostMediaOne = ({
   );
 };
 
-export default memo(PostMediaOne);
+export default PostMediaOne;

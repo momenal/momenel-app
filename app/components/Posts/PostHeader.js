@@ -233,7 +233,7 @@ const PostHeader = ({
   );
 };
 
-export default memo(PostHeader);
+export default PostHeader;
 
 const styles = StyleSheet.create({
   textMedium: {

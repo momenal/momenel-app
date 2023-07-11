@@ -67,7 +67,7 @@ const PaginationDot = ({
   );
 };
 
-export default memo(PaginationDot);
+export default PaginationDot;
 
 const styles = StyleSheet.create({
   containerStyle: {

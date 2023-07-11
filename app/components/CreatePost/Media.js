@@ -105,4 +105,4 @@ const Media = ({ item, updateVideoDimensions }) => {
   );
 };
 
-export default memo(Media);
+export default Media;

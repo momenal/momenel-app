@@ -465,4 +465,4 @@ const Post = ({
   );
 };
 
-export default memo(Post);
+export default Post;
