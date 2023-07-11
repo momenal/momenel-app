@@ -55,7 +55,6 @@ const Notifications = ({ navigation }) => {
 
   const handlePress = (index) => {
     let type = notifications[index].type;
-
     if (
       type === "comment" ||
       type === "mentionComment" ||
@@ -76,6 +75,13 @@ const Notifications = ({ navigation }) => {
         id: notifications[index].repost_id,
       });
     } else if (type === "system") {
+      if (notifications[index].post_id) {
+        navigation.navigate("SinglePost", {
+          type: "post",
+          id: notifications[index].post_id,
+        });
+      }
+    } else if (type === "mentionPost") {
       if (notifications[index].post_id) {
         navigation.navigate("SinglePost", {
           type: "post",
@@ -151,6 +157,8 @@ const Notifications = ({ navigation }) => {
                 ? "commented on your post"
                 : type === "mentionComment"
                 ? "mentioned you in a comment"
+                : type === "mentionPost"
+                ? "mentioned you in a post"
                 : type === "comment_like"
                 ? "liked your comment"
                 : type === "repost"
