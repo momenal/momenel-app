@@ -26,6 +26,9 @@ import { supabase } from "../app/lib/supabase";
 import { RefreshControl } from "react-native-gesture-handler";
 
 const Comments = ({ route, navigation }) => {
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(20);
+  const [isFirst, setIsFirst] = useState(true);
   const { postId, comment_id } = route.params;
   const [comments, setComments] = useState(null);
   const [postingComment, setPostingComment] = useState(false);
@@ -33,30 +36,37 @@ const Comments = ({ route, navigation }) => {
   const [text, onChangeText] = useState("");
   const flatListRef = useRef(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { top: topInset } = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
   const userProfileUrl = useBoundStore((state) => state.profile_url);
   const insets = useSafeAreaInsets();
-
-  const onRefresh = () => {
-    //set isRefreshing to true
-    setIsRefreshing(true);
-    //fetch comments
-    fetchComments();
-  };
+  const [showFooter, setShowFooter] = useState(true);
 
   useEffect(() => {
-    fetchComments();
+    setIsFirst(true);
   }, []);
+  useEffect(() => {
+    fetchComments();
+  }, [from, to, isRefreshing]);
+
+  useEffect(() => {
+    if (isFirst && comments) {
+      let index = comments.findIndex((comment) => comment.id === comment_id);
+      setTimeout(() => {
+        flatListRef.current?.scrollToIndex({ index: index, animated: true });
+      }, 100);
+      setIsFirst(false);
+    }
+  }, [flatListRef.current, comments]);
 
   async function fetchComments() {
+    setShowFooter(true);
     const { data, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
 
     // fetch comments from api
-    let response = await fetch(`${baseUrl}/comment/${postId}`, {
+    let response = await fetch(`${baseUrl}/comment/${postId}/${from}/${to}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -70,16 +80,24 @@ const Comments = ({ route, navigation }) => {
 
     setIsRefreshing(false);
     let comments = await response.json();
-    if (comment_id) {
-      // scroll to comment after finding index of comment from response with comment_id
-      let index = comments.findIndex((comment) => comment.id === comment_id);
-      setInterval(() => {
-        flatListRef.current?.scrollToIndex({ index: 10, animated: true });
-      }, 500);
+    setShowFooter(false);
+    if (from === 0) {
+      setComments(comments);
+    } else {
+      setComments((prev) => [...prev, ...comments]);
     }
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setComments(comments);
   }
+
+  const handleRefresh = () => {
+    setFrom(0);
+    setTo(20);
+    setIsRefreshing(true);
+  };
+
+  const fetchMorePosts = () => {
+    setFrom(to);
+    setTo(to + 20);
+  };
 
   async function postComment(txt) {
     Keyboard.dismiss();
@@ -174,30 +192,28 @@ const Comments = ({ route, navigation }) => {
     [comments]
   );
 
+  const renderListFooter = useCallback(
+    <View
+      style={[
+        {
+          height: 60,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        !showFooter && { marginTop: -15 },
+      ]}
+    >
+      {showFooter && !isFirst && <ActivityIndicator color="#0000ff" />}
+    </View>,
+    [showFooter]
+  );
+
   return (
     <View style={styles.container}>
       {comments === null ? (
         <View style={{ height: "90%", justifyContent: "center" }}>
           <ActivityIndicator color={"black"} />
         </View>
-      ) : comments.length === 0 ? (
-        <ScrollView
-          keyboardDismissMode="interactive"
-          contentContainerStyle={{
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingBottom: headerHeight,
-          }}
-        >
-          <GradientText
-            style={{ fontSize: scale(16), fontFamily: "Nunito_600SemiBold" }}
-            adjustsFontSizeToFit={true}
-            numberOfLines={1}
-          >
-            Be the first to leave a comment!
-          </GradientText>
-        </ScrollView>
       ) : (
         <FlashList
           ref={flatListRef}
@@ -209,39 +225,47 @@ const Comments = ({ route, navigation }) => {
               username: item.user.username,
             })
           }
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  height: Dimensions.get("window").height * 0.75,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                }}
+              >
+                <GradientText
+                  style={{
+                    fontSize: scale(16),
+                    fontFamily: "Nunito_600SemiBold",
+                  }}
+                  adjustsFontSizeToFit={true}
+                  numberOfLines={1}
+                >
+                  Be the first to leave a comment!
+                </GradientText>
+              </View>
+            );
+          }}
           estimatedItemSize={120}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="start"
           onEndReachedThreshold={0.5}
+          onEndReached={fetchMorePosts}
           decelerationRate={"normal"}
-          initialNumToRender={30}
           refreshControl={
             <RefreshControl
-              title=""
               titleColor={"#000000"}
               tintColor={"#000000"}
               refreshing={isRefreshing}
-              onRefresh={onRefresh}
+              onRefresh={handleRefresh}
               progressViewOffset={0}
               size={"default"}
             />
           }
-          //! -10 equals height of item seperator
-          ListFooterComponent={() => {
-            return (
-              <View
-                style={{
-                  width: Dimensions.get("window").width,
-                  marginRight: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* <ActivityIndicator color={"black"} /> */}
-              </View>
-            );
-          }}
+          ListFooterComponent={renderListFooter}
         />
       )}
 

@@ -401,7 +401,6 @@ const Profile = ({ navigation }) => {
       ]}
     >
       {showFooter && <ActivityIndicator color="#0000ff" />}
-      {/* {!showFooter && <CustomText>You are all caught up 😀</CustomText>} */}
     </View>,
     [showFooter]
   );
