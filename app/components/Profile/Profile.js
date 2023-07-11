@@ -29,7 +29,7 @@ const Profile = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const { top: topInset } = useSafeAreaInsets();
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(10);
+  const [to, setTo] = useState(20);
   const [deleteCounter, setDeleteCounter] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
@@ -102,13 +102,13 @@ const Profile = ({ navigation }) => {
   const handleRefresh = () => {
     setDeleteCounter(0);
     setFrom(0);
-    setTo(10);
+    setTo(20);
     setIsRefreshing(true);
   };
 
   const fetchMorePosts = () => {
     let newFrom = to - deleteCounter;
-    let newTo = to + 10 - deleteCounter;
+    let newTo = to + 20 - deleteCounter;
 
     setFrom(newFrom);
     setTo(newTo);
