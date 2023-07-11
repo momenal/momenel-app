@@ -1,6 +1,6 @@
 import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -91,13 +91,14 @@ const PostMediaOne = ({
             style={{
               width: Iwidth,
               height: height,
-              borderRadius: index === 0 ? 3 : 0, //! if we dont set index to 0 then image that doesn't cover the while width have lines on the sides
+              borderRadius: 3,
               overflow: "hidden",
             }}
             contentFit={"contain"}
             enableLiveTextInteraction={true}
             placeholder={blurhash ? blurhash : "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-            transition={1000}
+            transition={200}
+            recyclingKey={url}
           />
         </GestureDetector>
       ) : (
@@ -179,4 +180,4 @@ const PostMediaOne = ({
   );
 };
 
-export default PostMediaOne;
+export default memo(PostMediaOne);

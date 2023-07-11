@@ -280,7 +280,7 @@ const Home = ({ navigation }) => {
     >
       <FlashList
         data={postsData}
-        estimatedItemSize={233}
+        estimatedItemSize={100}
         keyExtractor={keyExtractor}
         renderItem={({ item, index }) =>
           renderItem({

@@ -1,7 +1,7 @@
 import { View, Dimensions, Platform, Pressable } from "react-native";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
@@ -451,4 +451,4 @@ const ProfileHeader = ({
   );
 };
 
-export default ProfileHeader;
+export default memo(ProfileHeader);

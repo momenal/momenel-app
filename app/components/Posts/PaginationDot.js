@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   Animated,
   StyleSheet,
@@ -67,7 +67,7 @@ const PaginationDot = ({
   );
 };
 
-export default PaginationDot;
+export default memo(PaginationDot);
 
 const styles = StyleSheet.create({
   containerStyle: {

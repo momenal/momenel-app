@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { RelativeTime } from "../../utils/RelativeTime";
@@ -233,7 +233,7 @@ const PostHeader = ({
   );
 };
 
-export default PostHeader;
+export default memo(PostHeader);
 
 const styles = StyleSheet.create({
   textMedium: {

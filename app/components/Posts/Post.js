@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostMedia from "./postMedia/PostMedia";
 import PaginationDot from "./PaginationDot";
@@ -465,4 +465,4 @@ const Post = ({
   );
 };
 
-export default Post;
+export default memo(Post);

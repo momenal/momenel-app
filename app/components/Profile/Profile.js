@@ -525,7 +525,7 @@ const Profile = ({ navigation }) => {
       ) : (
         <FlashList
           data={data}
-          estimatedItemSize={233}
+          estimatedItemSize={100}
           keyExtractor={keyExtractor}
           ListEmptyComponent={() => (
             <View
@@ -611,4 +611,4 @@ const Profile = ({ navigation }) => {
   );
 };
 
-export default memo(Profile);
+export default Profile;
