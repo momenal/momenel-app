@@ -49,7 +49,7 @@ const Comments = ({ route, navigation }) => {
   }, [from, to, isRefreshing]);
 
   useEffect(() => {
-    if (isFirst && comments) {
+    if (isFirst && comments && comment_id) {
       let index = comments.findIndex((comment) => comment.id === comment_id);
       setTimeout(() => {
         flatListRef.current?.scrollToIndex({ index: index, animated: true });
