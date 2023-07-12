@@ -415,7 +415,7 @@ const EditProfile = ({ navigation }) => {
                     ? {
                         uri: imageUri.startsWith("file://")
                           ? imageUri
-                          : `https://momenel.b-cdn.net/profiles/${imageUri}`,
+                          : `https://cdn.momenel.com/profiles/${imageUri}`,
                       }
                     : null
                 }

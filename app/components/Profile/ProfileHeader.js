@@ -238,7 +238,7 @@ const ProfileHeader = ({
             <Pressable
               onPress={() =>
                 navigation?.navigate("Zoom", {
-                  url: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                  url: `https://cdn.momenel.com/profiles/${profile_url}`,
                   username,
                 })
               }
@@ -247,7 +247,7 @@ const ProfileHeader = ({
                 source={
                   profile_url
                     ? {
-                        uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                        uri: `https://cdn.momenel.com/profiles/${profile_url}`,
                       }
                     : null
                 }

@@ -91,7 +91,7 @@ const Post = ({
         username={username}
         url={
           item.type === "image"
-            ? `https://momenel.b-cdn.net/posts/${item.id}.${item.format}`
+            ? `https://cdn.momenel.com/posts/${item.id}.${item.format}`
             : `https://vz-a01f66e8-ba0.b-cdn.net/${item.id}/playlist.m3u8`
         }
         type={item.type}
@@ -310,7 +310,7 @@ const Post = ({
           username={username}
           url={
             posts[0].type === "image"
-              ? `https://momenel.b-cdn.net/posts/${posts[0].id}.${posts[0].format}`
+              ? `https://cdn.momenel.com/posts/${posts[0].id}.${posts[0].format}`
               : `https://vz-a01f66e8-ba0.b-cdn.net/${posts[0].id}/playlist.m3u8`
           }
           posterUrl={

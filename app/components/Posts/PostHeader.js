@@ -94,7 +94,7 @@ const PostHeader = ({
                 marginRight: "2%",
               }}
               source={{
-                uri: `https://momenel.b-cdn.net/profiles/${profileUrl}`,
+                uri: `https://cdn.momenel.com/profiles/${profileUrl}`,
               }}
             />
           ) : (

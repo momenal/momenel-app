@@ -122,7 +122,7 @@ const Notifications = ({ navigation }) => {
                   borderRadius: scaledHeight / 2,
                 }}
                 source={{
-                  uri: `https://momenel.b-cdn.net/profiles/${item.user.profile_url}`,
+                  uri: `https://cdn.momenel.com/profiles/${item.user.profile_url}`,
                 }}
               />
             ) : (

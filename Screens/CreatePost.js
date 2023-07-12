@@ -370,7 +370,7 @@ const CreatePost = ({ navigation }) => {
           >
             <Image
               source={{
-                uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                uri: `https://cdn.momenel.com/profiles/${profile_url}`,
               }}
               style={{
                 height: sizeProfile,

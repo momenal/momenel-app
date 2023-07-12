@@ -254,7 +254,7 @@ const Comment = ({
             ) : (
               <Image
                 source={{
-                  uri: `https://momenel.b-cdn.net/profiles/${profile_url}`,
+                  uri: `https://cdn.momenel.com/profiles/${profile_url}`,
                 }}
                 style={{ flex: 1, width: undefined, height: undefined }}
               />

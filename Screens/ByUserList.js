@@ -144,7 +144,7 @@ const ByUserList = ({ route, navigation }) => {
         type={type}
         id={item.user.id}
         username={item.user.username}
-        profile_url={`https://momenel.b-cdn.net/profiles/${item.user.profile_url}`}
+        profile_url={`https://cdn.momenel.com/profiles/${item.user.profile_url}`}
         isFollowing={isFollowing}
         onPress={handleFollowPress}
         navigation={navigation}

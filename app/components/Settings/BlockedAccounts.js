@@ -132,7 +132,7 @@ const BlockedAccounts = ({ navigation }) => {
               >
                 <Image
                   source={{
-                    uri: `https://momenel.b-cdn.net/profiles/${account.profile.profile_url}`,
+                    uri: `https://cdn.momenel.com/profiles/${account.profile.profile_url}`,
                   }}
                   style={{
                     width: size50,

@@ -40,24 +40,21 @@ export default function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        // getIntialData(session.access_token);
-      } else {
-        setIsLoading(false);
-      }
-      // setSession(session);
-    });
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (_event === "SIGNED_IN") {
         const {
           data: { user },
+          error: signinError,
         } = await supabase.auth.getUser();
-        getIntialData(session.access_token);
-        if (!user.id) {
-          Alert.alert("Error", "Please try again");
+
+        if (!user.id || signinError) {
+          Alert.alert("Error", "Login Failed");
+          setisError(true);
+          setIsLoading(false);
+          return;
         }
+        getIntialData(session.access_token);
         setSession(session);
       } else if (_event === "SIGNED_OUT") {
         setSession(null);
