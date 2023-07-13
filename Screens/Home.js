@@ -28,8 +28,6 @@ const Home = ({ navigation }) => {
   }, [from, to, isRefreshing]);
 
   useEffect(() => {
-    setFrom(0);
-    setTo(10);
     fetchNotifications({ isRefreshing: false });
     const intervalId = setInterval(() => {
       fetchNotifications({ isRefreshing: true });
@@ -38,6 +36,9 @@ const Home = ({ navigation }) => {
   }, []);
 
   const fetchPosts = async () => {
+    if (!showFooter && from !== 0) {
+      return;
+    }
     const { data, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
@@ -63,7 +64,7 @@ const Home = ({ navigation }) => {
     } else if (response.length === 0) {
       setShowFooter(false);
     } else {
-      setPostsData([...postsData, ...response]);
+      setPostsData((prev) => [...prev, ...response]);
     }
 
     setIsRefreshing(false);
