@@ -3,7 +3,6 @@ import {
   Dimensions,
   ActivityIndicator,
   TouchableOpacity,
-  LayoutAnimation,
   RefreshControl,
   Alert,
 } from "react-native";
@@ -155,7 +154,7 @@ const Profile = ({ navigation }) => {
       return navigation.navigate("Login");
     }
     setisLoading(true);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
     setProfile((prev) => ({
       ...prev,
       isBlockedByYou: prev.isBlockedByYou ? false : true,

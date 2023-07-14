@@ -30,6 +30,7 @@ const HomeNavigator = ({ navigation }) => {
         },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
         freezeOnBlur: true,
+        unmountOnBlur: true,
       })}
     >
       <Tab.Screen

@@ -368,18 +368,20 @@ const CreatePost = ({ navigation }) => {
               paddingHorizontal: "3%",
             }}
           >
-            <Image
-              source={{
-                uri: `https://cdn.momenel.com/profiles/${profile_url}`,
-              }}
-              style={{
-                height: sizeProfile,
-                width: sizeProfile,
-                borderRadius: sizeProfile / 2,
-                marginRight: "2%",
-              }}
-              backgroundColor="#E1E1E1"
-            />
+            {profile_url && (
+              <Image
+                source={{
+                  uri: `https://cdn.momenel.com/profiles/${profile_url}`,
+                }}
+                style={{
+                  height: sizeProfile,
+                  width: sizeProfile,
+                  borderRadius: sizeProfile / 2,
+                  marginRight: "2%",
+                }}
+                backgroundColor="#E1E1E1"
+              />
+            )}
             <CustomText style={{ fontSize: scale(15) }}>@{username}</CustomText>
           </View>
           <View>

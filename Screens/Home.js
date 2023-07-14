@@ -24,14 +24,17 @@ const Home = ({ navigation }) => {
   const [to, setTo] = useState(10);
 
   useEffect(() => {
+    fetchNotifications({ isRefreshing: false });
+  }, []);
+
+  useEffect(() => {
     fetchPosts();
   }, [from, to, isRefreshing]);
 
   useEffect(() => {
-    fetchNotifications({ isRefreshing: false });
     const intervalId = setInterval(() => {
       fetchNotifications({ isRefreshing: true });
-    }, 60000); // fetch notifications every 1 minute
+    }, 120000); // fetch notifications every 2 minute
     return () => clearInterval(intervalId);
   }, []);
 

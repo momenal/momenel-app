@@ -1,11 +1,4 @@
-import {
-  Keyboard,
-  LayoutAnimation,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Keyboard, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
@@ -57,7 +50,6 @@ const S1 = ({ navigation }) => {
         setIsUsernameAvailable(true);
       }
     } catch (error) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setError(error.message);
       setIsUsernameAvailable(null);
     }

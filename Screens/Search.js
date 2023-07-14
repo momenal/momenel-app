@@ -20,7 +20,6 @@ import Post from "../app/components/Posts/Post";
 import { CalcHeight } from "../app/utils/CalcHeight";
 import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
-import { LayoutAnimation } from "react-native";
 import { Alert } from "react-native";
 
 const Search = ({ navigation, route }) => {
@@ -316,7 +315,7 @@ const Search = ({ navigation, route }) => {
 
   const handleHashtagFollow = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
     setQueryResults({
       ...queryResults,
       isFollowing: !queryResults.isFollowing,

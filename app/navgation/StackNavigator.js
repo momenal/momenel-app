@@ -25,6 +25,7 @@ const StackNavigator = ({}) => {
       initialRouteName="Home"
       screenOptions={{
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
+        animation: "none",
       }}
     >
       <Stack.Screen
@@ -34,7 +35,6 @@ const StackNavigator = ({}) => {
           headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="Comments"
         component={Comments}

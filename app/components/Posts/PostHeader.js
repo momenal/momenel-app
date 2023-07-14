@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  LayoutAnimation,
   Pressable,
   StyleSheet,
   Text,
@@ -47,7 +46,6 @@ const PostHeader = ({
   const onDeletePressWrapper = () => {
     setShowBottomSheet(false);
     setTimeout(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       onDeletePress({ index });
     }, 100);
   };
