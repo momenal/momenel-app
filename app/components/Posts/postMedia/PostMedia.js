@@ -1,6 +1,6 @@
 import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
-import { memo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Video } from "expo-av";
 import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -95,10 +95,8 @@ const PostMediaOne = ({
               overflow: "hidden",
             }}
             contentFit={"contain"}
-            enableLiveTextInteraction={true}
             placeholder={blurhash ? blurhash : "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
             transition={200}
-            recyclingKey={url}
           />
         </GestureDetector>
       ) : (

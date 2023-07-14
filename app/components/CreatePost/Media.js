@@ -1,5 +1,5 @@
 import { Video } from "expo-av";
-import { memo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";

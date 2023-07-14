@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { useState, useEffect, memo, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FlashList } from "@shopify/flash-list";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
