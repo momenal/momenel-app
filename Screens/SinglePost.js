@@ -174,11 +174,12 @@ const SinglePost = ({ navigation }) => {
   };
 
   const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width, createdAt, type }) => {
-      let scaledHeight = CalcHeight(width, height);
-      let tempPost = type === "post" ? item : item.post;
+    ({ item, index }) => {
+      let tempPost = item.type === "post" ? item : item.post;
       return (
         <Post
+          height={tempPost.content.length > 0 ? tempPost.content[0].height : 0}
+          width={tempPost.content.length > 0 ? tempPost.content[0].width : 0}
           isPublished={true}
           navigation={navigation}
           postId={tempPost.id}
@@ -190,14 +191,13 @@ const SinglePost = ({ navigation }) => {
           profileUrl={tempPost.user?.profile_url}
           username={tempPost.user?.username}
           name={tempPost.user?.name}
-          createdAt={createdAt}
+          createdAt={item.created_at}
           posts={tempPost.content ? tempPost.content : []}
           caption={tempPost.caption}
-          height={scaledHeight}
           handleLike={handleLike}
           handleRepost={handleRepost}
-          isLiked={isLiked}
-          isReposted={isReposted}
+          isLiked={item.isLiked}
+          isReposted={item.isReposted}
         />
       );
     },
@@ -230,32 +230,8 @@ const SinglePost = ({ navigation }) => {
         data={data}
         estimatedItemSize={233}
         keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) =>
-          renderItem({
-            item,
-            index,
-            isLiked: params.type === "repost" ? item.isLiked : item.isLiked,
-            isReposted:
-              params.type === "repost" ? item.isReposted : item.isReposted,
-            postId: params.type === "repost" ? item.post.id : item.id,
-            type: params.type,
-            width:
-              params.type === "repost" && item.post.content?.length > 0
-                ? item.post.content[0].width
-                : params.type === "post" && item.content?.length > 0
-                ? item.content[0].width
-                : 0,
-            height:
-              params.type === "repost" && item.post.content?.length > 0
-                ? item.post.content[0].height
-                : params.type === "post" && item.content?.length > 0
-                ? item.content[0].height
-                : 0,
-            createdAt: item.created_at,
-          })
-        }
+        renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        keyboardDismissMode="on-drag"
       />
     </View>
   );
