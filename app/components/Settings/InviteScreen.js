@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Share,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, Share, Alert } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import CustomText from "../customText/CustomText";
 import LinearGradientButton from "../../components/Buttons/LinearGradientButton";
@@ -47,13 +40,12 @@ const InviteFriendsScreen = () => {
       <Text style={styles.description}>
         Share this link with your friends to invite them to join:
       </Text>
-      <TouchableOpacity style={styles.linkContainer} onPress={handleCopyLink}>
+      <Pressable style={styles.linkContainer} onPress={handleCopyLink}>
         <Text style={styles.link}>
           {link} {`\n(click to copy)`}
         </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         style={{
           width: "100%",
           alignItems: "center",
@@ -80,7 +72,7 @@ const InviteFriendsScreen = () => {
             Share
           </CustomText>
         </LinearGradientButton>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

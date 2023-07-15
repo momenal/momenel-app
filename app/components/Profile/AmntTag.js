@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React, { useMemo } from "react";
 import CustomText from "../customText/CustomText";
 import { scale } from "../../utils/Scale";
@@ -16,7 +16,7 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
 
   const scale12 = useMemo(() => scale(12), []);
   return (
-    <TouchableOpacity
+    <Pressable
       disabled={disabled}
       onPress={onPress}
       style={{
@@ -41,7 +41,7 @@ const AmntTag = ({ value, txt, onPress, disabled = false }) => {
       >
         {txt}
       </CustomText>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

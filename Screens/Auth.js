@@ -4,7 +4,7 @@ import {
   Dimensions,
   Keyboard,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 
@@ -281,7 +281,7 @@ const Auth = () => {
         </View>
         {/* bottom */}
         <View style={{ paddingHorizontal: "7%" }}>
-          <TouchableOpacity onPress={() => setShowSignupBottomSheet(true)}>
+          <Pressable onPress={() => setShowSignupBottomSheet(true)}>
             <LinearGradientButton style={{ width: "100%", borderRadius: 16 }}>
               <CustomText
                 style={{
@@ -296,8 +296,8 @@ const Auth = () => {
                 Create New Account
               </CustomText>
             </LinearGradientButton>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={{
               width: "100%",
               borderRadius: 16,
@@ -319,7 +319,7 @@ const Auth = () => {
             >
               Sign in
             </CustomText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       <DetachedBottomSheet

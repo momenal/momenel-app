@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import {
   View,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
-  TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
   LayoutAnimation,
@@ -53,7 +52,7 @@ const ChangeEmail = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Pressable onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         {isLoading ? (
           <ActivityIndicator size="small" />
@@ -73,7 +72,7 @@ const ChangeEmail = ({ navigation }) => {
               selectTextOnFocus={true}
               spellCheck={false}
             />
-            <TouchableOpacity
+            <Pressable
               style={{
                 width: "100%",
                 alignItems: "center",
@@ -102,11 +101,11 @@ const ChangeEmail = ({ navigation }) => {
                   Update
                 </CustomText>
               </LinearGradientButton>
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 

@@ -5,12 +5,12 @@ import {
   Alert,
   RefreshControl,
   Button,
+  Pressable,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
 import { CalcHeight } from "../app/utils/CalcHeight";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
@@ -393,7 +393,7 @@ const Discover = ({ navigation }) => {
 
 const Tag = ({ tag, navigation }) => {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() =>
         navigation.navigate("Search", {
           type: "hashtag",
@@ -410,7 +410,7 @@ const Tag = ({ tag, navigation }) => {
       }}
     >
       <Text style={{ textAlign: "center" }}>#{tag}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

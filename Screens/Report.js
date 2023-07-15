@@ -9,13 +9,13 @@ import {
   StyleSheet,
   TextInput,
   View,
+  Pressable,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ReportSelect from "../app/components/Buttons/ReportSelect";
 import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 import { baseUrl } from "@env";
@@ -158,7 +158,7 @@ const Report = ({ route, navigation }) => {
           Your feedback is important to us and helps us keep the Momenel
           community safe.
         </CustomText>
-        <TouchableOpacity
+        <Pressable
           onPress={onDone}
           style={{
             justifyContent: "center",
@@ -183,7 +183,7 @@ const Report = ({ route, navigation }) => {
               Done
             </CustomText>
           </LinearGradientButton>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     );
   }
@@ -250,7 +250,7 @@ const Report = ({ route, navigation }) => {
           }}
         />
 
-        <TouchableOpacity
+        <Pressable
           disabled={activeIndex != null ? false : true}
           onPress={() => onReport()}
           style={{
@@ -276,7 +276,7 @@ const Report = ({ route, navigation }) => {
               Report
             </CustomText>
           </LinearGradientButton>
-        </TouchableOpacity>
+        </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -2,7 +2,7 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
-  TouchableOpacity,
+  Pressable,
   RefreshControl,
   Alert,
 } from "react-native";
@@ -418,7 +418,7 @@ const Profile = ({ navigation }) => {
           <View
             style={{ flex: 1, flexDirection: "row", marginHorizontal: "3%" }}
           >
-            <TouchableOpacity
+            <Pressable
               onPress={() => {
                 navigation.goBack();
               }}
@@ -435,7 +435,7 @@ const Profile = ({ navigation }) => {
               }}
             >
               <Ionicons name="md-chevron-back" size={scale(16)} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           {profile?.isBlockedByYou ? (
             <View style={{ flex: 2, alignItems: "center" }}>
@@ -459,7 +459,7 @@ const Profile = ({ navigation }) => {
               >
                 You can't view this profile before unblocking it
               </CustomText>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -482,7 +482,7 @@ const Profile = ({ navigation }) => {
                 >
                   Unblock
                 </CustomText>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           ) : (
             <View

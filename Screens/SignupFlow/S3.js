@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { scale } from "../../app/utils/Scale";
 import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../../app/Store/useBoundStore";
@@ -230,7 +229,7 @@ const S3 = ({}) => {
           marginBottom: "5%",
         }}
       >
-        <TouchableOpacity
+        <Pressable
           onPress={handleNext}
           style={{ alignItems: "center" }}
           disabled={getNumberOfFollowed() < 2}
@@ -242,7 +241,7 @@ const S3 = ({}) => {
             <CustomText style={{ color: "white" }}>Done</CustomText>
           </LinearGradientButton>
           <CustomText>Follow at least 2 profiles to continue</CustomText>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <StatusBar style="dark" animated={true} />
     </View>

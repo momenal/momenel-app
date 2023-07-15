@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { baseUrl } from "@env";
 import CustomText from "../customText/CustomText";
@@ -50,7 +50,7 @@ const DeleteAccount = ({ navigation }) => {
         Are you sure that you want to delete your account? Your account will be
         permanently deleted.
       </CustomText>
-      <TouchableOpacity
+      <Pressable
         style={styles.deleteButton}
         onPress={handleDeleteAccount}
         disabled={isDeleting}
@@ -60,7 +60,7 @@ const DeleteAccount = ({ navigation }) => {
         ) : (
           <CustomText style={styles.buttonText}>Delete Account</CustomText>
         )}
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

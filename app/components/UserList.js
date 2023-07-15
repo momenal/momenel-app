@@ -1,12 +1,6 @@
 import { useMemo } from "react";
 import { scale } from "../utils/Scale";
-import {
-  View,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { View, Dimensions, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import CustomText from "./customText/CustomText";
 import GradientText from "./customText/GradientText";
@@ -78,7 +72,7 @@ const UserList = ({
         </View>
       </Pressable>
       {isFollowing !== null && (
-        <TouchableOpacity
+        <Pressable
           style={!isFollowing ? styles.not_following : styles.following}
           onPress={() => onPress(id)}
         >
@@ -95,7 +89,7 @@ const UserList = ({
               Following
             </CustomText>
           )}
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   );

@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { baseUrl } from "@env";
 import { supabase } from "../../app/lib/supabase";
 
@@ -83,7 +82,7 @@ const S2 = ({ navigation }) => {
             marginBottom: "10%",
           }}
         >
-          <TouchableOpacity onPress={handleNext}>
+          <Pressable onPress={handleNext}>
             <LinearGradientButton style={{ width: "100%" }}>
               <CustomText style={{ color: "white" }}>
                 {isLoading
@@ -93,7 +92,7 @@ const S2 = ({ navigation }) => {
                   : "Continue"}
               </CustomText>
             </LinearGradientButton>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Pressable>
       <StatusBar style="dark" animated={true} />

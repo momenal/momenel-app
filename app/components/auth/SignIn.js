@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -73,7 +73,7 @@ const SignIn = ({
         blurOnSubmit={true}
         returnKeyType="done"
       />
-      <TouchableOpacity disabled={loading} onPress={() => signInWithEmail()}>
+      <Pressable disabled={loading} onPress={() => signInWithEmail()}>
         <LinearGradientButton style={{ width: "100%", borderRadius: 10 }}>
           <CustomText
             style={{
@@ -88,7 +88,7 @@ const SignIn = ({
             Sign in
           </CustomText>
         </LinearGradientButton>
-      </TouchableOpacity>
+      </Pressable>
       <CustomText
         onPress={forgetPassword}
         style={{

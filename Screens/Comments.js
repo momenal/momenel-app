@@ -2,7 +2,6 @@ import {
   View,
   StyleSheet,
   TextInput,
-  ScrollView,
   Dimensions,
   Keyboard,
   LayoutAnimation,
@@ -17,7 +16,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import KeyboardAccessoryView from "../app/components/KeyboardAccessoryView";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import { Pressable } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
 import StatusOverlay from "../app/components/StatusOverlay";
@@ -339,7 +338,7 @@ const Comments = ({ route, navigation }) => {
                   </View>
                 </View>
                 {(isKeyboardVisible || text.length > 0) && (
-                  <TouchableOpacity
+                  <Pressable
                     disabled={text.length <= 0 ? true : false}
                     onPress={() => postComment(text)}
                   >
@@ -348,7 +347,7 @@ const Comments = ({ route, navigation }) => {
                       size={scale(20)}
                       color={text.length <= 0 ? "gray" : "#8759F2"}
                     />
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
               </View>
             </View>

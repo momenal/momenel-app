@@ -1,6 +1,6 @@
 import { Video } from "expo-av";
 import { useRef, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";
 import { Ionicons } from "@expo/vector-icons";
@@ -65,7 +65,7 @@ const Media = ({ item, updateVideoDimensions }) => {
             }}
           />
 
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               if (showPauseIcon) {
                 setShowPauseIcon(false);
@@ -98,7 +98,7 @@ const Media = ({ item, updateVideoDimensions }) => {
               color="white"
               style={{ marginLeft: 2 }}
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       )}
     </View>

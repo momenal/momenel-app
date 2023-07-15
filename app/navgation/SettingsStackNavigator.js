@@ -1,7 +1,7 @@
 import React from "react";
 import Settings from "../../Screens/Settings";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AccountScreen from "../components/Settings/AccountScreen";
 import PersonalInfo from "../components/Settings/PersonalInfo";
@@ -17,7 +17,7 @@ import CustomText from "../components/customText/CustomText";
 const Stack = createNativeStackNavigator();
 
 const BackButton = ({ onPress }) => (
-  <TouchableOpacity
+  <Pressable
     onPress={onPress}
     style={{
       flexDirection: "row",
@@ -39,7 +39,7 @@ const BackButton = ({ onPress }) => (
     >
       Settings
     </CustomText>
-  </TouchableOpacity>
+  </Pressable>
 );
 
 const SettingsStackNavigator = ({ navigation }) => {

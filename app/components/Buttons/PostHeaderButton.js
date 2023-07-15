@@ -1,14 +1,10 @@
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import CustomText from "../customText/CustomText";
 import { scale } from "../../utils/Scale";
 
 const PostHeaderButton = ({ onPress, disabled, style }) => {
   return (
-    <TouchableOpacity
-      onPress={onPress || null}
-      style={style}
-      disabled={disabled}
-    >
+    <Pressable onPress={onPress || null} style={style} disabled={disabled}>
       <CustomText
         style={{
           fontFamily: "Nunito_700Bold",
@@ -18,7 +14,7 @@ const PostHeaderButton = ({ onPress, disabled, style }) => {
       >
         Post
       </CustomText>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { baseUrl } from "@env";
 import { supabase } from "../../app/lib/supabase";
 
@@ -178,7 +177,7 @@ const S1 = ({ navigation }) => {
             marginBottom: "10%",
           }}
         >
-          <TouchableOpacity
+          <Pressable
             disabled={
               username.length < 1 || !isUsernameAvailable || isLoading
                 ? true
@@ -198,7 +197,7 @@ const S1 = ({ navigation }) => {
                 {isLoading ? "Updating" : "Continue"}
               </CustomText>
             </LinearGradientButton>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Pressable>
       <StatusBar style="dark" animated={true} />

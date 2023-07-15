@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
-  TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
   LayoutAnimation,
@@ -102,7 +101,7 @@ const ChangeBirthday = ({ navigation }) => {
     return formattedDate;
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Pressable onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         {isLoading ? (
           <ActivityIndicator size="small" />
@@ -122,7 +121,7 @@ const ChangeBirthday = ({ navigation }) => {
               selectTextOnFocus={true}
               spellCheck={false}
             />
-            <TouchableOpacity
+            <Pressable
               style={{
                 width: "100%",
                 alignItems: "center",
@@ -151,11 +150,11 @@ const ChangeBirthday = ({ navigation }) => {
                   Update
                 </CustomText>
               </LinearGradientButton>
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 

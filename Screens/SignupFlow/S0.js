@@ -4,9 +4,8 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
-  StyleSheet,
   Pressable,
+  StyleSheet,
   Keyboard,
   Alert,
 } from "react-native";
@@ -165,7 +164,7 @@ const S0 = ({ navigation }) => {
           marginBottom: "10%",
         }}
       >
-        <TouchableOpacity
+        <Pressable
           onPress={handleSave}
           disabled={
             (getAge(`${year}/${month}/${day}`) >= 18 &&
@@ -187,7 +186,7 @@ const S0 = ({ navigation }) => {
           >
             <CustomText style={{ color: "white" }}>Continue</CustomText>
           </LinearGradientButton>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <StatusBar style="dark" animated={true} />
     </Pressable>

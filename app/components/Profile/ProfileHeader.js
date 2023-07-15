@@ -2,7 +2,6 @@ import { View, Dimensions, Platform, Pressable } from "react-native";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { memo, useMemo, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -198,7 +197,7 @@ const ProfileHeader = ({
             </View>
           )}
           {link && (
-            <TouchableOpacity
+            <Pressable
               onPress={() => handleLinkPressAsync(link)}
               style={{
                 marginTop: "2%",
@@ -224,7 +223,7 @@ const ProfileHeader = ({
               >
                 {link}
               </CustomText>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
         {/* right */}
@@ -311,7 +310,7 @@ const ProfileHeader = ({
         }}
       >
         {RouteName === "Profile" ? (
-          <TouchableOpacity
+          <Pressable
             onPress={() => navigation.navigate("EditProfile")}
             style={[
               {
@@ -328,9 +327,9 @@ const ProfileHeader = ({
             ]}
           >
             <CustomText style={{ color: "black" }}>Edit Profile</CustomText>
-          </TouchableOpacity>
+          </Pressable>
         ) : (
-          <TouchableOpacity
+          <Pressable
             onPress={handleFollow}
             style={[
               {
@@ -352,7 +351,7 @@ const ProfileHeader = ({
             <CustomText style={{ color: "black" }}>
               {isFollowing ? "Following" : "Follow"}
             </CustomText>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
 
@@ -392,7 +391,7 @@ const ProfileHeader = ({
             marginTop: 10,
           }}
         >
-          <TouchableOpacity
+          <Pressable
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -414,8 +413,8 @@ const ProfileHeader = ({
             >
               Block
             </CustomText>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -444,7 +443,7 @@ const ProfileHeader = ({
             >
               Report
             </CustomText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </BottomSheet>
     </View>

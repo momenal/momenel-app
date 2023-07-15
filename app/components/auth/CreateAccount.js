@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -161,7 +161,7 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         />
       </View>
 
-      <TouchableOpacity disabled={loading} onPress={() => signUpWithEmail()}>
+      <Pressable disabled={loading} onPress={() => signUpWithEmail()}>
         <LinearGradientButton style={{ width: "100%", borderRadius: 10 }}>
           <CustomText
             style={{
@@ -176,7 +176,7 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
             Create Account
           </CustomText>
         </LinearGradientButton>
-      </TouchableOpacity>
+      </Pressable>
       <View
         style={{
           flexDirection: "row",

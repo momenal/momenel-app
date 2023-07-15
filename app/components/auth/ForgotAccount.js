@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Keyboard,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Keyboard, StyleSheet, Pressable, View } from "react-native";
 import React, { useState } from "react";
 import CustomText from "../customText/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -82,7 +76,7 @@ const ForgotAccount = ({ setShowForgotPasswordBottomSheet }) => {
         autoComplete="email"
         autoCapitalize="none"
       />
-      <TouchableOpacity disabled={loading} onPress={() => resetPassword()}>
+      <Pressable disabled={loading} onPress={() => resetPassword()}>
         <LinearGradientButton style={{ width: "100%", borderRadius: 10 }}>
           <CustomText
             style={{
@@ -97,7 +91,7 @@ const ForgotAccount = ({ setShowForgotPasswordBottomSheet }) => {
             Reset Password
           </CustomText>
         </LinearGradientButton>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

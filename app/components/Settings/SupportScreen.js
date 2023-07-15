@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Alert } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
 import CustomText from "../customText/CustomText";
 import { composeAsync } from "expo-mail-composer";
@@ -64,7 +64,7 @@ const SupportScreen = () => {
           Our team is here to help. If you have any questions or issues, please
           press the button below to send us an email.
         </CustomText>
-        <TouchableOpacity
+        <Pressable
           style={{
             backgroundColor: "#007aff",
             padding: "5%",
@@ -80,7 +80,7 @@ const SupportScreen = () => {
           >
             Email us {"\u2794"}
           </CustomText>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <View
@@ -100,7 +100,7 @@ const SupportScreen = () => {
         >
           If the button above does not work, please send an email to:
         </CustomText>
-        <TouchableOpacity onPress={handleCopyEmail}>
+        <Pressable onPress={handleCopyEmail}>
           <CustomText
             style={{
               color: "#007aff",
@@ -109,7 +109,7 @@ const SupportScreen = () => {
           >
             hello@momenel.com
           </CustomText>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

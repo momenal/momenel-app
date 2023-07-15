@@ -1,4 +1,4 @@
-import { ScrollView, Button, TouchableOpacity } from "react-native";
+import { ScrollView, Pressable } from "react-native";
 import SettingsTab from "../app/components/Settings/SettingsTab";
 import { supabase } from "../app/lib/supabase";
 import CustomText from "../app/components/customText/CustomText";
@@ -31,7 +31,7 @@ const Settings = ({ navigation }) => {
         onPress={() => navigation.navigate("Invite")}
       />
 
-      <TouchableOpacity
+      <Pressable
         onPress={() => supabase.auth.signOut()}
         style={{
           flexDirection: "row",
@@ -56,7 +56,7 @@ const Settings = ({ navigation }) => {
         >
           Logout
         </CustomText>
-      </TouchableOpacity>
+      </Pressable>
     </ScrollView>
   );
 };

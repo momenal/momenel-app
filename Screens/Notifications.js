@@ -4,7 +4,6 @@ import {
   Pressable,
   View,
   RefreshControl,
-  TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
@@ -94,7 +93,7 @@ const Notifications = ({ navigation }) => {
   const scaledHeight = useMemo(() => scale(30), []);
   const renderItem = ({ item, index, isRead, type }) => {
     return (
-      <TouchableOpacity
+      <Pressable
         style={[
           {
             paddingHorizontal: "2%",
@@ -174,7 +173,7 @@ const Notifications = ({ navigation }) => {
             </CustomText>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
   return (

@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -11,7 +11,7 @@ const ReportSelect = ({
   description,
 }) => {
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -60,7 +60,7 @@ const ReportSelect = ({
           <Ionicons name="checkmark-sharp" size={17} color="#8E8E8E" />
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

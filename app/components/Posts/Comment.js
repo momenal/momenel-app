@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Animated, Dimensions, Pressable, View } from "react-native";
 import { Image } from "expo-image";
 import React, { useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
@@ -33,7 +27,7 @@ const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {
   });
   return (
     <>
-      <TouchableOpacity onPress={() => handleDelete(commentId)}>
+      <Pressable onPress={() => handleDelete(commentId)}>
         <View
           style={{
             flex: 1,
@@ -62,7 +56,7 @@ const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {
             Archive
           </Animated.Text> */}
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </>
   );
 };
@@ -83,7 +77,7 @@ const RightActions = (progress, dragX, navigation, commentId, username) => {
 
   return (
     <>
-      <TouchableOpacity onPress={handleReport}>
+      <Pressable onPress={handleReport}>
         <View
           style={{
             flex: 1,
@@ -102,7 +96,7 @@ const RightActions = (progress, dragX, navigation, commentId, username) => {
             }}
           />
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </>
   );
 };
@@ -234,7 +228,7 @@ const Comment = ({
             backgroundColor: "#fff",
           }}
         >
-          <TouchableOpacity
+          <Pressable
             style={{
               backgroundColor: "white",
               width: 34,
@@ -259,7 +253,7 @@ const Comment = ({
                 style={{ flex: 1, width: undefined, height: undefined }}
               />
             )}
-          </TouchableOpacity>
+          </Pressable>
           <View style={{ flex: 1, marginLeft: "2%" }}>
             <View
               style={{
@@ -268,7 +262,7 @@ const Comment = ({
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
                   navigation.navigate("UserProfile", { id: username })
                 }
@@ -280,8 +274,8 @@ const Comment = ({
                 >
                   {username}
                 </GradientText>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </Pressable>
+              <Pressable
                 onPress={handleLike}
                 style={{ flexDirection: "row", alignItems: "center" }}
               >
@@ -296,10 +290,10 @@ const Comment = ({
                     {kFormatter(likeCount)}
                   </CustomText>
                 )}
-                <TouchableOpacity onPress={handleLike}>
+                <Pressable onPress={handleLike}>
                   <Heart isLiked={isLikedS} onPress={handleLike} size={15} />
-                </TouchableOpacity>
-              </TouchableOpacity>
+                </Pressable>
+              </Pressable>
             </View>
             <View style={{ marginVertical: "1%" }}>
               <StructuredText

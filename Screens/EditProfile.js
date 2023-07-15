@@ -14,7 +14,6 @@ import { scale } from "../app/utils/Scale";
 import { useHeaderHeight } from "@react-navigation/elements";
 import CustomText from "../app/components/customText/CustomText";
 import CustomTextInput from "../app/components/Profile/CustomTextInput";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../app/lib/supabase";
@@ -437,7 +436,7 @@ const EditProfile = ({ navigation }) => {
                   marginTop: -scaledSize / 3,
                 }}
               >
-                <TouchableOpacity
+                <Pressable
                   style={{
                     width: scale(25),
                     height: scale(25),
@@ -450,8 +449,8 @@ const EditProfile = ({ navigation }) => {
                   onPress={removeProfileImage}
                 >
                   <Ionicons name="trash" size={scale(18)} color="red" />
-                </TouchableOpacity>
-                <TouchableOpacity
+                </Pressable>
+                <Pressable
                   style={{
                     width: scale(25),
                     height: scale(25),
@@ -464,7 +463,7 @@ const EditProfile = ({ navigation }) => {
                   onPress={pickProfileImage}
                 >
                   <Ionicons name="camera" size={scale(18)} color="black" />
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           )}
@@ -510,7 +509,7 @@ const EditProfile = ({ navigation }) => {
               errors={Errors}
             />
           </View>
-          <TouchableOpacity
+          <Pressable
             style={{ width: "100%", paddingHorizontal: "10%", marginTop: "6%" }}
             disabled={!isChanged || username === "" || Errors.length > 0}
             onPress={handleSubmit}
@@ -520,7 +519,7 @@ const EditProfile = ({ navigation }) => {
             >
               <CustomText style={{ color: "white" }}>Save</CustomText>
             </LinearGradientButton>
-          </TouchableOpacity>
+          </Pressable>
         </ScrollView>
       )}
     </KeyboardAvoidingView>

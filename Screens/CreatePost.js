@@ -7,7 +7,6 @@ import {
   Pressable,
   ScrollView,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { Image } from "expo-image";
@@ -435,15 +434,12 @@ const CreatePost = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{ marginRight: "15%" }}
-            >
+            <Pressable onPress={pickImage} style={{ marginRight: "15%" }}>
               <Ionicons name="images" size={scale(18)} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={pickVideo}>
+            </Pressable>
+            <Pressable onPress={pickVideo}>
               <Ionicons name="ios-videocam" size={scale(19)} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           {isKeyboardVisible && (
             <Pressable onPress={Keyboard.dismiss}>

@@ -5,7 +5,7 @@ import Report from "../../Screens/Report";
 import Zoom from "../../Screens/Zoom";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import ByUserList from "../../Screens/ByUserList";
 import Comments from "../../Screens/Comments";
 import CreatePost from "../../Screens/CreatePost";
@@ -66,7 +66,7 @@ const StackNavigator = ({}) => {
           gestureEnabled: false,
 
           headerLeft: () => (
-            <TouchableOpacity
+            <Pressable
               style={{
                 marginRight: 10,
                 justifyContent: "flex-end",
@@ -76,7 +76,7 @@ const StackNavigator = ({}) => {
               onPress={() => navigation.goBack()}
             >
               <Ionicons name="close" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           ),
           headerRight: () => (
             <View style={{ flexDirection: "row" }}>
@@ -89,8 +89,8 @@ const StackNavigator = ({}) => {
         name="Zoom"
         component={Zoom}
         options={{
-          headerLeft: (props) => (
-            <TouchableOpacity
+          headerLeft: () => (
+            <Pressable
               style={{
                 marginRight: 10,
                 justifyContent: "flex-end",
@@ -100,7 +100,7 @@ const StackNavigator = ({}) => {
               onPress={() => navigation.goBack()}
             >
               <Ionicons name="close" size={24} color="white" />
-            </TouchableOpacity>
+            </Pressable>
           ),
 
           gestureDirection: "vertical",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Pressable, ActivityIndicator, Alert } from "react-native";
 import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";
 import CustomText from "../customText/CustomText";
@@ -116,7 +116,7 @@ const BlockedAccounts = ({ navigation }) => {
           data={blockedAccounts}
           estimatedItemSize={87}
           renderItem={({ item: account }) => (
-            <TouchableOpacity
+            <Pressable
               onPress={() =>
                 navigation.navigate("UserProfile", {
                   id: account.profile.username,
@@ -144,7 +144,7 @@ const BlockedAccounts = ({ navigation }) => {
                   <CustomText>{account.profile.username}</CustomText>
                 </View>
                 <View style={{ flex: 1 }} />
-                <TouchableOpacity
+                <Pressable
                   onPress={() => handleBlock(account.blocked_id)}
                   style={[
                     {
@@ -167,9 +167,9 @@ const BlockedAccounts = ({ navigation }) => {
                   >
                     {account.isBlocked ? "Unblock" : "Block"}
                   </CustomText>
-                </TouchableOpacity>
+                </Pressable>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           )}
         />
       )}

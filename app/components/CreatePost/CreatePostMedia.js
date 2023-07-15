@@ -1,9 +1,4 @@
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  LayoutAnimation,
-} from "react-native";
+import { View, FlatList, Pressable, LayoutAnimation } from "react-native";
 import { useCallback } from "react";
 import Media from "./Media";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,7 +9,7 @@ const CreatePostMedia = ({ data, onRemove, updateVideoDimensions }) => {
   const renderItem = ({ item }) => (
     <View>
       <Media item={item} updateVideoDimensions={updateVideoDimensions} />
-      <TouchableOpacity
+      <Pressable
         style={{
           width: "20%",
           paddingTop: 2,
@@ -26,7 +21,7 @@ const CreatePostMedia = ({ data, onRemove, updateVideoDimensions }) => {
         }}
       >
         <Ionicons name="ios-close-circle" size={scale(20)} color="#8355E9" />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
   return (
