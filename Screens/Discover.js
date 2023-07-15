@@ -28,7 +28,7 @@ const Discover = ({ navigation }) => {
   const [followingHashtags, setFollowingHashtags] = useState([]);
   const [postsData, setPostsData] = useState([]);
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(10);
+  const [to, setTo] = useState(30);
 
   useEffect(() => {
     fetchPosts();
@@ -44,11 +44,10 @@ const Discover = ({ navigation }) => {
     }
 
     //get posts ids in format ids=1,2,3,4,5
-    let ids = postsData.map((p) => p.post.id).join(",");
-    // only keep last 10 ids
-    ids = ids.split(",").slice(-10).join(",");
-    //to string
-    ids = ids.toString();
+    const ids = postsData
+      .slice(-10)
+      .map((p) => p.post.id)
+      .join(",");
     // post like to api
     let response = await fetch(
       `${baseUrl}/feed/discover/${from === 0 ? null : ids}/${from}/${to}`,
@@ -67,11 +66,10 @@ const Discover = ({ navigation }) => {
     }
 
     response = await response.json();
-    setTrendingHashtags(response.trendingHashtags);
-    setFollowingHashtags(response.followingHashtags);
-
     if (from === 0) {
       setPostsData([...response.posts]);
+      setTrendingHashtags(response.trendingHashtags);
+      setFollowingHashtags(response.followingHashtags);
     } else if (response.posts.length === 0) {
       setShowFooter(false);
     } else {
@@ -86,8 +84,8 @@ const Discover = ({ navigation }) => {
   };
 
   const fetchMorePosts = () => {
-    let newFrom = from + 11;
-    let newTo = to + 10;
+    let newFrom = to;
+    let newTo = to + 30;
 
     setFrom(newFrom);
     setTo(newTo);
@@ -265,36 +263,32 @@ const Discover = ({ navigation }) => {
     </View>
   );
 
-  const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width, createdAt }) => {
-      let scaledHeight = CalcHeight(width, height);
-
-      return (
-        <Post
-          isPublished={true}
-          navigation={navigation}
-          postId={item.post.id}
-          index={index}
-          likes={item.post.likes[0].count}
-          comments={item.post.comments[0].count}
-          reposts={item.post.reposts[0].count}
-          repost={false} // discover page does not have reposted posts
-          profileUrl={item.post.user?.profile_url}
-          username={item.post.user?.username}
-          name={item.post.user?.name}
-          createdAt={createdAt}
-          posts={item.post.content ? item.post.content : []}
-          caption={item.post.caption}
-          height={scaledHeight}
-          handleLike={handleLike}
-          handleRepost={handleRepost}
-          isLiked={isLiked}
-          isReposted={isReposted}
-        />
-      );
-    },
-    [postsData]
-  );
+  const renderItem = ({ item, index }) => {
+    return (
+      <Post
+        isPublished={true}
+        navigation={navigation}
+        postId={item.post.id}
+        index={index}
+        likes={item.post.likes[0].count}
+        comments={item.post.comments[0].count}
+        reposts={item.post.reposts[0].count}
+        repost={false} // discover page does not have reposted posts
+        profileUrl={item.post.user?.profile_url}
+        username={item.post.user?.username}
+        name={item.post.user?.name}
+        createdAt={item.post.created_at}
+        posts={item.post.content ? item.post.content : []}
+        caption={item.post.caption}
+        height={item.post.content.length > 0 ? item.post.content[0].height : 0}
+        width={item.post.content.length > 0 ? item.post.content[0].width : 0}
+        handleLike={handleLike}
+        handleRepost={handleRepost}
+        isLiked={item.isLiked}
+        isReposted={item.isReposted}
+      />
+    );
+  };
 
   const renderListFooter = useCallback(
     <View
@@ -327,7 +321,7 @@ const Discover = ({ navigation }) => {
       </SafeAreaView>
     );
   }
-
+  const keyExtractor = (item) => item.post.id;
   return (
     <View
       style={{
@@ -373,23 +367,8 @@ const Discover = ({ navigation }) => {
         <FlashList
           data={postsData}
           estimatedItemSize={233}
-          keyExtractor={(item) => {
-            return item.post.id;
-          }}
-          renderItem={({ item, index }) =>
-            renderItem({
-              item,
-              index,
-              isLiked: item.isLiked,
-              isReposted: item.isReposted,
-              postId: item.post.id,
-              width:
-                item.post.content?.length > 0 ? item.post.content[0].width : 0,
-              height:
-                item.post.content?.length > 0 ? item.post.content[0].height : 0,
-              createdAt: item.post.created_at,
-            })
-          }
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
           ListHeaderComponent={renderHeader}
           ListHeaderComponentStyle={{
             paddingTop: 5,
@@ -404,8 +383,7 @@ const Discover = ({ navigation }) => {
           ListFooterComponent={renderListFooter}
           showsVerticalScrollIndicator={false}
           onEndReached={fetchMorePosts}
-          onEndReachedThreshold={0.5}
-          keyboardDismissMode="on-drag"
+          onEndReachedThreshold={0.1}
         />
       )}
       <StatusBar style="dark" />
