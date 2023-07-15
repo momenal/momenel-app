@@ -42,6 +42,15 @@ export const createNotificationsSlice = (set, get) => ({
     if (notifications.length < 1) {
       return;
     }
+
+    const hasUnreadNotification = notifications.some(
+      (notification) => !notification.isRead
+    );
+
+    if (hasUnreadNotification) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      set(() => ({ newNotifications: true }));
+    }
     notifications.forEach((notification) => {
       if (notification.isRead != true) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);

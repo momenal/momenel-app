@@ -15,9 +15,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/45a1b78d-b958-4078-9413-4e1dfd455925"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.momenel.privacyfirstsocialnetwork"
@@ -27,9 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.momenel.privacyfirstsocialnetwork"
     },
     "web": {

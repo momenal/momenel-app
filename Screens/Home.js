@@ -29,10 +29,14 @@ const Home = ({ navigation }) => {
 
   const fetchNotificationsIntervalDelay = 120000;
   const fetchNotificationsCallback = useCallback(() => {
-    fetchNotifications({ isRefreshing: true });
+    fetchNotifications({ isRefreshing: false });
   }, [fetchNotifications]);
 
   useEffect(() => {
+    // Initial fetch on render
+    fetchNotifications({ isRefreshing: true });
+
+    // Fetch notifications every 2 minutes
     const intervalId = setInterval(
       fetchNotificationsCallback,
       fetchNotificationsIntervalDelay
@@ -41,7 +45,7 @@ const Home = ({ navigation }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [fetchNotificationsCallback]);
+  }, [fetchNotifications, fetchNotificationsCallback]);
 
   const fetchPosts = async () => {
     if (!showFooter && from !== 0) {
