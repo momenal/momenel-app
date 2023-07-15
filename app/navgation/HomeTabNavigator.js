@@ -37,6 +37,7 @@ const HomeNavigator = ({ navigation }) => {
         name="Feed"
         component={Home}
         options={{
+          unmountOnBlur: false,
           header: () => {
             return <Header navigation={navigation} />;
           },

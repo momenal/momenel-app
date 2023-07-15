@@ -27,7 +27,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 
 const Comments = ({ route, navigation }) => {
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(20);
+  const [to, setTo] = useState(30);
   const [isFirst, setIsFirst] = useState(true);
   const { postId, comment_id } = route.params;
   const [comments, setComments] = useState(null);
@@ -78,25 +78,26 @@ const Comments = ({ route, navigation }) => {
       return alert("Something went wrong");
     }
 
-    setIsRefreshing(false);
     let comments = await response.json();
     setShowFooter(false);
-    if (from === 0) {
-      setComments(comments);
-    } else {
-      setComments((prev) => [...prev, ...comments]);
-    }
+    setIsRefreshing(false);
+    setComments((prevComments) => {
+      if (from === 0) {
+        return comments;
+      }
+      return [...prevComments, ...comments];
+    });
   }
 
   const handleRefresh = () => {
     setFrom(0);
-    setTo(20);
+    setTo(30);
     setIsRefreshing(true);
   };
 
   const fetchMorePosts = () => {
     setFrom(to);
-    setTo(to + 20);
+    setTo(to + 30);
   };
 
   async function postComment(txt) {
@@ -173,12 +174,12 @@ const Comments = ({ route, navigation }) => {
   };
 
   const renderItem = useCallback(
-    ({ item, username }) => {
+    ({ item }) => {
       return (
         <Comment
           navigation={navigation}
           commentId={item.id}
-          username={username}
+          username={item.user.username}
           profile_url={item.user.profile_url}
           likes={item.likes}
           time={item.created_at}
@@ -219,12 +220,7 @@ const Comments = ({ route, navigation }) => {
           ref={flatListRef}
           data={comments}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) =>
-            renderItem({
-              item,
-              username: item.user.username,
-            })
-          }
+          renderItem={renderItem}
           ListEmptyComponent={() => {
             return (
               <View
