@@ -43,16 +43,6 @@ const Home = ({ navigation }) => {
     };
   }, [fetchNotificationsCallback]);
 
-  // useEffect(() => {
-  //   fetchNotifications({ isRefreshing: false });
-  // }, []);
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     fetchNotifications({ isRefreshing: true });
-  //   }, 120000); // fetch notifications every 2 minute
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
   const fetchPosts = async () => {
     if (!showFooter && from !== 0) {
       return;
