@@ -175,25 +175,26 @@ const SinglePost = ({ navigation }) => {
 
   const renderItem = useCallback(
     ({ item, index }) => {
-      let tempPost = item.type === "post" ? item : item.post;
+      let tempPost = params.type === "post" ? item : item.post;
+
       return (
         <Post
-          height={tempPost.content.length > 0 ? tempPost.content[0].height : 0}
-          width={tempPost.content.length > 0 ? tempPost.content[0].width : 0}
+          height={tempPost?.content.length > 0 ? tempPost.content[0].height : 0}
+          width={tempPost?.content.length > 0 ? tempPost.content[0].width : 0}
           isPublished={true}
           navigation={navigation}
-          postId={tempPost.id}
+          postId={tempPost?.id}
           index={index}
-          likes={tempPost.likes[0].count}
-          comments={tempPost.comments[0].count}
-          reposts={tempPost.reposts[0].count}
+          likes={tempPost?.likes[0].count}
+          comments={tempPost?.comments[0].count}
+          reposts={tempPost?.reposts[0].count}
           repost={item.repostedBy}
           profileUrl={tempPost.user?.profile_url}
-          username={tempPost.user?.username}
-          name={tempPost.user?.name}
+          username={tempPost?.user?.username}
+          name={tempPost?.user?.name}
           createdAt={item.created_at}
-          posts={tempPost.content ? tempPost.content : []}
-          caption={tempPost.caption}
+          posts={tempPost?.content ? tempPost.content : []}
+          caption={tempPost?.caption}
           handleLike={handleLike}
           handleRepost={handleRepost}
           isLiked={item.isLiked}
