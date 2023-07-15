@@ -24,19 +24,34 @@ const Home = ({ navigation }) => {
   const [to, setTo] = useState(10);
 
   useEffect(() => {
-    fetchNotifications({ isRefreshing: false });
-  }, []);
-
-  useEffect(() => {
     fetchPosts();
   }, [from, to, isRefreshing]);
 
+  const fetchNotificationsIntervalDelay = 120000;
+  const fetchNotificationsCallback = useCallback(() => {
+    fetchNotifications({ isRefreshing: true });
+  }, [fetchNotifications]);
+
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchNotifications({ isRefreshing: true });
-    }, 120000); // fetch notifications every 2 minute
-    return () => clearInterval(intervalId);
-  }, []);
+    const intervalId = setInterval(
+      fetchNotificationsCallback,
+      fetchNotificationsIntervalDelay
+    );
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [fetchNotificationsCallback]);
+
+  // useEffect(() => {
+  //   fetchNotifications({ isRefreshing: false });
+  // }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     fetchNotifications({ isRefreshing: true });
+  //   }, 120000); // fetch notifications every 2 minute
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const fetchPosts = async () => {
     if (!showFooter && from !== 0) {
