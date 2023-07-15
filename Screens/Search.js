@@ -1,10 +1,10 @@
 import {
   View,
-  TouchableOpacity,
   FlatList,
   ActivityIndicator,
   RefreshControl,
   Keyboard,
+  Pressable,
 } from "react-native";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
@@ -17,7 +17,6 @@ import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
-import { CalcHeight } from "../app/utils/CalcHeight";
 import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
 import { Alert } from "react-native";
@@ -33,7 +32,7 @@ const Search = ({ navigation, route }) => {
   const [showFooter, setShowFooter] = useState(false);
   const [postsData, setPostsData] = useState([]);
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(10);
+  const [to, setTo] = useState(30);
 
   useEffect(() => {
     if (query) {
@@ -56,8 +55,8 @@ const Search = ({ navigation, route }) => {
   }, [search, from, to]);
 
   const fetchMorePosts = () => {
-    let newFrom = from + 10;
-    let newTo = to + 10;
+    let newFrom = to;
+    let newTo = to + 30;
 
     setFrom(newFrom);
     setTo(newTo);
@@ -126,17 +125,26 @@ const Search = ({ navigation, route }) => {
       return;
     }
     response = await response.json();
-    setQueryResults({
-      title: search,
-      id: response.hashtagId,
-      isFollowing: response.isFollowing,
+    setQueryResults((prevResults) => {
+      if (
+        prevResults.title !== search ||
+        prevResults.id !== response.hashtagId ||
+        prevResults.isFollowing !== response.isFollowing
+      ) {
+        return {
+          title: search,
+          id: response.hashtagId,
+          isFollowing: response.isFollowing,
+        };
+      }
+      return prevResults;
     });
     if (from === 0) {
       setPostsData([...response.posts]);
     } else if (response.posts.length === 0) {
       setShowFooter(false);
     } else {
-      setPostsData([...postsData, ...response.posts]);
+      setPostsData((prevPosts) => [...prevPosts, ...response.posts]);
     }
     setRefreshing(false);
     setIsFetching(false);
@@ -158,26 +166,41 @@ const Search = ({ navigation, route }) => {
   };
 
   const renderItem = useCallback(
-    ({ item, index, isLiked, isReposted, height, width, createdAt }) => {
-      let scaledHeight = CalcHeight(width, height);
-
+    ({ item, index }) => {
+      const {
+        post: {
+          id: postId,
+          likes: [{ count: likes }],
+          comments: [{ count: comments }],
+          reposts: [{ count: reposts }],
+          user: { profile_url: profileUrl, username, name },
+          created_at: createdAt,
+          content,
+          caption,
+        },
+        isLiked,
+        isReposted,
+      } = item;
+      const height = content?.length > 0 ? content[0].height : 0;
+      const width = content?.length > 0 ? content[0].width : 0;
       return (
         <Post
           isPublished={true}
           navigation={navigation}
-          postId={item.post.id}
+          postId={postId}
           index={index}
-          likes={item.post.likes[0].count}
-          comments={item.post.comments[0].count}
-          reposts={item.post.reposts[0].count}
-          repost={false} // discover page does not have reposted posts
-          profileUrl={item.post.user?.profile_url}
-          username={item.post.user?.username}
-          name={item.post.user?.name}
+          likes={likes}
+          comments={comments}
+          reposts={reposts}
+          repost={false}
+          profileUrl={profileUrl}
+          username={username}
+          name={name}
           createdAt={createdAt}
-          posts={item.post.content ? item.post.content : []}
-          caption={item.post.caption}
-          height={scaledHeight}
+          posts={content || []}
+          caption={caption}
+          height={height}
+          width={width}
           handleLike={handleLike}
           handleRepost={handleRepost}
           isLiked={isLiked}
@@ -200,7 +223,6 @@ const Search = ({ navigation, route }) => {
       ]}
     >
       {showFooter && <ActivityIndicator color="#0000ff" />}
-      {/* {!showFooter && <CustomText>You are all caught up 😀</CustomText>} */}
     </View>,
     [showFooter]
   );
@@ -211,6 +233,7 @@ const Search = ({ navigation, route }) => {
       navigation.navigate("Login");
     }
     // handle like confirmation before sending to the backend
+
     const updatedPosts = postsData.map((p) => {
       if (p.post.id === postId) {
         if (p.isLiked) {
@@ -352,72 +375,69 @@ const Search = ({ navigation, route }) => {
   };
 
   const renderHeader = () => {
+    if (!queryResults || isFetching || suggestions.length > 0) {
+      return null;
+    }
+
+    const followButtonStyle = queryResults.isFollowing
+      ? {
+          backgroundColor: "#ccc",
+          width: "30%",
+          height: scale(30),
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 5,
+          paddingVertical: 5,
+        }
+      : { width: "20%" };
+
     return (
-      <>
-        {queryResults && suggestions.length === 0 && !isFetching && (
-          <View style={{ marginHorizontal: "5%", marginTop: "2%" }}>
+      <View style={{ marginHorizontal: "5%", marginTop: "1%" }}>
+        <CustomText
+          numberOfLines={1}
+          style={{
+            fontFamily: "Nunito_700Bold",
+            fontSize: scale(16),
+            marginBottom: "2%",
+          }}
+        >
+          #{queryResults.title}
+        </CustomText>
+        <Pressable onPress={handleHashtagFollow} style={followButtonStyle}>
+          {queryResults.isFollowing ? (
             <CustomText
               numberOfLines={1}
               style={{
                 fontFamily: "Nunito_700Bold",
-                fontSize: scale(17),
-                marginBottom: "2%",
+                fontSize: scale(12),
               }}
             >
-              #{queryResults.title}
+              Following
             </CustomText>
-            <TouchableOpacity
-              onPress={handleHashtagFollow}
-              style={
-                queryResults.isFollowing
-                  ? {
-                      backgroundColor: "#ccc",
-                      width: "30%",
-                      height: scale(30),
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 5,
-                      paddingVertical: 5,
-                    }
-                  : { width: "20%" }
-              }
+          ) : (
+            <LinearGradientButton
+              style={{ borderRadius: 5, height: scale(30) }}
             >
-              {queryResults.isFollowing ? (
-                <CustomText
-                  numberOfLines={1}
-                  style={{
-                    fontFamily: "Nunito_700Bold",
-                    fontSize: scale(12),
-                  }}
-                >
-                  Following
-                </CustomText>
-              ) : (
-                <LinearGradientButton
-                  style={{ borderRadius: 5, height: scale(30) }}
-                >
-                  <CustomText
-                    numberOfLines={1}
-                    style={{
-                      fontFamily: "Nunito_700Bold",
-                      fontSize: scale(12),
-                      color: "white",
-                    }}
-                  >
-                    Follow
-                  </CustomText>
-                </LinearGradientButton>
-              )}
-            </TouchableOpacity>
-          </View>
-        )}
-      </>
+              <CustomText
+                numberOfLines={1}
+                style={{
+                  fontFamily: "Nunito_700Bold",
+                  fontSize: scale(12),
+                  color: "white",
+                }}
+              >
+                Follow
+              </CustomText>
+            </LinearGradientButton>
+          )}
+        </Pressable>
+      </View>
     );
   };
 
   const handleRefresh = () => {
     setFrom(0);
-    setTo(10);
+    setTo(30);
     setRefreshing(true);
     setShowFooter(true);
   };
@@ -469,7 +489,7 @@ const Search = ({ navigation, route }) => {
             placeholderTextColor="#999999"
           />
         </View>
-        <TouchableOpacity onPress={() => navigation.pop()}>
+        <Pressable onPress={() => navigation.pop()}>
           <CustomText
             style={{
               fontFamily: "Nunito_600SemiBold",
@@ -479,7 +499,7 @@ const Search = ({ navigation, route }) => {
           >
             Cancel
           </CustomText>
-        </TouchableOpacity>
+        </Pressable>
       </SafeAreaView>
       {suggestions.length > 0 ? (
         <View
@@ -508,20 +528,7 @@ const Search = ({ navigation, route }) => {
           keyExtractor={(item) => {
             return item.id;
           }}
-          renderItem={({ item, index }) =>
-            renderItem({
-              item,
-              index,
-              isLiked: item.isLiked,
-              isReposted: item.isReposted,
-              postId: item.post.id,
-              width:
-                item.post.content?.length > 0 ? item.post.content[0].width : 0,
-              height:
-                item.post.content?.length > 0 ? item.post.content[0].height : 0,
-              createdAt: item.post.created_at,
-            })
-          }
+          renderItem={renderItem}
           ListHeaderComponent={renderHeader}
           ListHeaderComponentStyle={{
             paddingTop: 5,
@@ -554,7 +561,7 @@ const Suggestion = ({
   setQueryResults,
 }) => {
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         paddingVertical: 10,
         paddingHorizontal: 20,
@@ -569,7 +576,7 @@ const Suggestion = ({
           Keyboard.dismiss();
           onChangeText("#" + item.hashtag);
           setFrom(0);
-          setTo(10);
+          setTo(30);
           setSearch(item.hashtag);
           setQueryResults({ title: item.hashtag });
         }
@@ -623,7 +630,7 @@ const Suggestion = ({
           #{item.hashtag}
         </CustomText>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
