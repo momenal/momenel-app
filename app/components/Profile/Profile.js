@@ -84,13 +84,7 @@ const Profile = ({ navigation }) => {
       setProfile(response.profile);
       setData([...response.posts]);
     } else {
-      // REMOVE DUPLICATES IF item.type + item.id already exists
-      let filtered = response.posts.filter(
-        (item) =>
-          !data.some((item2) => item.type + item.id === item2.type + item2.id)
-      );
-
-      setData((prev) => [...prev, ...filtered]);
+      setData((prev) => [...prev, ...response.posts]);
     }
 
     setShowFooter(false);
@@ -345,66 +339,80 @@ const Profile = ({ navigation }) => {
     setDeleteCounter(deleteCounter + 1);
   };
 
-  const renderItem = useCallback(
-    ({
-      item,
-      index,
-      isLiked,
-      isReposted,
-      height,
-      width,
-      createdAt,
+  // renderItem({
+  //   item,
+  //   index,
+  //   isLiked: item.isLiked,
+  //   isReposted: item.isReposted,
+  //   postId: item.type === "repost" ? item.post.id : item.id,
+  //   type: item.type,
+  //   createdAt: item.created_at,
+  // })
 
-      type,
-      isPublished,
-    }) => {
-      let scaledHeight = CalcHeight(width, height);
-      let tempPost = type === "post" ? item : item.post;
-      return (
-        <Post
-          navigation={navigation}
-          postId={tempPost.id}
-          index={index}
-          likes={tempPost.likes[0].count}
-          comments={tempPost.comments[0].count}
-          reposts={tempPost.reposts[0].count}
-          repost={item.repostedBy}
-          profileUrl={tempPost.user?.profile_url}
-          username={tempPost.user?.username}
-          name={tempPost.user?.name}
-          createdAt={createdAt}
-          posts={tempPost.content ? tempPost.content : []}
-          caption={tempPost.caption}
-          height={scaledHeight}
-          handleLike={handleLike}
-          handleRepost={handleRepost}
-          onDeletePress={onDeletePress}
-          isLiked={isLiked}
-          isReposted={isReposted}
-          isPublished={isPublished}
-        />
-      );
-    },
-    [data]
-  );
+  const renderItem = useCallback(({ item, index }) => {
+    let width =
+      item.type === "repost" && item.post.content?.length > 0
+        ? item.post.content[0].width
+        : item.type === "post" && item.content?.length > 0
+        ? item.content[0].width
+        : 0;
+    let height =
+      item.type === "repost" && item.post.content?.length > 0
+        ? item.post.content[0].height
+        : item.type === "post" && item.content?.length > 0
+        ? item.content[0].height
+        : 0;
+    let scaledHeight = CalcHeight(width, height);
+    let tempPost = item.type === "post" ? item : item.post;
+    return (
+      <Post
+        navigation={navigation}
+        postId={tempPost.id}
+        index={index}
+        likes={tempPost.likes[0].count}
+        comments={tempPost.comments[0].count}
+        reposts={tempPost.reposts[0].count}
+        repost={item.repostedBy}
+        profileUrl={tempPost.user?.profile_url}
+        username={tempPost.user?.username}
+        name={tempPost.user?.name}
+        createdAt={item.created_at}
+        posts={tempPost.content ? tempPost.content : []}
+        caption={tempPost.caption}
+        height={scaledHeight}
+        handleLike={handleLike}
+        handleRepost={handleRepost}
+        isLiked={item.isLiked}
+        isReposted={item.isReposted}
+        isPublished={item.type === "post" ? item.published : true}
+      />
+    );
+  }, []);
 
-  const renderListFooter = useCallback(
-    <View
-      style={[
-        {
-          height: 60,
-          alignItems: "center",
+  const renderListEmpty = () => {
+    return (
+      <View
+        style={{
+          backgroundColor: "white",
           justifyContent: "center",
-        },
-        !showFooter && { marginTop: -15 },
-      ]}
-    >
-      {showFooter && <ActivityIndicator color="#0000ff" />}
-    </View>,
-    [showFooter]
-  );
+          alignItems: "center",
+          marginTop: "5%",
+        }}
+      >
+        <CustomText
+          style={{
+            fontSize: 20,
+            textAlign: "center",
+            marginHorizontal: "4%",
+          }}
+        >
+          No Posts
+        </CustomText>
+      </View>
+    );
+  };
 
-  const keyExtractor = useCallback((item, index) => item.type + item.id, []);
+  const keyExtractor = (item) => item.type + item.id;
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -526,50 +534,8 @@ const Profile = ({ navigation }) => {
           data={data}
           estimatedItemSize={100}
           keyExtractor={keyExtractor}
-          ListEmptyComponent={() => (
-            <View
-              style={{
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "5%",
-              }}
-            >
-              <CustomText
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginHorizontal: "4%",
-                }}
-              >
-                No Posts Yet
-              </CustomText>
-            </View>
-          )}
-          renderItem={({ item, index }) =>
-            renderItem({
-              item,
-              index,
-              isLiked: item.isLiked,
-              isReposted: item.isReposted,
-              postId: item.type === "repost" ? item.post.id : item.id,
-              type: item.type,
-              width:
-                item.type === "repost" && item.post.content?.length > 0
-                  ? item.post.content[0].width
-                  : item.type === "post" && item.content?.length > 0
-                  ? item.content[0].width
-                  : 0,
-              height:
-                item.type === "repost" && item.post.content?.length > 0
-                  ? item.post.content[0].height
-                  : item.type === "post" && item.content?.length > 0
-                  ? item.content[0].height
-                  : 0,
-              createdAt: item.created_at,
-              isPublished: item.type === "post" ? item.published : true,
-            })
-          }
+          ListEmptyComponent={renderListEmpty}
+          renderItem={renderItem}
           ListHeaderComponent={
             <ProfileHeader
               isRefreshing={isRefreshing}
@@ -590,12 +556,8 @@ const Profile = ({ navigation }) => {
             />
           }
           showsVerticalScrollIndicator={false}
-          onEndReached={() => {
-            fetchMorePosts();
-          }}
-          onEndReachedThreshold={0.5}
-          keyboardDismissMode="on-drag"
-          ListFooterComponent={renderListFooter}
+          onEndReached={fetchMorePosts}
+          onEndReachedThreshold={0.1}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}

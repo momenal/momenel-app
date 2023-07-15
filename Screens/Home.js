@@ -289,8 +289,7 @@ const Home = ({ navigation }) => {
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         onEndReached={fetchMorePosts}
-        onEndReachedThreshold={0.5}
-        keyboardDismissMode="on-drag"
+        onEndReachedThreshold={0.1}
         ListFooterComponent={renderListFooter}
         refreshControl={
           <RefreshControl
