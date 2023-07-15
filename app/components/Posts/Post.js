@@ -1,13 +1,7 @@
-import {
-  Animated,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Dimensions, FlatList, Pressable, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import PostHeader from "./PostHeader";
 import PostMedia from "./postMedia/PostMedia";
 import PaginationDot from "./PaginationDot";
@@ -20,6 +14,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { scale } from "../../utils/Scale";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
 import { useRoute } from "@react-navigation/native";
+import { CalcHeight } from "../../utils/CalcHeight";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -41,6 +36,7 @@ const Post = ({
   isReposted,
   published,
   height,
+  width,
   handleLike,
   handleRepost,
   onDeletePress,
@@ -49,7 +45,7 @@ const Post = ({
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const FontSize = useMemo(() => scale(14), []);
   const route = useRoute();
-
+  let scaledHeight = useMemo(() => CalcHeight(width, height), [width]);
   // for pagination dots
   const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -96,7 +92,7 @@ const Post = ({
         }
         type={item.type}
         doubleTap={doubleTap}
-        height={height}
+        height={scaledHeight}
         index={index}
         blurhash={item.blurhash}
       />
@@ -176,9 +172,7 @@ const Post = ({
     <View
       style={{
         backgroundColor: "#FFFFFF",
-
         width: "100%",
-
         marginVertical: 10,
         justifyContent: "center",
         alignItems: "center",
@@ -186,7 +180,7 @@ const Post = ({
     >
       {/* reposts */}
       {repost && (
-        <TouchableOpacity
+        <Pressable
           onPress={() =>
             navigation.navigate("UserProfile", { id: repost.username })
           }
@@ -209,7 +203,7 @@ const Post = ({
           >
             {repost.username} reposted
           </CustomText>
-        </TouchableOpacity>
+        </Pressable>
       )}
 
       {!isPublished && (
@@ -320,7 +314,7 @@ const Post = ({
           }
           type={posts[0].type}
           doubleTap={doubleTap}
-          height={height}
+          height={scaledHeight}
           index={0}
           blurhash={posts[0].blurhash}
         />
@@ -362,7 +356,7 @@ const Post = ({
           }}
         >
           <Heart isLiked={isLiked} onPress={handleLikeFunc} size={23} />
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               navigation.navigate("UserList", { type: "likes", Id: postId })
             }
@@ -378,7 +372,7 @@ const Post = ({
             >
               {kFormatter(likes)}
             </CustomText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View
           style={{
@@ -388,10 +382,10 @@ const Post = ({
             marginRight: "2%",
           }}
         >
-          <TouchableOpacity onPress={handleComments}>
+          <Pressable onPress={handleComments}>
             <CommentsIcon size={21} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleComments} style={{ marginLeft: 5 }}>
+          </Pressable>
+          <Pressable onPress={handleComments} style={{ marginLeft: 5 }}>
             <CustomText
               style={{
                 fontFamily: "Nunito_700Bold",
@@ -402,7 +396,7 @@ const Post = ({
             >
               {kFormatter(comments)}
             </CustomText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View
           style={{
@@ -412,11 +406,11 @@ const Post = ({
             marginRight: "2%",
           }}
         >
-          <TouchableOpacity onPress={handleRepostFunc}>
+          <Pressable onPress={handleRepostFunc}>
             <Repost size={25} color={isReposted ? "#8456E9" : "#999999"} />
-          </TouchableOpacity>
+          </Pressable>
           {reposts >= 1 && (
-            <TouchableOpacity
+            <Pressable
               style={{ marginLeft: 5 }}
               onPress={() =>
                 navigation.navigate("UserList", {
@@ -435,7 +429,7 @@ const Post = ({
               >
                 {kFormatter(reposts)}
               </CustomText>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </View>

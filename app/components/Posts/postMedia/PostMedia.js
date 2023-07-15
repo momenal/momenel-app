@@ -1,4 +1,4 @@
-import { Dimensions, View } from "react-native";
+import { Dimensions, Pressable, View } from "react-native";
 import { Image } from "expo-image";
 import { useRef, useState } from "react";
 import { Video } from "expo-av";
@@ -6,7 +6,6 @@ import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -16,7 +15,6 @@ const PostMediaOne = ({
   type,
   height,
   doubleTap,
-  index,
   navigation,
   username,
   blurhash,
@@ -146,7 +144,7 @@ const PostMediaOne = ({
                 }}
               >
                 {showPauseIcon && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => {
                       video?.current.playAsync();
                     }}
@@ -167,7 +165,7 @@ const PostMediaOne = ({
                       color="white"
                       style={{ marginLeft: 2 }}
                     />
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
               </View>
             </View>

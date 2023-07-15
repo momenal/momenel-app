@@ -215,23 +215,11 @@ const Home = ({ navigation }) => {
   };
 
   const renderItem = useCallback(({ item, index }) => {
-    let width =
-      item.type === "repost" && item.post.content?.length > 0
-        ? item.post.content[0].width
-        : item.type === "post" && item.content?.length > 0
-        ? item.content[0].width
-        : 0;
-    let height =
-      item.type === "repost" && item.post.content?.length > 0
-        ? item.post.content[0].height
-        : item.type === "post" && item.content?.length > 0
-        ? item.content[0].height
-        : 0;
-    let scaledHeight = CalcHeight(width, height);
-
     let tempPost = item.type === "post" ? item : item.post;
     return (
       <Post
+        height={tempPost.content.length > 0 ? tempPost.content[0].height : 0}
+        width={tempPost.content.length > 0 ? tempPost.content[0].width : 0}
         isPublished={true}
         navigation={navigation}
         postId={tempPost.id}
@@ -246,7 +234,6 @@ const Home = ({ navigation }) => {
         createdAt={item.created_at}
         posts={tempPost.content ? tempPost.content : []}
         caption={tempPost.caption}
-        height={scaledHeight}
         handleLike={handleLike}
         handleRepost={handleRepost}
         isLiked={item.isLiked}

@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
@@ -82,7 +75,7 @@ const PostHeader = ({
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity onPress={handleProfileNavigation}>
+        <Pressable onPress={handleProfileNavigation}>
           {profileUrl ? (
             <Image
               style={{
@@ -103,7 +96,7 @@ const PostHeader = ({
               style={{ marginRight: "2%" }}
             />
           )}
-        </TouchableOpacity>
+        </Pressable>
         <Pressable
           onPress={() => navigation.navigate("UserProfile", { id: username })}
           style={{ marginLeft: "1%" }}
@@ -154,12 +147,12 @@ const PostHeader = ({
           alignItems: "center",
         }}
       >
-        <TouchableOpacity
+        <Pressable
           style={{ marginLeft: 6 }}
           onPress={() => setShowBottomSheet(true)}
         >
           <Ionicons name="ellipsis-vertical" size={scale(18)} color="#828282" />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <BottomSheet
         show={showBottomSheet}
@@ -175,7 +168,7 @@ const PostHeader = ({
           }}
         >
           {RouteName === "Profile" ? (
-            <TouchableOpacity
+            <Pressable
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -198,9 +191,9 @@ const PostHeader = ({
               >
                 Delete
               </CustomText>
-            </TouchableOpacity>
+            </Pressable>
           ) : (
-            <TouchableOpacity
+            <Pressable
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -223,7 +216,7 @@ const PostHeader = ({
               >
                 Report
               </CustomText>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </BottomSheet>

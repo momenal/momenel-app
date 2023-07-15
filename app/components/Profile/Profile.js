@@ -46,18 +46,18 @@ const Profile = ({ navigation }) => {
 
   const fetchPosts = async () => {
     setShowFooter(true);
-    // if passed user id is passed (aka user is viewing another user's profile)
+
     const { data: s, error } = await supabase.auth.getSession();
     if (error) {
       return navigation.navigate("Login");
     }
 
-    let url =
+    const url =
       RouteParams?.id !== null && RouteParams?.id !== undefined
         ? `${baseUrl}/user/profile/${RouteParams?.id}/${from}/${to}`
         : `${baseUrl}/user/profile/null/${from}/${to}`;
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,8 +66,8 @@ const Profile = ({ navigation }) => {
     });
 
     if (!response.ok) {
-      response = await response.json();
-      Alert.alert("Oops", response.error, [
+      const { error } = await response.json();
+      Alert.alert("Oops", error, [
         {
           text: "OK",
           onPress: () => navigation.goBack(),
@@ -75,16 +75,17 @@ const Profile = ({ navigation }) => {
       ]);
       return;
     }
-    response = await response.json();
 
-    if (from === 0) {
-      if (RouteParams?.id === null || RouteParams?.id === undefined) {
-        SetUserData(response.profile.username, response.profile.profile_url);
+    const { profile, posts } = await response.json();
+
+    if (!from) {
+      if (!RouteParams?.id) {
+        SetUserData(profile.username, profile.profile_url);
       }
-      setProfile(response.profile);
-      setData([...response.posts]);
+      setProfile(profile);
+      setData(posts);
     } else {
-      setData((prev) => [...prev, ...response.posts]);
+      setData((prev) => [...prev, ...posts]);
     }
 
     setShowFooter(false);
@@ -339,30 +340,7 @@ const Profile = ({ navigation }) => {
     setDeleteCounter(deleteCounter + 1);
   };
 
-  // renderItem({
-  //   item,
-  //   index,
-  //   isLiked: item.isLiked,
-  //   isReposted: item.isReposted,
-  //   postId: item.type === "repost" ? item.post.id : item.id,
-  //   type: item.type,
-  //   createdAt: item.created_at,
-  // })
-
-  const renderItem = useCallback(({ item, index }) => {
-    let width =
-      item.type === "repost" && item.post.content?.length > 0
-        ? item.post.content[0].width
-        : item.type === "post" && item.content?.length > 0
-        ? item.content[0].width
-        : 0;
-    let height =
-      item.type === "repost" && item.post.content?.length > 0
-        ? item.post.content[0].height
-        : item.type === "post" && item.content?.length > 0
-        ? item.content[0].height
-        : 0;
-    let scaledHeight = CalcHeight(width, height);
+  const renderItem = ({ item, index }) => {
     let tempPost = item.type === "post" ? item : item.post;
     return (
       <Post
@@ -379,15 +357,17 @@ const Profile = ({ navigation }) => {
         createdAt={item.created_at}
         posts={tempPost.content ? tempPost.content : []}
         caption={tempPost.caption}
-        height={scaledHeight}
+        height={tempPost.content.length > 0 ? tempPost.content[0].height : 0}
+        width={tempPost.content.length > 0 ? tempPost.content[0].width : 0}
         handleLike={handleLike}
         handleRepost={handleRepost}
+        onDeletePress={onDeletePress}
         isLiked={item.isLiked}
         isReposted={item.isReposted}
         isPublished={item.type === "post" ? item.published : true}
       />
     );
-  }, []);
+  };
 
   const renderListEmpty = () => {
     return (
