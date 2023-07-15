@@ -74,8 +74,8 @@ const Home = ({ navigation }) => {
   };
 
   const fetchMorePosts = () => {
-    let newFrom = from + 11;
-    let newTo = to + 10;
+    let newFrom = to;
+    let newTo = to + 20;
 
     setFrom(newFrom);
     setTo(newTo);
@@ -214,46 +214,46 @@ const Home = ({ navigation }) => {
     }
   };
 
-  const renderItem = useCallback(
-    ({
-      item,
-      index,
-      isLiked,
-      isReposted,
-      height,
-      width,
-      createdAt,
-      postId,
-      type,
-    }) => {
-      let scaledHeight = CalcHeight(width, height);
-      let tempPost = type === "post" ? item : item.post;
-      return (
-        <Post
-          isPublished={true}
-          navigation={navigation}
-          postId={tempPost.id}
-          index={index}
-          likes={tempPost.likes[0].count}
-          comments={tempPost.comments[0].count}
-          reposts={tempPost.reposts[0].count}
-          repost={item.repostedBy}
-          profileUrl={tempPost.user?.profile_url}
-          username={tempPost.user?.username}
-          name={tempPost.user?.name}
-          createdAt={createdAt}
-          posts={tempPost.content ? tempPost.content : []}
-          caption={tempPost.caption}
-          height={scaledHeight}
-          handleLike={handleLike}
-          handleRepost={handleRepost}
-          isLiked={isLiked}
-          isReposted={isReposted}
-        />
-      );
-    },
-    [postsData]
-  );
+  const renderItem = useCallback(({ item, index }) => {
+    let width =
+      item.type === "repost" && item.post.content?.length > 0
+        ? item.post.content[0].width
+        : item.type === "post" && item.content?.length > 0
+        ? item.content[0].width
+        : 0;
+    let height =
+      item.type === "repost" && item.post.content?.length > 0
+        ? item.post.content[0].height
+        : item.type === "post" && item.content?.length > 0
+        ? item.content[0].height
+        : 0;
+    let scaledHeight = CalcHeight(width, height);
+
+    let tempPost = item.type === "post" ? item : item.post;
+    return (
+      <Post
+        isPublished={true}
+        navigation={navigation}
+        postId={tempPost.id}
+        index={index}
+        likes={tempPost.likes[0].count}
+        comments={tempPost.comments[0].count}
+        reposts={tempPost.reposts[0].count}
+        repost={item.repostedBy}
+        profileUrl={tempPost.user?.profile_url}
+        username={tempPost.user?.username}
+        name={tempPost.user?.name}
+        createdAt={item.created_at}
+        posts={tempPost.content ? tempPost.content : []}
+        caption={tempPost.caption}
+        height={scaledHeight}
+        handleLike={handleLike}
+        handleRepost={handleRepost}
+        isLiked={item.isLiked}
+        isReposted={item.isReposted}
+      />
+    );
+  }, []);
 
   const renderListFooter = useCallback(
     <View
@@ -286,29 +286,7 @@ const Home = ({ navigation }) => {
         data={postsData}
         estimatedItemSize={100}
         keyExtractor={keyExtractor}
-        renderItem={({ item, index }) =>
-          renderItem({
-            item,
-            index,
-            isLiked: item.isLiked,
-            isReposted: item.isReposted,
-            postId: item.type === "repost" ? item.post.id : item.id,
-            type: item.type,
-            width:
-              item.type === "repost" && item.post.content?.length > 0
-                ? item.post.content[0].width
-                : item.type === "post" && item.content?.length > 0
-                ? item.content[0].width
-                : 0,
-            height:
-              item.type === "repost" && item.post.content?.length > 0
-                ? item.post.content[0].height
-                : item.type === "post" && item.content?.length > 0
-                ? item.content[0].height
-                : 0,
-            createdAt: item.created_at,
-          })
-        }
+        renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         onEndReached={fetchMorePosts}
         onEndReachedThreshold={0.5}
