@@ -10,10 +10,10 @@ import { useBoundStore } from "../app/Store/useBoundStore";
 import Post from "../app/components/Posts/Post";
 import { supabase } from "../app/lib/supabase";
 import { FlashList } from "@shopify/flash-list";
-import { CalcHeight } from "../app/utils/CalcHeight";
 import CustomText from "../app/components/customText/CustomText";
-import { baseUrl } from "@env";
 import * as Haptics from "expo-haptics";
+
+let baseUrl = "https://api.momenel.com";
 
 const Home = ({ navigation }) => {
   const [postsData, setPostsData] = useState([]);

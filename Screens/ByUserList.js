@@ -14,7 +14,8 @@ import * as Haptics from "expo-haptics";
 import CustomText from "../app/components/customText/CustomText";
 import { scale } from "../app/utils/Scale";
 import { supabase } from "../app/lib/supabase";
-import { baseUrl } from "@env";
+
+let baseUrl = "https://api.momenel.com";
 
 const ByUserList = ({ route, navigation }) => {
   const { type, Id } = route.params;

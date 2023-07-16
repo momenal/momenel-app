@@ -12,7 +12,8 @@ import {
 import LinearGradientButton from "../Buttons/LinearGradientButton";
 import CustomText from "../customText/CustomText";
 import { supabase } from "../../lib/supabase";
-import { baseUrl } from "@env";
+
+let baseUrl = "https://api.momenel.com";
 
 const ChangeBirthday = ({ navigation }) => {
   const [oldData, setOldData] = useState({});

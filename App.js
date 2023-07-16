@@ -19,8 +19,9 @@ import { supabase } from "./app/lib/supabase";
 import Auth from "./Screens/Auth";
 import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
-import { baseUrl } from "@env";
 import CustomText from "./app/components/customText/CustomText";
+
+let baseUrl = "https://api.momenel.com";
 
 export default function App() {
   const [isError, setisError] = useState(false);

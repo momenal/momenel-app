@@ -24,8 +24,9 @@ import Suggestions from "../app/components/Inputs/Suggestions";
 import * as ImagePicker from "expo-image-picker";
 import CreatePostMedia from "../app/components/CreatePost/CreatePostMedia";
 import StatusOverlay from "../app/components/StatusOverlay";
-import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
+
+let baseUrl = "https://api.momenel.com";
 
 const triggersConfig = {
   mention: {

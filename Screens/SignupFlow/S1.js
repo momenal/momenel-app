@@ -4,8 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
-import { baseUrl } from "@env";
 import { supabase } from "../../app/lib/supabase";
+
+let baseUrl = "https://api.momenel.com";
 
 const S1 = ({ navigation }) => {
   const [username, setUsername] = useState("");

@@ -17,9 +17,10 @@ import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
-import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
 import { Alert } from "react-native";
+
+let baseUrl = "https://api.momenel.com";
 
 const Search = ({ navigation, route }) => {
   const { query } = route.params;

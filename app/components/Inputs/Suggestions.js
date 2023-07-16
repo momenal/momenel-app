@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { View, ScrollView, Pressable, Dimensions, Alert } from "react-native";
 import CustomText from "../customText/CustomText";
 import { supabase } from "../../lib/supabase";
-import { baseUrl } from "@env";
+
+let baseUrl = "https://api.momenel.com";
 
 const Suggestions = ({ keyword, onSelect, onLayoutFunc, pre }) => {
   const [suggestions, setSuggestions] = useState([]);

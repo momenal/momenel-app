@@ -10,15 +10,15 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import Post from "../app/components/Posts/Post";
-import { CalcHeight } from "../app/utils/CalcHeight";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomText from "../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
-import { baseUrl } from "@env";
 import * as Haptics from "expo-haptics";
 import { supabase } from "../app/lib/supabase";
 import SearchBar from "../app/components/SearchBar";
 import { scale } from "../app/utils/Scale";
+
+let baseUrl = "https://api.momenel.com";
 
 const Discover = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);

@@ -2,11 +2,11 @@ import { ActivityIndicator, Alert, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { supabase } from "../app/lib/supabase";
-import { baseUrl } from "@env";
 import Post from "../app/components/Posts/Post";
-import { CalcHeight } from "../app/utils/CalcHeight";
 import { FlashList } from "@shopify/flash-list";
 import * as Haptics from "expo-haptics";
+
+let baseUrl = "https://api.momenel.com";
 
 const SinglePost = ({ navigation }) => {
   const { params } = useRoute();

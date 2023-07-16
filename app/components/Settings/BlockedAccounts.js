@@ -3,10 +3,11 @@ import { View, Pressable, ActivityIndicator, Alert } from "react-native";
 import { Image } from "expo-image";
 import { scale } from "../../utils/Scale";
 import CustomText from "../customText/CustomText";
-import { baseUrl } from "@env";
 import { supabase } from "../../lib/supabase";
 import { FlashList } from "@shopify/flash-list";
 import * as Haptics from "expo-haptics";
+
+let baseUrl = "https://api.momenel.com";
 
 const BlockedAccounts = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);

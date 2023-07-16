@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { FlashList } from "@shopify/flash-list";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,10 +16,10 @@ import { scale } from "../../utils/Scale";
 import { useRoute } from "@react-navigation/native";
 import { supabase } from "../../lib/supabase";
 import ProfileHeader from "./ProfileHeader";
-import { baseUrl } from "@env";
 import Post from "../Posts/Post";
-import { CalcHeight } from "../../utils/CalcHeight";
 import { useBoundStore } from "../../Store/useBoundStore";
+
+let baseUrl = "https://api.momenel.com";
 
 const Profile = ({ navigation }) => {
   const { params: RouteParams } = useRoute();

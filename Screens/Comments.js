@@ -20,9 +20,10 @@ import { Pressable } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
 import StatusOverlay from "../app/components/StatusOverlay";
-import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
 import { RefreshControl } from "react-native-gesture-handler";
+
+let baseUrl = "https://api.momenel.com";
 
 const Comments = ({ route, navigation }) => {
   const [from, setFrom] = useState(0);

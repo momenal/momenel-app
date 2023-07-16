@@ -6,7 +6,8 @@ import LinearGradientButton from "../Buttons/LinearGradientButton";
 import { supabase } from "../../lib/supabase";
 import * as WebBrowser from "expo-web-browser";
 import * as Haptics from "expo-haptics";
-import { baseUrl } from "@env";
+
+let baseUrl = "https://api.momenel.com";
 
 const CreateAccount = ({ onReportPress, onUserExists }) => {
   const [email, setEmail] = useState("");

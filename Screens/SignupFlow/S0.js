@@ -12,7 +12,7 @@ import {
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
 import CustomText from "../../app/components/customText/CustomText";
 import { supabase } from "../../app/lib/supabase";
-import { baseUrl } from "@env";
+let baseUrl = "https://api.momenel.com";
 
 const S0 = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);

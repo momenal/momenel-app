@@ -13,10 +13,10 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
 import { useBoundStore } from "../../Store/useBoundStore";
 import DetachedBottomSheetWithScroll from "../BottomFlatSheet/DetachedBottomSheetWithScroll";
-import { baseUrl } from "@env";
 import { supabase } from "../../lib/supabase";
 import { useRoute } from "@react-navigation/native";
 
+let baseUrl = "https://api.momenel.com";
 const AnimatedIconComponent = Animated.createAnimatedComponent(Ionicons);
 
 const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {

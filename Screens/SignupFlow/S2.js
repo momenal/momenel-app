@@ -10,8 +10,9 @@ import React, { useState } from "react";
 import CustomText from "../../app/components/customText/CustomText";
 import { StatusBar } from "expo-status-bar";
 import LinearGradientButton from "../../app/components/Buttons/LinearGradientButton";
-import { baseUrl } from "@env";
 import { supabase } from "../../app/lib/supabase";
+
+let baseUrl = "https://api.momenel.com";
 
 const S2 = ({ navigation }) => {
   const [username, setUsername] = useState("");

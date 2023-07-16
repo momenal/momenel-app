@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { scale } from "../app/utils/Scale";
 import { useHeaderHeight } from "@react-navigation/elements";
 import CustomText from "../app/components/customText/CustomText";
@@ -18,9 +18,10 @@ import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../app/lib/supabase";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
-import { baseUrl } from "@env";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import mime from "mime";
+
+let baseUrl = "https://api.momenel.com";
 
 const EditProfile = ({ navigation }) => {
   const headerHeight = useHeaderHeight();

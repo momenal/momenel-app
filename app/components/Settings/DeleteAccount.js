@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { baseUrl } from "@env";
 import CustomText from "../customText/CustomText";
+
+let baseUrl = "https://api.momenel.com";
 
 const DeleteAccount = ({ navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);

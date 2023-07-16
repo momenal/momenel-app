@@ -14,8 +14,9 @@ import LinearGradientButton from "../../app/components/Buttons/LinearGradientBut
 import { scale } from "../../app/utils/Scale";
 import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../../app/Store/useBoundStore";
-import { baseUrl } from "@env";
 import { supabase } from "../../app/lib/supabase";
+
+let baseUrl = "https://api.momenel.com";
 
 const S3 = ({}) => {
   const [isLoading, setIsLoading] = useState(false);

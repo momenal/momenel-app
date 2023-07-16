@@ -18,8 +18,9 @@ import CustomText from "../app/components/customText/CustomText";
 import LinearGradientButton from "../app/components/Buttons/LinearGradientButton";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
-import { baseUrl } from "@env";
 import { supabase } from "../app/lib/supabase";
+
+let baseUrl = "https://api.momenel.com";
 
 const Report = ({ route, navigation }) => {
   const { contentId, username, contentType } = route.params;
