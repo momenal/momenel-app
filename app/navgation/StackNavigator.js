@@ -11,7 +11,7 @@ import Comments from "../../Screens/Comments";
 import CreatePost from "../../Screens/CreatePost";
 import PostHeaderButton from "../components/Buttons/PostHeaderButton";
 import Search from "../../Screens/Search";
-import Profile from "../components/Profile/Profile";
+import Profile from "../../Screens/Profile";
 import EditProfile from "../../Screens/EditProfile";
 import SettingsStackNavigator from "./SettingsStackNavigator";
 import SinglePost from "../../Screens/SinglePost";
@@ -25,7 +25,6 @@ const StackNavigator = ({}) => {
       initialRouteName="Home"
       screenOptions={{
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
-        animation: "none",
       }}
     >
       <Stack.Screen
@@ -43,6 +42,7 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           headerTintColor: "black",
+          animation: "fade_from_bottom",
         }}
       />
       <Stack.Screen
@@ -64,7 +64,6 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           gestureEnabled: false,
-
           headerLeft: () => (
             <Pressable
               style={{
@@ -102,7 +101,7 @@ const StackNavigator = ({}) => {
               <Ionicons name="close" size={24} color="white" />
             </Pressable>
           ),
-
+          animation: "fade",
           gestureDirection: "vertical",
           headerTitleStyle: { fontFamily: "Nunito_700Bold" },
           headerStyle: {
@@ -119,6 +118,7 @@ const StackNavigator = ({}) => {
           headerBackTitle: "",
           headerShadowVisible: false,
           headerTintColor: "black",
+          animation: "fade_from_bottom",
         }}
       />
 
@@ -151,6 +151,7 @@ const StackNavigator = ({}) => {
           headerShadowVisible: false,
           headerTintColor: "black",
           gestureEnabled: false,
+          animation: "slide_from_bottom",
         }}
       />
       <Stack.Screen

@@ -9,15 +9,15 @@ import {
 import * as Haptics from "expo-haptics";
 import { useState, useEffect } from "react";
 import { FlashList } from "@shopify/flash-list";
-import CustomText from "../customText/CustomText";
+import CustomText from "../app/components/customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { scale } from "../../utils/Scale";
+import { scale } from "../app/utils/Scale";
 import { useRoute } from "@react-navigation/native";
-import { supabase } from "../../lib/supabase";
-import ProfileHeader from "./ProfileHeader";
-import Post from "../Posts/Post";
-import { useBoundStore } from "../../Store/useBoundStore";
+import { supabase } from "../app/lib/supabase";
+import ProfileHeader from "../app/components/Profile/ProfileHeader";
+import Post from "../app/components/Posts/Post";
+import { useBoundStore } from "../app/Store/useBoundStore";
 
 let baseUrl = "https://api.momenel.com";
 

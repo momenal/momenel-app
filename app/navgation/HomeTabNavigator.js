@@ -9,7 +9,7 @@ import Header from "../components/Header/Header";
 import NotificationsIcon from "../components/icons/Notifications";
 import PlaceholderScreen from "../components/PlaceholderScreen";
 import Discover from "../../Screens/Discover";
-import Profile from "../components/Profile/Profile";
+import Profile from "../../Screens/Profile";
 import Notifications from "../../Screens/Notifications";
 
 const Tab = createBottomTabNavigator();
