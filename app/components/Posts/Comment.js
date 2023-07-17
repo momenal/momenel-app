@@ -190,7 +190,7 @@ const Comment = ({
       } else {
         navigation.navigate("Search", {
           type: "hashtag",
-          query: text,
+          query: text[0] === "#" ? text.slice(1) : text,
         });
       }
     } else if (text.startsWith("more")) {

@@ -119,13 +119,14 @@ const Search = ({ navigation, route }) => {
       }
     );
     if (!response.ok) {
-      response = await response.json();
-      Alert.alert("Error", response.error);
+      Alert.alert("Error", "Hashtag not found");
+      navigation.goBack();
       setSuggestions([]);
       setIsFetching(false);
       return;
     }
     response = await response.json();
+
     setQueryResults((prevResults) => {
       if (
         prevResults.title !== search ||
