@@ -1,9 +1,9 @@
 import { Dimensions } from "react-native";
 import Home from "../../Screens/Home";
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverIcon from "../components/icons/DiscoverIcon";
 import HomeIcon from "../components/icons/HomeIcon";
-import PlusIcon from "../components/icons/PlusIcon";
 import TabBarProfileIcon from "../components/TabBarProfileIcon";
 import Header from "../components/Header/Header";
 import NotificationsIcon from "../components/icons/Notifications";
@@ -81,14 +81,10 @@ const HomeNavigator = ({ navigation }) => {
           title: "",
           unmountOnBlur: true,
           headerShown: false,
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: () => {
             {
               return (
-                <PlusIcon
-                  color={focused ? "black" : "none"}
-                  size={IconSize}
-                  strokeColor={focused ? "black" : "#A8A8A8"}
-                />
+                <Ionicons name="create" size={IconSize + 6} color="#A8A8A8" />
               );
             }
           },
