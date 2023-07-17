@@ -226,7 +226,7 @@ const Discover = ({ navigation }) => {
               <Tag tag={item.hashtag.hashtag} navigation={navigation} />
             )}
             horizontal
-            estimatedItemSize={50}
+            estimatedItemSize={110}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
               paddingLeft: 12,
@@ -253,7 +253,7 @@ const Discover = ({ navigation }) => {
             )}
             showsHorizontalScrollIndicator={false}
             horizontal
-            estimatedItemSize={50}
+            estimatedItemSize={110}
             contentContainerStyle={{
               paddingLeft: 12,
             }}
