@@ -61,19 +61,24 @@ export const createNotificationsSlice = (set, get) => ({
       }
     });
 
-    if (isRefreshing) {
-      set(() => ({
-        notifications: [...notifications],
-      }));
-      return;
-    }
-    set((state) => ({
-      notifications: [...state.notifications, ...notifications],
-    }));
     set(() => ({
       from: to,
       to: to + 10,
     }));
+
+    if (isRefreshing) {
+      // only set if the first element is not the same
+      if (notifications[0].id !== get().notifications[0]?.id) {
+        set(() => ({
+          notifications: [...notifications],
+        }));
+      }
+      return;
+    } else {
+      set((state) => ({
+        notifications: [...state.notifications, ...notifications],
+      }));
+    }
   },
   handleFollow: async (id, isFollowed) => {
     const { data, error } = await supabase.auth.getSession();
