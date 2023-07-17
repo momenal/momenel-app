@@ -29,7 +29,7 @@ const Home = ({ navigation }) => {
 
   const fetchNotificationsIntervalDelay = 120000;
   const fetchNotificationsCallback = useCallback(() => {
-    fetchNotifications({ isRefreshing: false });
+    fetchNotifications({ isRefreshing: true });
   }, [fetchNotifications]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Home = ({ navigation }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [fetchNotifications, fetchNotificationsCallback]);
+  }, []);
 
   const fetchPosts = async () => {
     if (!showFooter && from !== 0) {

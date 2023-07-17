@@ -30,7 +30,6 @@ const HomeNavigator = ({ navigation }) => {
         },
         headerTitleStyle: { fontFamily: "Nunito_700Bold" },
         freezeOnBlur: true,
-        unmountOnBlur: true,
       })}
     >
       <Tab.Screen
@@ -41,7 +40,7 @@ const HomeNavigator = ({ navigation }) => {
           header: () => {
             return <Header navigation={navigation} />;
           },
-          tabBarIcon: ({ size, focused, color }) => {
+          tabBarIcon: ({ focused }) => {
             {
               return (
                 <HomeIcon
@@ -88,6 +87,7 @@ const HomeNavigator = ({ navigation }) => {
               );
             }
           },
+          unmountOnBlur: true,
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -101,7 +101,7 @@ const HomeNavigator = ({ navigation }) => {
         component={Notifications}
         options={{
           title: "Notifications",
-          tabBarIcon: ({ size, focused }) => {
+          tabBarIcon: ({ focused }) => {
             {
               return (
                 <NotificationsIcon
@@ -125,6 +125,7 @@ const HomeNavigator = ({ navigation }) => {
               return <TabBarProfileIcon size={IconSize} focused={focused} />;
             }
           },
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>

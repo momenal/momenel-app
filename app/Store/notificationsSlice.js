@@ -22,6 +22,7 @@ export const createNotificationsSlice = (set, get) => ({
     }
     let from = get().from;
     let to = from + 10;
+
     let url = isRefreshing
       ? `${baseUrl}/notifications/0/10`
       : `${baseUrl}/notifications/${from}/${to}`;
