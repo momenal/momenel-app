@@ -151,7 +151,9 @@ const S3 = ({}) => {
         }}
       >
         <Image
-          source={{ uri: profile.profile_url }}
+          source={{
+            uri: `https://cdn.momenel.com/profiles/${profile.profile_url}`,
+          }}
           style={{
             width: profileImageSizeScale,
             height: profileImageSizeScale,

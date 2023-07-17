@@ -15,6 +15,7 @@ const S1 = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(false);
     if (!username.match(/^[a-zA-Z0-9_]+$/) && username.length > 0) {
       setError("Username can only contain letters, numbers and underscores.");
       setIsUsernameAvailable(null);
@@ -81,7 +82,8 @@ const S1 = ({ navigation }) => {
         throw new Error(response.error);
       }
       response = await response.json();
-
+      setUsername("");
+      setIsLoading(false);
       navigation.navigate("s2");
     } catch (error) {
       setError(error.message);
