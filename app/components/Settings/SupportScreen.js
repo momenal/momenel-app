@@ -1,6 +1,4 @@
-import React from "react";
-import { View, Alert } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { View, Alert, Pressable } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import CustomText from "../customText/CustomText";
 import { composeAsync } from "expo-mail-composer";

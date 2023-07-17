@@ -1,5 +1,4 @@
-import { View } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { View, Pressable } from "react-native";
 import CustomText from "../customText/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 

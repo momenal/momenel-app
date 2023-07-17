@@ -1,6 +1,6 @@
 import { Alert, Animated, Dimensions, Pressable, View } from "react-native";
 import { Image } from "expo-image";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import CustomText from "../customText/CustomText";
 import GradientText from "../customText/GradientText";
 import { scale } from "../../utils/Scale";
@@ -45,16 +45,6 @@ const RightActionsIfAdmin = (progress, dragX, commentId, handleDelete) => {
               transform: [{ scale }],
             }}
           />
-          {/* <Animated.Text
-            style={{
-              color: "white",
-              paddingHorizontal: 10,
-              fontWeight: "600",
-              transform: [{ scale }],
-            }}
-          >
-            Archive
-          </Animated.Text> */}
         </View>
       </Pressable>
     </>

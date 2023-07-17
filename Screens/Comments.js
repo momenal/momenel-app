@@ -6,6 +6,7 @@ import {
   Keyboard,
   LayoutAnimation,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { Image } from "expo-image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -16,7 +17,6 @@ import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../app/Store/useBoundStore";
 import KeyboardAccessoryView from "../app/components/KeyboardAccessoryView";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Pressable } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
 import StatusOverlay from "../app/components/StatusOverlay";
@@ -276,81 +276,79 @@ const Comments = ({ route, navigation }) => {
       >
         {({ isKeyboardVisible }) => {
           return (
-            <View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: "3%",
+                marginBottom: isKeyboardVisible ? 10 : insets.bottom + 10,
+                marginTop: "2%",
+              }}
+            >
+              {!isKeyboardVisible && (
+                <Image
+                  source={{
+                    uri: `https://cdn.momenel.com/profiles/${userProfileUrl}`,
+                  }}
+                  style={{
+                    height: scale(32),
+                    width: scale(32),
+                    borderRadius: 40,
+                  }}
+                  contentFit={"cover"}
+                />
+              )}
               <View
                 style={{
                   flexDirection: "row",
-                  alignItems: "center",
+                  flex: 1,
+                  justifyContent: "space-between",
+                  backgroundColor: "#E5E5E5",
+                  marginHorizontal: "2%",
+                  height: "100%",
+                  minHeight: scale(37),
+                  maxHeight: scale(140),
+                  borderRadius: 13,
+                  fontFamily: "Nunito_600SemiBold",
+                  fontSize: 14,
                   paddingHorizontal: "3%",
-                  marginBottom: isKeyboardVisible ? 10 : insets.bottom + 10,
-                  marginTop: "2%",
+                  paddingVertical: "3%",
+                  alignItems: "center",
                 }}
               >
-                {!isKeyboardVisible && (
-                  <Image
-                    source={{
-                      uri: `https://cdn.momenel.com/profiles/${userProfileUrl}`,
-                    }}
-                    style={{
-                      height: scale(32),
-                      width: scale(32),
-                      borderRadius: 40,
-                    }}
-                    contentFit={"cover"}
-                  />
-                )}
                 <View
                   style={{
-                    flexDirection: "row",
                     flex: 1,
-                    justifyContent: "space-between",
-                    backgroundColor: "#E5E5E5",
-                    marginHorizontal: "2%",
-                    height: "100%",
-                    minHeight: scale(37),
-                    maxHeight: scale(140),
-                    borderRadius: 13,
-                    fontFamily: "Nunito_600SemiBold",
-                    fontSize: 14,
-                    paddingHorizontal: "3%",
-                    paddingVertical: "3%",
-                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <View
+                  <TextInput
                     style={{
-                      flex: 1,
-                      justifyContent: "center",
+                      backgroundColor: "#E5E5E5",
+                      fontFamily: "Nunito_600SemiBold",
+                      fontSize: 14,
+                      alignItems: "center",
                     }}
-                  >
-                    <TextInput
-                      style={{
-                        backgroundColor: "#E5E5E5",
-                        fontFamily: "Nunito_600SemiBold",
-                        fontSize: 14,
-                        alignItems: "center",
-                      }}
-                      value={text}
-                      onChangeText={onChangeText}
-                      placeholder="Add a comment..."
-                      keyboardType="twitter"
-                      multiline={true}
-                    />
-                  </View>
+                    value={text}
+                    onChangeText={onChangeText}
+                    placeholder="Add a comment..."
+                    keyboardType="twitter"
+                    multiline={true}
+                  />
                 </View>
-                {(isKeyboardVisible || text.length > 0) && (
-                  <Pressable
-                    disabled={text.length <= 0 ? true : false}
-                    onPress={() => postComment(text)}
-                  >
-                    <Ionicons
-                      name="paper-plane"
-                      size={scale(20)}
-                      color={text.length <= 0 ? "gray" : "#8759F2"}
-                    />
-                  </Pressable>
-                )}
               </View>
+              {(isKeyboardVisible || text.length > 0) && (
+                <Pressable
+                  disabled={text.length <= 0 ? true : false}
+                  onPress={() => postComment(text)}
+                >
+                  <Ionicons
+                    name="paper-plane"
+                    size={scale(20)}
+                    color={text.length <= 0 ? "gray" : "#8759F2"}
+                  />
+                </Pressable>
+              )}
             </View>
           );
         }}
