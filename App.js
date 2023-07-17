@@ -21,8 +21,6 @@ import { useBoundStore } from "./app/Store/useBoundStore";
 import SignupStackNavigator from "./app/navgation/SignupStackNavigator";
 import CustomText from "./app/components/customText/CustomText";
 
-//todo: fix notifications being dublicated
-
 let baseUrl = "https://api.momenel.com";
 
 export default function App() {

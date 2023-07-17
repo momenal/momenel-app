@@ -7,6 +7,7 @@ import {
   LayoutAnimation,
   ActivityIndicator,
   Pressable,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Image } from "expo-image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -15,7 +16,6 @@ import GradientText from "../app/components/customText/GradientText";
 import { scale } from "../app/utils/Scale";
 import { FlashList } from "@shopify/flash-list";
 import { useBoundStore } from "../app/Store/useBoundStore";
-import KeyboardAccessoryView from "../app/components/KeyboardAccessoryView";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Comment from "../app/components/Posts/Comment";
@@ -26,6 +26,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 let baseUrl = "https://api.momenel.com";
 
 const Comments = ({ route, navigation }) => {
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(30);
   const [isFirst, setIsFirst] = useState(true);
@@ -57,6 +58,50 @@ const Comments = ({ route, navigation }) => {
       setIsFirst(false);
     }
   }, [flatListRef.current, comments]);
+
+  // keyboard listeners
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      const keyboardDidShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        () => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          setKeyboardVisible(true);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        "keyboardDidHide",
+        () => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          setKeyboardVisible(false);
+        }
+      );
+
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    } else {
+      const keyboardDidShowListener = Keyboard.addListener(
+        "keyboardWillShow",
+        () => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          setKeyboardVisible(true);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        "keyboardWillHide",
+        () => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+          setKeyboardVisible(false);
+        }
+      );
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }
+  }, []);
 
   async function fetchComments() {
     setShowFooter(true);
@@ -209,17 +254,24 @@ const Comments = ({ route, navigation }) => {
     [showFooter]
   );
 
+  const keyExtractor = useCallback((item) => item.id, []);
+
   return (
     <View style={styles.container}>
       {comments === null ? (
-        <View style={{ height: "90%", justifyContent: "center" }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+          }}
+        >
           <ActivityIndicator color={"black"} />
         </View>
       ) : (
         <FlashList
           ref={flatListRef}
           data={comments}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           renderItem={renderItem}
           ListEmptyComponent={() => {
             return (
@@ -244,11 +296,11 @@ const Comments = ({ route, navigation }) => {
               </View>
             );
           }}
-          estimatedItemSize={120}
+          estimatedItemSize={115}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="start"
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.1}
           onEndReached={fetchMorePosts}
           decelerationRate={"normal"}
           refreshControl={
@@ -264,95 +316,94 @@ const Comments = ({ route, navigation }) => {
           ListFooterComponent={renderListFooter}
         />
       )}
-
-      <KeyboardAccessoryView
-        alwaysVisible={true}
-        androidAdjustResize
+      <KeyboardAvoidingView
+        enabled={Platform.OS === "ios"}
+        behavior="padding"
+        keyboardVerticalOffset={headerHeight}
         style={{
+          justifyContent: "flex-end",
           backgroundColor: "white",
-          borderTopColor: "#E5E5E5",
-          borderTopWidth: 0.6,
         }}
       >
-        {({ isKeyboardVisible }) => {
-          return (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: "3%",
+            marginBottom: isKeyboardVisible ? 10 : insets.bottom + 5,
+            borderTopWidth: 1,
+            borderTopColor: "#E5E5E5",
+            paddingTop: "2%",
+            backgroundColor: "white",
+          }}
+        >
+          {!isKeyboardVisible && (
+            <Image
+              source={{
+                uri: `https://cdn.momenel.com/profiles/${userProfileUrl}`,
+              }}
+              style={{
+                height: scale(32),
+                width: scale(32),
+                borderRadius: 40,
+              }}
+              contentFit={"cover"}
+            />
+          )}
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "space-between",
+              backgroundColor: "#E5E5E5",
+              marginHorizontal: isKeyboardVisible ? 0 : "3%",
+              marginRight: isKeyboardVisible ? "1.5%" : "3%",
+              height: "100%",
+              minHeight: scale(37),
+              maxHeight: scale(140),
+              borderRadius: 13,
+              fontFamily: "Nunito_600SemiBold",
+              fontSize: 14,
+              paddingHorizontal: "3%",
+              paddingVertical: "3%",
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: "3%",
-                marginBottom: isKeyboardVisible ? 10 : insets.bottom + 10,
-                marginTop: "2%",
+                flex: 1,
+                justifyContent: "center",
               }}
             >
-              {!isKeyboardVisible && (
-                <Image
-                  source={{
-                    uri: `https://cdn.momenel.com/profiles/${userProfileUrl}`,
-                  }}
-                  style={{
-                    height: scale(32),
-                    width: scale(32),
-                    borderRadius: 40,
-                  }}
-                  contentFit={"cover"}
-                />
-              )}
-              <View
+              <TextInput
                 style={{
-                  flexDirection: "row",
-                  flex: 1,
-                  justifyContent: "space-between",
                   backgroundColor: "#E5E5E5",
-                  marginHorizontal: "2%",
-                  height: "100%",
-                  minHeight: scale(37),
-                  maxHeight: scale(140),
-                  borderRadius: 13,
                   fontFamily: "Nunito_600SemiBold",
-                  fontSize: 14,
-                  paddingHorizontal: "3%",
-                  paddingVertical: "3%",
+                  fontSize: 15,
                   alignItems: "center",
                 }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                  }}
-                >
-                  <TextInput
-                    style={{
-                      backgroundColor: "#E5E5E5",
-                      fontFamily: "Nunito_600SemiBold",
-                      fontSize: 14,
-                      alignItems: "center",
-                    }}
-                    value={text}
-                    onChangeText={onChangeText}
-                    placeholder="Add a comment..."
-                    keyboardType="twitter"
-                    multiline={true}
-                  />
-                </View>
-              </View>
-              {(isKeyboardVisible || text.length > 0) && (
-                <Pressable
-                  disabled={text.length <= 0 ? true : false}
-                  onPress={() => postComment(text)}
-                >
-                  <Ionicons
-                    name="paper-plane"
-                    size={scale(20)}
-                    color={text.length <= 0 ? "gray" : "#8759F2"}
-                  />
-                </Pressable>
-              )}
+                value={text}
+                onChangeText={onChangeText}
+                placeholder="Add a comment..."
+                keyboardType="twitter"
+                multiline={true}
+              />
             </View>
-          );
-        }}
-      </KeyboardAccessoryView>
+          </View>
+          {(isKeyboardVisible || text.length > 0) && (
+            <Pressable
+              disabled={text.length <= 0 ? true : false}
+              onPress={() => postComment(text)}
+            >
+              <Ionicons
+                name="paper-plane"
+                size={scale(20)}
+                color={text.length <= 0 ? "gray" : "#8759F2"}
+              />
+            </Pressable>
+          )}
+        </View>
+      </KeyboardAvoidingView>
       {/* status overlay */}
       {postingComment && (
         <StatusOverlay
