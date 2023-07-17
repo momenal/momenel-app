@@ -8,6 +8,9 @@
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
+      },
+      "android": {
+        "resourceClass": "m-medium"
       }
     },
     "preview": {

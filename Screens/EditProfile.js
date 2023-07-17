@@ -112,6 +112,8 @@ const EditProfile = ({ navigation }) => {
     }
 
     if (website && !isValidURL(website)) {
+      if (website.trim() === "") return;
+
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setErrors([
         ...Errors,
@@ -256,7 +258,7 @@ const EditProfile = ({ navigation }) => {
       setIsChanged(false);
       return;
     }
-    if (website?.length < 1 && !isValidURL(website)) {
+    if (website?.length > 0 && !isValidURL(website)) {
       setErrors([
         ...Errors,
         {
