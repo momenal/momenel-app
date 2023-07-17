@@ -232,6 +232,7 @@ const Comments = ({ route, navigation }) => {
           isLiked={item.isLiked}
           gifUrl={item.gifUrl}
           handleDelete={handleDelete}
+          highlight={item.id === comment_id ? true : false}
         />
       );
     },

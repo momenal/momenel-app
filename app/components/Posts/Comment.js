@@ -101,6 +101,7 @@ const Comment = ({
   isLiked,
   commentId,
   handleDelete,
+  highlight,
 }) => {
   const route = useRoute();
   const [isLikedS, setisLikedS] = useState(isLiked);
@@ -215,7 +216,7 @@ const Comment = ({
             flexDirection: "row",
             paddingHorizontal: "3%",
             paddingVertical: "2%",
-            backgroundColor: "#fff",
+            backgroundColor: highlight ? "#F2F2F2" : "white",
           }}
         >
           <Pressable
