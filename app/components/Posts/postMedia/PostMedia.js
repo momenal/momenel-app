@@ -95,6 +95,11 @@ const PostMediaOne = ({
               positionMillis={0}
               isLooping
               shouldPlay={false}
+              onFullscreenUpdate={(status) => {
+                if (status.fullscreenUpdate === 3) {
+                  video?.current.pauseAsync();
+                }
+              }}
             />
             <View
               style={{
