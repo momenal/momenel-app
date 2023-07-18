@@ -10,7 +10,7 @@
         "resourceClass": "m-medium"
       },
       "android": {
-        "resourceClass": "m-medium"
+        "resourceClass": "medium"
       }
     },
     "preview": {

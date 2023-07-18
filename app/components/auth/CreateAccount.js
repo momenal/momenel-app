@@ -186,21 +186,24 @@ const CreateAccount = ({ onReportPress, onUserExists }) => {
         }}
       >
         <CustomText style={styles.termsText}>
-          By signing up, I cofirmed that I have read and agreed to Momenel’s{" "}
+          By creating an account, you confirm that you have carefully reviewed
+          and accepted our{" "}
           <CustomText
             style={[styles.termsText, styles.textUnderline]}
-            onPress={() => _handlePressButtonAsync("https://expo.dev")}
+            onPress={() =>
+              _handlePressButtonAsync("https://www.momenel.com/terms")
+            }
           >
-            Terms Of Service
+            Terms Of Use{" "}
           </CustomText>
-          ,{" "}
+          and acknowledged our{" "}
           <CustomText
             style={[styles.termsText, styles.textUnderline]}
             onPress={() =>
               _handlePressButtonAsync("https://www.momenel.com/privacy")
             }
           >
-            Privacy
+            Privacy Policy
           </CustomText>
           .
         </CustomText>
@@ -240,5 +243,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     textDecorationStyle: "double",
     fontFamily: "Nunito_700Bold",
+    color: "#8456E9",
   },
 });
