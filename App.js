@@ -41,6 +41,12 @@ export default function App() {
 
   useEffect(() => {
     setIsLoading(true);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+      } else {
+        setIsLoading(false);
+      }
+    });
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (_event === "SIGNED_IN") {
         const {
