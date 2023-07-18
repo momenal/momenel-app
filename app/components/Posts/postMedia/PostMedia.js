@@ -1,11 +1,9 @@
-import { Dimensions, Pressable, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Video } from "expo-av";
-import VisibilitySensor from "../../../utils/VisibilitySensor";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import { useIsFocused } from "@react-navigation/native";
 
 const ScreenWidth = Dimensions.get("window").width;
 
@@ -20,30 +18,15 @@ const PostMediaOne = ({
   blurhash,
 }) => {
   const video = useRef(null);
-  const isFocused = useIsFocused();
   const Iwidth = ScreenWidth - ScreenWidth * 0.1;
-  const [play, setPlay] = useState(false);
-  const [showPauseIcon, setShowPauseIcon] = useState(true);
 
-  const handleVisibility = (visible) => {
-    // handle visibility change
-    if (visible === true) {
-      setPlay(true);
-    } else if (visible === false) {
-      setPlay(false);
-    }
-  };
-
-  const _singleTap = Gesture.Tap()
+  const _singleTapVideo = Gesture.Tap()
     .runOnJS(true)
     .numberOfTaps(1)
     .maxDuration(250)
-    .onStart(() => {
-      if (!showPauseIcon) {
-        video?.current.presentFullscreenPlayer();
-      } else {
-        video?.current.playAsync();
-      }
+    .onStart(async () => {
+      video?.current.presentFullscreenPlayer(url);
+      video?.current.playAsync();
     });
   const _singleTapPhoto = Gesture.Tap()
     .runOnJS(true)
@@ -61,16 +44,6 @@ const PostMediaOne = ({
       doubleTap();
     });
 
-  const _longPressGesture = Gesture.LongPress()
-    .runOnJS(true)
-    .onStart(() => {
-      video?.current.pauseAsync();
-    })
-    .onEnd((e, success) => {
-      if (success) {
-        video?.current.playAsync();
-      }
-    });
   return (
     <View
       style={{
@@ -80,10 +53,14 @@ const PostMediaOne = ({
         paddingBottom: 11.4,
       }}
     >
-      {type === "image" ? (
-        <GestureDetector
-          gesture={Gesture.Exclusive(_doubleTap, _singleTapPhoto)}
-        >
+      <GestureDetector
+        gesture={
+          type === "image"
+            ? Gesture.Exclusive(_doubleTap, _singleTapPhoto)
+            : Gesture.Exclusive(_doubleTap, _singleTapVideo)
+        }
+      >
+        {type === "image" ? (
           <Image
             source={{ uri: url }}
             style={{
@@ -96,82 +73,63 @@ const PostMediaOne = ({
             placeholder={blurhash ? blurhash : "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
             transition={200}
           />
-        </GestureDetector>
-      ) : (
-        <VisibilitySensor onChange={handleVisibility}>
-          <GestureDetector
-            gesture={Gesture.Exclusive(
-              _doubleTap,
-              _singleTap,
-              _longPressGesture
-            )}
-          >
-            <View>
-              <Video
-                posterSource={{
-                  uri: posterUrl,
-                }}
-                ref={video}
-                resizeMode="contain"
-                style={{
-                  width: Iwidth,
-                  height: height,
-                  borderRadius: 3,
-                  backgroundColor: "white",
-                  flex: 1,
-                }}
-                source={{
-                  uri: url,
-                }}
-                usePoster
-                positionMillis={0}
-                useNativeControls={false}
-                isLooping
-                shouldPlay={play && isFocused}
-                onPlaybackStatusUpdate={(status) => {
-                  setShowPauseIcon(!status.isPlaying);
-                }}
-              />
+        ) : (
+          <View>
+            <Video
+              ref={video}
+              posterSource={{
+                uri: posterUrl,
+              }}
+              source={{
+                uri: url,
+              }}
+              usePoster
+              resizeMode="contain"
+              style={{
+                width: Iwidth,
+                height: height,
+                borderRadius: 3,
+                backgroundColor: "white",
+                flex: 1,
+              }}
+              positionMillis={0}
+              isLooping
+              shouldPlay={false}
+            />
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <View
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+                  backgroundColor: "#8456E9",
+                  borderRadius: 200,
                   justifyContent: "center",
                   alignItems: "center",
+                  padding: 10,
+                  borderWidth: 3,
+                  borderColor: "white",
+                  zIndex: 100,
                 }}
               >
-                {showPauseIcon && (
-                  <Pressable
-                    onPress={() => {
-                      video?.current.playAsync();
-                    }}
-                    style={{
-                      backgroundColor: "#8456E9",
-                      borderRadius: 200,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: 10,
-                      borderWidth: 3,
-                      borderColor: "white",
-                      zIndex: 100,
-                    }}
-                  >
-                    <Ionicons
-                      name="play"
-                      size={24}
-                      color="white"
-                      style={{ marginLeft: 2 }}
-                    />
-                  </Pressable>
-                )}
+                <Ionicons
+                  name="play"
+                  size={24}
+                  color="white"
+                  style={{ marginLeft: 2 }}
+                />
               </View>
             </View>
-          </GestureDetector>
-        </VisibilitySensor>
-      )}
+          </View>
+        )}
+      </GestureDetector>
     </View>
   );
 };
