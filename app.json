@@ -1,11 +1,13 @@
 {
   "expo": {
-    "name": "momenel",
+    "name": "Momenel - Privacy First Social Network",
     "slug": "privacy-first-social-network",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "privacy": "unlisted",
     "userInterfaceStyle": "automatic",
+    "description": "Momenel - Your Data-Free, Open Source Social.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,6 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "versionCode": 1,
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.momenel.privacyfirstsocialnetwork"
     },

@@ -29,29 +29,25 @@ const ScreenHeight = Dimensions.get("window").height;
 const data = [
   {
     postId: "first1",
-    userName: "farhan",
+    userName: "momenel",
     name: "farhan",
-    profile_url:
-      "https://images.pexels.com/photos/13568258/pexels-photo-13568258.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    caption: "No data collection!\nWe respect your privacy.",
-    createdAt: Date.now() + 50000,
+    profile_url: "https://momenel.b-cdn.net/momenel-internal/IMG_1916.jpg",
+    caption: "Protecting Your Privacy!\nNo Data Collection.",
   },
   {
     postId: "second2",
-    userName: "betzy",
-    name: "betzy",
-    profile_url:
-      "https://images.unsplash.com/photo-1669290888631-e60c60fed46d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
-    caption: "No Tracking!\nLike, literally.",
-    createdAt: Date.now() + 100000,
+    userName: "privacy",
+    name: "#privacymatters",
+    profile_url: "https://momenel.b-cdn.net/momenel-internal/ssec.jpg",
+    caption: "Zero Tracking!\nSeriously, none at all.",
   },
   {
     postId: "third3",
-    userName: "MO",
+    userName: "ethan",
+    name: "ethan",
     profile_url:
-      "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&dpr=2",
-    caption: "Open Source!\nSo you can trust us.",
-    createdAt: Date.now() + 800000,
+      "https://momenel.b-cdn.net/momenel-internal/pexels-yuri-manei-3211476.jpg",
+    caption: "Open Source,\nTrustworthy platform.",
   },
 ];
 
@@ -237,15 +233,21 @@ const Auth = () => {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ width: "100%", paddingHorizontal: "7%" }}>
+        <View
+          style={{
+            width: "100%",
+            paddingHorizontal: "7%",
+            marginTop: "5%",
+          }}
+        >
           <CustomText style={styles.pfs} adjustsFontSizeToFit numberOfLines={1}>
-            The
+            Privacy-first,
           </CustomText>
           <CustomText style={styles.pfs} adjustsFontSizeToFit numberOfLines={1}>
-            Privacy
+            Open-source,
           </CustomText>
           <CustomText style={styles.pfs} adjustsFontSizeToFit numberOfLines={1}>
-            First Social
+            Social!
           </CustomText>
         </View>
         {/* cards */}
@@ -266,7 +268,7 @@ const Auth = () => {
                 useNativeDriver: false,
               }
             )}
-            estimatedItemSize={373}
+            estimatedItemSize={365}
           />
           <View
             style={{
