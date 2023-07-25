@@ -11,5 +11,6 @@ npm-debug.*
 web-build/
 .env
 .env.*
+ks12990.json
 # macOS
 .DS_Store

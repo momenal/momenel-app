@@ -25,7 +25,7 @@ const PostMediaOne = ({
     .numberOfTaps(1)
     .maxDuration(250)
     .onStart(async () => {
-      video?.current.presentFullscreenPlayer(url);
+      video?.current.presentFullscreenPlayer();
       video?.current.playAsync();
     });
   const _singleTapPhoto = Gesture.Tap()
@@ -45,20 +45,20 @@ const PostMediaOne = ({
     });
 
   return (
-    <View
-      style={{
-        borderRadius: 3,
-        paddingHorizontal: ScreenWidth * 0.05, //! using 0.05 because we want 0.04% originally and then add 0.1 of image width to it
-        width: ScreenWidth,
-        paddingBottom: 11.4,
-      }}
+    <GestureDetector
+      gesture={
+        type === "image"
+          ? Gesture.Exclusive(_doubleTap, _singleTapPhoto)
+          : Gesture.Exclusive(_doubleTap, _singleTapVideo)
+      }
     >
-      <GestureDetector
-        gesture={
-          type === "image"
-            ? Gesture.Exclusive(_doubleTap, _singleTapPhoto)
-            : Gesture.Exclusive(_doubleTap, _singleTapVideo)
-        }
+      <View
+        style={{
+          borderRadius: 3,
+          paddingHorizontal: ScreenWidth * 0.05, //! using 0.05 because we want 0.04% originally and then add 0.1 of image width to it
+          width: ScreenWidth,
+          paddingBottom: 11.4,
+        }}
       >
         {type === "image" ? (
           <Image
@@ -97,7 +97,7 @@ const PostMediaOne = ({
               shouldPlay={false}
               onFullscreenUpdate={(status) => {
                 if (status.fullscreenUpdate === 3) {
-                  video?.current.pauseAsync();
+                  video?.current?.pauseAsync();
                 }
               }}
             />
@@ -134,8 +134,8 @@ const PostMediaOne = ({
             </View>
           </View>
         )}
-      </GestureDetector>
-    </View>
+      </View>
+    </GestureDetector>
   );
 };
 

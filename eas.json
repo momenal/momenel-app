@@ -26,6 +26,10 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./ks12990.json"
+      }
+    }
   }
 }
