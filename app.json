@@ -28,7 +28,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "versionCode": 1,
-      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.momenel.privacyfirstsocialnetwork"
     },
     "web": {

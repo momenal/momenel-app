@@ -351,7 +351,7 @@ const EditProfile = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "position" : "height"}
+      behavior={Platform.OS === "ios" ? "position" : "position"}
       keyboardVerticalOffset={-38}
       style={{
         backgroundColor: "white",
